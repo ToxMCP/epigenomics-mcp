@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "datasetId": "bm-beta-complete-ds-001",
+    "totalFeatures": 3,
+    "featuresWithMissingValues": 0,
+    "missingnessRate": 0,
+    "designAdequacyFlags": {
+      "sufficientReplicates": true,
+      "doseRangeDeclared": true,
+      "controlsPresent": true,
+      "batchStructureKnown": true,
+      "speciesBuildDeclared": true
+    }
+  },
+  "pass": true
+}

@@ -1,0 +1,724 @@
+{
+  "passed": true,
+  "summary": {
+    "totalBenchmarks": 12,
+    "passedBenchmarks": 12,
+    "failedBenchmarks": 0,
+    "totalSteps": 64,
+    "failedSteps": 0
+  },
+  "benchmarks": [
+    {
+      "benchmarkName": "bm_beta_manifest_complete",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_dmr_nearest_gene_only",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_build_missing",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_invalid_coordinate_format",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_missing_cell_context",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_missing_cytotoxicity_context",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_dominant_cytotoxicity",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_insufficient_replicates",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_high_missingness",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_summary_contrast_only",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "design_validation",
+          "tool": "validateDesign",
+          "outputFile": "design_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qc_profile",
+          "tool": "profileQc",
+          "outputFile": "qc_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "missingness_profile",
+          "tool": "profileMissingness",
+          "outputFile": "missingness_profile.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "qualification_result",
+          "tool": "qualifyFeatures",
+          "outputFile": "qualification_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_result",
+          "tool": "buildHandoffPacket",
+          "outputFile": "handoff_result.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "packet_snapshot",
+          "tool": "buildPacket",
+          "outputFile": "packet.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_handoff_schema_valid",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "handoff_validation",
+          "tool": "validateHandoffSchema",
+          "outputFile": "handoff_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_snapshot",
+          "tool": "passthrough",
+          "outputFile": "handoff.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    },
+    {
+      "benchmarkName": "bm_handoff_schema_invalid",
+      "passed": true,
+      "steps": [
+        {
+          "stepName": "handoff_validation",
+          "tool": "validateHandoffSchema",
+          "outputFile": "handoff_validation.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        },
+        {
+          "stepName": "handoff_snapshot",
+          "tool": "passthrough",
+          "outputFile": "handoff.json",
+          "passed": true,
+          "compareResult": {
+            "match": true,
+            "diffs": []
+          }
+        }
+      ]
+    }
+  ]
+}

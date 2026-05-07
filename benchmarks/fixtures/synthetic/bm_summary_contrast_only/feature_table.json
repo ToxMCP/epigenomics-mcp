@@ -1,0 +1,36 @@
+[
+  {
+    "featureId": "dmr_summary_001",
+    "featureClass": "differential_methylated_region",
+    "modality": "dna_methylation_bsseq",
+    "measuredRegion": {
+      "chrom": "chr1",
+      "start": 1000000,
+      "end": 1000500,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "effect_size",
+    "values": {
+      "contrast_low_vs_ctrl": 0.18,
+      "contrast_high_vs_ctrl": 0.42
+    }
+  },
+  {
+    "featureId": "dmr_summary_002",
+    "featureClass": "differential_methylated_region",
+    "modality": "dna_methylation_bsseq",
+    "measuredRegion": {
+      "chrom": "chr2",
+      "start": 500000,
+      "end": 500600,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "q_value",
+    "values": {
+      "contrast_low_vs_ctrl": 0.003,
+      "contrast_high_vs_ctrl": 0.0001
+    }
+  }
+]

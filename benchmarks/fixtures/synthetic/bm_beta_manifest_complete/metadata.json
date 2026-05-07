@@ -1,0 +1,74 @@
+{
+  "datasetId": "bm-beta-complete-ds-001",
+  "provenance": {
+    "datasetId": "bm-beta-complete-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "idat_to_intensities",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": { "preprocessMethod": "noob" },
+        "timestamp": "2026-04-01T10:00:00Z",
+        "inputFiles": ["sample_001.idat", "sample_002.idat"],
+        "outputFiles": ["intensities.rds"]
+      },
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": { "method": "SWAN" },
+        "timestamp": "2026-04-01T11:00:00Z",
+        "inputFiles": ["intensities.rds"],
+        "outputFiles": ["beta_values.csv"]
+      }
+    ],
+    "normalisationMethod": "SWAN",
+    "batchCorrectionMethod": "ComBat",
+    "probeManifestVersion": "Illumina EPIC v2.0",
+    "annotationVersion": "hg38"
+  },
+  "cellComposition": {
+    "datasetId": "bm-beta-complete-ds-001",
+    "samples": [
+      { "sampleId": "sample-ctrl-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-ctrl-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-ctrl-3", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-3", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-3", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
+    ],
+    "groupShifts": [],
+    "warnings": [],
+    "fractionSumValid": true,
+    "hasAnyCompositionData": true
+  },
+  "cytotoxicity": {
+    "datasetId": "bm-beta-complete-ds-001",
+    "entries": [
+      {
+        "assayType": "viability",
+        "evidenceSource": "measured_concurrent",
+        "measurements": [
+          { "sampleId": "sample-ctrl-1", "doseValue": 0, "timepointHours": 24, "value": 0.96, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-ctrl-2", "doseValue": 0, "timepointHours": 24, "value": 0.95, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-ctrl-3", "doseValue": 0, "timepointHours": 24, "value": 0.97, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-1", "doseValue": 1, "timepointHours": 24, "value": 0.94, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-2", "doseValue": 1, "timepointHours": 24, "value": 0.93, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-3", "doseValue": 1, "timepointHours": 24, "value": 0.95, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-high-1", "doseValue": 10, "timepointHours": 24, "value": 0.91, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-high-2", "doseValue": 10, "timepointHours": 24, "value": 0.92, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-high-3", "doseValue": 10, "timepointHours": 24, "value": 0.90, "unit": "fraction", "metric": "cell_viability" }
+        ],
+        "stressFlags": []
+      }
+    ],
+    "timepointAligned": true,
+    "doseAligned": true,
+    "hasCytotoxicityData": true,
+    "cytotoxicityDetected": false,
+    "warnings": []
+  }
+}

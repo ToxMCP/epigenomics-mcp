@@ -1,0 +1,9 @@
+{
+  "fixtureName": "bm_insufficient_replicates",
+  "description": "Only one replicate per dose group. Default policy requires minBiologicalReplicatesPerGroup=2. Design schema allows minReplicatesPerGroup=1, but policy should flag insufficient replicates.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "excluded_insufficient_design",
+  "expectedWarnings": [],
+  "expectedBlocksDownstream": true,
+  "expectedHandoffReady": false
+}

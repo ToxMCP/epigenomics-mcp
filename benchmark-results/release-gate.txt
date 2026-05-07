@@ -1,0 +1,15 @@
+=== Epigenomics MCP Release Gate Report ===
+
+[PASS] schema_drift
+       No schema drift detected.
+
+[PASS] expected_outputs_exist
+       All expected golden output files are present.
+
+[PASS] golden_drift
+       All 12 benchmark(s) passed golden comparison.
+
+[PASS] nondeterminism
+       Benchmark results are deterministic across two runs.
+
+=== Release Status: READY ===

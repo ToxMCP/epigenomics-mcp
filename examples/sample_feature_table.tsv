@@ -1,0 +1,5 @@
+feature_id	feature_class	modality	chrom	start	end	build	coordinate_system	signal_metric	ctrl_1	ctrl_2	low_1	low_2	high_1	high_2
+probe_001	cpg_methylation	dna_methylation_array	chr1	1000000	1000001	hg38	0-based-half-open	beta_value	0.82	0.85	0.75	0.78	0.45	0.48
+probe_002	cpg_methylation	dna_methylation_array	chr1	1050000	1050001	hg38	0-based-half-open	beta_value	0.12	0.14	0.22	0.25	0.55	0.58
+peak_001	atac_peak	atac_seq	chr2	500000	505000	hg38	0-based-half-open	rpm	12.5	13.1	25.3	24.8	48.2	49.1
+peak_002	chip_peak_narrow	chip_seq	chr3	2000000	2000500	hg38	0-based-half-open	normalized_signal	8.2	8.5	15.1	14.8	28.3	29.1

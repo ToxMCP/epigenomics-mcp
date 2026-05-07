@@ -1,0 +1,50 @@
+{
+  "datasetId": "bm-cyto-dom-ds-001",
+  "policyVersion": "v1.0.0",
+  "overallFeatureMissingFraction": 0,
+  "perFeatureMissingness": [
+    {
+      "featureId": "cg_cyto_dom_001",
+      "missingFraction": 0,
+      "band": "acceptable"
+    }
+  ],
+  "perSampleMissingness": [
+    {
+      "sampleId": "sample-ctrl-1",
+      "missingFraction": 0,
+      "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-ctrl-2",
+      "missingFraction": 0,
+      "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-low-1",
+      "missingFraction": 0,
+      "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-low-2",
+      "missingFraction": 0,
+      "band": "acceptable"
+    }
+  ],
+  "perGroupMissingness": [
+    {
+      "doseGroupId": "ctrl",
+      "missingFraction": 0,
+      "band": "acceptable",
+      "completeDropoutFeatureIds": []
+    },
+    {
+      "doseGroupId": "low",
+      "missingFraction": 0,
+      "band": "acceptable",
+      "completeDropoutFeatureIds": []
+    }
+  ],
+  "featuresWithCompleteGroupDropout": [],
+  "summaryBand": "acceptable"
+}

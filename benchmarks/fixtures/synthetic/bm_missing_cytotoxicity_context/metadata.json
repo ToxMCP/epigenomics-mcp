@@ -1,0 +1,29 @@
+{
+  "datasetId": "bm-missing-cyto-ds-001",
+  "provenance": {
+    "datasetId": "bm-missing-cyto-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {},
+        "timestamp": "2026-04-01T10:00:00Z"
+      }
+    ]
+  },
+  "cellComposition": {
+    "datasetId": "bm-missing-cyto-ds-001",
+    "samples": [
+      { "sampleId": "sample-ctrl-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-ctrl-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
+    ],
+    "groupShifts": [],
+    "warnings": [],
+    "fractionSumValid": true,
+    "hasAnyCompositionData": true
+  },
+  "cytotoxicity": null
+}

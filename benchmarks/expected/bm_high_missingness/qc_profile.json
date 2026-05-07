@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "datasetId": "bm-miss-high-ds-001",
+    "totalFeatures": 2,
+    "featuresWithMissingValues": 1,
+    "missingnessRate": 0.5,
+    "designAdequacyFlags": {
+      "sufficientReplicates": true,
+      "doseRangeDeclared": true,
+      "controlsPresent": true,
+      "batchStructureKnown": false,
+      "speciesBuildDeclared": true
+    }
+  },
+  "pass": false
+}

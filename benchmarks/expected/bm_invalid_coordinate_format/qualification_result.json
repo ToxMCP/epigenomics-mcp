@@ -1,0 +1,13 @@
+{
+  "qualifiedCount": 0,
+  "excludedCount": 0,
+  "warnings": [
+    {
+      "warningCode": "EPI001_PACKET_SCHEMA_INVALID",
+      "severity": "error",
+      "message": "Packet schema validation failed: [\n  {\n    \"code\": \"custom\",\n    \"message\": \"end must be greater than start\",\n    \"path\": [\n      \"features\",\n      0,\n      \"measuredRegion\",\n      \"end\"\n    ]\n  },\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid\",\n    \"path\": [\n      \"features\",\n      1,\n      \"measuredRegion\",\n      \"chrom\"\n    ]\n  }\n]",
+      "category": "missing_metadata",
+      "blocksDownstream": true
+    }
+  ]
+}

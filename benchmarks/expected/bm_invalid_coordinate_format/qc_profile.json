@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "datasetId": "bm-invalid-coords-ds-001",
+    "totalFeatures": 2,
+    "featuresWithMissingValues": 0,
+    "missingnessRate": 0,
+    "designAdequacyFlags": {
+      "sufficientReplicates": true,
+      "doseRangeDeclared": true,
+      "controlsPresent": true,
+      "batchStructureKnown": false,
+      "speciesBuildDeclared": true
+    }
+  },
+  "pass": true
+}

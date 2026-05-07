@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/region-to-gene-mapping/v0.1.0",
+  "title": "RegionToGeneMapping",
+  "description": "Typed mapping between an epigenomic region and its putative target gene(s).",
+  "type": "object",
+  "properties": {
+    "featureId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable feature identifier"
+    },
+    "geneIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Mapped gene identifiers"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "direct_promoter_overlap",
+        "gene_body_overlap",
+        "enhancer_target_from_database",
+        "chromatin_interaction_supported",
+        "nearest_gene",
+        "inferred_target_gene",
+        "unknown_target_gene"
+      ],
+      "description": "Mapping method (e.g. nearest_gene, direct_promoter_overlap)"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ],
+      "description": "Confidence level of the mapping"
+    },
+    "distanceBp": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Distance in base pairs when applicable"
+    },
+    "pathwayRollupAllowed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this mapping may be used for automated pathway roll-up"
+    },
+    "annotationTrace": {
+      "type": "object",
+      "properties": {
+        "traceId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable trace identifier"
+        },
+        "sourceResource": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Annotation resource name (e.g., Ensembl, GENCODE)"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Annotation release version"
+        },
+        "releaseDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Release timestamp"
+        },
+        "genomeBuild": {
+          "type": "string",
+          "enum": [
+            "GRCh37",
+            "GRCh38",
+            "hg19",
+            "hg38",
+            "mm9",
+            "mm10",
+            "mm39",
+            "rn6",
+            "rn7"
+          ],
+          "description": "Genome build for the annotation"
+        }
+      },
+      "required": [
+        "traceId",
+        "sourceResource",
+        "sourceVersion",
+        "genomeBuild"
+      ],
+      "additionalProperties": false,
+      "description": "Annotation trace for this mapping"
+    }
+  },
+  "required": [
+    "featureId",
+    "geneIds",
+    "method",
+    "confidence"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,7 @@
+{
+  "fixtureName": "bm_handoff_schema_valid",
+  "description": "A fully valid BioactivityPoDHandoffPacket conforming to the v0.1 schema.",
+  "expectedSchemaValid": true,
+  "expectedBlocksDownstream": false,
+  "expectedHandoffReady": true
+}

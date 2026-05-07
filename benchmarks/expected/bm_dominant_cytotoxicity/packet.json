@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "EpigenomicsFeatureResponsePacket",
+  "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "datasetMetadataRef": "bm-cyto-dom-ds-001",
+  "designRef": "bm-cyto-dom-design-001",
+  "features": [
+    {
+      "featureId": "cg_cyto_dom_001",
+      "featureClass": "cpg_methylation",
+      "modality": "dna_methylation_array",
+      "measuredIdentifier": "cg_cyto_dom_001",
+      "measuredRegion": {
+        "chrom": "chr1",
+        "start": 1000000,
+        "end": 1000001,
+        "build": "hg38",
+        "coordinateSystem": "0-based-half-open"
+      },
+      "signalMetric": "beta_value",
+      "values": {
+        "sample-ctrl-1": 0.82,
+        "sample-ctrl-2": 0.85,
+        "sample-low-1": 0.78,
+        "sample-low-2": 0.8
+      }
+    }
+  ],
+  "design": {
+    "designId": "bm-cyto-dom-design-001",
+    "species": "Homo sapiens",
+    "doseGroups": [
+      {
+        "doseGroupId": "ctrl",
+        "doseValue": 0,
+        "doseUnit": "µM"
+      },
+      {
+        "doseGroupId": "low",
+        "doseValue": 1,
+        "doseUnit": "µM"
+      }
+    ],
+    "samples": [
+      {
+        "sampleId": "sample-ctrl-1",
+        "doseGroupId": "ctrl",
+        "species": "Homo sapiens",
+        "controlFlag": true
+      },
+      {
+        "sampleId": "sample-ctrl-2",
+        "doseGroupId": "ctrl",
+        "species": "Homo sapiens",
+        "controlFlag": true
+      },
+      {
+        "sampleId": "sample-low-1",
+        "doseGroupId": "low",
+        "species": "Homo sapiens"
+      },
+      {
+        "sampleId": "sample-low-2",
+        "doseGroupId": "low",
+        "species": "Homo sapiens"
+      }
+    ],
+    "hasControls": true,
+    "minReplicatesPerGroup": 2
+  },
+  "provenance": {
+    "datasetId": "bm-cyto-dom-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {},
+        "timestamp": "2026-04-01T10:00:00Z"
+      }
+    ]
+  },
+  "qualificationSummary": {
+    "acceptedCount": 1,
+    "excludedCount": 0,
+    "exploratoryCount": 0,
+    "caveatCount": 0
+  },
+  "qcReportRef": "qc-report-001",
+  "warnings": [],
+  "generatedAt": "2026-05-05T00:00:00Z"
+}

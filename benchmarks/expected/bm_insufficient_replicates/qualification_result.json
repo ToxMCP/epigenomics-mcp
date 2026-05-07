@@ -1,0 +1,60 @@
+{
+  "qualifiedCount": 0,
+  "excludedCount": 1,
+  "warnings": [],
+  "qualifications": [
+    {
+      "featureId": "cg_rep_low_001",
+      "status": "excluded_qc_failure",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_rep_low_001"
+          ]
+        },
+        {
+          "warningCode": "EPI006_INSUFFICIENT_REPLICATES",
+          "severity": "error",
+          "message": "Feature cg_rep_low_001 excluded: minimum 1 biological replicates per group, required 2",
+          "category": "platform_specific",
+          "blocksDownstream": true,
+          "featureIds": [
+            "cg_rep_low_001"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_004_INSUFFICIENT_REPLICATES",
+        "reasonTemplate": "Feature cg_rep_low_001 is supported by 1 biological replicate(s) per group, below the policy minimum of 2. Replicate adequacy is assessed per dose group.",
+        "remediationHint": "Increase biological replication, or set the n1BiologicalReplicatePolicy to 'review_required' if single-replicate groups must be retained.",
+        "reviewRequired": true,
+        "policyReference": "replicate.minBiologicalReplicatesPerGroup",
+        "thresholdValue": "2",
+        "observedValue": "1"
+      }
+    }
+  ],
+  "claimGuardResult": {
+    "persistenceStatus": "not_assessed",
+    "reversibilityStatus": "not_assessed",
+    "heritabilityClaim": "none"
+  },
+  "explainabilitySummary": {
+    "uniqueRuleCodes": [
+      "RULE_004_INSUFFICIENT_REPLICATES"
+    ],
+    "ruleCodeCounts": {
+      "RULE_004_INSUFFICIENT_REPLICATES": 1
+    },
+    "reviewRequiredCount": 1,
+    "featuresWithRemediation": 1
+  }
+}

@@ -1,0 +1,7 @@
+datasetId: "demo_dataset_001"
+sourceType: "internal_pipeline"
+originalAssay: "Illumina Infinium MethylationEPIC"
+preprocessingPipeline: "minfi"
+preprocessingVersion: "1.48.0"
+contactOrLab: "ToxMCP Demo Lab"
+ingestedAt: "2026-05-05T16:00:00Z"

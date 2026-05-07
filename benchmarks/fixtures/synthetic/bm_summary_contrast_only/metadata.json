@@ -1,0 +1,16 @@
+{
+  "datasetId": "bm-summary-ds-001",
+  "provenance": {
+    "datasetId": "bm-summary-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "dmr_calling",
+        "toolName": "dmrseq",
+        "toolVersion": "1.16.0",
+        "parameters": {},
+        "timestamp": "2026-04-01T10:00:00Z"
+      }
+    ]
+  },
+  "note": "Values are contrast-level summaries (effect_size, q_value) rather than per-sample measurements. This is common in published DMR tables but insufficient for dose-response modelling."
+}

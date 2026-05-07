@@ -1,0 +1,369 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/bioactivity-pod-handoff-packet/v0.1.0",
+  "title": "BioactivityPoDHandoffPacket",
+  "description": "Consumer contract for Bioactivity-PoD MCP – a dose-response-ready handoff packet derived from a qualified EpigenomicsFeatureResponsePacket.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "schemaName": {
+      "type": "string",
+      "const": "BioactivityPoDHandoffPacket"
+    },
+    "handoffId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "handoffName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourcePacketRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualifiedFeatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "featureId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "accepted_for_pod",
+              "accepted_with_caveats",
+              "excluded_insufficient_design",
+              "excluded_coordinate_ambiguity",
+              "excluded_qc_failure",
+              "excluded_mapping_failure",
+              "exploratory_only"
+            ]
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "warningCode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Structured warning code"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "info",
+                    "warning",
+                    "error"
+                  ],
+                  "description": "Severity level"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Human-readable message"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "cell_composition",
+                    "cytotoxicity",
+                    "stress_response",
+                    "differentiation_drift",
+                    "batch_effect",
+                    "time_dependence",
+                    "coordinate_semantics",
+                    "mapping_proximity",
+                    "platform_specific",
+                    "missing_metadata"
+                  ],
+                  "description": "Warning category"
+                },
+                "featureIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Affected features"
+                },
+                "blocksDownstream": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether this blocks downstream use"
+                }
+              },
+              "required": [
+                "warningCode",
+                "severity",
+                "message",
+                "category"
+              ],
+              "additionalProperties": false
+            },
+            "default": []
+          },
+          "mappedGeneIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mappingConfidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "none"
+            ]
+          },
+          "mappingMethod": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "featureId",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "excludedFeatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "featureId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "accepted_for_pod",
+              "accepted_with_caveats",
+              "excluded_insufficient_design",
+              "excluded_coordinate_ambiguity",
+              "excluded_qc_failure",
+              "excluded_mapping_failure",
+              "exploratory_only"
+            ]
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "warningCode": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Structured warning code"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "info",
+                    "warning",
+                    "error"
+                  ],
+                  "description": "Severity level"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Human-readable message"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "cell_composition",
+                    "cytotoxicity",
+                    "stress_response",
+                    "differentiation_drift",
+                    "batch_effect",
+                    "time_dependence",
+                    "coordinate_semantics",
+                    "mapping_proximity",
+                    "platform_specific",
+                    "missing_metadata"
+                  ],
+                  "description": "Warning category"
+                },
+                "featureIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Affected features"
+                },
+                "blocksDownstream": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Whether this blocks downstream use"
+                }
+              },
+              "required": [
+                "warningCode",
+                "severity",
+                "message",
+                "category"
+              ],
+              "additionalProperties": false
+            },
+            "default": []
+          },
+          "mappedGeneIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mappingConfidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "none"
+            ]
+          },
+          "mappingMethod": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "featureId",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "doseResponseReadySubset": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "mandatoryCaveats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "warningCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured warning code"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "description": "Severity level"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "cell_composition",
+              "cytotoxicity",
+              "stress_response",
+              "differentiation_drift",
+              "batch_effect",
+              "time_dependence",
+              "coordinate_semantics",
+              "mapping_proximity",
+              "platform_specific",
+              "missing_metadata"
+            ],
+            "description": "Warning category"
+          },
+          "featureIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected features"
+          },
+          "blocksDownstream": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this blocks downstream use"
+          }
+        },
+        "required": [
+          "warningCode",
+          "severity",
+          "message",
+          "category"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Source packet provenance for audit trail",
+      "properties": {
+        "datasetId": { "type": "string", "minLength": 1 },
+        "upstreamSteps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stepName": { "type": "string", "minLength": 1 },
+              "toolName": { "type": "string", "minLength": 1 },
+              "toolVersion": { "type": "string", "minLength": 1 },
+              "parameters": { "type": "object" },
+              "timestamp": { "type": "string", "format": "date-time" },
+              "inputFiles": { "type": "array", "items": { "type": "string" } },
+              "outputFiles": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["stepName", "toolName", "toolVersion"],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "normalisationMethod": { "type": "string" },
+        "batchCorrectionMethod": { "type": "string" },
+        "probeManifestVersion": { "type": "string" },
+        "annotationVersion": { "type": "string" },
+        "sourceArchive": { "type": "string" },
+        "sourceAccession": { "type": "string" }
+      },
+      "required": ["datasetId", "upstreamSteps"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "schemaName",
+    "handoffId",
+    "sourcePacketRef",
+    "qualifiedFeatures",
+    "doseResponseReadySubset",
+    "generatedAt"
+  ],
+  "additionalProperties": false
+}

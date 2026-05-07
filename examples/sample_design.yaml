@@ -1,0 +1,17 @@
+designId: "demo_dose_response_001"
+studyType: "dose_response"
+species: "Homo sapiens"
+tissueOrCellLine: "HepaRG"
+treatmentGroups:
+  - groupId: "ctrl"
+    doseOrCondition: "0"
+    doseUnit: "uM"
+  - groupId: "low"
+    doseOrCondition: "1"
+    doseUnit: "uM"
+  - groupId: "high"
+    doseOrCondition: "10"
+    doseUnit: "uM"
+replicateLayout:
+  replicatesPerGroup: 2
+  batchIds: ["batch_A", "batch_A", "batch_A", "batch_A", "batch_A", "batch_A"]

@@ -1,0 +1,96 @@
+{
+  "qualifiedCount": 2,
+  "excludedCount": 0,
+  "warnings": [],
+  "qualifications": [
+    {
+      "featureId": "dmr_summary_001",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_summary_001"
+          ]
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_summary_001"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature dmr_summary_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "2"
+      }
+    },
+    {
+      "featureId": "dmr_summary_002",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_summary_002"
+          ]
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_summary_002"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature dmr_summary_002 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "2"
+      }
+    }
+  ],
+  "claimGuardResult": {
+    "persistenceStatus": "not_assessed",
+    "reversibilityStatus": "not_assessed",
+    "heritabilityClaim": "none"
+  },
+  "explainabilitySummary": {
+    "uniqueRuleCodes": [
+      "RULE_009_MAJOR_WARNINGS"
+    ],
+    "ruleCodeCounts": {
+      "RULE_009_MAJOR_WARNINGS": 2
+    },
+    "reviewRequiredCount": 0,
+    "featuresWithRemediation": 2
+  }
+}

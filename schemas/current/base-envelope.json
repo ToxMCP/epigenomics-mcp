@@ -1,0 +1,262 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/base-envelope/v0.1.0",
+  "title": "BaseEnvelope",
+  "description": "Shared base envelope used by all emitted objects in Epigenomics MCP.",
+  "type": "object",
+  "properties": {
+    "schemaName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Normative schema name for the object"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Semver-compatible schema version"
+    },
+    "objectId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Globally unique object identifier"
+    },
+    "objectVersion": {
+      "type": "string",
+      "minLength": 1,
+      "default": "1.0.0",
+      "description": "Object revision version"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 creation timestamp"
+    },
+    "createdBy": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Entity (service or user) that created the object"
+    },
+    "sourceMcp": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Source MCP identifier (e.g. epigenomics-mcp)"
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stepName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Processing step name"
+          },
+          "toolName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Tool or pipeline name"
+          },
+          "toolVersion": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Tool version"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {},
+            "default": {}
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "inputFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "outputFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        },
+        "required": [
+          "stepName",
+          "toolName",
+          "toolVersion"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "Upstream processing provenance"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ],
+      "default": "none",
+      "description": "Overall confidence assessment"
+    },
+    "reviewFlags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "flagCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured flag code"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "critical"
+            ],
+            "default": "info",
+            "description": "Flag severity"
+          },
+          "reviewer": {
+            "type": "string",
+            "description": "Reviewer identifier"
+          },
+          "flaggedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Flag timestamp"
+          }
+        },
+        "required": [
+          "flagCode",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "Review flags attached to the object"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "warningCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured warning code"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "description": "Severity level"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "cell_composition",
+              "cytotoxicity",
+              "stress_response",
+              "differentiation_drift",
+              "batch_effect",
+              "time_dependence",
+              "coordinate_semantics",
+              "mapping_proximity",
+              "platform_specific",
+              "missing_metadata"
+            ],
+            "description": "Warning category"
+          },
+          "featureIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected features"
+          },
+          "blocksDownstream": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this blocks downstream use"
+          }
+        },
+        "required": [
+          "warningCode",
+          "severity",
+          "message",
+          "category"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "Qualification warnings"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured error code"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "path": {
+            "type": "string",
+            "description": "JSON path or field reference"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "Envelope-level errors"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": {},
+      "default": {},
+      "description": "Extension key-value store for forward compatibility"
+    }
+  },
+  "required": [
+    "schemaName",
+    "schemaVersion",
+    "objectId",
+    "createdAt",
+    "createdBy",
+    "sourceMcp"
+  ],
+  "additionalProperties": false
+}

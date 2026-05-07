@@ -1,0 +1,30 @@
+{
+  "ready": true,
+  "checks": [
+    {
+      "name": "schema_drift",
+      "passed": true,
+      "details": "No schema drift detected."
+    },
+    {
+      "name": "expected_outputs_exist",
+      "passed": true,
+      "details": "All expected golden output files are present."
+    },
+    {
+      "name": "golden_drift",
+      "passed": true,
+      "details": "All 12 benchmark(s) passed golden comparison."
+    },
+    {
+      "name": "nondeterminism",
+      "passed": true,
+      "details": "Benchmark results are deterministic across two runs."
+    }
+  ],
+  "benchmarkSummary": {
+    "totalBenchmarks": 12,
+    "passedBenchmarks": 12,
+    "failedBenchmarks": 0
+  }
+}

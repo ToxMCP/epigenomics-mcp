@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`profileVariance > matches snapshot for unstable-replicate fixture 1`] = `
+{
+  "datasetId": "ds-012",
+  "perFeatureVariance": [
+    {
+      "coefficientOfVariation": 0.7720103626,
+      "dynamicRangeBand": "high",
+      "featureId": "cg001",
+      "variance": 0.149,
+    },
+  ],
+  "policyVersion": "v1.0.0",
+  "summaryBand": "acceptable",
+}
+`;
+
+exports[`profileVariance > matches snapshot for zero-variance fixture 1`] = `
+{
+  "datasetId": "ds-011",
+  "perFeatureVariance": [
+    {
+      "coefficientOfVariation": 0,
+      "dynamicRangeBand": "low",
+      "featureId": "cg001",
+      "variance": 0,
+    },
+  ],
+  "policyVersion": "v1.0.0",
+  "summaryBand": "warning",
+}
+`;

@@ -1,0 +1,36 @@
+{
+  "datasetId": "bm-missing-cell-ds-001",
+  "provenance": {
+    "datasetId": "bm-missing-cell-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {},
+        "timestamp": "2026-04-01T10:00:00Z"
+      }
+    ]
+  },
+  "cellComposition": null,
+  "cytotoxicity": {
+    "datasetId": "bm-missing-cell-ds-001",
+    "entries": [
+      {
+        "assayType": "viability",
+        "evidenceSource": "measured_concurrent",
+        "measurements": [
+          { "sampleId": "sample-ctrl-1", "doseValue": 0, "value": 0.95, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-ctrl-2", "doseValue": 0, "value": 0.96, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-1", "doseValue": 1, "value": 0.94, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-2", "doseValue": 1, "value": 0.93, "unit": "fraction", "metric": "cell_viability" }
+        ]
+      }
+    ],
+    "timepointAligned": true,
+    "doseAligned": true,
+    "hasCytotoxicityData": true,
+    "cytotoxicityDetected": false,
+    "warnings": []
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "fixtureName": "bm_high_missingness",
+  "description": "One feature has 75% missing values (3 out of 4), exceeding the 20% exclusion threshold.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "excluded_qc_failure",
+  "expectedWarnings": ["EPIE002_EXCESSIVE_MISSINGNESS"],
+  "expectedBlocksDownstream": true,
+  "expectedHandoffReady": false
+}

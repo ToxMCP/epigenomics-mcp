@@ -1,0 +1,95 @@
+name: Schema Drift Guard
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  schema-drift:
+    name: Detect Schema Drift
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Export schemas to temporary directory
+        run: node scripts/export-schemas.mjs /tmp/exported-schemas
+
+      - name: Compare exported schemas against committed snapshots
+        id: drift
+        run: |
+          set +e
+          diff -ru schemas/current /tmp/exported-schemas > /tmp/schema-diff.txt
+          DIFF_EXIT=$?
+          set -e
+
+          if [ $DIFF_EXIT -eq 0 ]; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "No schema drift detected."
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "Schema drift detected between exported schemas and schemas/current/"
+            echo ""
+            cat /tmp/schema-diff.txt
+          fi
+
+      - name: Require schema-version bump and changelog entry for intentional drift
+        if: steps.drift.outputs.drift == 'true'
+        run: |
+          set -e
+
+          # Determine base ref for comparison
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="origin/${{ github.base_ref }}"
+          else
+            BASE_REF="HEAD~1"
+          fi
+
+          echo "Checking for intentional drift indicators against $BASE_REF ..."
+
+          # Check for schema version bump in packet contracts
+          VERSION_CHANGED=$(git diff "$BASE_REF" HEAD -- src/contracts/packets.ts | grep -E '^[+-].*schemaVersion' || true)
+
+          if [ -z "$VERSION_CHANGED" ]; then
+            echo ""
+            echo "ERROR: Schema drift detected but no schemaVersion bump found in src/contracts/packets.ts."
+            echo "If this drift is intentional:"
+            echo "  1. Bump the schemaVersion literal in src/contracts/packets.ts"
+            echo "  2. Add a CHANGELOG.md entry describing the change"
+            echo "  3. Re-run 'npm run export:schemas' and commit the updated snapshots"
+            exit 1
+          fi
+
+          # Check for CHANGELOG.md update
+          CHANGELOG_CHANGED=$(git diff --name-only "$BASE_REF" HEAD | grep -i '^CHANGELOG\.md$' || true)
+
+          if [ -z "$CHANGELOG_CHANGED" ]; then
+            echo ""
+            echo "ERROR: Schema drift detected but CHANGELOG.md was not updated."
+            echo "If this drift is intentional, add a CHANGELOG.md entry describing the change."
+            exit 1
+          fi
+
+          echo ""
+          echo "Intentional schema drift accepted: schemaVersion bumped and CHANGELOG.md updated."

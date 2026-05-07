@@ -1,0 +1,75 @@
+name: Docker Build and Smoke
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docker-smoke:
+    name: Docker Image Build and Smoke Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t epigenomics-mcp:smoke .
+
+      - name: Smoke test — epimcp --help
+        run: |
+          OUTPUT=$(docker run --rm epigenomics-mcp:smoke --help)
+          echo "$OUTPUT"
+          echo "$OUTPUT" | grep -q "epimcp"
+          echo "$OUTPUT" | grep -q "USAGE"
+          echo "$OUTPUT" | grep -q "COMMANDS"
+
+      - name: Smoke test — Node.js import
+        run: |
+          docker run --rm epigenomics-mcp:smoke \
+            node -e "import('./dist/epimcp/index.js').then(m => console.log('VERSION:', m.VERSION))"
+
+      - name: Smoke test — Python import
+        run: |
+          docker run --rm epigenomics-mcp:smoke \
+            python -c "import epigenomics_mcp; print('Python version:', epigenomics_mcp.__version__)"
+
+      - name: Smoke test — stdio server startup
+        run: |
+          set +e
+          RESPONSE_FILE=$(mktemp)
+
+          # Run the stdio server in a container, send an initialize request,
+          # and capture the first JSON-RPC response.
+          (
+            sleep 1
+            echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke","version":"0.1.0"}}}'
+            sleep 2
+          ) | timeout 10 docker run --rm -i epigenomics-mcp:smoke serve > "$RESPONSE_FILE" 2>/tmp/stdio-stderr.log
+
+          set -e
+          echo "--- Server stdout ---"
+          cat "$RESPONSE_FILE"
+          echo "---"
+          echo "--- Server stderr ---"
+          cat /tmp/stdio-stderr.log || true
+          echo "---"
+
+          # The response file must not be empty.
+          test -s "$RESPONSE_FILE"
+
+          FIRST_LINE=$(head -n 1 "$RESPONSE_FILE")
+          echo "First response line: $FIRST_LINE"
+
+          # Verify it is a JSON-RPC response containing a result object.
+          echo "$FIRST_LINE" | grep -q '"jsonrpc"'
+          echo "$FIRST_LINE" | grep -q '"result"'
+
+          rm -f "$RESPONSE_FILE" /tmp/stdio-stderr.log
+          echo "Stdio server startup smoke passed."

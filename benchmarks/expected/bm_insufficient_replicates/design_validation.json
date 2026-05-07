@@ -1,0 +1,8 @@
+{
+  "valid": true,
+  "schemaValid": true,
+  "errors": [],
+  "warnings": [
+    "minReplicatesPerGroup is fewer than 2; statistical power may be limited"
+  ]
+}

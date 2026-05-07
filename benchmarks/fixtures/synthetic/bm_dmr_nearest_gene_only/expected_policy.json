@@ -1,0 +1,10 @@
+{
+  "fixtureName": "bm_dmr_nearest_gene_only",
+  "description": "DMR features mapped by nearest-gene only. Mapping proximity warning is expected because nearest-gene does not imply causality.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "accepted_with_caveats",
+  "expectedWarnings": ["EPIW003_PROXIMITY_NOT_CAUSALITY"],
+  "expectedBlocksDownstream": false,
+  "expectedHandoffReady": false,
+  "note": "Handoff is blocked because blockNearestGenePathwayByDefault is true in default policy."
+}

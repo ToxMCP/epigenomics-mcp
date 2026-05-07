@@ -1,0 +1,27 @@
+{
+  "datasetId": "demo-methylation-ds-001",
+  "upstreamSteps": [
+    {
+      "stepName": "idat_to_intensities",
+      "toolName": "minfi",
+      "toolVersion": "1.44.0",
+      "parameters": { "preprocessMethod": "noob" },
+      "timestamp": "2026-04-01T10:00:00Z",
+      "inputFiles": ["sample_001.idat", "sample_002.idat"],
+      "outputFiles": ["intensities.rds"]
+    },
+    {
+      "stepName": "normalisation",
+      "toolName": "minfi",
+      "toolVersion": "1.44.0",
+      "parameters": { "method": "SWAN" },
+      "timestamp": "2026-04-01T11:00:00Z",
+      "inputFiles": ["intensities.rds"],
+      "outputFiles": ["beta_values.csv"]
+    }
+  ],
+  "normalisationMethod": "SWAN",
+  "batchCorrectionMethod": "ComBat",
+  "probeManifestVersion": "Illumina EPIC v2.0",
+  "annotationVersion": "hg38"
+}

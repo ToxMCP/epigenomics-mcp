@@ -1,0 +1,9 @@
+{
+  "fixtureName": "bm_build_missing",
+  "description": "One feature omits the genome build in its measuredRegion. The GenomicRegion schema requires 'build' to be present, so schema validation should fail for that feature.",
+  "expectedSchemaValid": false,
+  "expectedQualificationStatus": "excluded_coordinate_ambiguity",
+  "expectedWarnings": ["EPIW001_COORDINATE_SYSTEM_NONSTANDARD"],
+  "expectedBlocksDownstream": true,
+  "expectedHandoffReady": false
+}

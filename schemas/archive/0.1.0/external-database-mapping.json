@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/external-database-mapping/v0.1.0",
+  "title": "ExternalDatabaseMapping",
+  "description": "Provenance-aware mapping result from an external database or interaction resource.",
+  "type": "object",
+  "properties": {
+    "featureId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable feature identifier"
+    },
+    "geneIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Mapped gene identifiers"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "enhancer_target_from_database",
+        "chromatin_interaction_supported"
+      ],
+      "description": "External database mapping method"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ],
+      "description": "Mapping confidence"
+    },
+    "sourceResource": {
+      "type": "string",
+      "minLength": 1,
+      "description": "External resource name (e.g., ENCODE, GeneHancer)"
+    },
+    "annotationRelease": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Annotation or database release version"
+    },
+    "biosampleContextMatch": {
+      "type": "string",
+      "enum": [
+        "exact",
+        "close",
+        "distant",
+        "unknown"
+      ],
+      "description": "Quality of biosample context match between query and database record"
+    },
+    "downstreamUseRule": {
+      "type": "string",
+      "enum": [
+        "allow_contextual_gene_linkage_and_pathway_rollup",
+        "allow_with_warning",
+        "exploratory_only",
+        "block_pathway_rollup",
+        "block_gene_and_pathway_rollup"
+      ],
+      "description": "Derived downstream use restriction based on method and biosample context"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "warningCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured warning code"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "description": "Severity level"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "cell_composition",
+              "cytotoxicity",
+              "stress_response",
+              "differentiation_drift",
+              "batch_effect",
+              "time_dependence",
+              "coordinate_semantics",
+              "mapping_proximity",
+              "platform_specific",
+              "missing_metadata"
+            ],
+            "description": "Warning category"
+          },
+          "featureIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected features"
+          },
+          "blocksDownstream": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this blocks downstream use"
+          }
+        },
+        "required": [
+          "warningCode",
+          "severity",
+          "message",
+          "category"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "Qualification warnings generated during mapping"
+    },
+    "annotationTrace": {
+      "type": "object",
+      "properties": {
+        "traceId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable trace identifier"
+        },
+        "sourceResource": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Annotation resource name (e.g., Ensembl, GENCODE)"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Annotation release version"
+        },
+        "releaseDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Release timestamp"
+        },
+        "genomeBuild": {
+          "type": "string",
+          "enum": [
+            "GRCh37",
+            "GRCh38",
+            "hg19",
+            "hg38",
+            "mm9",
+            "mm10",
+            "mm39",
+            "rn6",
+            "rn7"
+          ],
+          "description": "Genome build for the annotation"
+        }
+      },
+      "required": [
+        "traceId",
+        "sourceResource",
+        "sourceVersion",
+        "genomeBuild"
+      ],
+      "additionalProperties": false,
+      "description": "Annotation trace for this mapping"
+    }
+  },
+  "required": [
+    "featureId",
+    "geneIds",
+    "method",
+    "confidence",
+    "sourceResource",
+    "annotationRelease",
+    "biosampleContextMatch",
+    "downstreamUseRule"
+  ],
+  "additionalProperties": false
+}

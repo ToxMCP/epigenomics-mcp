@@ -1,0 +1,1302 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Initialize Epigenomics MCP repository and developer workflow",
+        "description": "Create the package skeleton, dependency set, manifest, local commands, and minimal startup paths needed for implementation.",
+        "details": "Set up a Python-first repository using the PRD architecture. Keep contracts, ingestion, validators, QC, mapping, qualification, reports, integrations, MCP server, and CLI in separate modules. Configure reproducible developer commands before implementing domain logic so all later work can be tested consistently.",
+        "testStrategy": "Verify editable install, import smoke test, epimcp --help, stdio server smoke, lint/type/test commands, and manifest validation.",
+        "status": "done",
+        "dependencies": [],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Python package skeleton",
+            "description": "Create the repository layout and package structure for epigenomics_mcp.",
+            "details": "Create pyproject.toml, README.md, toxmcp.manifest.yaml, Dockerfile, src/epigenomics_mcp, tests, schemas, examples, benchmarks, and docs. Configure the package name, version module, and editable install support. Keep core logic under src/epigenomics_mcp and avoid transport-specific logic in the domain modules.",
+            "testStrategy": "Run python -m pip install -e . and verify import epigenomics_mcp succeeds. Confirm expected directories exist.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Configure runtime dependencies",
+            "description": "Add the v0.1 dependency set for contracts, ingestion, MCP serving, CLI, QC, and integration clients.",
+            "details": "Configure CPython 3.11+. Add pydantic>=2, pandas, optional polars extra, bioframe, duckdb, scipy, statsmodels, httpx, typer, pytest, pytest-cov, ruff, mypy or pyright, and the official MCP/FastMCP dependency. Define optional extras for large intervals and adapters rather than making them hard runtime requirements.",
+            "testStrategy": "Run dependency resolution and import smoke tests for pydantic, pandas, bioframe, duckdb, httpx, typer, and MCP/FastMCP.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Add developer commands and quality configuration",
+            "description": "Create repeatable local commands for linting, typing, tests, schema export, and benchmark execution.",
+            "details": "Add Makefile or task runner entries for lint, typecheck, test, test-contract, export-schemas, run-benchmarks, validate-handoff, and docker-smoke. Configure ruff, type checker, pytest, and coverage settings in pyproject.toml.",
+            "testStrategy": "Run every command locally and ensure failures are actionable. Add a smoke test that runs through the default command set.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement package-level configuration",
+            "description": "Create versioned configuration and policy loading primitives.",
+            "details": "Create config.py with settings for schema version, supported genome builds, coordinate defaults, missingness thresholds, replicate thresholds, feature flags, and local snapshot paths. Ensure defaults are deterministic and overrideable through explicit config files or environment variables.",
+            "testStrategy": "Unit test default config values, override behaviour, invalid config handling, and policy version exposure.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Create repository manifest and startup smoke test",
+            "description": "Add manifest metadata and confirm the package can start in minimal mode.",
+            "details": "Populate toxmcp.manifest.yaml with package name, tool namespace, schema registry path, supported transport, capabilities, and non-goal declarations. Add a minimal server startup path in server.py and a minimal CLI help command in cli.py.",
+            "testStrategy": "Run epimcp --help and the stdio server smoke command. Validate manifest YAML structure with a small parser test.",
+            "status": "done",
+            "dependencies": [
+              3,
+              4
+            ],
+            "priority": "medium",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement contract-first schema layer",
+        "description": "Define Pydantic contracts and JSON Schema exports for every public object used by Epigenomics MCP.",
+        "details": "Implement shared schema envelopes, dataset/design/context models, coordinate/feature/mapping/provenance models, QC/warning/error/qualification models, and packet/handoff models. Export JSON Schemas to schemas/current and enforce schema stability through contract tests.",
+        "testStrategy": "Run contract tests for valid/invalid fixtures, schema export determinism, required fields, enum values, forbidden fields, and schema drift detection.",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define shared schema envelope",
+            "description": "Implement common fields used by all emitted objects.",
+            "details": "Create contracts/base.py with schema_name, schema_version, object_id, object_version, created_at, created_by, source_mcp, provenance, confidence, review_flags, warnings, errors, and extensions where appropriate. Use Pydantic v2 ConfigDict settings to forbid unexpected fields for public contracts where possible.",
+            "testStrategy": "Unit test required envelope fields, additionalProperties-equivalent behaviour, JSON serialization, and schema export.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement study, design, and context contracts",
+            "description": "Create dataset metadata, sample metadata, dose group, design, cell context, and cytotoxicity context models.",
+            "details": "Implement EpigenomicsDatasetMetadata, EpigenomicsExperimentalDesign, EpigenomicsSampleMetadata, DoseGroup, CellCompositionContext, CytotoxicityContext, and supporting enums. Include study_type, assay_family, replicate_type, dose units, timepoint, biosample context, batch_id, and context status enums.",
+            "testStrategy": "Validate good and bad fixtures for missing control, duplicate sample IDs, invalid replicate types, missing dose units, and context status serialization.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement coordinate, feature, mapping, and provenance contracts",
+            "description": "Create contracts for genomic coordinates, feature matrices, feature classes, mapping objects, platform provenance, and upstream provenance.",
+            "details": "Implement GenomicCoordinate, GenomeBuild, EpigenomicFeatureMatrix, CpGMethylationFeature, DifferentialMethylatedRegionFeature, GenericRegionFeature, reserved ChromatinAccessibilityFeature and HistoneMarkFeature, optional MiRNAFeature, RegionToGeneMapping, EpigenomicAnnotationTrace, PlatformAnnotationProvenance, and UpstreamEpigenomicsProvenance. Enforce required build and coordinate fields for coordinate-bearing classes.",
+            "testStrategy": "Contract tests should validate coordinate bounds, mapping_type enums, pathway_rollup_allowed rules, platform provenance requirements, and measured-feature versus mapping separation.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement QC, warning, error, qualification, and packet contracts",
+            "description": "Create contracts for deterministic QC reports and handoff objects.",
+            "details": "Implement MissingnessProfile, VarianceProfile, EpigenomicsWarning, EpigenomicsError, EpigenomicsFeatureQualification, EpigenomicsQCReport, EpigenomicsFeatureResponsePacket, and BioactivityPoDHandoffPacket. Include qualification_status, downstream_use_rule, warning/error codes, accepted/excluded counts, mandatory_caveats, and source packet refs.",
+            "testStrategy": "Run schema validation for representative QC report, warning, error, qualification, feature-response packet, and handoff packet fixtures.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Export and archive JSON Schemas",
+            "description": "Generate JSON Schema snapshots from Pydantic models.",
+            "details": "Implement schemas/export.py or a CLI command that calls model_json_schema() for every public contract and writes files to schemas/current. Add archive support under schemas/archive/<version>. Ensure schema IDs are stable and meaningful.",
+            "testStrategy": "Run schema export twice and confirm deterministic output. Validate that every expected schema file exists and contains schema_name constraints where applicable.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Add semantic contract tests",
+            "description": "Create tests that lock down the public contract surface.",
+            "details": "Add tests/contract fixtures for valid and invalid objects, schema snapshots, enum compatibility, required fields, forbidden fields, and schema-version behaviour. Include tests that prevent measured features and inferred mappings from being collapsed.",
+            "testStrategy": "Run pytest tests/contract and confirm failures occur on intentionally malformed fixtures. Confirm schema drift is detected by comparing regenerated files to schemas/current.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Build processed feature table ingestion and canonicalization",
+        "description": "Implement CSV/TSV ingestion for long, wide, and summary-response processed epigenomic feature tables.",
+        "details": "Parse processed feature tables, detect or explicitly accept table shape, canonicalize to matrix or summary-response objects, validate feature/sample keys, preserve row-level provenance, and prevent summary-only contrast tables from being treated as PoD-ready without dose-group numeric structure.",
+        "testStrategy": "Run ingestion unit and integration tests for long, wide, summary, malformed, duplicate, unmatched sample, and non-numeric fixtures.",
+        "status": "pending",
+        "dependencies": [
+          2
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement CSV and TSV reader",
+            "description": "Build deterministic ingestion for local processed tables.",
+            "details": "Create ingestion/csv_reader.py with delimiter detection, explicit delimiter override, encoding handling, header validation, file checksum calculation, row count tracking, and safe error reporting. Do not infer biological semantics from filenames.",
+            "testStrategy": "Unit test CSV and TSV parsing, delimiter overrides, checksums, empty files, duplicate headers, and malformed rows.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement input format detection and explicit override",
+            "description": "Detect long, wide, and summary-response table shapes while allowing user override.",
+            "details": "Create ingestion/format_detection.py. Detect long tables by feature_id/sample_id/response_value-style columns; detect wide matrices by feature_id plus sample columns; detect summary tables by feature_id plus group/effect/statistic columns. Require explicit feature_value_semantics regardless of shape.",
+            "testStrategy": "Test long, wide, summary, ambiguous, and override scenarios. Ambiguous detection must return reviewable warnings rather than guessing.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement wide-to-long canonicalisation",
+            "description": "Convert wide feature matrices into canonical long response records.",
+            "details": "Create ingestion/wide_format.py. Melt sample columns into feature_id, sample_id, response_value records. Validate all sample columns are present in design metadata when design is supplied. Preserve source column names and row provenance.",
+            "testStrategy": "Test equivalence between long and wide fixtures, unmatched sample columns, duplicate feature IDs, and non-numeric values.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement long-format canonicalisation",
+            "description": "Validate and canonicalise long-format feature tables.",
+            "details": "Create ingestion/long_format.py. Require one row per feature_id x sample_id for matrix data. Validate numeric response fields and preserve additional columns under controlled provenance/extensions. Emit EPI001 and EPI006 where applicable.",
+            "testStrategy": "Test missing required columns, duplicate feature/sample keys, numeric coercion failures, and row-level error locations.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Implement summary-response table handling",
+            "description": "Accept upstream aggregated summaries while preventing unsupported PoD readiness.",
+            "details": "Create ingestion/table_adapters.py logic for summary-response shape. Preserve effect_size, statistic, q_value, contrast, group summaries, and supports_dose_response flag. Mark single-contrast-only evidence as exploratory_only unless dose-group numeric summaries are present.",
+            "testStrategy": "Test DMC/DMR contrast-only fixtures, grouped summary fixtures, missing dose metadata, and exploratory qualification handoff blocking.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Attach row-level provenance and source manifests",
+            "description": "Record source files, row identifiers, checksums, and parsing decisions.",
+            "details": "Create provenance helpers that attach source_file, file_sha256, row_number, original_columns, original_coordinate_text where present, format_detection_result, and parser version to canonical records.",
+            "testStrategy": "Assert every ingested record includes row/source provenance. Snapshot provenance payloads for representative fixtures.",
+            "status": "done",
+            "dependencies": [
+              3,
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Validate experimental design, dose axis, replicates, and batch structure",
+        "description": "Implement deterministic validation for sample metadata, dose groups, controls, replicates, timepoints, and batch metadata.",
+        "details": "Parse design tables and validate explicit controls, ordered dose axis, dose units, biological versus technical replicates, sample coverage, v0.1 single-timepoint packet policy, and batch-dose confounding. Emit a DesignValidationReport for qualification.",
+        "testStrategy": "Test happy path, missing control, mixed dose units, insufficient dose groups, insufficient replicates, unmatched samples, multi-timepoint input, and dose-batch confounding.",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement design table ingestion",
+            "description": "Parse sample and dose metadata tables into design contracts.",
+            "details": "Create ingestion/design_reader.py or extend ingestion/table_adapters.py to parse sample_id, group_id, dose_value, dose_unit, replicate_type, batch_id, timepoint, treatment, and control flags. Support CSV/TSV and explicit column mapping.",
+            "testStrategy": "Test valid design ingestion, missing sample_id, duplicate sample_id, invalid replicate_type, and missing dose_unit.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Validate control and dose axis",
+            "description": "Check explicit controls, ordered dose groups, dose units, and single-timepoint v0.1 policy.",
+            "details": "Create validators/design_validator.py. Require control_group_id or exactly one control group, reject missing dose_unit, reject mixed units without declared normalisation provenance, order dose values deterministically, and split or reject multi-timepoint packets according to v0.1 policy.",
+            "testStrategy": "Test no control, multiple controls, mixed dose units, unordered doses, zero-dose control, and multi-timepoint fixtures.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Validate biological and technical replicate policy",
+            "description": "Enforce replicate rules for downstream PoD readiness.",
+            "details": "Distinguish biological, technical, pooled, and pseudobulk replicates. Technical replicates must not count toward biological minimum. Implement configurable minimums with defaults: at least two biological replicates per modelled group for accepted status, three preferred, n=1 excluded or review depending on policy.",
+            "testStrategy": "Test groups with biological n=1, n=2, n=3, technical-only replicates, pooled samples, and policy overrides.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Validate sample coverage against feature tables",
+            "description": "Ensure every sample in feature data resolves to design metadata and vice versa where required.",
+            "details": "Implement checks that feature_matrix samples are present in design, design samples have group assignments, and no hidden sample columns bypass validation. Emit structured row/column-scoped errors.",
+            "testStrategy": "Test unmatched sample columns, extra design samples, missing group_id, duplicate sample assignments, and complete valid coverage.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Detect batch-dose confounding",
+            "description": "Flag or block designs where batch structure invalidates dose interpretation.",
+            "details": "Implement simple deterministic checks for dose perfectly confounded with batch, missing batch metadata, and batch imbalance warnings. Do not perform batch correction in v0.1; record upstream correction provenance only.",
+            "testStrategy": "Test perfect batch-dose confounding, missing batch metadata, balanced batch design, and upstream corrected data lacking batch provenance.",
+            "status": "done",
+            "dependencies": [
+              4
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Emit DesignValidationReport",
+            "description": "Produce a stable report object summarizing validation outcomes.",
+            "details": "Return a DesignValidationReport-compatible object with errors, warnings, ordered dose axis, replicate counts by group, batch summary, timepoint status, and downstream eligibility notes. Ensure it can feed qualification and QC report generation.",
+            "testStrategy": "Snapshot report outputs for valid, warning, and blocked designs. Confirm report schema validation.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Validate genomic coordinates, genome builds, and platform provenance",
+        "description": "Implement fail-closed validation for coordinate-bearing and platform-derived features.",
+        "details": "Require explicit coordinate systems and genome builds for region features, normalize to internal 0-based half-open intervals, validate supported builds and chromosome bounds, block mixed builds, and require platform annotation provenance for array/probe interpretation.",
+        "testStrategy": "Test missing coordinate system, invalid intervals, 1-based conversion, missing/mixed builds, unsupported contigs, out-of-bounds intervals, and missing platform manifests.",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement coordinate system declarations",
+            "description": "Represent and validate declared source coordinate systems.",
+            "details": "Create validators/coordinate_validator.py and coordinate_mapping/normalise.py. Support ucsc_bed_0based_half_open, gff_gtf_1based_closed, platform_native_probe, and no_coordinates_feature_id_only. Require declarations for region-bearing features and emit EPI002 if missing.",
+            "testStrategy": "Test declared systems, missing declaration, unsupported values, and feature_id-only inputs.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement coordinate conversion to internal convention",
+            "description": "Normalize coordinate-bearing records to internal 0-based half-open intervals.",
+            "details": "Convert 1-based closed intervals by subtracting one from start and preserving end. Keep original coordinate text, original system, and conversion provenance. Reject negative starts and end <= start.",
+            "testStrategy": "Test conversion math for edge cases, invalid intervals, zero-length intervals, and preservation of original coordinates.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement genome build allowlist and mixed-build checks",
+            "description": "Validate declared genome builds and block mixed assemblies.",
+            "details": "Support GRCh37, GRCh38, mm10, and mm39 by default. Add config-driven allowlist extension. Reject mixed builds in one dataset unless explicitly split upstream. Never perform liftover silently.",
+            "testStrategy": "Test supported builds, unsupported builds, missing build, mixed builds, and declared liftover provenance with no automatic transformation.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Validate chromosome aliases and coordinate bounds",
+            "description": "Use frozen chromsizes or Annotation/Ontology MCP to validate chromosome names and interval bounds.",
+            "details": "Implement local frozen snapshot validation with an integration-client interface for Annotation/Ontology MCP. Normalize aliases only when explicitly configured and provenance is recorded. Block unknown chromosomes or out-of-bounds intervals.",
+            "testStrategy": "Test valid chromosomes, alias handling, unknown contigs, out-of-bounds intervals, and Annotation/Ontology unavailability fallback.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Validate platform annotation provenance",
+            "description": "Require array/probe platform provenance for methylation interpretation.",
+            "details": "Create validators/provenance_validator.py checks for platform_vendor, platform_name, annotation_release, manifest_identifier, manifest_sha256 or annotation file digest when available, genome build linkage, and original measurement space. Block gene/pathway interpretation if missing.",
+            "testStrategy": "Test complete manifest provenance, missing manifest version, missing hash warning, absent platform with requested interpretation, and platform-native probe features.",
+            "status": "failed",
+            "dependencies": [
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Emit CoordinateValidationReport",
+            "description": "Produce stable coordinate and platform validation outputs.",
+            "details": "Return report objects with per-row coordinate status, build status, platform provenance status, conversion details, errors, warnings, and exclusion candidates. Ensure downstream qualification can consume it directly.",
+            "testStrategy": "Snapshot coordinate reports for valid, missing build, invalid interval, mixed build, and missing platform fixtures.",
+            "status": "done",
+            "dependencies": [
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Classify epigenomic feature types and measurement semantics",
+        "description": "Classify measured features without collapsing them into inferred targets or pathway claims.",
+        "details": "Implement measurement semantics, direct v0.1 feature classes for CpG methylation, DMRs, generic regions, summary responses, and gene-linked features, with reserved or feature-flagged ATAC/ChIP/miRNA classes. Emit classification reports for ambiguous or mixed tables.",
+        "testStrategy": "Test methylation, DMR, generic region, summary-only, gene-linked, reserved feature-flag, and mixed-class fixtures.",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3,
+          5
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement measurement semantics enums",
+            "description": "Define and validate supported feature value semantics.",
+            "details": "Create feature value enums for beta_value, m_value, percent_methylation, delta_beta, delta_m, accessibility_signal, peak_score, read_count, normalized_signal, effect_size, q_value, and declared_other. Require explicit declaration and avoid range-based guessing.",
+            "testStrategy": "Test valid semantics, missing semantics, incompatible semantics for feature class, and declared_other requiring description.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Classify methylation features",
+            "description": "Detect CpG/site methylation and DMR feature classes using explicit metadata.",
+            "details": "Implement classification rules for cpg_methylation_feature and dmr_feature. Use assay_family, coordinate presence, probe_id/CpG ID, region columns, and value semantics. Preserve probe IDs and platform provenance.",
+            "testStrategy": "Test beta matrix, M-value matrix, DMC summary, DMR coordinate table, and ambiguous methylation tables.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Classify generic coordinate-bearing region features",
+            "description": "Support explicit generic region features and reserved ATAC/ChIP classes.",
+            "details": "Implement generic_region_feature classification when chrom/start/end/build/coordinate_system and value semantics are declared. Reserve chromatin_accessibility_feature and histone_mark_feature behind feature flags with required assay-specific fields such as peak_format or mark_name.",
+            "testStrategy": "Test BED-like generic region fixtures, ATAC-like feature-flag fixtures, histone mark feature-flag fixtures, missing metric semantics, and mixed class warnings.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Classify gene-linked and summary-response features",
+            "description": "Classify features that are already gene-linked or summary-only while preserving provenance.",
+            "details": "Implement gene_linked_epigenomic_feature only when mapping provenance is explicit. Implement summary_feature_response for contrast-level or aggregated tables. Do not promote summary-only evidence to PoD-ready unless dose-group numeric summaries exist.",
+            "testStrategy": "Test upstream gene-linked CpG/DMR tables with mapping provenance, missing mapping provenance, contrast-only summary tables, and grouped summaries.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Handle mixed or ambiguous feature classes",
+            "description": "Emit review warnings and split recommendations for mixed tables.",
+            "details": "If one input contains multiple feature classes or incompatible semantics, emit review flags and either split into multiple canonical feature matrices or block according to config. Never silently relabel ambiguous rows.",
+            "testStrategy": "Test mixed CpG/DMR, mixed ATAC/histone, and unknown feature class fixtures. Confirm warnings and output partitioning are deterministic.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Emit FeatureClassificationReport",
+            "description": "Produce a report summarizing classes, metrics, ambiguity, and feature flags.",
+            "details": "Create a structured report with class counts, value semantics, feature flags used, ambiguous rows, warnings, and downstream eligibility hints. Feed the report into qualification and QC reporting.",
+            "testStrategy": "Snapshot classification reports for all core fixture categories and validate schema output.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Implement deterministic QC profiling",
+        "description": "Compute missingness, variance, replicate stability, and batch provenance summaries without opaque rescue logic.",
+        "details": "Implement transparent QC modules that produce MissingnessProfile, VarianceProfile, replicate summaries, and batch/correction provenance summaries. Apply versioned thresholds and never impute, batch-correct, or remove outliers silently.",
+        "testStrategy": "Run QC tests and golden snapshots for no-missingness, high-missingness, zero-variance, unstable replicate, missing batch, and upstream-corrected fixtures.",
+        "status": "done",
+        "dependencies": [
+          3,
+          4,
+          6
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Profile feature missingness",
+            "description": "Compute missingness by feature, sample, and dose group.",
+            "details": "Create qc/missingness.py. Compute feature_missing_fraction overall, group_missing_fraction, sample_missing_fraction, complete missingness in any modelled group, and threshold bands using versioned policy config.",
+            "testStrategy": "Test no missingness, warning-band missingness, exclusion-band missingness, group-complete dropout, and summary-response not_applicable handling.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Profile variance and low dynamic range",
+            "description": "Compute variance, MAD, and low-variance flags per feature.",
+            "details": "Create qc/variance.py. Compute transparent statistics using pandas/scipy/statsmodels as needed. Flag zero or near-zero variance as exploratory_only candidates but do not remove rows silently.",
+            "testStrategy": "Test zero variance, near-zero variance, high variance, group-specific variance, and deterministic numeric precision.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Summarize replicate consistency",
+            "description": "Add simple replicate stability metrics without fitting dose-response models.",
+            "details": "Compute per-group summary statistics, replicate counts, means, SDs, optional coefficient of variation, and unusual replicate spread warnings. Avoid outlier removal or model fitting.",
+            "testStrategy": "Test balanced replicates, unstable replicate groups, technical replicate handling, and summary output precision.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Record batch and correction provenance",
+            "description": "Summarize batch metadata and upstream correction declarations.",
+            "details": "Create qc/report_builder.py support for batch_id completeness, dose-batch confounding imported from design validation, upstream batch correction method, parameters, and whether pre-correction batch structure is available. Do not perform batch correction.",
+            "testStrategy": "Test missing batch metadata warning, upstream correction without parameters, complete batch provenance, and dose-batch confounding propagation.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Build deterministic QC profile objects",
+            "description": "Combine QC outputs into schema-valid report components.",
+            "details": "Return MissingnessProfile, VarianceProfile, replicate summaries, and batch summaries with stable ordering and numeric rounding rules. Ensure downstream qualification can consume threshold status directly.",
+            "testStrategy": "Snapshot QC objects for benchmark fixtures and validate schemas. Run repeated execution to confirm byte-stable JSON where expected.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Implement annotation and region-to-gene mapping guardrails",
+        "description": "Add typed, provenance-aware mapping and pathway rules through Annotation/Ontology MCP or frozen snapshots.",
+        "details": "Implement annotation client interfaces, promoter/gene-body/nearest-gene/external mapping classes, pathway roll-up guardrails, and annotation traces. Ensure nearest-gene and inferred-target mappings cannot drive automated pathway or causal claims.",
+        "testStrategy": "Test promoter overlap, gene-body overlap, nearest-gene-only, unknown target, external mapping provenance, and pathway roll-up blocking/allowance scenarios.",
+        "status": "done",
+        "dependencies": [
+          2,
+          5,
+          6
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Annotation/Ontology client interface",
+            "description": "Create narrow integration client contracts for annotation requests.",
+            "details": "Create integrations/annotation_client.py with request/response models for gene normalization, species validation, chromosome validation, region-to-gene mapping, pathway membership, cell-type normalization, and ontology release traces. Use httpx for future HTTP calls and a local mock/frozen snapshot backend for tests.",
+            "testStrategy": "Unit test client request construction, mocked responses, timeout/error handling, and fallback behaviour.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement promoter and gene-body overlap mapping",
+            "description": "Create high-confidence mapping types using frozen gene-model snapshots or mocked annotation responses.",
+            "details": "Create coordinate_mapping/region_to_gene.py with direct_promoter_overlap and gene_body_overlap. Require configured promoter window policy and annotation release. Return multiple mappings when overlaps collide rather than forcing one gene.",
+            "testStrategy": "Test promoter overlap, gene-body overlap, multiple promoters, no overlap, release provenance, and promoter policy versioning.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement nearest-gene contextual mapping",
+            "description": "Allow nearest-gene mapping only as low-confidence context.",
+            "details": "Implement nearest_gene mapping with exact distance_to_tss_bp, low confidence, pathway_rollup_allowed=false, downstream_use_rule=exploratory_only or allow_with_warning for context. Add EPIW007_NEAREST_GENE_ONLY.",
+            "testStrategy": "Test nearest-gene fixtures, distal regions, ties, missing TSS snapshot, and pathway suppression.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement database-supported and interaction-supported mapping placeholders",
+            "description": "Support provenance-aware mapping classes without pretending to infer causality.",
+            "details": "Add enhancer_target_from_database and chromatin_interaction_supported mapping structures. Require source_resource, annotation_release, biosample_context_match, method, and confidence. Keep external adapters optional and mockable for v0.1.",
+            "testStrategy": "Test complete external mapping payloads, missing source release, biosample mismatch warnings, and downstream_use_rule assignment.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Implement pathway roll-up guardrails",
+            "description": "Map features to pathways only when mapping confidence and provenance permit it.",
+            "details": "Create coordinate_mapping/pathway_mapping.py. Allow direct_promoter_overlap, gene_body_overlap with warning, and sufficiently supported external target mappings. Block nearest_gene, inferred_target_gene, unknown_target_gene, and predicted miRNA targets from automatic pathway roll-up.",
+            "testStrategy": "Test pathway roll-up allowed for promoter overlap, warning for gene-body overlap, blocked for nearest-gene-only, blocked for inferred targets, and release trace preservation.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Emit annotation trace and mapping reports",
+            "description": "Produce auditable mapping and annotation outputs.",
+            "details": "Create EpigenomicAnnotationTrace and mapping summary outputs with all requests, responses, releases, mapping counts, blocked roll-ups, warnings, and confidence distributions.",
+            "testStrategy": "Snapshot mapping reports for promoter, nearest-gene-only, ambiguous, and no-target fixtures. Validate schema and warning propagation.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Implement cell-composition and cytotoxicity context models",
+        "description": "Represent composition, cytotoxicity, stress, differentiation, persistence, and heritability context as machine-readable qualification inputs.",
+        "details": "Ingest externally measured or declared context, classify confounding statuses, warn on missing context, block dominant confounding, and prevent unsupported persistence, reversibility, heritability, or transgenerational claims from entering handoff packets.",
+        "testStrategy": "Test missing context, purified context, mixed population, likely shift, dominant cytotoxicity, unsupported persistence, and unsupported heritability fixtures.",
+        "status": "done",
+        "dependencies": [
+          2,
+          4
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement cell-composition context ingestion",
+            "description": "Accept measured or externally estimated cell-composition evidence.",
+            "details": "Create qc/cell_composition.py. Parse purified/mixed population declarations, measured fractions, externally estimated fractions, evidence source, group-level shifts, and notes. Do not perform default deconvolution from epigenomic data.",
+            "testStrategy": "Test complete measured fractions, mixed population without fractions, purified sample declaration, missing context, and malformed fraction sums.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Classify cell-composition confounding status",
+            "description": "Assign deterministic composition statuses that affect qualification.",
+            "details": "Implement status rules for no_context_available, unlikely_confounding, possible_confounding, likely_confounding, dominant_confounding, and review_required. Emit EPIW001 and EPIW002 where applicable.",
+            "testStrategy": "Test status assignment for purified samples, mixed no estimates, group-shift possible, dominant shift, and conflicting evidence.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement cytotoxicity context ingestion",
+            "description": "Accept viability, stress, morphology, apoptosis/necrosis, and companion-assay context.",
+            "details": "Create qc/cytotoxicity.py. Parse assay_type, measured values, timepoint alignment, dose alignment, stress flags, notes, and evidence source. Do not infer cytotoxicity from epigenomic feature values alone.",
+            "testStrategy": "Test complete viability data, missing cytotoxicity context, timepoint mismatch, stress flags, and malformed values.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Classify cytotoxicity and stress confounding status",
+            "description": "Assign deterministic cytotoxicity statuses that affect qualification.",
+            "details": "Implement status rules for no_context_available, unlikely_confounding, possible_confounding, likely_confounding, dominant_confounding, and review_required. Emit EPIW003 and EPIW004 and block dominant confounding.",
+            "testStrategy": "Test no context, clean viability, possible stress, likely injury, dominant cytotoxicity, and threshold overrides.",
+            "status": "done",
+            "dependencies": [
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Implement persistence, reversibility, and heritability claim guards",
+            "description": "Block unsupported temporal and inheritance claims.",
+            "details": "Add context logic that defaults persistence_status and reversibility_status to not_assessed unless repeated/recovery timepoints are present. Strip or block heritable/transgenerational claims unless germline/multigenerational design metadata explicitly supports them. Emit EPIW009 and EPIW010.",
+            "testStrategy": "Test single-timepoint persistence claim, recovery design, unsupported heritability metadata, supported multigenerational metadata placeholder, and claim removal from handoff.",
+            "status": "done",
+            "dependencies": [
+              2,
+              4
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Emit confounding context summary",
+            "description": "Combine context classifications into a qualification-ready summary.",
+            "details": "Create a deterministic confounding summary with context statuses, evidence bases, warnings, review flags, and downstream use rules. Feed this into the qualification engine and QC report.",
+            "testStrategy": "Snapshot context summaries for missing, clean, possible, likely, dominant, and conflicting context fixtures.",
+            "status": "done",
+            "dependencies": [
+              2,
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Implement versioned feature qualification policy engine",
+        "description": "Combine validation, QC, mapping, and context into deterministic feature and dataset qualification decisions.",
+        "details": "Implement versioned policy thresholds and rule ordering for accepted_for_pod, accepted_with_warnings, review_required, exploratory_only, and exclusion statuses. Preserve reasons, warnings, review flags, and downstream use rules.",
+        "testStrategy": "Run unit and integration tests covering every qualification status, rule precedence, policy overrides, warning propagation, and golden qualification snapshots.",
+        "status": "done",
+        "dependencies": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement versioned qualification policy model",
+            "description": "Create policy definitions for thresholds, statuses, and downstream use rules.",
+            "details": "Create qualification/policy.py with policy version, minimum dose groups, minimum non-zero doses, minimum biological replicates, max missingness, coordinate requirements, mapping requirements, confounding thresholds, and feature-flag behaviour. Allow explicit config overrides with provenance.",
+            "testStrategy": "Unit test default policy values, override validation, policy version serialization, and invalid policy handling.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement feature-level qualification rules",
+            "description": "Assign statuses for every measured feature using validation, QC, mapping, and context inputs.",
+            "details": "Create qualification/rules.py. Implement fail-closed rule order for missing build, invalid coordinates, insufficient design, insufficient replicates, high missingness, non-numeric response, dominant confounding, mapping ambiguity, major warnings, and accepted status. Preserve reasons and warning refs.",
+            "testStrategy": "Test each qualification status with minimal fixtures. Confirm rule precedence is deterministic.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement dataset-level qualification summary",
+            "description": "Summarize feature decisions and determine packet eligibility.",
+            "details": "Aggregate accepted_count, warning_count, review_required_count, exploratory_count, excluded_count, block reasons, mandatory caveats, and dose_response_ready_subset. A dataset with only exploratory/excluded features must not export a default PoD subset.",
+            "testStrategy": "Test all-accepted, mixed-warning, review-only, exploratory-only, and all-excluded datasets.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement warning and error propagation",
+            "description": "Ensure all upstream validation outputs propagate into qualification results.",
+            "details": "Connect design, coordinate, platform, classification, QC, mapping, and context warning/error codes into feature and dataset qualification outputs. Avoid losing scope: dataset, sample, feature, mapping, handoff.",
+            "testStrategy": "Trace warnings through synthetic fixtures and verify every expected warning appears at feature, dataset, QC, and handoff stages as appropriate.",
+            "status": "done",
+            "dependencies": [
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Implement threshold and policy explainability",
+            "description": "Make every qualification decision reviewable and regulator-readable.",
+            "details": "Add human-readable reason templates and machine-readable codes. Include remediation hints where useful. Ensure reasons explain what was blocked, downgraded, or accepted without making regulatory conclusions.",
+            "testStrategy": "Snapshot qualification outputs and compare exact reasons, codes, and review flags against golden files.",
+            "status": "done",
+            "dependencies": [
+              4
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Build qualification packet builder",
+            "description": "Produce structured qualification objects ready for packetisation.",
+            "details": "Create qualification/packet_builder.py to attach feature-level EpigenomicsFeatureQualification objects to canonical features and generate a dataset qualification summary. Ensure immutable object IDs and schema validation.",
+            "testStrategy": "Validate qualification object schemas and run integration tests from ingestion through qualification for representative fixtures.",
+            "status": "done",
+            "dependencies": [
+              3,
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Build feature-response packet and Bioactivity-PoD handoff",
+        "description": "Generate schema-valid QC reports, feature-response packets, handoff validation reports, and Bioactivity-PoD handoff packets.",
+        "details": "Summarize response-by-group values, create EpigenomicsFeatureResponsePacket objects, generate JSON/Markdown QC reports, validate semantic handoff compatibility, and export BioactivityPoDHandoffPacket objects containing only eligible features and mandatory caveats.",
+        "testStrategy": "Run end-to-end tests from ingestion through handoff, schema validation for packets, negative handoff tests, and golden packet comparisons.",
+        "status": "done",
+        "dependencies": [
+          10
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement response-by-group summarization",
+            "description": "Convert canonical matrices into group-level numeric summaries for handoff.",
+            "details": "Create packet logic that groups response values by feature_id and dose group, computing mean, SD, n, missingness, and optional sample refs. Preserve sample-level references where appropriate and do not fit dose-response models.",
+            "testStrategy": "Test group summaries for balanced, missing, warning, and excluded features. Verify no PoD/BMD calculations are performed.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Build EpigenomicsFeatureResponsePacket",
+            "description": "Create the primary qualified epigenomics packet.",
+            "details": "Implement packet generation with packet_id, schema_version, dataset_metadata_ref, design_ref, chemical/exposure context, biological context, dose_axis, measured feature payload, separate mapping payloads, qualification_summary, qc_report_ref, annotation_trace, warnings, and provenance.",
+            "testStrategy": "Validate generated packet JSON Schema for happy path and warning path fixtures.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Generate machine-readable and Markdown QC reports",
+            "description": "Create JSON and Markdown reports from validation and qualification outputs.",
+            "details": "Create reports/json_report.py and reports/markdown_report.py. Include design, coordinate, platform, classification, QC, mapping, context, qualification, warnings, exclusions, and interpretation limits. Reports must state what the service refused to infer.",
+            "testStrategy": "Snapshot JSON and Markdown outputs. Confirm Markdown includes mandatory caveats for missing context, nearest-gene-only mapping, and unsupported persistence/heredity claims.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Validate handoff packet semantics",
+            "description": "Implement a validator for Bioactivity-PoD compatibility.",
+            "details": "Create validators/handoff_validator.py. Validate schema, numeric responses, ordered dose axis, replicate counts, qualification status, mandatory caveats, and exclusion of exploratory-only/default-blocked features. Emit EPI010_HANDOFF_SCHEMA_INVALID on failure.",
+            "testStrategy": "Test valid packet, missing dose axis, non-numeric response, exploratory-only export attempt, missing caveats, and schema-invalid JSON.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Export Bioactivity-PoD handoff packet",
+            "description": "Create the final downstream handoff object with eligible features only.",
+            "details": "Implement integrations/bioactivity_pod_client.py or export module that creates BioactivityPoDHandoffPacket from a validated feature-response packet. Include source_packet_ref, qualified_features, excluded_features, dose_response_ready_subset, mandatory_caveats, and provenance. Do not call Bioactivity-PoD models directly in v0.1.",
+            "testStrategy": "Run end-to-end fixture from ingestion to export and validate only accepted/accepted_with_warnings features appear in the default handoff subset.",
+            "status": "done",
+            "dependencies": [
+              4
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Add packet and handoff golden fixtures",
+            "description": "Create stable expected packet outputs for release gating.",
+            "details": "Add examples/bioactivity_pod_handoff_valid and benchmarks/expected packet JSON files. Include accepted, accepted_with_warnings, exploratory_only, and excluded examples.",
+            "testStrategy": "Run golden comparison tests and verify schema validation for every expected packet.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Expose MCP tools and CLI command parity",
+        "description": "Publish the core workflow as typed MCP tools and equivalent Typer CLI commands.",
+        "details": "Register all PRD tool catalogue entries with the MCP server and mirror each with a CLI command. Keep wrappers thin and compare outputs against core service calls to prevent drift.",
+        "testStrategy": "Run MCP tool tests, CLI command tests, stdio smoke tests, and MCP/CLI equivalence tests for representative fixtures.",
+        "status": "done",
+        "dependencies": [
+          11
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement MCP tool registry",
+            "description": "Expose domain services as typed MCP tools.",
+            "details": "Create tool_registry.py and server.py registration for all core tools. Each tool must use Pydantic input/output contracts and call core service functions, not duplicate business logic. Default transport is stdio.",
+            "testStrategy": "Run MCP tool registration smoke tests and verify all expected tool names are listed.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Implement ingestion and validation tools",
+            "description": "Add MCP tools for feature/design ingestion and structural validation.",
+            "details": "Implement ingest_epigenomic_feature_table, ingest_epigenomics_design_table, validate_epigenomics_experiment_design, validate_genomic_coordinate_system, and classify_epigenomic_feature_type. Return structured refs or full objects depending on invocation mode.",
+            "testStrategy": "Tool integration tests should invoke each tool with valid and invalid fixtures and compare outputs to direct service calls.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement QC, mapping, context, qualification, and packet tools",
+            "description": "Add MCP tools for downstream qualification workflow.",
+            "details": "Implement profile_epigenomics_missingness, profile_epigenomics_variance, map_regions_to_genes, map_epigenomic_features_to_pathways, assess_cell_composition_context, assess_cytotoxicity_context, qualify_epigenomic_features_for_pod, create_epigenomics_feature_response_packet, generate_epigenomics_qc_report, validate_epigenomics_handoff_packet, and export_to_bioactivity_pod.",
+            "testStrategy": "Run tool integration tests across the full valid workflow and edge-case workflows. Confirm warnings and errors match core service outputs.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Implement Typer CLI command parity",
+            "description": "Expose every MCP tool through an equivalent CLI command.",
+            "details": "Create cli.py with commands ingest-features, ingest-design, validate-design, validate-coordinates, classify-features, qc-missingness, qc-variance, map-regions, map-pathways, assess-cell-context, assess-cytotox, qualify, build-packet, qc-report, validate-handoff, and export-pod. Support --json, --report, --policy, --config, and dry-run where relevant.",
+            "testStrategy": "Run CLI tests for every command using fixtures. Verify exit codes for success, warning, and blocking errors.",
+            "status": "done",
+            "dependencies": [
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Verify MCP and CLI output equivalence",
+            "description": "Ensure command-line and MCP pathways cannot drift.",
+            "details": "Build shared test helpers that call service, MCP tool, and CLI command on the same fixture and compare normalized JSON outputs. Keep transport wrappers thin.",
+            "testStrategy": "Run equivalence tests for happy path, missing build, nearest-gene-only, high missingness, and dominant cytotoxicity fixtures.",
+            "status": "done",
+            "dependencies": [
+              4
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Document tool usage examples",
+            "description": "Create usage docs and examples for every core workflow.",
+            "details": "Add docs/tool-reference.md and examples for methylation matrix, DMR nearest-gene warning, invalid build mismatch, and Bioactivity-PoD handoff. Include exact CLI and MCP payload examples.",
+            "testStrategy": "Manually and automatically execute documented CLI examples where possible. Ensure examples produce expected outputs.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "priority": "medium",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Create benchmark fixtures, golden outputs, and validation reports",
+        "description": "Build deterministic benchmark coverage for happy paths, edge cases, and release gates.",
+        "details": "Create synthetic fixtures, expected outputs, benchmark runner, public-realism placeholders, validation statement, and release-gate integration. Benchmark schema/QC/warning behaviour rather than claiming biological truth.",
+        "testStrategy": "Run benchmark suite, golden output comparisons, fixture manifest validation, validation statement coverage checks, and release-gate failure tests.",
+        "status": "done",
+        "dependencies": [
+          12
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create synthetic benchmark fixture set",
+            "description": "Build deterministic fixtures covering happy paths and edge cases.",
+            "details": "Create benchmarks/fixtures/synthetic with bm_beta_manifest_complete, bm_dmr_nearest_gene_only, bm_build_missing, bm_invalid_coordinate_format, bm_missing_cell_context, bm_missing_cytotoxicity_context, bm_dominant_cytotoxicity, bm_insufficient_replicates, bm_high_missingness, bm_summary_contrast_only, bm_handoff_schema_valid, and bm_handoff_schema_invalid.",
+            "testStrategy": "Run fixture discovery and verify every fixture has feature table, design table where needed, metadata, expected policy, and README.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Generate golden expected outputs",
+            "description": "Create expected QC, qualification, packet, and handoff outputs for every fixture.",
+            "details": "Run the full workflow on each synthetic fixture and write deterministic outputs to benchmarks/expected. Include expected warning/error codes, qualification statuses, report fragments, packet schemas, and handoff validation results.",
+            "testStrategy": "Run golden diff tests and verify outputs are byte-stable or normalized-stable across repeated runs.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Implement benchmark runner",
+            "description": "Create a repeatable command for benchmark execution and golden comparison.",
+            "details": "Implement a benchmark runner that loads benchmark_manifest.yaml, executes configured workflows, validates schemas, compares normalized outputs against benchmarks/expected, and reports pass/fail with actionable diffs.",
+            "testStrategy": "Run the benchmark runner on all fixtures. Intentionally modify a golden file and verify failure output is clear.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Add public-realism fixture placeholders",
+            "description": "Prepare v0.2/v1.0 benchmark structure without making unstable external data core dependencies.",
+            "details": "Create benchmarks/fixtures/frozen_public placeholder manifests for processed GEO/ENCODE/BioStudies-derived examples, with accession, licensing, checksum, and curation status fields. Do not require remote download in v0.1 CI.",
+            "testStrategy": "Validate placeholder manifests and ensure benchmark runner skips unavailable public fixtures unless explicitly enabled.",
+            "status": "done",
+            "dependencies": [
+              3
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Create validation statement",
+            "description": "Write a regulator-readable validation statement for v0.1 benchmark coverage.",
+            "details": "Add docs/validation-statement.md explaining fixture scope, deterministic behaviours tested, limitations, non-goals, and what benchmark success does not prove. Link benchmark cases to product requirements.",
+            "testStrategy": "Review document against benchmark manifest. Confirm every release gate benchmark has an explanation and expected outcome.",
+            "status": "done",
+            "dependencies": [
+              3
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Integrate benchmarks with release gates",
+            "description": "Connect benchmark execution to CI and release readiness.",
+            "details": "Ensure benchmark outputs feed release-readiness summary and fail on schema drift, golden drift, missing expected outputs, or nondeterministic results. Add clear changelog requirements for golden changes.",
+            "testStrategy": "Run CI-equivalent benchmark command and verify release readiness fails when a fixture fails.",
+            "status": "done",
+            "dependencies": [
+              3,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "title": "Implement CI/CD, documentation, and release-readiness gates",
+        "description": "Create workflows and documentation needed for a regulator-readable v0.1 release.",
+        "details": "Add CI, schema drift, handoff validation, benchmark, Docker smoke, documentation, and release-readiness workflows. Write required documentation on scope, non-goals, inputs, coordinates, mapping, confounding, interpretation limits, handoff, benchmarks, and validation.",
+        "testStrategy": "Run or validate every workflow, confirm required docs exist, verify release-readiness fails on any missing gate, and smoke-test Docker/stdout behaviour.",
+        "status": "done",
+        "dependencies": [
+          12,
+          13
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create CI workflow for lint, type checks, and tests",
+            "description": "Add baseline GitHub Actions workflow for code quality.",
+            "details": "Create .github/workflows/ci.yml with matrix for supported Python versions if desired, install steps, lint, typecheck, unit tests, contract tests, and coverage artifact generation.",
+            "testStrategy": "Run workflow locally with act where possible or validate YAML syntax. Confirm failing lint or tests block CI.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 2,
+            "title": "Create schema drift workflow",
+            "description": "Block unintentional JSON Schema changes.",
+            "details": "Create .github/workflows/schemas.yml to run schema export and git diff against schemas/current. Require schema-version bump and changelog entry for intentional drift.",
+            "testStrategy": "Modify a schema intentionally and confirm workflow fails until schema snapshot and version are updated.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 3,
+            "title": "Create handoff validation workflow",
+            "description": "Ensure Bioactivity-PoD handoff compatibility remains stable.",
+            "details": "Create .github/workflows/handoff-validation.yml that validates examples and benchmark handoff packets against current handoff schemas and semantic rules.",
+            "testStrategy": "Run workflow on valid and invalid handoff fixtures. Confirm invalid fixtures fail with EPI010 or expected negative-test handling.",
+            "status": "done",
+            "dependencies": [
+              2
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 4,
+            "title": "Create benchmark workflow",
+            "description": "Run benchmark suite and golden comparisons in CI.",
+            "details": "Create .github/workflows/benchmarks.yml to execute the benchmark runner, compare golden outputs, and upload reports/diffs as artifacts.",
+            "testStrategy": "Introduce fixture drift and confirm benchmark workflow fails with actionable diff output.",
+            "status": "done",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 5,
+            "title": "Create Docker build and smoke workflow",
+            "description": "Build and smoke-test a containerized MCP server.",
+            "details": "Create Dockerfile if not already complete and .github/workflows/docker.yml to build the image, run import smoke tests, epimcp --help, and stdio server startup smoke. Avoid exposing network transport by default.",
+            "testStrategy": "Build Docker image locally/CI and run smoke commands. Confirm stdio starts and exits cleanly under test conditions.",
+            "status": "done",
+            "dependencies": [
+              1
+            ],
+            "priority": "medium",
+            "subtasks": []
+          },
+          {
+            "id": 6,
+            "title": "Write required product documentation",
+            "description": "Create documentation required for regulator-readable v0.1 release.",
+            "details": "Write docs/scientific-scope.md, non-goals.md, input-format-guide.md, genome-build-and-coordinate-guide.md, region-to-gene-mapping-guide.md, cell-composition-confounding-guide.md, cytotoxicity-context-guide.md, interpretation-limits.md, bioactivity-pod-handoff-guide.md, benchmark-report.md, and validation-statement.md. Ensure docs state what is not inferred.",
+            "testStrategy": "Review docs for coverage against PRD requirements. Run link checks where possible and verify examples execute.",
+            "status": "done",
+            "dependencies": [
+              4,
+              5
+            ],
+            "priority": "high",
+            "subtasks": []
+          },
+          {
+            "id": 7,
+            "title": "Create aggregate release-readiness workflow",
+            "description": "Implement final release gate aggregation.",
+            "details": "Create .github/workflows/release-readiness.yml that depends on CI, schemas, benchmarks, handoff validation, Docker smoke, docs presence, manifest validation, and changelog requirements. Output a readiness summary.",
+            "testStrategy": "Run release-readiness workflow and verify it fails when any required workflow, documentation file, manifest validation, or benchmark gate fails.",
+            "status": "failed",
+            "dependencies": [
+              4,
+              5,
+              6
+            ],
+            "priority": "high",
+            "subtasks": []
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2026-05-05T16:01:54.539Z",
+      "updated": "2026-05-05T16:01:54.539Z",
+      "description": "Tasks generated from Epigenomics MCP v0.1 PRD analysis"
+    }
+  }
+}

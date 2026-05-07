@@ -1,0 +1,21 @@
+[
+  {
+    "featureId": "cg_rep_low_001",
+    "featureClass": "cpg_methylation",
+    "modality": "dna_methylation_array",
+    "measuredIdentifier": "cg_rep_low_001",
+    "measuredRegion": {
+      "chrom": "chr1",
+      "start": 1000000,
+      "end": 1000001,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "beta_value",
+    "values": {
+      "sample-ctrl-1": 0.82,
+      "sample-low-1": 0.78,
+      "sample-high-1": 0.45
+    }
+  }
+]

@@ -1,0 +1,121 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`generateJsonReport > matches snapshot for full report 1`] = `
+{
+  "classification": {
+    "byClass": {
+      "cpg_methylation": 2,
+    },
+    "byModality": {
+      "dna_methylation_array": 2,
+    },
+    "totalFeatures": 2,
+  },
+  "context": {
+    "cellCompositionStatus": "not_evaluated",
+    "contextNote": "Confounding context is modelled separately and reported for reviewer awareness.",
+    "cytotoxicityStatus": "unknown",
+    "differentiationDriftStatus": undefined,
+    "stressResponseStatus": undefined,
+  },
+  "coordinates": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "datasetId": "ds-001",
+  "design": {
+    "errors": [],
+    "identifiedControlGroupId": "ctrl",
+    "orderedDoseGroups": [
+      {
+        "doseGroupId": "ctrl",
+        "doseUnit": "µM",
+        "doseValue": 0,
+      },
+      {
+        "doseGroupId": "low",
+        "doseUnit": "µM",
+        "doseValue": 1,
+      },
+    ],
+    "valid": true,
+    "warnings": [],
+  },
+  "exclusions": [],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "interpretationLimits": [
+    "This report does not infer causality between epigenomic changes and phenotypic outcomes.",
+    "Dose-response modelling is performed by downstream Bioactivity-PoD MCP, not this service.",
+    "Pathway roll-up is blocked for nearest-gene-only mappings.",
+    "Persistence, reversibility, and heritability claims are guarded by design metadata and may be defaulted to 'not_assessed' or 'none'.",
+  ],
+  "mapping": {
+    "ambiguousMappings": 0,
+    "mappedFeatures": 2,
+    "mappingNote": "Region-to-gene mapping does not imply causal target assignment.",
+    "nearestGeneOnlyCount": 1,
+    "pathwayRollupBlockedCount": 1,
+    "totalFeaturesWithRegion": 2,
+  },
+  "platform": {
+    "declaredPlatform": "Illumina EPIC",
+    "platformNote": "Illumina EPIC",
+  },
+  "qc": {
+    "datasetId": "ds-001",
+    "designAdequacyFlags": {
+      "batchStructureKnown": true,
+      "controlsPresent": true,
+      "doseRangeDeclared": true,
+      "speciesBuildDeclared": true,
+      "sufficientReplicates": true,
+    },
+    "featuresWithMissingValues": 0,
+    "meanReplicateCorrelation": 0.95,
+    "minReplicateCorrelation": 0.92,
+    "missingnessRate": 0,
+    "totalFeatures": 2,
+    "varianceAcrossDoses": 0.05,
+  },
+  "qualification": {
+    "claimGuardResult": {
+      "heritabilityClaim": "none",
+      "persistenceStatus": "not_assessed",
+      "reversibilityStatus": "not_assessed",
+    },
+    "excludedCount": 0,
+    "perFeatureQualifications": [
+      {
+        "featureId": "cg00000001",
+        "mappedGeneIds": 1,
+        "mappingConfidence": "high",
+        "mappingMethod": "direct_promoter_overlap",
+        "status": "accepted_for_pod",
+        "warnings": 0,
+      },
+      {
+        "featureId": "cg00000002",
+        "mappedGeneIds": 1,
+        "mappingConfidence": "medium",
+        "mappingMethod": "nearest_gene",
+        "status": "accepted_for_pod",
+        "warnings": 0,
+      },
+    ],
+    "qualifiedCount": 2,
+    "totalFeatures": 2,
+  },
+  "refusedInferences": [
+    "The service refused to infer confounding adjustment in the absence of complete cell-composition, cytotoxicity, stress-response, or differentiation-drift context.",
+    "The service refused to infer high-confidence gene targets from nearest-gene-only mappings; pathway rollup is suppressed.",
+    "The service refused to infer persistence of epigenomic changes because the design lacks repeated or recovery timepoints.",
+    "The service refused to infer reversibility of epigenomic changes because the design lacks repeated or recovery timepoints.",
+    "The service refused to infer heritability or transgenerational transmission because multigenerationalDesign is not explicitly true.",
+  ],
+  "reportId": "report-001",
+  "schemaName": "EpigenomicsValidationReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [],
+}
+`;

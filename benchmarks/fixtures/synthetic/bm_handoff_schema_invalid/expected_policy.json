@@ -1,0 +1,7 @@
+{
+  "fixtureName": "bm_handoff_schema_invalid",
+  "description": "An invalid BioactivityPoDHandoffPacket violating multiple schema constraints: handoffId is not a UUID, sourcePacketRef is empty, qualifiedFeatures array is empty, doseResponseReadySubset is empty, and generatedAt is not a valid ISO-8601 datetime.",
+  "expectedSchemaValid": false,
+  "expectedBlocksDownstream": true,
+  "expectedHandoffReady": false
+}

@@ -1,0 +1,778 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildMappingSummaryReport – ambiguous fixture > matches snapshot 1`] = `
+{
+  "annotationRelease": "GENCODE_v46",
+  "blockedRollups": {
+    "affectedFeatureIds": [],
+    "count": 0,
+    "reasons": [],
+  },
+  "confidenceDistribution": {
+    "high": 1,
+    "low": 0,
+    "medium": 0,
+    "none": 0,
+  },
+  "counts": {
+    "ambiguousMappings": 1,
+    "byConfidence": {
+      "high": 1,
+      "low": 0,
+      "medium": 0,
+      "none": 0,
+    },
+    "byMethod": {
+      "chromatin_interaction_supported": 0,
+      "direct_promoter_overlap": 1,
+      "enhancer_target_from_database": 0,
+      "gene_body_overlap": 0,
+      "inferred_target_gene": 0,
+      "nearest_gene": 0,
+      "promoter_overlap": 0,
+      "unknown_target_gene": 0,
+    },
+    "mappedFeatures": 1,
+    "pathwayRollupAllowed": 1,
+    "pathwayRollupBlocked": 0,
+    "totalFeatures": 1,
+    "unmappedFeatures": 0,
+  },
+  "datasetId": "ds-ambiguous",
+  "entries": [
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "ambig_001_promoter_GENCODE_v46",
+      },
+      "request": {
+        "chrom": "chr1",
+        "end": 10500,
+        "featureId": "ambig_001",
+        "start": 9500,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "ambig_001_promoter_GENCODE_v46",
+        },
+        "confidence": "high",
+        "featureId": "ambig_001",
+        "geneIds": [
+          "GENE_A",
+          "GENE_B",
+        ],
+        "method": "direct_promoter_overlap",
+        "pathwayRollupAllowed": true,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "ambig_001",
+          ],
+          "message": "Feature ambig_001 maps to 2 genes (GENE_A, GENE_B); causal target assignment is ambiguous.",
+          "severity": "warning",
+          "warningCode": "MAPPING_AMBIGUOUS",
+        },
+      ],
+    },
+  ],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "genomeBuild": "GRCh38",
+  "reportId": "550e8400-e29b-41d4-a716-446655440003",
+  "schemaName": "EpigenomicsMappingReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "ambig_001",
+      ],
+      "message": "Feature ambig_001 maps to 2 genes (GENE_A, GENE_B); causal target assignment is ambiguous.",
+      "severity": "warning",
+      "warningCode": "MAPPING_AMBIGUOUS",
+    },
+  ],
+}
+`;
+
+exports[`buildMappingSummaryReport – mixed fixture > matches snapshot 1`] = `
+{
+  "annotationRelease": "GENCODE_v46",
+  "blockedRollups": {
+    "affectedFeatureIds": [
+      "mix_002",
+      "mix_004",
+    ],
+    "count": 2,
+    "reasons": [
+      "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+      "Pathway roll-up blocked because mapping method 'unknown_target_gene' is not in the allowed roll-up type list.",
+    ],
+  },
+  "confidenceDistribution": {
+    "high": 2,
+    "low": 1,
+    "medium": 0,
+    "none": 1,
+  },
+  "counts": {
+    "ambiguousMappings": 1,
+    "byConfidence": {
+      "high": 2,
+      "low": 1,
+      "medium": 0,
+      "none": 1,
+    },
+    "byMethod": {
+      "chromatin_interaction_supported": 0,
+      "direct_promoter_overlap": 2,
+      "enhancer_target_from_database": 0,
+      "gene_body_overlap": 0,
+      "inferred_target_gene": 0,
+      "nearest_gene": 1,
+      "promoter_overlap": 0,
+      "unknown_target_gene": 1,
+    },
+    "mappedFeatures": 3,
+    "pathwayRollupAllowed": 2,
+    "pathwayRollupBlocked": 2,
+    "totalFeatures": 4,
+    "unmappedFeatures": 1,
+  },
+  "datasetId": "ds-mixed",
+  "entries": [
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "mix_001_promoter_GENCODE_v46",
+      },
+      "request": {
+        "chrom": "chr13",
+        "end": 32299500,
+        "featureId": "mix_001",
+        "start": 32299000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "mix_001_promoter_GENCODE_v46",
+        },
+        "confidence": "high",
+        "featureId": "mix_001",
+        "geneIds": [
+          "ENSG00000139618",
+        ],
+        "method": "direct_promoter_overlap",
+        "pathwayRollupAllowed": true,
+      },
+      "warnings": [],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "mix_002_nearest_gene_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr13",
+        "end": 32305100,
+        "featureId": "mix_002",
+        "start": 32305000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "mix_002_nearest_gene_GENCODE_v46",
+        },
+        "confidence": "low",
+        "distanceBp": 5000,
+        "downstreamUseRule": "exploratory_only",
+        "featureId": "mix_002",
+        "geneIds": [
+          "ENSG00000139618",
+        ],
+        "method": "nearest_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "mix_002",
+          ],
+          "message": "Feature mix_002 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+        },
+      ],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "mix_003_promoter_GENCODE_v46",
+      },
+      "request": {
+        "chrom": "chr1",
+        "end": 10500,
+        "featureId": "mix_003",
+        "start": 9500,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "mix_003_promoter_GENCODE_v46",
+        },
+        "confidence": "high",
+        "featureId": "mix_003",
+        "geneIds": [
+          "GENE_A",
+          "GENE_B",
+        ],
+        "method": "direct_promoter_overlap",
+        "pathwayRollupAllowed": true,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "mix_003",
+          ],
+          "message": "Feature mix_003 maps to 2 genes (GENE_A, GENE_B); causal target assignment is ambiguous.",
+          "severity": "warning",
+          "warningCode": "MAPPING_AMBIGUOUS",
+        },
+      ],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "mix_004_unknown_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'unknown_target_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr99",
+        "end": 1000100,
+        "featureId": "mix_004",
+        "start": 1000000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "mix_004_unknown_GENCODE_v46",
+        },
+        "confidence": "none",
+        "featureId": "mix_004",
+        "geneIds": [],
+        "method": "unknown_target_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "mix_004",
+          ],
+          "message": "Feature mix_004 (chr99:1000000-1000100) could not be mapped to any gene target.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NO_TARGET",
+        },
+      ],
+    },
+  ],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "genomeBuild": "GRCh38",
+  "reportId": "550e8400-e29b-41d4-a716-446655440005",
+  "schemaName": "EpigenomicsMappingReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "mix_002",
+      ],
+      "message": "Feature mix_002 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+    },
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "mix_003",
+      ],
+      "message": "Feature mix_003 maps to 2 genes (GENE_A, GENE_B); causal target assignment is ambiguous.",
+      "severity": "warning",
+      "warningCode": "MAPPING_AMBIGUOUS",
+    },
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "mix_004",
+      ],
+      "message": "Feature mix_004 (chr99:1000000-1000100) could not be mapped to any gene target.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NO_TARGET",
+    },
+  ],
+}
+`;
+
+exports[`buildMappingSummaryReport – nearest-gene-only fixture > matches snapshot 1`] = `
+{
+  "annotationRelease": "GENCODE_v46",
+  "blockedRollups": {
+    "affectedFeatureIds": [
+      "nearest_001",
+      "nearest_002",
+    ],
+    "count": 2,
+    "reasons": [
+      "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+    ],
+  },
+  "confidenceDistribution": {
+    "high": 0,
+    "low": 2,
+    "medium": 0,
+    "none": 0,
+  },
+  "counts": {
+    "ambiguousMappings": 0,
+    "byConfidence": {
+      "high": 0,
+      "low": 2,
+      "medium": 0,
+      "none": 0,
+    },
+    "byMethod": {
+      "chromatin_interaction_supported": 0,
+      "direct_promoter_overlap": 0,
+      "enhancer_target_from_database": 0,
+      "gene_body_overlap": 0,
+      "inferred_target_gene": 0,
+      "nearest_gene": 2,
+      "promoter_overlap": 0,
+      "unknown_target_gene": 0,
+    },
+    "mappedFeatures": 2,
+    "pathwayRollupAllowed": 0,
+    "pathwayRollupBlocked": 2,
+    "totalFeatures": 2,
+    "unmappedFeatures": 0,
+  },
+  "datasetId": "ds-nearest",
+  "entries": [
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "nearest_001_nearest_gene_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr13",
+        "end": 32305100,
+        "featureId": "nearest_001",
+        "start": 32305000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "nearest_001_nearest_gene_GENCODE_v46",
+        },
+        "confidence": "low",
+        "distanceBp": 5000,
+        "downstreamUseRule": "exploratory_only",
+        "featureId": "nearest_001",
+        "geneIds": [
+          "ENSG00000139618",
+        ],
+        "method": "nearest_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "nearest_001",
+          ],
+          "message": "Feature nearest_001 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+        },
+      ],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "nearest_002_nearest_gene_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr17",
+        "end": 7685100,
+        "featureId": "nearest_002",
+        "start": 7685000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "nearest_002_nearest_gene_GENCODE_v46",
+        },
+        "confidence": "low",
+        "distanceBp": 5000,
+        "downstreamUseRule": "exploratory_only",
+        "featureId": "nearest_002",
+        "geneIds": [
+          "ENSG00000141510",
+        ],
+        "method": "nearest_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "nearest_002",
+          ],
+          "message": "Feature nearest_002 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+        },
+      ],
+    },
+  ],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "genomeBuild": "GRCh38",
+  "reportId": "550e8400-e29b-41d4-a716-446655440002",
+  "schemaName": "EpigenomicsMappingReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "nearest_001",
+      ],
+      "message": "Feature nearest_001 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+    },
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "nearest_002",
+      ],
+      "message": "Feature nearest_002 is linked via nearest-gene only (distance 5000 bp); this is low-confidence contextual linkage and pathway roll-up is suppressed.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NEAREST_GENE_ONLY",
+    },
+  ],
+}
+`;
+
+exports[`buildMappingSummaryReport – no-target fixture > matches snapshot 1`] = `
+{
+  "annotationRelease": "GENCODE_v46",
+  "blockedRollups": {
+    "affectedFeatureIds": [
+      "notarget_001",
+      "notarget_002",
+    ],
+    "count": 2,
+    "reasons": [
+      "Pathway roll-up blocked because mapping method 'unknown_target_gene' is not in the allowed roll-up type list.",
+      "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+    ],
+  },
+  "confidenceDistribution": {
+    "high": 0,
+    "low": 0,
+    "medium": 0,
+    "none": 2,
+  },
+  "counts": {
+    "ambiguousMappings": 0,
+    "byConfidence": {
+      "high": 0,
+      "low": 0,
+      "medium": 0,
+      "none": 2,
+    },
+    "byMethod": {
+      "chromatin_interaction_supported": 0,
+      "direct_promoter_overlap": 0,
+      "enhancer_target_from_database": 0,
+      "gene_body_overlap": 0,
+      "inferred_target_gene": 0,
+      "nearest_gene": 1,
+      "promoter_overlap": 0,
+      "unknown_target_gene": 1,
+    },
+    "mappedFeatures": 0,
+    "pathwayRollupAllowed": 0,
+    "pathwayRollupBlocked": 2,
+    "totalFeatures": 2,
+    "unmappedFeatures": 2,
+  },
+  "datasetId": "ds-notarget",
+  "entries": [
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "notarget_001_unknown_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'unknown_target_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr99",
+        "end": 1000100,
+        "featureId": "notarget_001",
+        "start": 1000000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "notarget_001_unknown_GENCODE_v46",
+        },
+        "confidence": "none",
+        "featureId": "notarget_001",
+        "geneIds": [],
+        "method": "unknown_target_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "notarget_001",
+          ],
+          "message": "Feature notarget_001 (chr99:1000000-1000100) could not be mapped to any gene target.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NO_TARGET",
+        },
+      ],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "notarget_002_nearest_gene_GENCODE_v46",
+      },
+      "blockedRollUpReason": "Pathway roll-up blocked because mapping method 'nearest_gene' is not in the allowed roll-up type list.",
+      "request": {
+        "chrom": "chr1",
+        "end": 1000100,
+        "featureId": "notarget_002",
+        "start": 1000000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "notarget_002_nearest_gene_GENCODE_v46",
+        },
+        "confidence": "none",
+        "featureId": "notarget_002",
+        "geneIds": [],
+        "method": "nearest_gene",
+        "pathwayRollupAllowed": false,
+      },
+      "warnings": [
+        {
+          "blocksDownstream": false,
+          "category": "mapping_proximity",
+          "featureIds": [
+            "notarget_002",
+          ],
+          "message": "Feature notarget_002 (chr1:1000000-1000100) could not be mapped to any gene target.",
+          "severity": "warning",
+          "warningCode": "MAPPING_NO_TARGET",
+        },
+      ],
+    },
+  ],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "genomeBuild": "GRCh38",
+  "reportId": "550e8400-e29b-41d4-a716-446655440004",
+  "schemaName": "EpigenomicsMappingReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "notarget_001",
+      ],
+      "message": "Feature notarget_001 (chr99:1000000-1000100) could not be mapped to any gene target.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NO_TARGET",
+    },
+    {
+      "blocksDownstream": false,
+      "category": "mapping_proximity",
+      "featureIds": [
+        "notarget_002",
+      ],
+      "message": "Feature notarget_002 (chr1:1000000-1000100) could not be mapped to any gene target.",
+      "severity": "warning",
+      "warningCode": "MAPPING_NO_TARGET",
+    },
+  ],
+}
+`;
+
+exports[`buildMappingSummaryReport – promoter fixture > matches snapshot 1`] = `
+{
+  "annotationRelease": "GENCODE_v46",
+  "blockedRollups": {
+    "affectedFeatureIds": [],
+    "count": 0,
+    "reasons": [],
+  },
+  "confidenceDistribution": {
+    "high": 2,
+    "low": 0,
+    "medium": 0,
+    "none": 0,
+  },
+  "counts": {
+    "ambiguousMappings": 0,
+    "byConfidence": {
+      "high": 2,
+      "low": 0,
+      "medium": 0,
+      "none": 0,
+    },
+    "byMethod": {
+      "chromatin_interaction_supported": 0,
+      "direct_promoter_overlap": 2,
+      "enhancer_target_from_database": 0,
+      "gene_body_overlap": 0,
+      "inferred_target_gene": 0,
+      "nearest_gene": 0,
+      "promoter_overlap": 0,
+      "unknown_target_gene": 0,
+    },
+    "mappedFeatures": 2,
+    "pathwayRollupAllowed": 2,
+    "pathwayRollupBlocked": 0,
+    "totalFeatures": 2,
+    "unmappedFeatures": 0,
+  },
+  "datasetId": "ds-promoter",
+  "entries": [
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "promoter_001_promoter_GENCODE_v46",
+      },
+      "request": {
+        "chrom": "chr13",
+        "end": 32299500,
+        "featureId": "promoter_001",
+        "start": 32299000,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "promoter_001_promoter_GENCODE_v46",
+        },
+        "confidence": "high",
+        "featureId": "promoter_001",
+        "geneIds": [
+          "ENSG00000139618",
+        ],
+        "method": "direct_promoter_overlap",
+        "pathwayRollupAllowed": true,
+      },
+      "warnings": [],
+    },
+    {
+      "annotationTrace": {
+        "genomeBuild": "GRCh38",
+        "sourceResource": "frozen_gene_model_snapshot",
+        "sourceVersion": "GENCODE_v46",
+        "traceId": "promoter_002_promoter_GENCODE_v46",
+      },
+      "request": {
+        "chrom": "chr17",
+        "end": 7681000,
+        "featureId": "promoter_002",
+        "start": 7680500,
+      },
+      "response": {
+        "annotationTrace": {
+          "genomeBuild": "GRCh38",
+          "sourceResource": "frozen_gene_model_snapshot",
+          "sourceVersion": "GENCODE_v46",
+          "traceId": "promoter_002_promoter_GENCODE_v46",
+        },
+        "confidence": "high",
+        "featureId": "promoter_002",
+        "geneIds": [
+          "ENSG00000141510",
+        ],
+        "method": "direct_promoter_overlap",
+        "pathwayRollupAllowed": true,
+      },
+      "warnings": [],
+    },
+  ],
+  "generatedAt": "2026-05-05T00:00:00.000Z",
+  "genomeBuild": "GRCh38",
+  "reportId": "550e8400-e29b-41d4-a716-446655440001",
+  "schemaName": "EpigenomicsMappingReport",
+  "schemaVersion": "0.1.0",
+  "warnings": [],
+}
+`;

@@ -1,0 +1,49 @@
+{
+  "datasetId": "bm-cyto-dom-ds-001",
+  "provenance": {
+    "datasetId": "bm-cyto-dom-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {},
+        "timestamp": "2026-04-01T10:00:00Z"
+      }
+    ]
+  },
+  "cellComposition": {
+    "datasetId": "bm-cyto-dom-ds-001",
+    "samples": [
+      { "sampleId": "sample-ctrl-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-ctrl-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
+    ],
+    "groupShifts": [],
+    "warnings": [],
+    "fractionSumValid": true,
+    "hasAnyCompositionData": true
+  },
+  "cytotoxicity": {
+    "datasetId": "bm-cyto-dom-ds-001",
+    "entries": [
+      {
+        "assayType": "viability",
+        "evidenceSource": "measured_concurrent",
+        "measurements": [
+          { "sampleId": "sample-ctrl-1", "doseValue": 0, "value": 0.95, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-ctrl-2", "doseValue": 0, "value": 0.96, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-1", "doseValue": 1, "value": 0.55, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-low-2", "doseValue": 1, "value": 0.52, "unit": "fraction", "metric": "cell_viability" }
+        ],
+        "stressFlags": ["membrane_damage"]
+      }
+    ],
+    "timepointAligned": true,
+    "doseAligned": true,
+    "hasCytotoxicityData": true,
+    "cytotoxicityDetected": true,
+    "warnings": []
+  }
+}

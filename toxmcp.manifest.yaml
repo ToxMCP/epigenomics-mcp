@@ -1,0 +1,142 @@
+#
+# ToxMCP Manifest – Epigenomics MCP
+# Machine-readable declaration of boundaries, tools, schemas, integrations,
+# and explicit non-goals for the Epigenomics MCP suite.
+#
+name: epigenomics-mcp
+version: "0.1.0"
+description: >
+  Model Context Protocol server for processed epigenomic feature evidence qualification.
+  Converts processed epigenomic assay outputs into qualified, annotation-aware,
+  provenance-rich feature-response packets for Bioactivity-PoD MCP.
+toolNamespace: epimcp
+schemaRegistryPath: schemas/current
+supportedTransports:
+  - stdio
+capabilities:
+  - ingest_processed_feature_tables
+  - validate_experimental_design
+  - validate_genome_build_and_coordinates
+  - classify_measured_features
+  - profile_qc_missingness_variance_replicates
+  - model_confounding_context
+  - apply_fail_closed_qualification
+  - export_feature_response_packet
+  - export_bioactivity_pod_handoff
+  - generate_qc_reports
+  - expose_audit_resources
+
+ownedResponsibilities:
+  - Ingest processed epigenomic feature tables
+  - Validate experimental design for dose-response readiness
+  - Validate genome build, coordinate system, and platform annotation
+  - Classify measured features into explicit feature classes
+  - Profile missingness, variance, replicate consistency, and design adequacy
+  - Model confounding context (cell composition, cytotoxicity, stress, differentiation, time)
+  - Apply fail-closed qualification rules
+  - Preserve measured coordinates and identifiers separately from mapped targets
+  - Export EpigenomicsFeatureResponsePacket and BioactivityPoDHandoffPacket
+  - Generate regulator-readable QC reports
+
+nonGoals:
+  - Raw FASTQ processing
+  - Raw IDAT preprocessing
+  - Bisulphite alignment
+  - Methylation calling from raw reads
+  - Peak calling
+  - Chromatin-state modelling
+  - Enhancer-gene causal inference
+  - miRNA target prediction as a primary algorithm
+  - PoD/BMD modelling
+  - Regulatory conclusion generation
+  - Persistence, heritability, or transgenerational-effect claims
+
+schemaPaths:
+  - schemas/current/epigenomics-feature-response-packet.json
+  - schemas/current/bioactivity-pod-handoff-packet.json
+
+docsPaths:
+  - docs/scientific_scope.md
+  - docs/non_goals.md
+  - docs/input_formats.md
+  - docs/handoff.md
+
+mcpToolNames:
+  - health
+  - ingest_dataset
+  - validate_design
+  - qualify_features
+  - generate_handoff
+  - validate_coordinates
+  - profile_qc
+  - profile_missingness
+  - ingest_cell_composition
+  - ingest_cytotoxicity
+  - summarize_by_group
+  - read_table
+  - read_design
+  - generate_qc_report
+  - convert_coordinates
+
+mcpResourceUris:
+  - epimcp://schemas/epigenomics-feature-response-packet
+  - epimcp://schemas/bioactivity-pod-handoff-packet
+  - epimcp://schemas/region-to-gene-mapping
+  - epimcp://schemas/external-database-mapping
+  - epimcp://schemas/base-envelope
+  - epimcp://schemas/qualification-policy
+  - epimcp://docs/validation-statement
+  - epimcp://docs/tool-reference
+  - epimcp://benchmarks/manifest
+  - epimcp://release-evidence/manifest
+  - epimcp://release-evidence/checksums
+  - epimcp://release-evidence/release-gate-json
+  - epimcp://release-evidence/release-gate-report
+
+cliCommands:
+  - epimcp
+  - epimcp serve
+  - epimcp validate
+  - epimcp qualify
+  - epimcp handoff
+
+integrations:
+  - name: Annotation/Ontology MCP
+    status: active
+    purpose: Identifier normalization, species validation, gene mapping, pathway membership
+    contactEndpoint: "mcp://annotation-ontology/v1"
+
+  - name: Bioactivity-PoD MCP
+    status: active
+    purpose: Consumer of EpigenomicsFeatureResponsePacket for dose-response modelling
+    handoffSchema: schemas/current/bioactivity-pod-handoff-packet.json
+
+  - name: Evidence Registry MCP
+    status: planned
+    purpose: Long-term audit trail storage and cross-study evidence retrieval
+    plannedRelease: v0.2
+
+releaseGates:
+  - name: typecheck
+    description: tsc --noEmit with zero errors
+    required: true
+
+  - name: unit_tests
+    description: All Vitest unit tests pass
+    required: true
+
+  - name: schema_validation
+    description: All JSON schemas are syntactically valid and internally consistent
+    required: true
+
+  - name: manifest_validation
+    description: toxmcp.manifest.yaml parses and contains all required keys
+    required: true
+
+  - name: smoke_mcp
+    description: MCP stdio server starts and responds to health check
+    required: true
+
+  - name: release_evidence
+    description: npm run release:evidence writes checksummed audit evidence
+    required: true

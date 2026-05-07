@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "BioactivityPoDHandoffPacket",
+  "handoffId": "not-a-uuid",
+  "sourcePacketRef": "",
+  "qualifiedFeatures": [],
+  "excludedFeatures": [],
+  "doseResponseReadySubset": [],
+  "mandatoryCaveats": [],
+  "generatedAt": "2026-05-05"
+}

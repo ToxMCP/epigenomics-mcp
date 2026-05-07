@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`generateMarkdownReport > matches snapshot for full report 1`] = `
+"# Epigenomics Validation Report
+
+| Property | Value |
+|----------|-------|
+| Report ID | \`report-001\` |
+| Dataset ID | \`ds-001\` |
+| Generated At | 2026-05-05T00:00:00.000Z |
+| Schema | EpigenomicsValidationReport v0.1.0 |
+
+## Design Validation
+
+- **Valid:** Yes
+- **Identified Control Group:** \`ctrl\`
+
+## Coordinate Validation
+
+- **Valid:** Yes
+
+## Platform
+
+- **Declared Platform:** Illumina EPIC
+
+## Feature Classification
+
+- **Total Features:** 2
+- **By Class:**
+  - cpg_methylation: 2
+- **By Modality:**
+  - dna_methylation_array: 2
+
+## QC Profile
+
+\`\`\`json
+{
+  "datasetId": "ds-001",
+  "totalFeatures": 2,
+  "featuresWithMissingValues": 0,
+  "missingnessRate": 0,
+  "meanReplicateCorrelation": 0.95,
+  "minReplicateCorrelation": 0.92,
+  "varianceAcrossDoses": 0.05,
+  "designAdequacyFlags": {
+    "sufficientReplicates": true,
+    "doseRangeDeclared": true,
+    "controlsPresent": true,
+    "batchStructureKnown": true,
+    "speciesBuildDeclared": true
+  }
+}
+\`\`\`
+
+## Mapping Summary
+
+- **Total Features with Region:** 2
+- **Mapped Features:** 2
+- **Nearest-Gene Only:** 1
+- **Ambiguous Mappings:** 0
+- **Pathway Rollup Blocked:** 1
+
+> **Caveat:** Region-to-gene mapping does not imply causal target assignment.
+> **Caveat:** Nearest-gene-only mappings represent low-confidence contextual linkage; the service suppresses pathway rollup for these features.
+
+## Context Summary
+
+- **Cell Composition:** not_evaluated
+- **Cytotoxicity:** unknown
+- **Stress Response:** Not provided
+- **Differentiation Drift:** Not provided
+
+> **Caveat:** Missing confounding context (cell composition, cytotoxicity, stress response, or differentiation drift). The service refused to infer confounding adjustment without this information.
+
+## Qualification Results
+
+- **Qualified:** 2
+- **Excluded:** 0
+- **Total Features:** 2
+
+### Claim Guard Results
+
+- **Persistence Status:** not_assessed
+- **Reversibility Status:** not_assessed
+- **Heritability Claim:** none
+
+> **Caveat:** The service refused to infer persistence of epigenomic changes because the design lacks repeated or recovery timepoints.
+
+> **Caveat:** The service refused to infer reversibility of epigenomic changes because the design lacks repeated or recovery timepoints.
+
+> **Caveat:** The service refused to infer heritability or transgenerational transmission because multigenerationalDesign is not explicitly true.
+
+## Warnings
+
+No warnings.
+
+## Exclusions
+
+No exclusions.
+
+## Interpretation Limits
+
+1. This report does not infer causality between epigenomic changes and phenotypic outcomes.
+2. Dose-response modelling is performed by downstream Bioactivity-PoD MCP, not this service.
+3. Pathway roll-up is blocked for nearest-gene-only mappings.
+4. Persistence, reversibility, and heritability claims are guarded by design metadata and may be defaulted to 'not_assessed' or 'none'.
+
+## Refused Inferences
+
+- The service refused to infer confounding adjustment in the absence of complete cell-composition, cytotoxicity, stress-response, or differentiation-drift context.
+- The service refused to infer high-confidence gene targets from nearest-gene-only mappings; pathway rollup is suppressed.
+- The service refused to infer persistence of epigenomic changes because the design lacks repeated or recovery timepoints.
+- The service refused to infer reversibility of epigenomic changes because the design lacks repeated or recovery timepoints.
+- The service refused to infer heritability or transgenerational transmission because multigenerationalDesign is not explicitly true.
+
+---
+*End of report*"
+`;

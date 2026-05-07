@@ -1,0 +1,9 @@
+{
+  "schemaValid": false,
+  "errors": [
+    "sourcePacketRef: String must contain at least 1 character(s)",
+    "qualifiedFeatures: Array must contain at least 1 element(s)",
+    "doseResponseReadySubset: Array must contain at least 1 element(s)",
+    "generatedAt: Invalid datetime"
+  ]
+}

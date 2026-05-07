@@ -1,0 +1,1003 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/epigenomics-feature-response-packet/v0.1.0",
+  "title": "EpigenomicsFeatureResponsePacket",
+  "description": "Primary normative export from Epigenomics MCP – a qualified, annotation-aware, provenance-rich feature-response packet.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "schemaName": {
+      "type": "string",
+      "const": "EpigenomicsFeatureResponsePacket"
+    },
+    "packetId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "datasetMetadataRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "designRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "featureId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable feature identifier"
+          },
+          "featureClass": {
+            "type": "string",
+            "enum": [
+              "cpg_methylation",
+              "dmr",
+              "differential_methylated_region",
+              "generic_region_feature",
+              "atac_peak",
+              "chip_peak_narrow",
+              "chip_peak_broad",
+              "histone_mark_peak",
+              "chromatin_interaction",
+              "ncrna_expression",
+              "mirna_expression"
+            ],
+            "description": "Class of the feature"
+          },
+          "modality": {
+            "type": "string",
+            "enum": [
+              "dna_methylation_array",
+              "dna_methylation_bsseq",
+              "atac_seq",
+              "chip_seq",
+              "hic",
+              "mirna_expression"
+            ],
+            "description": "Assay modality"
+          },
+          "measuredRegion": {
+            "type": "object",
+            "properties": {
+              "chrom": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^(chr[0-9XYM]+|[0-9XYM]+)$",
+                "description": "Chromosome identifier"
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Start coordinate"
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "End coordinate"
+              },
+              "build": {
+                "type": "string",
+                "enum": [
+                  "GRCh37",
+                  "GRCh38",
+                  "hg19",
+                  "hg38",
+                  "mm9",
+                  "mm10",
+                  "mm39",
+                  "rn6",
+                  "rn7"
+                ],
+                "description": "Genome build"
+              },
+              "coordinateSystem": {
+                "type": "string",
+                "enum": [
+                  "0-based-half-open",
+                  "1-based-closed"
+                ],
+                "description": "Coordinate convention"
+              }
+            },
+            "required": [
+              "chrom",
+              "start",
+              "end",
+              "build",
+              "coordinateSystem"
+            ],
+            "additionalProperties": false,
+            "description": "Genomic coordinates of the feature, if applicable"
+          },
+          "measuredIdentifier": {
+            "type": "string",
+            "description": "Platform-specific identifier (e.g., probe ID, gene ID, peak ID)"
+          },
+          "signalMetric": {
+            "type": "string",
+            "enum": [
+              "beta_value",
+              "m_value",
+              "percent_methylation",
+              "delta_beta",
+              "delta_m",
+              "accessibility_signal",
+              "peak_score",
+              "read_count",
+              "normalized_signal",
+              "effect_size",
+              "q_value",
+              "declared_other"
+            ],
+            "description": "Metric used for the signal value"
+          },
+          "declaredOtherDescription": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Required description when signalMetric is 'declared_other'"
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "propertyNames": {
+              "minLength": 1
+            },
+            "description": "Sample identifier -> numeric response map (null for missing)"
+          }
+        },
+        "required": [
+          "featureId",
+          "featureClass",
+          "modality",
+          "signalMetric",
+          "values"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "design": {
+      "type": "object",
+      "properties": {
+        "designId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "studyId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "species": {
+          "type": "string",
+          "minLength": 1
+        },
+        "doseGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doseGroupId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "doseValue": {
+                "type": "number",
+                "description": "Numeric dose level"
+              },
+              "doseUnit": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Dose unit (e.g., µM, mg/kg)"
+              },
+              "timepointHours": {
+                "type": "number",
+                "description": "Time point"
+              }
+            },
+            "required": [
+              "doseGroupId",
+              "doseValue",
+              "doseUnit"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sampleId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "doseGroupId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "replicateIndex": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0
+              },
+              "replicateType": {
+                "type": "string",
+                "enum": [
+                  "biological",
+                  "technical"
+                ],
+                "description": "Type of replicate (biological or technical)"
+              },
+              "cellType": {
+                "type": "string"
+              },
+              "tissue": {
+                "type": "string"
+              },
+              "species": {
+                "type": "string",
+                "minLength": 1
+              },
+              "batchId": {
+                "type": "string"
+              },
+              "controlFlag": {
+                "type": "boolean",
+                "default": false
+              },
+              "treatment": {
+                "type": "string",
+                "description": "Treatment or compound name"
+              }
+            },
+            "required": [
+              "sampleId",
+              "doseGroupId",
+              "species"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "hasControls": {
+          "type": "boolean",
+          "description": "Whether control samples are present"
+        },
+        "minReplicatesPerGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum replicate count across dose groups"
+        }
+      },
+      "required": [
+        "designId",
+        "species",
+        "doseGroups",
+        "samples",
+        "hasControls",
+        "minReplicatesPerGroup"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "upstreamSteps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stepName": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Processing step name"
+              },
+              "toolName": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Tool or pipeline name"
+              },
+              "toolVersion": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Tool version"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": {},
+                "default": {}
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "inputFiles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "outputFiles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              }
+            },
+            "required": [
+              "stepName",
+              "toolName",
+              "toolVersion"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "normalisationMethod": {
+          "type": "string"
+        },
+        "batchCorrectionMethod": {
+          "type": "string"
+        },
+        "probeManifestVersion": {
+          "type": "string"
+        },
+        "annotationVersion": {
+          "type": "string"
+        },
+        "sourceArchive": {
+          "type": "string"
+        },
+        "sourceAccession": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "datasetId",
+        "upstreamSteps"
+      ],
+      "additionalProperties": false
+    },
+    "qualificationSummary": {
+      "type": "object",
+      "properties": {
+        "acceptedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "excludedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exploratoryCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "caveatCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "acceptedCount",
+        "excludedCount",
+        "exploratoryCount",
+        "caveatCount"
+      ],
+      "additionalProperties": false
+    },
+    "qcReportRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "warningCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Structured warning code"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "description": "Severity level"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable message"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "cell_composition",
+              "cytotoxicity",
+              "stress_response",
+              "differentiation_drift",
+              "batch_effect",
+              "time_dependence",
+              "coordinate_semantics",
+              "mapping_proximity",
+              "platform_specific",
+              "missing_metadata"
+            ],
+            "description": "Warning category"
+          },
+          "featureIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected features"
+          },
+          "blocksDownstream": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether this blocks downstream use"
+          }
+        },
+        "required": [
+          "warningCode",
+          "severity",
+          "message",
+          "category"
+        ],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "chemicalExposureContext": {
+      "type": "object",
+      "properties": {
+        "compoundName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Primary chemical or compound name"
+        },
+        "casrn": {
+          "type": "string",
+          "description": "Chemical Abstracts Service Registry Number"
+        },
+        "doseValue": {
+          "type": "number",
+          "description": "Nominal dose value"
+        },
+        "doseUnit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dose unit (e.g., µM, mg/kg)"
+        },
+        "exposureDurationHours": {
+          "type": "number",
+          "description": "Duration of exposure in hours"
+        },
+        "vehicle": {
+          "type": "string",
+          "description": "Vehicle or solvent used"
+        },
+        "routeOfAdministration": {
+          "type": "string",
+          "description": "Route of administration (e.g., oral, dermal, in vitro)"
+        }
+      },
+      "required": [
+        "compoundName"
+      ],
+      "additionalProperties": false,
+      "description": "Chemical / exposure context when available"
+    },
+    "biologicalContext": {
+      "type": "object",
+      "properties": {
+        "species": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Species name"
+        },
+        "tissue": {
+          "type": "string",
+          "description": "Tissue type"
+        },
+        "cellType": {
+          "type": "string",
+          "description": "Cell type or line"
+        },
+        "biosampleContext": {
+          "type": "string",
+          "enum": [
+            "cell_line",
+            "primary_cell",
+            "tissue",
+            "organoid",
+            "whole_organism",
+            "biofluid",
+            "unknown"
+          ],
+          "description": "Biosample context classification"
+        },
+        "sex": {
+          "type": "string",
+          "description": "Sex or gender (e.g., male, female, mixed)"
+        },
+        "lifeStage": {
+          "type": "string",
+          "description": "Life stage (e.g., adult, juvenile, embryo)"
+        }
+      },
+      "required": [
+        "species"
+      ],
+      "additionalProperties": false,
+      "description": "Biological context (species, tissue, cell type)"
+    },
+    "doseAxis": {
+      "type": "object",
+      "properties": {
+        "orderedGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doseGroupId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "doseValue": {
+                "type": "number"
+              },
+              "doseUnit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "timepointHours": {
+                "type": "number"
+              },
+              "replicateCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sampleIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "doseGroupId",
+              "doseValue",
+              "doseUnit",
+              "replicateCount",
+              "sampleIds"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "controlGroupId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "orderedGroups"
+      ],
+      "additionalProperties": false,
+      "description": "Ordered dose axis with replicate counts"
+    },
+    "mappingPayloads": {
+      "type": "object",
+      "properties": {
+        "regionToGeneMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "featureId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Stable feature identifier"
+              },
+              "geneIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Mapped gene identifiers"
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "direct_promoter_overlap",
+                  "gene_body_overlap",
+                  "enhancer_target_from_database",
+                  "chromatin_interaction_supported",
+                  "nearest_gene",
+                  "inferred_target_gene",
+                  "unknown_target_gene"
+                ],
+                "description": "Mapping method (e.g. nearest_gene, direct_promoter_overlap)"
+              },
+              "confidence": {
+                "type": "string",
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "none"
+                ],
+                "description": "Confidence level of the mapping"
+              },
+              "distanceBp": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Distance in base pairs when applicable"
+              },
+              "pathwayRollupAllowed": {
+                "type": "boolean",
+                "default": false,
+                "description": "Whether this mapping may be used for automated pathway roll-up"
+              },
+              "annotationTrace": {
+                "type": "object",
+                "properties": {
+                  "traceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Stable trace identifier"
+                  },
+                  "sourceResource": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Annotation resource name (e.g., Ensembl, GENCODE)"
+                  },
+                  "sourceVersion": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Annotation release version"
+                  },
+                  "releaseDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Release timestamp"
+                  },
+                  "genomeBuild": {
+                    "type": "string",
+                    "enum": [
+                      "GRCh37",
+                      "GRCh38",
+                      "hg19",
+                      "hg38",
+                      "mm9",
+                      "mm10",
+                      "mm39",
+                      "rn6",
+                      "rn7"
+                    ],
+                    "description": "Genome build for the annotation"
+                  }
+                },
+                "required": [
+                  "traceId",
+                  "sourceResource",
+                  "sourceVersion",
+                  "genomeBuild"
+                ],
+                "additionalProperties": false,
+                "description": "Annotation trace for this mapping"
+              }
+            },
+            "required": [
+              "featureId",
+              "geneIds",
+              "method",
+              "confidence"
+            ],
+            "additionalProperties": false
+          },
+          "default": [],
+          "description": "Region-to-gene mappings for coordinate-bearing features"
+        },
+        "externalDatabaseMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "featureId": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Stable feature identifier"
+              },
+              "geneIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Mapped gene identifiers"
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "enhancer_target_from_database",
+                  "chromatin_interaction_supported"
+                ],
+                "description": "External database mapping method"
+              },
+              "confidence": {
+                "type": "string",
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "none"
+                ],
+                "description": "Mapping confidence"
+              },
+              "sourceResource": {
+                "type": "string",
+                "minLength": 1,
+                "description": "External resource name (e.g., ENCODE, GeneHancer)"
+              },
+              "annotationRelease": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Annotation or database release version"
+              },
+              "biosampleContextMatch": {
+                "type": "string",
+                "enum": [
+                  "exact",
+                  "close",
+                  "distant",
+                  "unknown"
+                ],
+                "description": "Quality of biosample context match between query and database record"
+              },
+              "downstreamUseRule": {
+                "type": "string",
+                "enum": [
+                  "allow_contextual_gene_linkage_and_pathway_rollup",
+                  "allow_with_warning",
+                  "exploratory_only",
+                  "block_pathway_rollup",
+                  "block_gene_and_pathway_rollup"
+                ],
+                "description": "Derived downstream use restriction based on method and biosample context"
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "warningCode": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Structured warning code"
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": [
+                        "info",
+                        "warning",
+                        "error"
+                      ],
+                      "description": "Severity level"
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Human-readable message"
+                    },
+                    "category": {
+                      "type": "string",
+                      "enum": [
+                        "cell_composition",
+                        "cytotoxicity",
+                        "stress_response",
+                        "differentiation_drift",
+                        "batch_effect",
+                        "time_dependence",
+                        "coordinate_semantics",
+                        "mapping_proximity",
+                        "platform_specific",
+                        "missing_metadata"
+                      ],
+                      "description": "Warning category"
+                    },
+                    "featureIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Affected features"
+                    },
+                    "blocksDownstream": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Whether this blocks downstream use"
+                    }
+                  },
+                  "required": [
+                    "warningCode",
+                    "severity",
+                    "message",
+                    "category"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": [],
+                "description": "Qualification warnings generated during mapping"
+              },
+              "annotationTrace": {
+                "type": "object",
+                "properties": {
+                  "traceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Stable trace identifier"
+                  },
+                  "sourceResource": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Annotation resource name (e.g., Ensembl, GENCODE)"
+                  },
+                  "sourceVersion": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Annotation release version"
+                  },
+                  "releaseDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Release timestamp"
+                  },
+                  "genomeBuild": {
+                    "type": "string",
+                    "enum": [
+                      "GRCh37",
+                      "GRCh38",
+                      "hg19",
+                      "hg38",
+                      "mm9",
+                      "mm10",
+                      "mm39",
+                      "rn6",
+                      "rn7"
+                    ],
+                    "description": "Genome build for the annotation"
+                  }
+                },
+                "required": [
+                  "traceId",
+                  "sourceResource",
+                  "sourceVersion",
+                  "genomeBuild"
+                ],
+                "additionalProperties": false,
+                "description": "Annotation trace for this mapping"
+              }
+            },
+            "required": [
+              "featureId",
+              "geneIds",
+              "method",
+              "confidence",
+              "sourceResource",
+              "annotationRelease",
+              "biosampleContextMatch",
+              "downstreamUseRule"
+            ],
+            "additionalProperties": false
+          },
+          "default": [],
+          "description": "External database-supported mappings"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Region-to-gene and external database mappings kept separate from features"
+    },
+    "annotationTrace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "traceId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable trace identifier"
+          },
+          "sourceResource": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Annotation resource name (e.g., Ensembl, GENCODE)"
+          },
+          "sourceVersion": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Annotation release version"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Release timestamp"
+          },
+          "genomeBuild": {
+            "type": "string",
+            "enum": [
+              "GRCh37",
+              "GRCh38",
+              "hg19",
+              "hg38",
+              "mm9",
+              "mm10",
+              "mm39",
+              "rn6",
+              "rn7"
+            ],
+            "description": "Genome build for the annotation"
+          }
+        },
+        "required": [
+          "traceId",
+          "sourceResource",
+          "sourceVersion",
+          "genomeBuild"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Annotation traces used for coordinate or mapping validation"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "schemaName",
+    "packetId",
+    "datasetMetadataRef",
+    "designRef",
+    "features",
+    "design",
+    "provenance",
+    "qualificationSummary",
+    "qcReportRef",
+    "generatedAt"
+  ],
+  "additionalProperties": false
+}

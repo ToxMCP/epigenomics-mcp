@@ -1,0 +1,91 @@
+=== Benchmark Runner Report ===
+
+[PASS] bm_beta_manifest_complete
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_dmr_nearest_gene_only
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_build_missing
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_invalid_coordinate_format
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_missing_cell_context
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_missing_cytotoxicity_context
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_dominant_cytotoxicity
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_insufficient_replicates
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_high_missingness
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_summary_contrast_only
+  [PASS] design_validation (validateDesign) -> design_validation.json
+  [PASS] qc_profile (profileQc) -> qc_profile.json
+  [PASS] missingness_profile (profileMissingness) -> missingness_profile.json
+  [PASS] qualification_result (qualifyFeatures) -> qualification_result.json
+  [PASS] handoff_result (buildHandoffPacket) -> handoff_result.json
+  [PASS] packet_snapshot (buildPacket) -> packet.json
+
+[PASS] bm_handoff_schema_valid
+  [PASS] handoff_validation (validateHandoffSchema) -> handoff_validation.json
+  [PASS] handoff_snapshot (passthrough) -> handoff.json
+
+[PASS] bm_handoff_schema_invalid
+  [PASS] handoff_validation (validateHandoffSchema) -> handoff_validation.json
+  [PASS] handoff_snapshot (passthrough) -> handoff.json
+
+=== Overall: PASSED ===

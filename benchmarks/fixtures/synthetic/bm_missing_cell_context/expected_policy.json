@@ -1,0 +1,10 @@
+{
+  "fixtureName": "bm_missing_cell_context",
+  "description": "No cell-composition context is provided. Default policy has blockOnMissingContext=false, so this should emit a warning but not block handoff.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "accepted_for_pod",
+  "expectedWarnings": ["CC_NOT_DECLARED"],
+  "expectedBlocksDownstream": false,
+  "expectedHandoffReady": true,
+  "note": "If policy were changed to blockOnMissingContext=true, this fixture would be excluded."
+}

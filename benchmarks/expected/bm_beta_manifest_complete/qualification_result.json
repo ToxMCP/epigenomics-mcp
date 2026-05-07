@@ -1,0 +1,103 @@
+{
+  "qualifiedCount": 3,
+  "excludedCount": 0,
+  "warnings": [],
+  "qualifications": [
+    {
+      "featureId": "cg00000001",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg00000001"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg00000001 passed all blocking rules but carries 1 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "1"
+      }
+    },
+    {
+      "featureId": "cg00000002",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg00000002"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg00000002 passed all blocking rules but carries 1 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "1"
+      }
+    },
+    {
+      "featureId": "cg00000003",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg00000003"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg00000003 passed all blocking rules but carries 1 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "1"
+      }
+    }
+  ],
+  "claimGuardResult": {
+    "persistenceStatus": "not_assessed",
+    "reversibilityStatus": "not_assessed",
+    "heritabilityClaim": "none"
+  },
+  "explainabilitySummary": {
+    "uniqueRuleCodes": [
+      "RULE_009_MAJOR_WARNINGS"
+    ],
+    "ruleCodeCounts": {
+      "RULE_009_MAJOR_WARNINGS": 3
+    },
+    "reviewRequiredCount": 0,
+    "featuresWithRemediation": 3
+  }
+}

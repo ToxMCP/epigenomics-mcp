@@ -1,0 +1,13 @@
+{
+  "qualifiedCount": 0,
+  "excludedCount": 0,
+  "warnings": [
+    {
+      "warningCode": "EPI001_PACKET_SCHEMA_INVALID",
+      "severity": "error",
+      "message": "Packet schema validation failed: [\n  {\n    \"expected\": \"'GRCh37' | 'GRCh38' | 'hg19' | 'hg38' | 'mm9' | 'mm10' | 'mm39' | 'rn6' | 'rn7'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"features\",\n      1,\n      \"measuredRegion\",\n      \"build\"\n    ],\n    \"message\": \"Required\"\n  }\n]",
+      "category": "missing_metadata",
+      "blocksDownstream": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "featureId": "dmr_chr1_1000000_1000500",
+    "featureClass": "dmr",
+    "modality": "dna_methylation_bsseq",
+    "measuredRegion": {
+      "chrom": "chr1",
+      "start": 1000000,
+      "end": 1000500,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "delta_beta",
+    "values": {
+      "sample-ctrl-1": -0.02,
+      "sample-ctrl-2": -0.01,
+      "sample-ctrl-3": -0.03,
+      "sample-low-1": 0.08,
+      "sample-low-2": 0.09,
+      "sample-low-3": 0.07,
+      "sample-high-1": 0.25,
+      "sample-high-2": 0.27,
+      "sample-high-3": 0.24
+    }
+  },
+  {
+    "featureId": "dmr_chr2_500000_500600",
+    "featureClass": "dmr",
+    "modality": "dna_methylation_bsseq",
+    "measuredRegion": {
+      "chrom": "chr2",
+      "start": 500000,
+      "end": 500600,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "delta_beta",
+    "values": {
+      "sample-ctrl-1": 0.01,
+      "sample-ctrl-2": 0.00,
+      "sample-ctrl-3": 0.02,
+      "sample-low-1": -0.05,
+      "sample-low-2": -0.06,
+      "sample-low-3": -0.04,
+      "sample-high-1": -0.18,
+      "sample-high-2": -0.19,
+      "sample-high-3": -0.17
+    }
+  }
+]

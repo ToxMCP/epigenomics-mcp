@@ -1,0 +1,10 @@
+{
+  "fixtureName": "bm_dominant_cytotoxicity",
+  "description": "Cytotoxicity is detected at dominant level (viability < 0.8 and stress flags present). Expected to emit cytotoxicity and stress warnings.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "accepted_for_pod",
+  "expectedWarnings": ["CTX_CYTOTOXICITY_DETECTED", "CTX_STRESS_FLAG"],
+  "expectedBlocksDownstream": false,
+  "expectedHandoffReady": true,
+  "note": "Default policy cytotoxicityBlockLevel is 'dominant_confounding', but current v0.1 engine only emits warnings; it does not yet block handoff for cytotoxicity."
+}

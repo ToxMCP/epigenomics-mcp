@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "BioactivityPoDHandoffPacket",
+  "handoffId": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "sourcePacketRef": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "qualifiedFeatures": [
+    {
+      "featureId": "cg_accepted_002",
+      "status": "accepted_for_pod",
+      "warnings": [],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_010_ACCEPTED",
+        "reasonTemplate": "Feature cg_accepted_002 satisfies all policy thresholds and carries no blocking warnings. Accepted for downstream Bioactivity-PoD modelling.",
+        "reviewRequired": false,
+        "policyReference": "none"
+      }
+    }
+  ],
+  "excludedFeatures": [
+    {
+      "featureId": "cg_exploratory_001",
+      "status": "exploratory_only",
+      "warnings": [
+        {
+          "warningCode": "EPI007_CYOTOXICITY_BLOCKING",
+          "severity": "error",
+          "message": "Feature cg_exploratory_001 blocked due to cytotoxicity confounding at level dominant_confounding",
+          "category": "cytotoxicity",
+          "featureIds": [
+            "cg_exploratory_001"
+          ],
+          "blocksDownstream": true
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_007_DOMINANT_CONFOUNDING",
+        "reasonTemplate": "Feature cg_exploratory_001 is affected by confounding (observed level: dominant_confounding) that meets or exceeds the policy block level (dominant_confounding). The feature is downgraded to exploratory-only.",
+        "remediationHint": "Provide additional confounding-context metadata (cell composition, cytotoxicity, stress response, or differentiation drift) or adjust the confounding block level in policy.",
+        "reviewRequired": true,
+        "policyReference": "confounding.cytotoxicityBlockLevel",
+        "thresholdValue": "dominant_confounding",
+        "observedValue": "dominant_confounding"
+      }
+    }
+  ],
+  "doseResponseReadySubset": [
+    "cg_accepted_002"
+  ],
+  "mandatoryCaveats": [
+    {
+      "warningCode": "EPI007_CYOTOXICITY_BLOCKING",
+      "severity": "error",
+      "message": "Feature cg_exploratory_001 blocked due to cytotoxicity confounding at level dominant_confounding",
+      "category": "cytotoxicity",
+      "featureIds": [
+        "cg_exploratory_001"
+      ],
+      "blocksDownstream": true
+    }
+  ],
+  "generatedAt": "2026-05-05T00:00:00Z",
+  "persistenceStatus": "not_assessed",
+  "reversibilityStatus": "not_assessed",
+  "heritabilityClaim": "none",
+  "provenance": {
+    "datasetId": "golden-exploratory-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {
+          "method": "SWAN"
+        },
+        "timestamp": "2026-04-01T11:00:00Z",
+        "inputFiles": [
+          "intensities.rds"
+        ],
+        "outputFiles": [
+          "beta_values.csv"
+        ]
+      }
+    ],
+    "normalisationMethod": "SWAN",
+    "probeManifestVersion": "Illumina EPIC v2.0",
+    "annotationVersion": "hg38"
+  }
+}

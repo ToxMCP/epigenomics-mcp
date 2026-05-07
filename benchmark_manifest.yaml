@@ -1,0 +1,259 @@
+version: "0.1.0"
+description: Epigenomics MCP benchmark manifest for golden output comparison
+normalization:
+  deterministicPacketId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  deterministicHandoffId: "b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  deterministicTimestamp: "2026-05-05T00:00:00Z"
+benchmarks:
+  - name: bm_beta_manifest_complete
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_beta_manifest_complete
+    expected: benchmarks/expected/bm_beta_manifest_complete
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_dmr_nearest_gene_only
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only
+    expected: benchmarks/expected/bm_dmr_nearest_gene_only
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_build_missing
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_build_missing
+    expected: benchmarks/expected/bm_build_missing
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_invalid_coordinate_format
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_invalid_coordinate_format
+    expected: benchmarks/expected/bm_invalid_coordinate_format
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_missing_cell_context
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_missing_cell_context
+    expected: benchmarks/expected/bm_missing_cell_context
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_missing_cytotoxicity_context
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context
+    expected: benchmarks/expected/bm_missing_cytotoxicity_context
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_dominant_cytotoxicity
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity
+    expected: benchmarks/expected/bm_dominant_cytotoxicity
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_insufficient_replicates
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_insufficient_replicates
+    expected: benchmarks/expected/bm_insufficient_replicates
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_high_missingness
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_high_missingness
+    expected: benchmarks/expected/bm_high_missingness
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_summary_contrast_only
+    type: feature
+    fixture: benchmarks/fixtures/synthetic/bm_summary_contrast_only
+    expected: benchmarks/expected/bm_summary_contrast_only
+    steps:
+      - name: design_validation
+        tool: validateDesign
+        output: design_validation.json
+      - name: qc_profile
+        tool: profileQc
+        output: qc_profile.json
+      - name: missingness_profile
+        tool: profileMissingness
+        output: missingness_profile.json
+      - name: qualification_result
+        tool: qualifyFeatures
+        output: qualification_result.json
+      - name: handoff_result
+        tool: buildHandoffPacket
+        output: handoff_result.json
+      - name: packet_snapshot
+        tool: buildPacket
+        output: packet.json
+  - name: bm_handoff_schema_valid
+    type: handoff
+    fixture: benchmarks/fixtures/synthetic/bm_handoff_schema_valid
+    expected: benchmarks/expected/bm_handoff_schema_valid
+    steps:
+      - name: handoff_validation
+        tool: validateHandoffSchema
+        output: handoff_validation.json
+      - name: handoff_snapshot
+        tool: passthrough
+        output: handoff.json
+  - name: bm_handoff_schema_invalid
+    type: handoff
+    fixture: benchmarks/fixtures/synthetic/bm_handoff_schema_invalid
+    expected: benchmarks/expected/bm_handoff_schema_invalid
+    steps:
+      - name: handoff_validation
+        tool: validateHandoffSchema
+        output: handoff_validation.json
+      - name: handoff_snapshot
+        tool: passthrough
+        output: handoff.json

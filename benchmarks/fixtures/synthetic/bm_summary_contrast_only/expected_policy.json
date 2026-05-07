@@ -1,0 +1,10 @@
+{
+  "fixtureName": "bm_summary_contrast_only",
+  "description": "Feature values are summary contrasts rather than per-sample measurements. Schema validation passes because values are non-null numbers, but the data is not dose-response ready.",
+  "expectedSchemaValid": true,
+  "expectedQualificationStatus": "exploratory_only",
+  "expectedWarnings": [],
+  "expectedBlocksDownstream": false,
+  "expectedHandoffReady": false,
+  "note": "Contrast summaries cannot be used for per-sample dose-response curve fitting."
+}

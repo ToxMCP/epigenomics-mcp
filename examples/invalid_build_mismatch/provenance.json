@@ -1,0 +1,14 @@
+{
+  "datasetId": "demo-build-mismatch-ds-001",
+  "upstreamSteps": [
+    {
+      "stepName": "idat_to_intensities",
+      "toolName": "minfi",
+      "toolVersion": "1.44.0",
+      "parameters": { "preprocessMethod": "noob" },
+      "timestamp": "2026-04-01T10:00:00Z"
+    }
+  ],
+  "normalisationMethod": "noob",
+  "annotationVersion": "hg38"
+}

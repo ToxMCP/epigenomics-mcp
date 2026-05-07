@@ -1,0 +1,9 @@
+{
+  "fixtureName": "bm_invalid_coordinate_format",
+  "description": "Features with invalid coordinates: end <= start and malformed chromosome identifier.",
+  "expectedSchemaValid": false,
+  "expectedQualificationStatus": "excluded_coordinate_ambiguity",
+  "expectedWarnings": [],
+  "expectedBlocksDownstream": true,
+  "expectedHandoffReady": false
+}

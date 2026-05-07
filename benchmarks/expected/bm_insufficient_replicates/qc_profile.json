@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "datasetId": "bm-rep-low-ds-001",
+    "totalFeatures": 1,
+    "featuresWithMissingValues": 0,
+    "missingnessRate": 0,
+    "designAdequacyFlags": {
+      "sufficientReplicates": false,
+      "doseRangeDeclared": true,
+      "controlsPresent": true,
+      "batchStructureKnown": false,
+      "speciesBuildDeclared": true
+    }
+  },
+  "pass": false
+}

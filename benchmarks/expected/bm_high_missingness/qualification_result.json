@@ -1,0 +1,109 @@
+{
+  "qualifiedCount": 1,
+  "excludedCount": 1,
+  "warnings": [],
+  "qualifications": [
+    {
+      "featureId": "cg_miss_high_001",
+      "status": "excluded_qc_failure",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 2 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_miss_high_001"
+          ]
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_miss_high_001"
+          ]
+        },
+        {
+          "warningCode": "EPIE002_EXCESSIVE_MISSINGNESS",
+          "severity": "error",
+          "message": "Feature cg_miss_high_001 has 75.0% missing values (threshold 20.0%)",
+          "category": "platform_specific",
+          "blocksDownstream": true,
+          "featureIds": [
+            "cg_miss_high_001"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_005_HIGH_MISSINGNESS",
+        "reasonTemplate": "Feature cg_miss_high_001 has 75.0% missing values, exceeding the policy exclusion threshold of 20.0%. High missingness reduces reliability for dose-response modelling.",
+        "remediationHint": "Investigate sample-level missingness; consider imputation or exclusion of low-quality samples.",
+        "reviewRequired": true,
+        "policyReference": "missingness.exclusionThreshold",
+        "thresholdValue": "20.0%",
+        "observedValue": "75.0%"
+      }
+    },
+    {
+      "featureId": "cg_miss_high_002",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 2 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_miss_high_002"
+          ]
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_miss_high_002"
+          ]
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg_miss_high_002 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "2"
+      }
+    }
+  ],
+  "claimGuardResult": {
+    "persistenceStatus": "not_assessed",
+    "reversibilityStatus": "not_assessed",
+    "heritabilityClaim": "none"
+  },
+  "explainabilitySummary": {
+    "uniqueRuleCodes": [
+      "RULE_005_HIGH_MISSINGNESS",
+      "RULE_009_MAJOR_WARNINGS"
+    ],
+    "ruleCodeCounts": {
+      "RULE_005_HIGH_MISSINGNESS": 1,
+      "RULE_009_MAJOR_WARNINGS": 1
+    },
+    "reviewRequiredCount": 1,
+    "featuresWithRemediation": 2
+  }
+}

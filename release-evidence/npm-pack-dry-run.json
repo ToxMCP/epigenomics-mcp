@@ -1,0 +1,1966 @@
+[
+  {
+    "id": "epigenomics-mcp@0.1.0",
+    "name": "epigenomics-mcp",
+    "version": "0.1.0",
+    "size": 392867,
+    "unpackedSize": 2504447,
+    "shasum": "c9f1b0269b08e4d11ec873171802e2aa57b9b79b",
+    "integrity": "sha512-WwiubsFHfcJNHcF57XWkVrE60Je7ex6HCMtd7FMoxsRnLLIqYjJeNTD07G8x4kfiGnGlkv2fdZG4Qq0S/ov2LQ==",
+    "filename": "epigenomics-mcp-0.1.0.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 1063,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 11269,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/compare.d.ts",
+        "size": 680,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/compare.d.ts.map",
+        "size": 537,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/compare.js",
+        "size": 3228,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/compare.js.map",
+        "size": 3474,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/manifest.d.ts",
+        "size": 6768,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/manifest.d.ts.map",
+        "size": 681,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/manifest.js",
+        "size": 1308,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/manifest.js.map",
+        "size": 1453,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/public_fixtures.d.ts",
+        "size": 16822,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/public_fixtures.d.ts.map",
+        "size": 1678,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/public_fixtures.js",
+        "size": 7120,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/public_fixtures.js.map",
+        "size": 5169,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/release_gate.d.ts",
+        "size": 1419,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/release_gate.d.ts.map",
+        "size": 881,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/release_gate.js",
+        "size": 6516,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/release_gate.js.map",
+        "size": 5883,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/runner.d.ts",
+        "size": 851,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/runner.d.ts.map",
+        "size": 729,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/runner.js",
+        "size": 8681,
+        "mode": 420
+      },
+      {
+        "path": "dist/benchmarks/runner.js.map",
+        "size": 8037,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/base.d.ts",
+        "size": 8479,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/base.d.ts.map",
+        "size": 802,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/base.js",
+        "size": 3113,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/base.js.map",
+        "size": 2617,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/context.d.ts",
+        "size": 10118,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/context.d.ts.map",
+        "size": 1188,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/context.js",
+        "size": 5429,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/context.js.map",
+        "size": 4166,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinate_conversion.d.ts",
+        "size": 21163,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinate_conversion.d.ts.map",
+        "size": 1164,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinate_conversion.js",
+        "size": 3981,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinate_conversion.js.map",
+        "size": 2716,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinates.d.ts",
+        "size": 3449,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinates.d.ts.map",
+        "size": 690,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinates.js",
+        "size": 1903,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/coordinates.js.map",
+        "size": 1855,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/dataset.d.ts",
+        "size": 3519,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/dataset.d.ts.map",
+        "size": 760,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/dataset.js",
+        "size": 2230,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/dataset.js.map",
+        "size": 1787,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/design.d.ts",
+        "size": 26944,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/design.d.ts.map",
+        "size": 1970,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/design.js",
+        "size": 6229,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/design.js.map",
+        "size": 5749,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/features.d.ts",
+        "size": 80280,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/features.d.ts.map",
+        "size": 3180,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/features.js",
+        "size": 19682,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/features.js.map",
+        "size": 15698,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/index.d.ts",
+        "size": 5570,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/index.d.ts.map",
+        "size": 3249,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/index.js",
+        "size": 3706,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/index.js.map",
+        "size": 1939,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/mapping.d.ts",
+        "size": 29367,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/mapping.d.ts.map",
+        "size": 1611,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/mapping.js",
+        "size": 5873,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/mapping.js.map",
+        "size": 3219,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/measurement_semantics.d.ts",
+        "size": 1504,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/measurement_semantics.d.ts.map",
+        "size": 682,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/measurement_semantics.js",
+        "size": 3907,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/measurement_semantics.js.map",
+        "size": 2084,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/packets.d.ts",
+        "size": 85025,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/packets.d.ts.map",
+        "size": 2025,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/packets.js",
+        "size": 3542,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/packets.js.map",
+        "size": 3064,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/provenance.d.ts",
+        "size": 8174,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/provenance.d.ts.map",
+        "size": 937,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/provenance.js",
+        "size": 3468,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/provenance.js.map",
+        "size": 3139,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qc.d.ts",
+        "size": 20286,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qc.d.ts.map",
+        "size": 1424,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qc.js",
+        "size": 3741,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qc.js.map",
+        "size": 3665,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qualification.d.ts",
+        "size": 16376,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qualification.d.ts.map",
+        "size": 1487,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qualification.js",
+        "size": 7859,
+        "mode": 420
+      },
+      {
+        "path": "dist/contracts/qualification.js.map",
+        "size": 6088,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/external_mapping.d.ts",
+        "size": 3290,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/external_mapping.d.ts.map",
+        "size": 1694,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/external_mapping.js",
+        "size": 5859,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/external_mapping.js.map",
+        "size": 3543,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/normalise.d.ts",
+        "size": 2470,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/normalise.d.ts.map",
+        "size": 942,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/normalise.js",
+        "size": 7560,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/normalise.js.map",
+        "size": 4821,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/region_to_gene.d.ts",
+        "size": 5153,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/region_to_gene.d.ts.map",
+        "size": 1419,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/region_to_gene.js",
+        "size": 6742,
+        "mode": 420
+      },
+      {
+        "path": "dist/coordinate_mapping/region_to_gene.js.map",
+        "size": 4709,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/cli.d.ts",
+        "size": 64,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/cli.d.ts.map",
+        "size": 110,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/cli.js",
+        "size": 18497,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/cli.js.map",
+        "size": 16427,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/config.d.ts",
+        "size": 19137,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/config.d.ts.map",
+        "size": 1521,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/config.js",
+        "size": 13474,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/config.js.map",
+        "size": 9891,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/index.d.ts",
+        "size": 1357,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/index.d.ts.map",
+        "size": 894,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/index.js",
+        "size": 1017,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/index.js.map",
+        "size": 663,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/manifest.d.ts",
+        "size": 6246,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/manifest.d.ts.map",
+        "size": 1143,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/manifest.js",
+        "size": 4107,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/manifest.js.map",
+        "size": 4251,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/resources.d.ts",
+        "size": 254,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/resources.d.ts.map",
+        "size": 265,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/resources.js",
+        "size": 5530,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/resources.js.map",
+        "size": 3047,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/server.d.ts",
+        "size": 147,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/server.d.ts.map",
+        "size": 230,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/server.js",
+        "size": 1251,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/server.js.map",
+        "size": 956,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/tool_registry.d.ts",
+        "size": 26009,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/tool_registry.d.ts.map",
+        "size": 2232,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/tool_registry.js",
+        "size": 27024,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/tool_registry.js.map",
+        "size": 24904,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/version.d.ts",
+        "size": 132,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/version.d.ts.map",
+        "size": 158,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/version.js",
+        "size": 122,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/version.js.map",
+        "size": 166,
+        "mode": 420
+      },
+      {
+        "path": "dist/handoff/builder.d.ts",
+        "size": 1296,
+        "mode": 420
+      },
+      {
+        "path": "dist/handoff/builder.d.ts.map",
+        "size": 597,
+        "mode": 420
+      },
+      {
+        "path": "dist/handoff/builder.js",
+        "size": 3944,
+        "mode": 420
+      },
+      {
+        "path": "dist/handoff/builder.js.map",
+        "size": 2794,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/csv_reader.d.ts",
+        "size": 3696,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/csv_reader.d.ts.map",
+        "size": 673,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/csv_reader.js",
+        "size": 11699,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/csv_reader.js.map",
+        "size": 10506,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/design_reader.d.ts",
+        "size": 17041,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/design_reader.d.ts.map",
+        "size": 1112,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/design_reader.js",
+        "size": 11498,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/design_reader.js.map",
+        "size": 10354,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_table.d.ts",
+        "size": 36955,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_table.d.ts.map",
+        "size": 1817,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_table.js",
+        "size": 31471,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_table.js.map",
+        "size": 27257,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_type_classifier.d.ts",
+        "size": 16716,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_type_classifier.d.ts.map",
+        "size": 1707,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_type_classifier.js",
+        "size": 17804,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/feature_type_classifier.js.map",
+        "size": 11578,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/format_detection.d.ts",
+        "size": 4291,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/format_detection.d.ts.map",
+        "size": 780,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/format_detection.js",
+        "size": 10746,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/format_detection.js.map",
+        "size": 8238,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/index.d.ts",
+        "size": 4161,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/index.d.ts.map",
+        "size": 2304,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/index.js",
+        "size": 2556,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/index.js.map",
+        "size": 1362,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/long_format.d.ts",
+        "size": 8208,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/long_format.d.ts.map",
+        "size": 969,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/long_format.js",
+        "size": 12372,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/long_format.js.map",
+        "size": 10210,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/methylation_classifier.d.ts",
+        "size": 8250,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/methylation_classifier.d.ts.map",
+        "size": 1354,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/methylation_classifier.js",
+        "size": 17691,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/methylation_classifier.js.map",
+        "size": 14296,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/mixed_feature_handler.d.ts",
+        "size": 13036,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/mixed_feature_handler.d.ts.map",
+        "size": 1759,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/mixed_feature_handler.js",
+        "size": 20270,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/mixed_feature_handler.js.map",
+        "size": 15196,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/region_feature_classifier.d.ts",
+        "size": 9743,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/region_feature_classifier.d.ts.map",
+        "size": 1407,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/region_feature_classifier.js",
+        "size": 17799,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/region_feature_classifier.js.map",
+        "size": 12862,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/table_adapters.d.ts",
+        "size": 17800,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/table_adapters.d.ts.map",
+        "size": 1561,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/table_adapters.js",
+        "size": 18886,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/table_adapters.js.map",
+        "size": 14807,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/wide_format.d.ts",
+        "size": 7853,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/wide_format.d.ts.map",
+        "size": 1073,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/wide_format.js",
+        "size": 13431,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/wide_format.js.map",
+        "size": 11050,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/annotation_client.d.ts",
+        "size": 25342,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/annotation_client.d.ts.map",
+        "size": 5641,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/annotation_client.js",
+        "size": 17358,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/annotation_client.js.map",
+        "size": 15802,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/bioactivity_pod_client.d.ts",
+        "size": 1386,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/bioactivity_pod_client.d.ts.map",
+        "size": 601,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/bioactivity_pod_client.js",
+        "size": 1259,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/bioactivity_pod_client.js.map",
+        "size": 520,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/evidence_registry_client.d.ts",
+        "size": 466,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/evidence_registry_client.d.ts.map",
+        "size": 385,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/evidence_registry_client.js",
+        "size": 454,
+        "mode": 420
+      },
+      {
+        "path": "dist/integrations/evidence_registry_client.js.map",
+        "size": 371,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/annotation_guardrails.d.ts",
+        "size": 30476,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/annotation_guardrails.d.ts.map",
+        "size": 1924,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/annotation_guardrails.js",
+        "size": 11749,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/annotation_guardrails.js.map",
+        "size": 7043,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/pathway.d.ts",
+        "size": 4547,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/pathway.d.ts.map",
+        "size": 692,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/pathway.js",
+        "size": 3464,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/pathway.js.map",
+        "size": 2567,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/region_to_gene.d.ts",
+        "size": 1006,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/region_to_gene.d.ts.map",
+        "size": 401,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/region_to_gene.js",
+        "size": 3583,
+        "mode": 420
+      },
+      {
+        "path": "dist/mapping/region_to_gene.js.map",
+        "size": 2223,
+        "mode": 420
+      },
+      {
+        "path": "dist/packet_builder.d.ts",
+        "size": 1781,
+        "mode": 420
+      },
+      {
+        "path": "dist/packet_builder.d.ts.map",
+        "size": 1129,
+        "mode": 420
+      },
+      {
+        "path": "dist/packet_builder.js",
+        "size": 4557,
+        "mode": 420
+      },
+      {
+        "path": "dist/packet_builder.js.map",
+        "size": 3837,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cell_composition.d.ts",
+        "size": 15946,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cell_composition.d.ts.map",
+        "size": 1856,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cell_composition.js",
+        "size": 21230,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cell_composition.js.map",
+        "size": 15608,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cytotoxicity.d.ts",
+        "size": 19400,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cytotoxicity.d.ts.map",
+        "size": 1982,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cytotoxicity.js",
+        "size": 21063,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/cytotoxicity.js.map",
+        "size": 15301,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/deterministic_profile.d.ts",
+        "size": 23838,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/deterministic_profile.d.ts.map",
+        "size": 1356,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/deterministic_profile.js",
+        "size": 7232,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/deterministic_profile.js.map",
+        "size": 5382,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/missingness.d.ts",
+        "size": 7472,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/missingness.d.ts.map",
+        "size": 1292,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/missingness.js",
+        "size": 8147,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/missingness.js.map",
+        "size": 6910,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/profiler.d.ts",
+        "size": 508,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/profiler.d.ts.map",
+        "size": 463,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/profiler.js",
+        "size": 1452,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/profiler.js.map",
+        "size": 1377,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/report_builder.d.ts",
+        "size": 6063,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/report_builder.d.ts.map",
+        "size": 796,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/report_builder.js",
+        "size": 6138,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/report_builder.js.map",
+        "size": 4267,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/variance.d.ts",
+        "size": 2758,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/variance.d.ts.map",
+        "size": 658,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/variance.js",
+        "size": 8717,
+        "mode": 420
+      },
+      {
+        "path": "dist/qc/variance.js.map",
+        "size": 7675,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/claim_guards.d.ts",
+        "size": 1917,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/claim_guards.d.ts.map",
+        "size": 576,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/claim_guards.js",
+        "size": 3435,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/claim_guards.js.map",
+        "size": 1636,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/engine.d.ts",
+        "size": 1240,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/engine.d.ts.map",
+        "size": 741,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/engine.js",
+        "size": 4671,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/engine.js.map",
+        "size": 3231,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/explainability.d.ts",
+        "size": 2127,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/explainability.d.ts.map",
+        "size": 1006,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/explainability.js",
+        "size": 10221,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/explainability.js.map",
+        "size": 5590,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/packet_builder.d.ts",
+        "size": 2506,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/packet_builder.d.ts.map",
+        "size": 1213,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/packet_builder.js",
+        "size": 10203,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/packet_builder.js.map",
+        "size": 6955,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/policy.d.ts",
+        "size": 30342,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/policy.d.ts.map",
+        "size": 3308,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/policy.js",
+        "size": 15653,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/policy.js.map",
+        "size": 9908,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/rules.d.ts",
+        "size": 2631,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/rules.d.ts.map",
+        "size": 1294,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/rules.js",
+        "size": 18276,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/rules.js.map",
+        "size": 13193,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/artifacts.d.ts",
+        "size": 606,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/artifacts.d.ts.map",
+        "size": 344,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/artifacts.js",
+        "size": 665,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/artifacts.js.map",
+        "size": 686,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/schema.d.ts",
+        "size": 6448,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/schema.d.ts.map",
+        "size": 608,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/schema.js",
+        "size": 1972,
+        "mode": 420
+      },
+      {
+        "path": "dist/release_evidence/schema.js.map",
+        "size": 2567,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/json_report.d.ts",
+        "size": 3462,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/json_report.d.ts.map",
+        "size": 2905,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/json_report.js",
+        "size": 7383,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/json_report.js.map",
+        "size": 4977,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/mapping_report.d.ts",
+        "size": 41154,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/mapping_report.d.ts.map",
+        "size": 2084,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/mapping_report.js",
+        "size": 11529,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/mapping_report.js.map",
+        "size": 9024,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/markdown_report.d.ts",
+        "size": 286,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/markdown_report.d.ts.map",
+        "size": 251,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/markdown_report.js",
+        "size": 11249,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/markdown_report.js.map",
+        "size": 10315,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/qc_report.d.ts",
+        "size": 530,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/qc_report.d.ts.map",
+        "size": 525,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/qc_report.js",
+        "size": 687,
+        "mode": 420
+      },
+      {
+        "path": "dist/reports/qc_report.js.map",
+        "size": 505,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/export-schemas.d.ts",
+        "size": 1455,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/export-schemas.d.ts.map",
+        "size": 1144,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/export-schemas.js",
+        "size": 5590,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/export-schemas.js.map",
+        "size": 4077,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/schema-drift.d.ts",
+        "size": 720,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/schema-drift.d.ts.map",
+        "size": 506,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/schema-drift.js",
+        "size": 2460,
+        "mode": 420
+      },
+      {
+        "path": "dist/scripts/schema-drift.js.map",
+        "size": 2359,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/group_summary.d.ts",
+        "size": 4778,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/group_summary.d.ts.map",
+        "size": 838,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/group_summary.js",
+        "size": 5691,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/group_summary.js.map",
+        "size": 4613,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/replicate_consistency.d.ts",
+        "size": 7925,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/replicate_consistency.d.ts.map",
+        "size": 911,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/replicate_consistency.js",
+        "size": 9142,
+        "mode": 420
+      },
+      {
+        "path": "dist/summarization/replicate_consistency.js.map",
+        "size": 7393,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/chromosome_bounds.d.ts",
+        "size": 2425,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/chromosome_bounds.d.ts.map",
+        "size": 980,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/chromosome_bounds.js",
+        "size": 13730,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/chromosome_bounds.js.map",
+        "size": 10940,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinate_validator.d.ts",
+        "size": 1854,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinate_validator.d.ts.map",
+        "size": 698,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinate_validator.js",
+        "size": 3310,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinate_validator.js.map",
+        "size": 2120,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinates.d.ts",
+        "size": 394,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinates.d.ts.map",
+        "size": 314,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinates.js",
+        "size": 1725,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/coordinates.js.map",
+        "size": 1704,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validation_report.d.ts",
+        "size": 9346,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validation_report.d.ts.map",
+        "size": 1167,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validation_report.js",
+        "size": 10826,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validation_report.js.map",
+        "size": 9116,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validator.d.ts",
+        "size": 1894,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validator.d.ts.map",
+        "size": 762,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validator.js",
+        "size": 8559,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design_validator.js.map",
+        "size": 7185,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design.d.ts",
+        "size": 370,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design.d.ts.map",
+        "size": 328,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design.js",
+        "size": 1655,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/design.js.map",
+        "size": 1790,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/feature_coordinate_validator.d.ts",
+        "size": 2364,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/feature_coordinate_validator.d.ts.map",
+        "size": 1168,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/feature_coordinate_validator.js",
+        "size": 8755,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/feature_coordinate_validator.js.map",
+        "size": 5936,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/genome_build.d.ts",
+        "size": 2002,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/genome_build.d.ts.map",
+        "size": 834,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/genome_build.js",
+        "size": 4691,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/genome_build.js.map",
+        "size": 3009,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/handoff.d.ts",
+        "size": 1488,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/handoff.d.ts.map",
+        "size": 500,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/handoff.js",
+        "size": 6523,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/handoff.js.map",
+        "size": 4896,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/platform_provenance.d.ts",
+        "size": 1828,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/platform_provenance.d.ts.map",
+        "size": 742,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/platform_provenance.js",
+        "size": 4186,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/platform_provenance.js.map",
+        "size": 2644,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/replicate_validator.d.ts",
+        "size": 12051,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/replicate_validator.d.ts.map",
+        "size": 1315,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/replicate_validator.js",
+        "size": 10579,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/replicate_validator.js.map",
+        "size": 7323,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/sample_coverage.d.ts",
+        "size": 7293,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/sample_coverage.d.ts.map",
+        "size": 1114,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/sample_coverage.js",
+        "size": 9742,
+        "mode": 420
+      },
+      {
+        "path": "dist/validators/sample_coverage.js.map",
+        "size": 7558,
+        "mode": 420
+      },
+      {
+        "path": "docs/cell-composition-confounding-guide.md",
+        "size": 6586,
+        "mode": 420
+      },
+      {
+        "path": "docs/cytotoxicity-context-guide.md",
+        "size": 7375,
+        "mode": 420
+      },
+      {
+        "path": "docs/genome-build-and-coordinate-guide.md",
+        "size": 5926,
+        "mode": 420
+      },
+      {
+        "path": "docs/handoff.md",
+        "size": 1493,
+        "mode": 420
+      },
+      {
+        "path": "docs/input_formats.md",
+        "size": 1405,
+        "mode": 420
+      },
+      {
+        "path": "docs/input-format-guide.md",
+        "size": 7448,
+        "mode": 420
+      },
+      {
+        "path": "docs/non_goals.md",
+        "size": 936,
+        "mode": 420
+      },
+      {
+        "path": "docs/non-goals.md",
+        "size": 5796,
+        "mode": 420
+      },
+      {
+        "path": "docs/region-to-gene-mapping-guide.md",
+        "size": 6856,
+        "mode": 420
+      },
+      {
+        "path": "docs/scientific_scope.md",
+        "size": 1775,
+        "mode": 420
+      },
+      {
+        "path": "docs/scientific-scope.md",
+        "size": 6785,
+        "mode": 420
+      },
+      {
+        "path": "docs/tool-reference.md",
+        "size": 26755,
+        "mode": 420
+      },
+      {
+        "path": "docs/validation-statement.md",
+        "size": 22116,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff_valid/accepted_with_warnings.json",
+        "size": 3836,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff_valid/accepted.json",
+        "size": 2536,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff_valid/excluded.json",
+        "size": 3002,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff_valid/exploratory_only.json",
+        "size": 3215,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff_valid/README.md",
+        "size": 1416,
+        "mode": 420
+      },
+      {
+        "path": "examples/bioactivity_pod_handoff/packet.json",
+        "size": 4380,
+        "mode": 420
+      },
+      {
+        "path": "examples/dmr_nearest_gene_warning/design.json",
+        "size": 2166,
+        "mode": 420
+      },
+      {
+        "path": "examples/dmr_nearest_gene_warning/feature_table.json",
+        "size": 1210,
+        "mode": 420
+      },
+      {
+        "path": "examples/dmr_nearest_gene_warning/packet.json",
+        "size": 4533,
+        "mode": 420
+      },
+      {
+        "path": "examples/dmr_nearest_gene_warning/provenance.json",
+        "size": 490,
+        "mode": 420
+      },
+      {
+        "path": "examples/invalid_build_mismatch/design.json",
+        "size": 1165,
+        "mode": 420
+      },
+      {
+        "path": "examples/invalid_build_mismatch/feature_table.json",
+        "size": 1003,
+        "mode": 420
+      },
+      {
+        "path": "examples/invalid_build_mismatch/packet.json",
+        "size": 3158,
+        "mode": 420
+      },
+      {
+        "path": "examples/invalid_build_mismatch/provenance.json",
+        "size": 343,
+        "mode": 420
+      },
+      {
+        "path": "examples/methylation_matrix/design.json",
+        "size": 2182,
+        "mode": 420
+      },
+      {
+        "path": "examples/methylation_matrix/feature_table.json",
+        "size": 1287,
+        "mode": 420
+      },
+      {
+        "path": "examples/methylation_matrix/packet.json",
+        "size": 4968,
+        "mode": 420
+      },
+      {
+        "path": "examples/methylation_matrix/provenance.json",
+        "size": 800,
+        "mode": 420
+      },
+      {
+        "path": "examples/sample_design.yaml",
+        "size": 442,
+        "mode": 420
+      },
+      {
+        "path": "examples/sample_feature_table.tsv",
+        "size": 623,
+        "mode": 420
+      },
+      {
+        "path": "examples/sample_provenance.yaml",
+        "size": 242,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 2555,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/base-envelope.json",
+        "size": 6717,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/bioactivity-pod-handoff-packet.json",
+        "size": 10702,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/epigenomics-feature-response-packet.json",
+        "size": 29427,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/external-database-mapping.json",
+        "size": 5102,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/qualification-policy.json",
+        "size": 11213,
+        "mode": 420
+      },
+      {
+        "path": "schemas/archive/0.1.0/region-to-gene-mapping.json",
+        "size": 2829,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/base-envelope.json",
+        "size": 6717,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/bioactivity-pod-handoff-packet.json",
+        "size": 15694,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/epigenomics-feature-response-packet.json",
+        "size": 31120,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/external-database-mapping.json",
+        "size": 5102,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/qualification-policy.json",
+        "size": 11512,
+        "mode": 420
+      },
+      {
+        "path": "schemas/current/region-to-gene-mapping.json",
+        "size": 3205,
+        "mode": 420
+      },
+      {
+        "path": "toxmcp.manifest.yaml",
+        "size": 4499,
+        "mode": 420
+      }
+    ],
+    "entryCount": 390,
+    "bundled": []
+  }
+]

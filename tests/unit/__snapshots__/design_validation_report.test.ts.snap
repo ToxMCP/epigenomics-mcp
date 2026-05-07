@@ -1,0 +1,595 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`emitDesignValidationReport > matches snapshot for blocked design (missing control) 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 0,
+    "batchIds": [],
+    "batchesDetected": 0,
+    "confoundedDoseGroups": [],
+    "doseBatchConfoundingDetected": false,
+    "samplesWithBatchId": 0,
+    "totalSamples": 2,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Design validation failed; dose-response modelling is blocked.",
+      "Control or dose-axis validation errors block downstream use.",
+      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Incomplete batch metadata (0/2 samples); unannotated batch effects may confound dose-response estimates.",
+    ],
+    "eligibleForDoseResponse": false,
+  },
+  "errors": [
+    "No control group detected; provide controlGroupId or include a zero-dose/control-flagged group",
+  ],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "low",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s1",
+      ],
+    },
+    {
+      "doseGroupId": "high",
+      "doseUnit": "µM",
+      "doseValue": 10,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s2",
+      ],
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 1,
+      "doseGroupId": "low",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "high",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": false,
+    "policyApplied": "single_timepoint",
+    "timepoints": [],
+    "undefinedTimepointCount": 1,
+  },
+  "valid": false,
+  "warnings": [],
+}
+`;
+
+exports[`emitDesignValidationReport > matches snapshot for blocked design (multi-timepoint rejected) 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 0,
+    "batchIds": [],
+    "batchesDetected": 0,
+    "confoundedDoseGroups": [],
+    "doseBatchConfoundingDetected": false,
+    "samplesWithBatchId": 0,
+    "totalSamples": 4,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Design validation failed; dose-response modelling is blocked.",
+      "Control or dose-axis validation errors block downstream use.",
+      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Incomplete batch metadata (0/4 samples); unannotated batch effects may confound dose-response estimates.",
+      "Multi-timepoint design rejected under v0.1 policy; per-timepoint splitting required for downstream use.",
+    ],
+    "eligibleForDoseResponse": false,
+  },
+  "errors": [
+    "Multi-timepoint design detected (24h, 48h); v0.1 requires single-timepoint. Set multiTimepointPolicy to 'split' to allow per-timepoint splitting",
+  ],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "ctrl_24",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s1",
+      ],
+      "timepointHours": 24,
+    },
+    {
+      "doseGroupId": "ctrl_48",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s3",
+      ],
+      "timepointHours": 48,
+    },
+    {
+      "doseGroupId": "low_24",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s2",
+      ],
+      "timepointHours": 24,
+    },
+    {
+      "doseGroupId": "low_48",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s4",
+      ],
+      "timepointHours": 48,
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 1,
+      "doseGroupId": "ctrl_24",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "low_24",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "ctrl_48",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "low_48",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": true,
+    "policyApplied": "rejected",
+    "timepoints": [
+      24,
+      48,
+    ],
+    "undefinedTimepointCount": 0,
+  },
+  "valid": false,
+  "warnings": [],
+}
+`;
+
+exports[`emitDesignValidationReport > matches snapshot for design with dose-batch confounding 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 1,
+    "batchIds": [
+      "batch-a",
+      "batch-b",
+      "batch-c",
+    ],
+    "batchesDetected": 3,
+    "confoundedDoseGroups": [
+      "ctrl",
+      "low",
+      "high",
+    ],
+    "doseBatchConfoundingDetected": true,
+    "samplesWithBatchId": 6,
+    "totalSamples": 6,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Dose-batch confounding detected in group(s): ctrl, low, high; review batch structure before downstream modelling.",
+    ],
+    "eligibleForDoseResponse": true,
+  },
+  "errors": [],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "ctrl",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s1",
+        "s2",
+      ],
+    },
+    {
+      "doseGroupId": "low",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s3",
+        "s4",
+      ],
+    },
+    {
+      "doseGroupId": "high",
+      "doseUnit": "µM",
+      "doseValue": 10,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s5",
+        "s6",
+      ],
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 2,
+      "doseGroupId": "ctrl",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+    {
+      "biological": 2,
+      "doseGroupId": "low",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+    {
+      "biological": 2,
+      "doseGroupId": "high",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": false,
+    "policyApplied": "single_timepoint",
+    "timepoints": [],
+    "undefinedTimepointCount": 1,
+  },
+  "valid": true,
+  "warnings": [],
+}
+`;
+
+exports[`emitDesignValidationReport > matches snapshot for design with warnings 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 0,
+    "batchIds": [],
+    "batchesDetected": 0,
+    "confoundedDoseGroups": [],
+    "doseBatchConfoundingDetected": false,
+    "samplesWithBatchId": 0,
+    "totalSamples": 3,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Incomplete batch metadata (0/3 samples); unannotated batch effects may confound dose-response estimates.",
+    ],
+    "eligibleForDoseResponse": true,
+  },
+  "errors": [],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "ctrl",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s1",
+      ],
+    },
+    {
+      "doseGroupId": "low",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s2",
+      ],
+    },
+    {
+      "doseGroupId": "high",
+      "doseUnit": "µM",
+      "doseValue": 10,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s3",
+      ],
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 1,
+      "doseGroupId": "ctrl",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "low",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "high",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": false,
+    "policyApplied": "single_timepoint",
+    "timepoints": [],
+    "undefinedTimepointCount": 1,
+  },
+  "valid": true,
+  "warnings": [],
+}
+`;
+
+exports[`emitDesignValidationReport > matches snapshot for split multi-timepoint design 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 0,
+    "batchIds": [],
+    "batchesDetected": 0,
+    "confoundedDoseGroups": [],
+    "doseBatchConfoundingDetected": false,
+    "samplesWithBatchId": 0,
+    "totalSamples": 4,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Incomplete batch metadata (0/4 samples); unannotated batch effects may confound dose-response estimates.",
+      "Multi-timepoint design was split into single-timepoint subsets; each subset must be evaluated independently for downstream eligibility.",
+      "Design split into 2 single-timepoint design(s); downstream eligibility applies per split design.",
+    ],
+    "eligibleForDoseResponse": true,
+  },
+  "errors": [],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "ctrl",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s1",
+      ],
+      "timepointHours": 24,
+    },
+    {
+      "doseGroupId": "ctrl_48",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s3",
+      ],
+      "timepointHours": 48,
+    },
+    {
+      "doseGroupId": "low",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s2",
+      ],
+      "timepointHours": 24,
+    },
+    {
+      "doseGroupId": "low_48",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 1,
+      "sampleIds": [
+        "s4",
+      ],
+      "timepointHours": 48,
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 1,
+      "doseGroupId": "ctrl",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "low",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "ctrl_48",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+    {
+      "biological": 1,
+      "doseGroupId": "low_48",
+      "effectiveBiological": 1,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 1,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": true,
+    "policyApplied": "split",
+    "timepoints": [
+      24,
+      48,
+    ],
+    "undefinedTimepointCount": 0,
+  },
+  "valid": true,
+  "warnings": [
+    "Multi-timepoint design split into 2 single-timepoint design(s) per v0.1 policy",
+  ],
+}
+`;
+
+exports[`emitDesignValidationReport > matches snapshot for valid design 1`] = `
+{
+  "batchSummary": {
+    "batchIdCompleteness": 1,
+    "batchIds": [
+      "batch-a",
+      "batch-b",
+    ],
+    "batchesDetected": 2,
+    "confoundedDoseGroups": [],
+    "doseBatchConfoundingDetected": false,
+    "samplesWithBatchId": 6,
+    "totalSamples": 6,
+  },
+  "downstreamEligibility": {
+    "eligibilityNotes": [
+      "Design meets basic requirements for downstream dose-response modelling.",
+    ],
+    "eligibleForDoseResponse": true,
+  },
+  "errors": [],
+  "orderedDoseGroups": [
+    {
+      "doseGroupId": "ctrl",
+      "doseUnit": "µM",
+      "doseValue": 0,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s1",
+        "s2",
+      ],
+    },
+    {
+      "doseGroupId": "low",
+      "doseUnit": "µM",
+      "doseValue": 1,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s3",
+        "s4",
+      ],
+    },
+    {
+      "doseGroupId": "high",
+      "doseUnit": "µM",
+      "doseValue": 10,
+      "replicateCount": 2,
+      "sampleIds": [
+        "s5",
+        "s6",
+      ],
+    },
+  ],
+  "replicateCountsByGroup": [
+    {
+      "biological": 2,
+      "doseGroupId": "ctrl",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+    {
+      "biological": 2,
+      "doseGroupId": "low",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+    {
+      "biological": 2,
+      "doseGroupId": "high",
+      "effectiveBiological": 2,
+      "pooled": 0,
+      "pseudobulk": 0,
+      "technical": 0,
+      "total": 2,
+    },
+  ],
+  "schemaValid": true,
+  "timepointStatus": {
+    "isMultiTimepoint": false,
+    "policyApplied": "single_timepoint",
+    "timepoints": [],
+    "undefinedTimepointCount": 1,
+  },
+  "valid": true,
+  "warnings": [],
+}
+`;

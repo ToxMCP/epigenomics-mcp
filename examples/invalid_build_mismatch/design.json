@@ -1,0 +1,17 @@
+{
+  "designId": "demo-build-mismatch-design-001",
+  "studyId": "demo-build-mismatch-study-001",
+  "species": "Homo sapiens",
+  "doseGroups": [
+    { "doseGroupId": "ctrl", "doseValue": 0, "doseUnit": "µM", "timepointHours": 24 },
+    { "doseGroupId": "low", "doseValue": 1, "doseUnit": "µM", "timepointHours": 24 }
+  ],
+  "samples": [
+    { "sampleId": "sample-ctrl-1", "doseGroupId": "ctrl", "replicateIndex": 1, "replicateType": "biological", "cellType": "HepaRG", "species": "Homo sapiens", "batchId": "batch-A", "controlFlag": true },
+    { "sampleId": "sample-ctrl-2", "doseGroupId": "ctrl", "replicateIndex": 2, "replicateType": "biological", "cellType": "HepaRG", "species": "Homo sapiens", "batchId": "batch-A", "controlFlag": true },
+    { "sampleId": "sample-low-1", "doseGroupId": "low", "replicateIndex": 1, "replicateType": "biological", "cellType": "HepaRG", "species": "Homo sapiens", "batchId": "batch-A" },
+    { "sampleId": "sample-low-2", "doseGroupId": "low", "replicateIndex": 2, "replicateType": "biological", "cellType": "HepaRG", "species": "Homo sapiens", "batchId": "batch-A" }
+  ],
+  "hasControls": true,
+  "minReplicatesPerGroup": 2
+}

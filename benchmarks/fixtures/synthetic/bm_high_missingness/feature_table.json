@@ -1,0 +1,42 @@
+[
+  {
+    "featureId": "cg_miss_high_001",
+    "featureClass": "cpg_methylation",
+    "modality": "dna_methylation_array",
+    "measuredIdentifier": "cg_miss_high_001",
+    "measuredRegion": {
+      "chrom": "chr1",
+      "start": 1000000,
+      "end": 1000001,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "beta_value",
+    "values": {
+      "sample-ctrl-1": null,
+      "sample-ctrl-2": null,
+      "sample-low-1": null,
+      "sample-low-2": 0.80
+    }
+  },
+  {
+    "featureId": "cg_miss_high_002",
+    "featureClass": "cpg_methylation",
+    "modality": "dna_methylation_array",
+    "measuredIdentifier": "cg_miss_high_002",
+    "measuredRegion": {
+      "chrom": "chr2",
+      "start": 500000,
+      "end": 500001,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "beta_value",
+    "values": {
+      "sample-ctrl-1": 0.72,
+      "sample-ctrl-2": 0.74,
+      "sample-low-1": 0.70,
+      "sample-low-2": 0.71
+    }
+  }
+]

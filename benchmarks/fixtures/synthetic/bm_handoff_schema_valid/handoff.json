@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "BioactivityPoDHandoffPacket",
+  "handoffId": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "sourcePacketRef": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "qualifiedFeatures": [
+    {
+      "featureId": "cg00000001",
+      "status": "accepted_for_pod",
+      "warnings": [],
+      "mappedGeneIds": ["BRCA1"],
+      "mappingConfidence": "high",
+      "mappingMethod": "direct_promoter_overlap"
+    },
+    {
+      "featureId": "cg00000002",
+      "status": "accepted_for_pod",
+      "warnings": [],
+      "mappedGeneIds": ["TP53"],
+      "mappingConfidence": "high",
+      "mappingMethod": "direct_promoter_overlap"
+    }
+  ],
+  "excludedFeatures": [],
+  "doseResponseReadySubset": ["cg00000001", "cg00000002"],
+  "mandatoryCaveats": [],
+  "generatedAt": "2026-05-05T00:00:00Z"
+}

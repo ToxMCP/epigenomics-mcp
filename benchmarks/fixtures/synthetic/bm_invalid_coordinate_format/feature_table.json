@@ -1,0 +1,42 @@
+[
+  {
+    "featureId": "cg_bad_coords_001",
+    "featureClass": "cpg_methylation",
+    "modality": "dna_methylation_array",
+    "measuredIdentifier": "cg_bad_coords_001",
+    "measuredRegion": {
+      "chrom": "chr1",
+      "start": 5000,
+      "end": 3000,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "beta_value",
+    "values": {
+      "sample-ctrl-1": 0.82,
+      "sample-ctrl-2": 0.85,
+      "sample-low-1": 0.78,
+      "sample-low-2": 0.80
+    }
+  },
+  {
+    "featureId": "cg_bad_coords_002",
+    "featureClass": "cpg_methylation",
+    "modality": "dna_methylation_array",
+    "measuredIdentifier": "cg_bad_coords_002",
+    "measuredRegion": {
+      "chrom": "1q",
+      "start": 1000,
+      "end": 2000,
+      "build": "hg38",
+      "coordinateSystem": "0-based-half-open"
+    },
+    "signalMetric": "beta_value",
+    "values": {
+      "sample-ctrl-1": 0.12,
+      "sample-ctrl-2": 0.14,
+      "sample-low-1": 0.22,
+      "sample-low-2": 0.25
+    }
+  }
+]

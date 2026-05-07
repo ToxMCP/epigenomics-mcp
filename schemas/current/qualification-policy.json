@@ -1,0 +1,373 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://toxmcp.org/schemas/qualification-policy/v0.1.0",
+  "title": "QualificationPolicy",
+  "description": "Versioned qualification policy configuration for Epigenomics MCP.",
+  "type": "object",
+  "properties": {
+    "policyVersion": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*))?(?:\\+([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*))?$",
+      "description": "Semver version of this policy configuration"
+    },
+    "policyName": {
+      "type": "string",
+      "minLength": 1,
+      "default": "epigenomics-default",
+      "description": "Human-readable policy identifier"
+    },
+    "doseGroup": {
+      "type": "object",
+      "properties": {
+        "minTotalDoseGroups": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum total dose groups (including control)"
+        },
+        "minNonZeroDoseGroups": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum non-zero dose groups"
+        },
+        "preferredTotalDoseGroups": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Preferred total dose groups for accepted_for_pod"
+        }
+      },
+      "required": [
+        "minTotalDoseGroups",
+        "minNonZeroDoseGroups",
+        "preferredTotalDoseGroups"
+      ],
+      "additionalProperties": false
+    },
+    "replicate": {
+      "type": "object",
+      "properties": {
+        "minBiologicalReplicatesPerGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum biological replicates per group"
+        },
+        "preferredBiologicalReplicatesPerGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Preferred biological replicates per group"
+        },
+        "n1BiologicalReplicatePolicy": {
+          "type": "string",
+          "enum": [
+            "excluded",
+            "review_required"
+          ],
+          "default": "excluded",
+          "description": "Whether n=1 biological replicate groups are excluded or sent for review"
+        }
+      },
+      "required": [
+        "minBiologicalReplicatesPerGroup",
+        "preferredBiologicalReplicatesPerGroup"
+      ],
+      "additionalProperties": false
+    },
+    "missingness": {
+      "type": "object",
+      "properties": {
+        "warningThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Missingness rate triggering a warning"
+        },
+        "exclusionThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Missingness rate triggering exclusion"
+        }
+      },
+      "required": [
+        "warningThreshold",
+        "exclusionThreshold"
+      ],
+      "additionalProperties": false
+    },
+    "coordinate": {
+      "type": "object",
+      "properties": {
+        "requireGenomeBuild": {
+          "type": "boolean",
+          "description": "Whether coordinate-bearing features require an explicit build"
+        },
+        "requireCoordinateSystem": {
+          "type": "boolean",
+          "description": "Whether coordinate-bearing features require an explicit coordinate system"
+        },
+        "allowedGenomeBuilds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "GRCh37",
+              "GRCh38",
+              "hg19",
+              "hg38",
+              "mm9",
+              "mm10",
+              "mm39",
+              "rn6",
+              "rn7"
+            ]
+          },
+          "minItems": 1,
+          "description": "Permitted genome builds"
+        },
+        "allowedCoordinateSystems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ucsc_bed_0based_half_open",
+              "gff_gtf_1based_closed",
+              "platform_native_probe",
+              "no_coordinates_feature_id_only"
+            ]
+          },
+          "minItems": 1,
+          "description": "Permitted source coordinate systems"
+        },
+        "blockMixedBuilds": {
+          "type": "boolean",
+          "description": "Whether mixed genome builds within a dataset block handoff"
+        },
+        "silentLiftoverAllowed": {
+          "type": "boolean",
+          "description": "Whether silent coordinate liftover is permitted"
+        }
+      },
+      "required": [
+        "requireGenomeBuild",
+        "requireCoordinateSystem",
+        "allowedGenomeBuilds",
+        "allowedCoordinateSystems",
+        "blockMixedBuilds",
+        "silentLiftoverAllowed"
+      ],
+      "additionalProperties": false
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "requireProvenanceForGenePathway": {
+          "type": "boolean",
+          "description": "Whether gene/pathway interpretation requires mapping provenance"
+        },
+        "requireProvenanceForPathwayRollup": {
+          "type": "boolean",
+          "description": "Whether pathway roll-up requires mapping provenance"
+        },
+        "blockNearestGenePathwayByDefault": {
+          "type": "boolean",
+          "description": "Whether nearest-gene mapping blocks automatic pathway roll-up"
+        },
+        "allowedMappingMethods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "direct_promoter_overlap",
+              "gene_body_overlap",
+              "enhancer_target_from_database",
+              "chromatin_interaction_supported",
+              "nearest_gene",
+              "inferred_target_gene",
+              "unknown_target_gene"
+            ]
+          },
+          "minItems": 1,
+          "description": "Permitted mapping methods"
+        },
+        "defaultDownstreamUseRule": {
+          "type": "string",
+          "enum": [
+            "allow",
+            "allow_with_warning",
+            "exploratory_only",
+            "block"
+          ],
+          "description": "Default downstream use rule when mapping method is unspecified"
+        }
+      },
+      "required": [
+        "requireProvenanceForGenePathway",
+        "requireProvenanceForPathwayRollup",
+        "blockNearestGenePathwayByDefault",
+        "allowedMappingMethods",
+        "defaultDownstreamUseRule"
+      ],
+      "additionalProperties": false
+    },
+    "confounding": {
+      "type": "object",
+      "properties": {
+        "cellCompositionBlockLevel": {
+          "type": "string",
+          "enum": [
+            "unlikely_confounding",
+            "possible_confounding",
+            "likely_confounding",
+            "dominant_confounding",
+            "review_required"
+          ],
+          "description": "Minimum cell-composition confounding level that blocks handoff"
+        },
+        "cytotoxicityBlockLevel": {
+          "type": "string",
+          "enum": [
+            "unlikely_confounding",
+            "possible_confounding",
+            "likely_confounding",
+            "dominant_confounding",
+            "review_required"
+          ],
+          "description": "Minimum cytotoxicity confounding level that blocks handoff"
+        },
+        "stressResponseBlockLevel": {
+          "type": "string",
+          "enum": [
+            "unlikely_confounding",
+            "possible_confounding",
+            "likely_confounding",
+            "dominant_confounding",
+            "review_required"
+          ],
+          "description": "Minimum stress-response confounding level that blocks handoff"
+        },
+        "differentiationDriftBlockLevel": {
+          "type": "string",
+          "enum": [
+            "unlikely_confounding",
+            "possible_confounding",
+            "likely_confounding",
+            "dominant_confounding",
+            "review_required"
+          ],
+          "description": "Minimum differentiation-drift confounding level that blocks handoff"
+        },
+        "blockOnMissingContext": {
+          "type": "boolean",
+          "description": "Whether missing confounding context blocks handoff"
+        }
+      },
+      "required": [
+        "cellCompositionBlockLevel",
+        "cytotoxicityBlockLevel",
+        "stressResponseBlockLevel",
+        "differentiationDriftBlockLevel",
+        "blockOnMissingContext"
+      ],
+      "additionalProperties": false
+    },
+    "featureFlags": {
+      "type": "object",
+      "properties": {
+        "enableChromatinAccessibility": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable ATAC-seq / chromatin accessibility features"
+        },
+        "enableHistoneMark": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable ChIP-seq histone mark features"
+        },
+        "enableMirnaExpression": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable miRNA expression features"
+        },
+        "enableNcrnaExpression": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable ncRNA expression features"
+        },
+        "enableChromatinStateContext": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable chromatin state context features"
+        },
+        "enableBatchEffectModeling": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable advanced batch-effect modeling"
+        },
+        "enableCellDeconvolution": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable cell-composition deconvolution from epigenomic data"
+        }
+      },
+      "additionalProperties": false
+    },
+    "overrideProvenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "overriddenAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO-8601 override timestamp"
+          },
+          "overriddenBy": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Entity that applied the override"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable override reason"
+          },
+          "sourcePolicyVersion": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*))?(?:\\+([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*))?$",
+            "description": "Version of the base policy that was overridden"
+          },
+          "appliedChanges": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "List of policy paths that were modified"
+          }
+        },
+        "required": [
+          "overriddenAt",
+          "overriddenBy",
+          "reason",
+          "sourcePolicyVersion",
+          "appliedChanges"
+        ],
+        "additionalProperties": false
+      },
+      "default": [],
+      "description": "History of explicit policy overrides"
+    }
+  },
+  "required": [
+    "policyVersion",
+    "doseGroup",
+    "replicate",
+    "missingness",
+    "coordinate",
+    "mapping",
+    "confounding",
+    "featureFlags"
+  ],
+  "additionalProperties": false
+}

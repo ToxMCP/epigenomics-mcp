@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "BioactivityPoDHandoffPacket",
+  "handoffId": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "sourcePacketRef": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "qualifiedFeatures": [
+    {
+      "featureId": "cg_caveats_001",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 2 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "featureIds": [
+            "cg_caveats_001"
+          ],
+          "blocksDownstream": false
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "featureIds": [
+            "cg_caveats_001"
+          ],
+          "blocksDownstream": false
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg_caveats_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "2"
+      }
+    },
+    {
+      "featureId": "cg_caveats_002",
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 2 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "featureIds": [
+            "cg_caveats_002"
+          ],
+          "blocksDownstream": false
+        },
+        {
+          "warningCode": "EPIW006_BELOW_PREFERRED_REPLICATES",
+          "severity": "warning",
+          "message": "Minimum 2 biological replicates per group; preferred is 3",
+          "category": "platform_specific",
+          "featureIds": [
+            "cg_caveats_002"
+          ],
+          "blocksDownstream": false
+        }
+      ],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_009_MAJOR_WARNINGS",
+        "reasonTemplate": "Feature cg_caveats_002 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
+        "reviewRequired": false,
+        "policyReference": "warning_accumulation",
+        "observedValue": "2"
+      }
+    }
+  ],
+  "excludedFeatures": [],
+  "doseResponseReadySubset": [
+    "cg_caveats_001",
+    "cg_caveats_002"
+  ],
+  "mandatoryCaveats": [],
+  "generatedAt": "2026-05-05T00:00:00Z",
+  "persistenceStatus": "not_assessed",
+  "reversibilityStatus": "not_assessed",
+  "heritabilityClaim": "none",
+  "provenance": {
+    "datasetId": "golden-caveats-ds-001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {
+          "method": "SWAN"
+        },
+        "timestamp": "2026-04-01T11:00:00Z",
+        "inputFiles": [
+          "intensities.rds"
+        ],
+        "outputFiles": [
+          "beta_values.csv"
+        ]
+      }
+    ],
+    "normalisationMethod": "SWAN",
+    "probeManifestVersion": "Illumina EPIC v2.0",
+    "annotationVersion": "hg38"
+  }
+}
