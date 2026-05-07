@@ -47,6 +47,18 @@ jobs:
       - name: Run contract tests
         run: npx vitest run tests/unit/contracts.test.ts
 
+      - name: Setup Python for smoke commands
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python smoke dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/pip install -e ".[dev,large-intervals,adapters]"
+
       - name: Run smoke tests
         run: npx vitest run tests/smoke
 
