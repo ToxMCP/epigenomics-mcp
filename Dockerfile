@@ -14,11 +14,8 @@ FROM python:3.12-slim AS python-env
 
 WORKDIR /app
 
-# Install Python dependencies
-COPY pyproject.toml ./
-RUN pip install --no-cache-dir -e ".[dev]"
-
-# Copy Python source
+# Install Python package and runtime dependencies.
+COPY pyproject.toml README.md LICENSE ./
 COPY src/epigenomics_mcp/ ./src/epigenomics_mcp/
 RUN pip install --no-cache-dir -e .
 

@@ -1,0 +1,17 @@
+.git
+node_modules
+dist
+.venv
+venv
+__pycache__
+*.py[cod]
+*.log
+.coverage
+coverage.json
+htmlcov
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.kimi-*
+.DS_Store
+*.tgz

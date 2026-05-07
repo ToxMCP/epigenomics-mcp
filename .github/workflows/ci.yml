@@ -38,6 +38,9 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
+      - name: Build
+        run: npm run build
+
       - name: Run unit tests
         run: npx vitest run tests/unit --exclude "**/contracts.test.ts" --coverage
 
@@ -86,7 +89,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev,large-intervals,adapters]"
 
       - name: Lint with Ruff
         run: ruff check src/epigenomics_mcp tests/python

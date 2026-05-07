@@ -26,7 +26,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "vitest run",
+    "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "test:contract": "vitest run tests/unit/contracts.test.ts tests/unit/schema_drift.test.ts tests/unit/schema_drift_integration.test.ts tests/unit/schema_export.test.ts tests/unit/handoff.test.ts tests/unit/handoff_validator.test.ts",
     "typecheck": "tsc --noEmit",

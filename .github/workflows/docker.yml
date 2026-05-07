@@ -32,13 +32,13 @@ jobs:
 
       - name: Smoke test — Node.js import
         run: |
-          docker run --rm epigenomics-mcp:smoke \
-            node -e "import('./dist/epimcp/index.js').then(m => console.log('VERSION:', m.VERSION))"
+          docker run --rm --entrypoint node epigenomics-mcp:smoke \
+            -e "import('./dist/epimcp/index.js').then(m => console.log('VERSION:', m.VERSION))"
 
       - name: Smoke test — Python import
         run: |
-          docker run --rm epigenomics-mcp:smoke \
-            python -c "import epigenomics_mcp; print('Python version:', epigenomics_mcp.__version__)"
+          docker run --rm --entrypoint python epigenomics-mcp:smoke \
+            -c "import epigenomics_mcp; print('Python version:', epigenomics_mcp.__version__)"
 
       - name: Smoke test — stdio server startup
         run: |
