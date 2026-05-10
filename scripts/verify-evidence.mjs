@@ -102,7 +102,12 @@ function packFileSet() {
 }
 
 function dirtyPaths() {
-  const status = tryRunCommand("git", ["status", "--porcelain"]);
+  let status;
+  try {
+    status = runCommand("git", ["status", "--porcelain"]).trimEnd();
+  } catch {
+    status = null;
+  }
   if (status === null || status.length === 0) {
     return [];
   }

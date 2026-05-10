@@ -112,29 +112,45 @@ function runCommand(command, args, options = {}) {
   });
 }
 
+function parseGitStatusPaths(status) {
+  if (status === null || status.length === 0) {
+    return [];
+  }
+  return status
+    .split("\n")
+    .map((line) => line.slice(3).split(" -> ").pop() ?? "")
+    .filter((path) => path.length > 0);
+}
+
 function getGitStatus() {
   try {
-    return runCommand("git", ["status", "--porcelain"]).trim();
+    return runCommand("git", ["status", "--porcelain"]).trimEnd();
   } catch {
     return null;
   }
 }
 
-function getGitState(status) {
+function getGitState(status, outDir) {
+  const sourceDirtyPaths = parseGitStatusPaths(status).filter(
+    (path) => !path.startsWith(`${outDir}/`),
+  );
   try {
     const commit = runCommand("git", ["rev-parse", "HEAD"]).trim();
     return {
       available: true,
       commit,
-      dirty: (status ?? "").length > 0,
+      dirty: sourceDirtyPaths.length > 0,
     };
   } catch {
     return { available: false };
   }
 }
 
-function assertCleanSource(status, allowDirty) {
-  if (status === null || status.length === 0 || allowDirty) {
+function assertCleanSource(status, outDir, allowDirty) {
+  const sourceDirtyPaths = parseGitStatusPaths(status).filter(
+    (path) => !path.startsWith(`${outDir}/`),
+  );
+  if (sourceDirtyPaths.length === 0 || allowDirty) {
     return;
   }
 
@@ -144,7 +160,7 @@ function assertCleanSource(status, allowDirty) {
       "Commit or stash code/docs/config changes first, then run npm run release:evidence.",
       "For local experiments only, pass --allow-dirty or set EPIMCP_RELEASE_EVIDENCE_ALLOW_DIRTY=1.",
       "",
-      status,
+      sourceDirtyPaths.join("\n"),
     ].join("\n"),
   );
 }
@@ -164,8 +180,9 @@ function runReleaseGate(outputDir) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const gitStatus = getGitStatus();
-  assertCleanSource(gitStatus, args.allowDirty);
-  const gitState = getGitState(gitStatus);
+  const outDirRelative = repoRelative(resolve(args.outDir));
+  assertCleanSource(gitStatus, outDirRelative, args.allowDirty);
+  const gitState = getGitState(gitStatus, outDirRelative);
   const outDir = resetOutputDir(args.outDir);
   const gateDir = resolve(tmpdir(), `epimcp-release-gate-${process.pid}`);
   resetOutputDir(gateDir);
