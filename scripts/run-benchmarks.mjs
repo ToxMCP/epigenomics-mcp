@@ -6,7 +6,7 @@
  * expected outputs, writes reports and diffs, and exits non-zero on failure.
  *
  * Usage:
- *   node scripts/run-benchmarks.mjs
+ *   node scripts/run-benchmarks.mjs [--manifest benchmark_manifest.yaml]
  */
 
 import { mkdirSync, writeFileSync, rmSync, existsSync } from "node:fs";
@@ -15,10 +15,13 @@ import { join, resolve } from "node:path";
 import { loadBenchmarkManifest } from "../dist/benchmarks/manifest.js";
 import { runBenchmarks, formatRunnerReport } from "../dist/benchmarks/runner.js";
 
-const MANIFEST_PATH = join(process.cwd(), "benchmark_manifest.yaml");
+const DEFAULT_MANIFEST_PATH = join(process.cwd(), "benchmark_manifest.yaml");
 
 function parseArgs(argv) {
-  const args = { outDir: join(process.cwd(), "benchmark-results") };
+  const args = {
+    manifestPath: DEFAULT_MANIFEST_PATH,
+    outDir: join(process.cwd(), "benchmark-results"),
+  };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--out-dir" || arg === "--output-dir") {
@@ -27,6 +30,13 @@ function parseArgs(argv) {
         throw new Error(`${arg} requires a directory value`);
       }
       args.outDir = resolve(value);
+      i++;
+    } else if (arg === "--manifest") {
+      const value = argv[i + 1];
+      if (!value) {
+        throw new Error(`${arg} requires a file value`);
+      }
+      args.manifestPath = resolve(value);
       i++;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
@@ -79,10 +89,10 @@ function writeDiffFiles(result, diffsDir) {
 }
 
 function main() {
-  const { outDir } = parseArgs(process.argv.slice(2));
+  const { manifestPath, outDir } = parseArgs(process.argv.slice(2));
   const diffsDir = join(outDir, "diffs");
   console.log("Loading benchmark manifest...");
-  const manifest = loadBenchmarkManifest(MANIFEST_PATH);
+  const manifest = loadBenchmarkManifest(manifestPath);
 
   console.log(`Running ${manifest.benchmarks.length} benchmark(s)...\n`);
   const result = runBenchmarks(manifest);

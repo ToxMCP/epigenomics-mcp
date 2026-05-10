@@ -1,32 +1,46 @@
 import { describe, it, expect } from "vitest";
 import { execSync } from "node:child_process";
 import {
+  cpSync,
   readFileSync,
   writeFileSync,
   existsSync,
   rmSync,
   mkdtempSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { tmpdir } from "node:os";
+import { loadBenchmarkManifest } from "../../src/benchmarks/manifest.js";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "run-benchmarks.mjs");
+const MANIFEST_PATH = join(process.cwd(), "benchmark_manifest.yaml");
 const DRIFT_FIXTURE = "bm_beta_manifest_complete";
 const DRIFT_FILE = "design_validation.json";
 const EXPECTED_DIR = join(process.cwd(), "benchmarks", "expected", DRIFT_FIXTURE);
-const BACKUP_PATH = join(EXPECTED_DIR, `.${DRIFT_FILE}.backup`);
 
-function backupGolden() {
-  const originalPath = join(EXPECTED_DIR, DRIFT_FILE);
-  writeFileSync(BACKUP_PATH, readFileSync(originalPath));
-}
+function writeDriftManifest(tempRoot: string): string {
+  const tempExpectedDir = join(tempRoot, DRIFT_FIXTURE);
+  cpSync(EXPECTED_DIR, tempExpectedDir, { recursive: true });
+  const driftFilePath = join(tempExpectedDir, DRIFT_FILE);
+  const original = JSON.parse(readFileSync(driftFilePath, "utf-8"));
+  const drifted = { ...original, schemaValid: !original.schemaValid };
+  writeFileSync(driftFilePath, JSON.stringify(drifted, null, 2) + "\n");
 
-function restoreGolden() {
-  const originalPath = join(EXPECTED_DIR, DRIFT_FILE);
-  if (existsSync(BACKUP_PATH)) {
-    writeFileSync(originalPath, readFileSync(BACKUP_PATH));
-    rmSync(BACKUP_PATH);
-  }
+  const manifest = loadBenchmarkManifest(MANIFEST_PATH);
+  const driftManifest = {
+    ...manifest,
+    benchmarks: manifest.benchmarks.map((benchmark) =>
+      benchmark.name === DRIFT_FIXTURE
+        ? {
+            ...benchmark,
+            expected: relative(process.cwd(), tempExpectedDir),
+          }
+        : benchmark,
+    ),
+  };
+  const manifestPath = join(tempRoot, "benchmark_manifest.json");
+  writeFileSync(manifestPath, JSON.stringify(driftManifest, null, 2) + "\n");
+  return manifestPath;
 }
 
 describe("benchmark CLI script", () => {
@@ -52,23 +66,22 @@ describe("benchmark CLI script", () => {
   });
 
   it("exits 1 and writes diff artifacts on fixture drift", () => {
-    const resultsDir = mkdtempSync(join(tmpdir(), "epimcp-benchmark-cli-drift-"));
-    backupGolden();
+    const tempRoot = mkdtempSync(join(tmpdir(), "epimcp-benchmark-cli-drift-"));
+    const resultsDir = join(tempRoot, "results");
 
     try {
-      // Introduce drift
-      const originalPath = join(EXPECTED_DIR, DRIFT_FILE);
-      const original = JSON.parse(readFileSync(originalPath, "utf-8"));
-      const drifted = { ...original, schemaValid: !original.schemaValid };
-      writeFileSync(originalPath, JSON.stringify(drifted, null, 2) + "\n");
+      const manifestPath = writeDriftManifest(tempRoot);
 
       let exitedNonZero = false;
       let stdout = "";
       let stderr = "";
       try {
-        execSync(`node "${SCRIPT_PATH}" --out-dir "${resultsDir}"`, {
+        execSync(
+          `node "${SCRIPT_PATH}" --manifest "${manifestPath}" --out-dir "${resultsDir}"`,
+          {
           encoding: "utf-8",
-        });
+          },
+        );
       } catch (err: unknown) {
         exitedNonZero = true;
         const error = err as { stdout?: string; stderr?: string };
@@ -99,8 +112,7 @@ describe("benchmark CLI script", () => {
       expect(diffContent).toContain("Differences:");
       expect(diffContent).toContain("schemaValid");
     } finally {
-      restoreGolden();
-      rmSync(resultsDir, { recursive: true, force: true });
+      rmSync(tempRoot, { recursive: true, force: true });
     }
   });
 });

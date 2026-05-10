@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  cpSync,
   readFileSync,
   writeFileSync,
   mkdirSync,
@@ -7,7 +8,7 @@ import {
   existsSync,
   mkdtempSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { tmpdir } from "node:os";
 
 import {
@@ -158,30 +159,30 @@ describe("release gate failure modes", () => {
   const DRIFT_FIXTURE = "bm_beta_manifest_complete";
   const DRIFT_FILE = "design_validation.json";
   const EXPECTED_DIR = join(process.cwd(), "benchmarks", "expected", DRIFT_FIXTURE);
-  const BACKUP_PATH = join(EXPECTED_DIR, `.${DRIFT_FILE}.backup`);
-
-  function backupGolden() {
-    writeFileSync(BACKUP_PATH, readFileSync(join(EXPECTED_DIR, DRIFT_FILE)));
-  }
-
-  function restoreGolden() {
-    const originalPath = join(EXPECTED_DIR, DRIFT_FILE);
-    if (existsSync(BACKUP_PATH)) {
-      writeFileSync(originalPath, readFileSync(BACKUP_PATH));
-      rmSync(BACKUP_PATH);
-    }
-  }
 
   it("fails release gate when golden output drifts", () => {
-    backupGolden();
+    const tempRoot = mkdtempSync(join(tmpdir(), "epimcp-release-gate-drift-"));
 
     try {
-      const original = loadJson(join(EXPECTED_DIR, DRIFT_FILE)) as Record<string, unknown>;
+      const tempExpectedDir = join(tempRoot, DRIFT_FIXTURE);
+      cpSync(EXPECTED_DIR, tempExpectedDir, { recursive: true });
+      const driftFilePath = join(tempExpectedDir, DRIFT_FILE);
+      const original = loadJson(driftFilePath) as Record<string, unknown>;
       const drifted = { ...original, schemaValid: !original.schemaValid };
-      writeFileSync(join(EXPECTED_DIR, DRIFT_FILE), JSON.stringify(drifted, null, 2) + "\n");
+      writeFileSync(driftFilePath, JSON.stringify(drifted, null, 2) + "\n");
 
       const manifest = loadBenchmarkManifest(MANIFEST_PATH);
-      const result = runReleaseGate(manifest);
+      const result = runReleaseGate({
+        ...manifest,
+        benchmarks: manifest.benchmarks.map((benchmark) =>
+          benchmark.name === DRIFT_FIXTURE
+            ? {
+                ...benchmark,
+                expected: relative(process.cwd(), tempExpectedDir),
+              }
+            : benchmark,
+        ),
+      });
 
       expect(result.ready).toBe(false);
       const goldenCheck = result.checks.find((c) => c.name === "golden_drift");
@@ -196,7 +197,7 @@ describe("release gate failure modes", () => {
       expect(nondetCheck!.passed).toBe(false);
       expect(nondetCheck!.details).toContain("Skipped");
     } finally {
-      restoreGolden();
+      rmSync(tempRoot, { recursive: true, force: true });
     }
   });
 
