@@ -138,5 +138,5 @@ releaseGates:
     required: true
 
   - name: release_evidence
-    description: npm run release:evidence writes checksummed audit evidence
+    description: npm run release:evidence writes checksummed audit evidence and npm run verify:evidence verifies freshness, checksums, and package coverage
     required: true

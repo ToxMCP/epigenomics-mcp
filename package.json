@@ -14,6 +14,9 @@
   "files": [
     "dist",
     "schemas",
+    "benchmark_manifest.yaml",
+    "benchmarks/expected",
+    "release-evidence",
     "docs",
     "examples",
     "README.md",
@@ -34,12 +37,13 @@
     "smoke:mcp": "node scripts/smoke_mcp_stdio.mjs",
     "export:schemas": "npm run build && node scripts/export-schemas.mjs",
     "release:evidence": "npm run build && node scripts/release-evidence.mjs",
+    "verify:evidence": "npm run build && node scripts/verify-evidence.mjs",
     "validate:handoff": "node scripts/validate-handoffs.mjs",
     "benchmark": ".venv/bin/python benchmarks/qualification_engine_benchmark.py --features 10000 --replicates 6",
     "benchmark:gate": "node scripts/release-gate.mjs",
     "benchmark:ci": "npm run build && node scripts/release-gate.mjs",
     "start": "node dist/epimcp/cli.js",
-    "verify:release": "npm run typecheck && npm test && npm run build && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm pack --dry-run --json"
+    "verify:release": "npm run typecheck && npm test && npm run build && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
   },
   "keywords": [
     "mcp",

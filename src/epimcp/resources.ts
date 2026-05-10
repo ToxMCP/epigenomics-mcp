@@ -1,9 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ReadResourceResult } from "@modelcontextprotocol/sdk/types.js";
 
-interface AuditResourceDefinition {
+export interface AuditResourceDefinition {
   name: string;
   title: string;
   uri: string;
@@ -12,7 +13,9 @@ interface AuditResourceDefinition {
   mimeType: string;
 }
 
-const AUDIT_RESOURCES: AuditResourceDefinition[] = [
+const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+
+export const AUDIT_RESOURCES: AuditResourceDefinition[] = [
   {
     name: "schema-epigenomics-feature-response-packet",
     title: "Epigenomics Feature Response Packet Schema",
@@ -120,7 +123,7 @@ const AUDIT_RESOURCES: AuditResourceDefinition[] = [
 ];
 
 function readResource(definition: AuditResourceDefinition): ReadResourceResult {
-  const absolutePath = resolve(definition.path);
+  const absolutePath = resolveAuditResourcePath(definition.path);
   const text = existsSync(absolutePath)
     ? readFileSync(absolutePath, "utf-8")
     : JSON.stringify(
@@ -161,4 +164,12 @@ export function registerAuditResources(server: McpServer): void {
 
 export function getRegisteredAuditResourceUris(): string[] {
   return AUDIT_RESOURCES.map((resource) => resource.uri);
+}
+
+export function getRegisteredAuditResources(): AuditResourceDefinition[] {
+  return [...AUDIT_RESOURCES];
+}
+
+export function resolveAuditResourcePath(path: string): string {
+  return resolve(PACKAGE_ROOT, path);
 }

@@ -63,7 +63,9 @@ machine-readable `benchmark-results/release-gate.json` and a human-readable
 with `npm run release:evidence`; it captures a fresh passing release gate,
 checksums the committed schemas, golden benchmark outputs, benchmark manifest,
 validation documents, and npm pack dry-run metadata, then writes the bundle
-under `release-evidence/`.
+under `release-evidence/`. `npm run verify:evidence` verifies the committed
+bundle against the current source lineage, checksum file, MCP audit resources,
+and npm package dry-run coverage.
 
 ---
 
@@ -233,6 +235,12 @@ All tests run under **Vitest** with deterministic ordering and no external netwo
 | `release-evidence/release-gate.json` | Captured machine-readable release-gate report |
 | `release-evidence/release-gate.txt` | Captured human-readable release-gate report |
 | `release-evidence/npm-pack-dry-run.json` | npm package dry-run metadata used as release packaging evidence |
+
+Release evidence is generated from a clean source tree. The intended release
+sequence is: commit code/docs/config changes, run `npm run release:evidence`,
+then commit the refreshed `release-evidence/` bundle. The npm package includes
+the schemas, validation docs, benchmark manifest, golden benchmark outputs, and
+release-evidence files backing the registered MCP audit resources.
 
 When the working directory has no Git metadata, the evidence manifest records
 `git.available = false` instead of failing. This preserves reproducibility in

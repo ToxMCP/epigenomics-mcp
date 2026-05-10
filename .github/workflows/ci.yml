@@ -65,6 +65,21 @@ jobs:
       - name: Run benchmark release gate
         run: npm run benchmark:ci
 
+      - name: Verify committed release evidence
+        run: npm run verify:evidence
+
+      - name: Generate CI release evidence artifact
+        if: matrix.node-version == 20
+        run: npm run release:evidence -- --out-dir /tmp/epimcp-release-evidence
+
+      - name: Upload CI release evidence artifact
+        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-release-evidence
+          path: /tmp/epimcp-release-evidence/
+          retention-days: 14
+
       - name: Upload benchmark gate report
         if: always()
         uses: actions/upload-artifact@v4

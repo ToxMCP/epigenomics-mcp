@@ -80,7 +80,9 @@ tool contract defines a failure shape. Unexpected handler failures return
 ### 2.4 MCP audit resources
 
 The server also exposes stable read-only resources so audit clients can inspect
-contracts and evidence without filesystem-specific tools:
+contracts and evidence without filesystem-specific tools. These resources are
+resolved relative to the installed package root, so they remain available when
+the MCP server is launched from another working directory.
 
 | Resource URI | Contents |
 |--------------|----------|
@@ -102,7 +104,13 @@ Generate or refresh the release evidence bundle with:
 
 ```bash
 npm run release:evidence
+npm run verify:evidence
 ```
+
+For release evidence, commit source changes first, generate the bundle from a
+clean tree, then commit the refreshed `release-evidence/` files. The package
+dry-run is verified to include every file backing the registered audit
+resources.
 
 ### 2.5 File access and table pagination
 

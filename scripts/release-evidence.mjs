@@ -3,7 +3,7 @@
  * Generate an audit-ready release evidence bundle.
  *
  * Usage:
- *   node scripts/release-evidence.mjs [--out-dir release-evidence]
+ *   node scripts/release-evidence.mjs [--out-dir release-evidence] [--allow-dirty]
  */
 
 import { createHash } from "node:crypto";
@@ -36,7 +36,10 @@ const RELEASE_GATE_TEXT = RELEASE_EVIDENCE_GENERATED_FILES[1];
 const NPM_PACK_DRY_RUN_JSON = RELEASE_EVIDENCE_GENERATED_FILES[2];
 
 function parseArgs(argv) {
-  const args = { outDir: DEFAULT_OUT_DIR };
+  const args = {
+    outDir: DEFAULT_OUT_DIR,
+    allowDirty: process.env.EPIMCP_RELEASE_EVIDENCE_ALLOW_DIRTY === "1",
+  };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--out-dir" || arg === "--output-dir") {
@@ -46,6 +49,8 @@ function parseArgs(argv) {
       }
       args.outDir = value;
       i++;
+    } else if (arg === "--allow-dirty") {
+      args.allowDirty = true;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -107,18 +112,41 @@ function runCommand(command, args, options = {}) {
   });
 }
 
-function getGitState() {
+function getGitStatus() {
+  try {
+    return runCommand("git", ["status", "--porcelain"]).trim();
+  } catch {
+    return null;
+  }
+}
+
+function getGitState(status) {
   try {
     const commit = runCommand("git", ["rev-parse", "HEAD"]).trim();
-    const status = runCommand("git", ["status", "--porcelain"]).trim();
     return {
       available: true,
       commit,
-      dirty: status.length > 0,
+      dirty: (status ?? "").length > 0,
     };
   } catch {
     return { available: false };
   }
+}
+
+function assertCleanSource(status, allowDirty) {
+  if (status === null || status.length === 0 || allowDirty) {
+    return;
+  }
+
+  throw new Error(
+    [
+      "Refusing to generate release evidence from a dirty source tree.",
+      "Commit or stash code/docs/config changes first, then run npm run release:evidence.",
+      "For local experiments only, pass --allow-dirty or set EPIMCP_RELEASE_EVIDENCE_ALLOW_DIRTY=1.",
+      "",
+      status,
+    ].join("\n"),
+  );
 }
 
 function fixedOrNow(name) {
@@ -135,6 +163,9 @@ function runReleaseGate(outputDir) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
+  const gitStatus = getGitStatus();
+  assertCleanSource(gitStatus, args.allowDirty);
+  const gitState = getGitState(gitStatus);
   const outDir = resetOutputDir(args.outDir);
   const gateDir = resolve(tmpdir(), `epimcp-release-gate-${process.pid}`);
   resetOutputDir(gateDir);
@@ -145,6 +176,12 @@ function main() {
     runReleaseGate(gateDir);
     copyFileSync(join(gateDir, RELEASE_GATE_JSON), join(outDir, RELEASE_GATE_JSON));
     copyFileSync(join(gateDir, RELEASE_GATE_TEXT), join(outDir, RELEASE_GATE_TEXT));
+
+    // Placeholders make the package dry-run prove the audit-resource bundle
+    // paths are included even while this command is regenerating them.
+    writeFileSync(join(outDir, "release-evidence.json"), "{}\n", "utf-8");
+    writeFileSync(join(outDir, "checksums.sha256"), "", "utf-8");
+    writeFileSync(join(outDir, NPM_PACK_DRY_RUN_JSON), "[]\n", "utf-8");
 
     const npmPackOutput = runCommand("npm", ["pack", "--dry-run", "--json"]);
     const npmPackDryRun = JSON.parse(npmPackOutput);
@@ -192,7 +229,7 @@ function main() {
         platform: process.platform,
         arch: process.arch,
       },
-      git: getGitState(),
+      git: gitState,
       releaseGate: {
         ready: releaseGate.ready,
         checks: releaseGate.checks,

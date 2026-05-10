@@ -84,6 +84,7 @@ The current `0.1.0` release surface is audit-ready for the bounded processed-evi
 - `npm run smoke:mcp` passes
 - `npm run benchmark:gate` reports `READY`
 - `npm run release:evidence` writes checksummed audit evidence under `release-evidence/`
+- `npm run verify:evidence` verifies evidence freshness, checksums, package coverage, and MCP resource coverage
 - `.venv/bin/pytest tests/python -q` passes
 - `npm run verify:release` passes
 
@@ -97,6 +98,7 @@ npm run build
 npm run smoke:mcp
 npm run benchmark:gate
 npm run release:evidence
+npm run verify:evidence
 npx epimcp serve
 ```
 
@@ -170,6 +172,18 @@ This writes:
 - `release-evidence/npm-pack-dry-run.json`
 
 The evidence manifest records package/config versions, environment details, Git availability, release-gate status, npm pack dry-run metadata, and checksums for the committed audit inputs.
+Release evidence is generated from a clean source tree. For release commits, commit code/docs/config changes first, run `npm run release:evidence`, then commit the refreshed `release-evidence/` bundle.
+
+The npm package includes the files backing all registered audit resources, including current schemas, validation docs, benchmark manifest, golden benchmark outputs, and the latest release evidence bundle.
+
+## Public verification
+
+Public audit verification should check both local commands and GitHub evidence:
+
+- run `npm run verify:evidence` to prove the committed bundle is schema-valid, checksum-valid, package-visible, and tied to the current source lineage
+- run `npm run verify:release` for the full local release gate
+- confirm GitHub CI, Docker Build and Smoke, Benchmarks, Schema Drift Guard, and Handoff Validation are green
+- download the `ci-release-evidence` Actions artifact from the successful Node 20 CI run when independent CI-generated evidence is needed
 
 ## ToxMCP suite fit
 
@@ -230,6 +244,7 @@ npm run build
 npm run smoke:mcp
 npm run benchmark:gate
 npm run release:evidence
+npm run verify:evidence
 .venv/bin/pytest tests/python -q
 npm run verify:release
 ```

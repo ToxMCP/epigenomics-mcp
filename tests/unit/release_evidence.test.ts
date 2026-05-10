@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import {
   RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES,
   RELEASE_EVIDENCE_CHECKSUM_FILES,
@@ -6,6 +10,10 @@ import {
   formatChecksumFile,
 } from "../../src/release_evidence/artifacts.js";
 import { ReleaseEvidenceSchema } from "../../src/release_evidence/schema.js";
+import {
+  getRegisteredAuditResources,
+  resolveAuditResourcePath,
+} from "../../src/epimcp/resources.js";
 
 const HASH_A = "a".repeat(64);
 const HASH_B = "b".repeat(64);
@@ -82,5 +90,42 @@ describe("release evidence schema", () => {
     ]);
 
     expect(text).toBe(`${HASH_A}  a.json\n${HASH_B}  z.json\n`);
+  });
+
+  it("resolves audit resource files from the package root, independent of cwd", () => {
+    const originalCwd = process.cwd();
+    const tempDir = mkdtempSync(join(tmpdir(), "epimcp-resource-cwd-"));
+    try {
+      process.chdir(tempDir);
+      const toolReferencePath = resolveAuditResourcePath("docs/tool-reference.md");
+      expect(toolReferencePath).toBe(resolve(originalCwd, "docs/tool-reference.md"));
+      expect(readFileSync(toolReferencePath, "utf-8")).toContain(
+        "MCP payload envelope",
+      );
+    } finally {
+      process.chdir(originalCwd);
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it("packages every file backing registered audit resources", () => {
+    const output = execFileSync("npm", ["pack", "--dry-run", "--json"], {
+      cwd: process.cwd(),
+      encoding: "utf-8",
+    });
+    const pack = JSON.parse(output) as Array<{
+      files: Array<{ path: string }>;
+    }>;
+    const paths = new Set(pack[0].files.map((file) => file.path));
+
+    for (const resource of getRegisteredAuditResources()) {
+      expect(existsSync(resource.path)).toBe(true);
+      expect(paths.has(resource.path)).toBe(true);
+    }
+
+    expect(paths.has("benchmark_manifest.yaml")).toBe(true);
+    expect(paths.has("release-evidence/release-evidence.json")).toBe(true);
+    expect(paths.has("release-evidence/checksums.sha256")).toBe(true);
+    expect([...paths].some((path) => path.startsWith("benchmarks/expected/"))).toBe(true);
   });
 });
