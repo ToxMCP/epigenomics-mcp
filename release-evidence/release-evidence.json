@@ -9,21 +9,21 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-05-10T14:34:11.030Z",
+  "generatedAt": "2026-06-12T18:46:53.056Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-05-10T14:34:10.289Z",
-    "finishedAt": "2026-05-10T14:34:11.030Z"
+    "startedAt": "2026-06-12T18:46:52.429Z",
+    "finishedAt": "2026-06-12T18:46:53.056Z"
   },
   "environment": {
-    "nodeVersion": "v25.9.0",
-    "npmVersion": "11.13.0",
+    "nodeVersion": "v20.20.2",
+    "npmVersion": "10.8.2",
     "platform": "darwin",
     "arch": "arm64"
   },
   "git": {
     "available": true,
-    "commit": "5d376d9445930f4e1c6c110f7b27a3360023b8d9",
+    "commit": "0937cc092aed22c095927519c44b9ae145464e74",
     "dirty": false
   },
   "releaseGate": {

@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Full history so verify-evidence.mjs can run `git merge-base
+          # --is-ancestor <evidence source commit> HEAD` (fails on a shallow
+          # clone: the pinned source commit is absent).
+          fetch-depth: 0
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
