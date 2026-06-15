@@ -9,7 +9,7 @@ import { registerAuditResources } from "./resources.js";
 // Server factory
 // ---------------------------------------------------------------------------
 
-function createEpigenomicsMcpServer(config: Config): McpServer {
+export function createEpigenomicsMcpServer(config: Config): McpServer {
   const server = new McpServer({
     name: "epigenomics-mcp",
     version: VERSION,
