@@ -24,7 +24,8 @@
     "toxmcp.manifest.yaml"
   ],
   "bin": {
-    "epimcp": "dist/epimcp/cli.js"
+    "epimcp": "dist/epimcp/cli.js",
+    "epimcp-http": "dist/epimcp/http.js"
   },
   "scripts": {
     "build": "tsc",
@@ -43,6 +44,7 @@
     "benchmark:gate": "node scripts/release-gate.mjs",
     "benchmark:ci": "npm run build && node scripts/release-gate.mjs",
     "start": "node dist/epimcp/cli.js",
+    "mcp:serve:http": "node dist/epimcp/http.js",
     "verify:release": "npm run typecheck && npm test && npm run build && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
   },
   "keywords": [
