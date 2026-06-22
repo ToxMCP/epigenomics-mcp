@@ -9,21 +9,21 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-06-19T09:31:47.687Z",
+  "generatedAt": "2026-06-22T14:04:00.356Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-06-19T09:31:47.059Z",
-    "finishedAt": "2026-06-19T09:31:47.687Z"
+    "startedAt": "2026-06-22T14:03:59.483Z",
+    "finishedAt": "2026-06-22T14:04:00.356Z"
   },
   "environment": {
-    "nodeVersion": "v20.11.1",
-    "npmVersion": "10.2.4",
+    "nodeVersion": "v20.20.2",
+    "npmVersion": "10.8.2",
     "platform": "darwin",
     "arch": "arm64"
   },
   "git": {
     "available": true,
-    "commit": "5331efc4a862a065fb596a1e79ea28cd6d4efc9c",
+    "commit": "560841dd09d905dabe438bb8ce8397d07998f1c7",
     "dirty": false
   },
   "releaseGate": {
@@ -61,10 +61,10 @@
       "id": "epigenomics-mcp@0.1.0",
       "name": "epigenomics-mcp",
       "version": "0.1.0",
-      "size": 405366,
-      "unpackedSize": 2621354,
-      "shasum": "65298dcbcb7de35f12e79d14db0d2c9dd56abe21",
-      "integrity": "sha512-Bs7AA3THWCtw/tNPuM6F9TZGh3PkL9ch+CgztzG493lcTxbrkXQXTIxmhVr8QU4ARoD1ZkiNUA94NByRoSFkmA==",
+      "size": 404726,
+      "unpackedSize": 2621478,
+      "shasum": "c455b366db82459e4ff92e44d0856ca8bbc15f46",
+      "integrity": "sha512-KFqMZNefLkNWZe09UN1OwlZ5tevqR5qlsisI6SzpHVPUPpoQSw0PTTxkUilt04G/RfRomit5iVBzq6FEAKnTug==",
       "filename": "epigenomics-mcp-0.1.0.tgz",
       "files": [
         {
@@ -2314,7 +2314,7 @@
         },
         {
           "path": "package.json",
-          "size": 2980,
+          "size": 3104,
           "mode": 420
         },
         {
@@ -2770,7 +2770,7 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "e3477505a7c0ab4c35c941f3a61e3029d3ca97331f14945617378140dd3c589a",
+      "sha256": "b6c14e163ed9e1776fed84f7c1f023ce23b8f8198b618f674df9193b53d5c737",
       "bytes": 55267
     },
     {

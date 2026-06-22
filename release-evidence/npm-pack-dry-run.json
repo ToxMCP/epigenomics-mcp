@@ -3,10 +3,10 @@
     "id": "epigenomics-mcp@0.1.0",
     "name": "epigenomics-mcp",
     "version": "0.1.0",
-    "size": 405366,
-    "unpackedSize": 2621354,
-    "shasum": "65298dcbcb7de35f12e79d14db0d2c9dd56abe21",
-    "integrity": "sha512-Bs7AA3THWCtw/tNPuM6F9TZGh3PkL9ch+CgztzG493lcTxbrkXQXTIxmhVr8QU4ARoD1ZkiNUA94NByRoSFkmA==",
+    "size": 404726,
+    "unpackedSize": 2621478,
+    "shasum": "c455b366db82459e4ff92e44d0856ca8bbc15f46",
+    "integrity": "sha512-KFqMZNefLkNWZe09UN1OwlZ5tevqR5qlsisI6SzpHVPUPpoQSw0PTTxkUilt04G/RfRomit5iVBzq6FEAKnTug==",
     "filename": "epigenomics-mcp-0.1.0.tgz",
     "files": [
       {
@@ -2256,7 +2256,7 @@
       },
       {
         "path": "package.json",
-        "size": 2980,
+        "size": 3104,
         "mode": 420
       },
       {
