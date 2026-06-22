@@ -33,6 +33,7 @@
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "test:contract": "vitest run tests/unit/contracts.test.ts tests/unit/schema_drift.test.ts tests/unit/schema_drift_integration.test.ts tests/unit/schema_export.test.ts tests/unit/handoff.test.ts tests/unit/handoff_validator.test.ts",
+    "test:conformance": "npm run build && vitest run tests/conformance",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "smoke:mcp": "node scripts/smoke_mcp_stdio.mjs",
@@ -78,6 +79,8 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
     "@vitest/coverage-v8": "^4.1.9",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "typescript": "^5.7.2",
     "vitest": "^4.1.9"
   },
