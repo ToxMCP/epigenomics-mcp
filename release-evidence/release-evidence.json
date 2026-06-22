@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-06-22T14:04:00.356Z",
+  "generatedAt": "2026-06-22T20:30:49.518Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-06-22T14:03:59.483Z",
-    "finishedAt": "2026-06-22T14:04:00.356Z"
+    "startedAt": "2026-06-22T20:30:48.779Z",
+    "finishedAt": "2026-06-22T20:30:49.517Z"
   },
   "environment": {
     "nodeVersion": "v20.20.2",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "560841dd09d905dabe438bb8ce8397d07998f1c7",
+    "commit": "9aa99d0db36c0e4e700bd7841f5d8bae01b9eee6",
     "dirty": false
   },
   "releaseGate": {
