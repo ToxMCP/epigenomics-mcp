@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-06-24T10:35:32.690Z",
+  "generatedAt": "2026-06-24T16:41:13.688Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-06-24T10:35:31.737Z",
-    "finishedAt": "2026-06-24T10:35:32.690Z"
+    "startedAt": "2026-06-24T16:41:11.107Z",
+    "finishedAt": "2026-06-24T16:41:13.688Z"
   },
   "environment": {
     "nodeVersion": "v20.20.2",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "a5efd8180205bd87fa243a6e19974d432ac17cc8",
+    "commit": "49497b13a55000efc18cd3a5a9b8e8b1c39c1bc5",
     "dirty": false
   },
   "releaseGate": {
@@ -61,10 +61,10 @@
       "id": "epigenomics-mcp@0.1.0",
       "name": "epigenomics-mcp",
       "version": "0.1.0",
-      "size": 409300,
-      "unpackedSize": 2632325,
-      "shasum": "d0e6cdf8b1d9f642bd58c89e0806a0a94e453537",
-      "integrity": "sha512-iq5LXHNI8iNaSoTyRmLvvW+K2MTy9ZgPlJUDlAV8IJ6KwDCfsTY0MxQpHLQt6trlYuatneMZDwO0XNtbKYAZxA==",
+      "size": 410695,
+      "unpackedSize": 2636789,
+      "shasum": "0d2513471cea69d554b75754f205f9256d4787a9",
+      "integrity": "sha512-6AxDSgmUBRh5pkIavhgcQtj9ia/YHLKHDg3SAuzSXozPRFJddoLrWhofU/Hj4FopSF+RZfJeougJYMIr6fQYOw==",
       "filename": "epigenomics-mcp-0.1.0.tgz",
       "files": [
         {
@@ -2144,7 +2144,7 @@
         },
         {
           "path": "docs/adr/0001-scientific-invariants-gate.md",
-          "size": 10306,
+          "size": 14770,
           "mode": 420
         },
         {
@@ -2775,7 +2775,7 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "7349d4aeb20df26339d0e79bd5a24704faf5716b0f063a8591a54726e5b64cca",
+      "sha256": "a63294ccba1c960cbd5abee5f0c1c6eee99ff5568f9f488bf22954ebfa97e022",
       "bytes": 55390
     },
     {

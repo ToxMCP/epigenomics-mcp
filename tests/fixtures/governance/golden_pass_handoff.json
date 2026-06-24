@@ -3,8 +3,6 @@
   "schemaName": "BioactivityPoDHandoffPacket",
   "handoffId": "golden-pass-handoff-0001",
   "sourcePacketRef": "golden-pass-packet-0001",
-  "applicabilityDomainStatus": "inside",
-  "decisionBoundary": "no-ber-or-final-risk-decision",
   "qualifiedFeatures": [
     {
       "featureId": "cg_golden_001",

@@ -12,16 +12,42 @@ epigenomics-mcp is deterministic, non-LLM, and emits a screening-only,
 corpus this gate is GREEN. Its job is to BLOCK if a future change ever lets one of
 these regressions into a released handoff packet:
 
-  Scientific (from the engine, the dedicated bioactivity/PoD code family):
+Before projecting each packet, the gate validates the raw source against the
+producer's STRICT emission contract (the additionalProperties:false JSON schema /
+.strict() Zod) and BLOCKS a contract-violating packet as SOURCE_CONTRACT_VIOLATION
+WITHOUT projecting it — every advertised scientific code is therefore proven to bite
+on a fault that is itself VALID against that strict contract (a real producer-
+emittable packet), never on a hand-crafted schema-invalid fixture.
+
+  Scientific (from the engine, the dedicated bioactivity/PoD code family — each
+  triggered by a DECLARED field the strict emission contract can carry):
     BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY  (bioactivity != adversity / risk /
-        regulatory; a surviving heritable/transgenerational claim surfaces here too)
-    BIOACTIVITY_NOT_ADVERSITY                     (pre-authorized bioactivity->adversity)
-    CYTOTOXICITY_CONFOUNDS_POD                    (cytotoxicity-category warning on a
+        regulatory; a surviving heritable/transgenerational claim — declared root
+        ``heritabilityClaim`` enum — surfaces here)
+    BIOACTIVITY_NOT_ADVERSITY                     (a surviving heritable/
+        transgenerational ``heritabilityClaim`` is an adversity-grade escalation the
+        feeder may not pre-authorize -> allowed_with_review transition)
+    CYTOTOXICITY_CONFOUNDS_POD                    (declared nested
+        ``qualifiedFeatures[].warnings[].category == cytotoxicity`` on a
         dose-response-ready feature)
-    BATCH_EFFECT_NOT_BOUND                        (batch_effect-category warning)
-    CONTROL_FAILURE_BLOCKS_HANDOFF                (blocking control-context warning)
-    POD_OUTSIDE_APPLICABILITY_DOMAIN, POD_APPLICABILITY_STATUS_REQUIRED
-    POD_READINESS_WITH_BLOCKERS, POD_READINESS_REQUIRES_CONFIDENCE_CEILING
+    BATCH_EFFECT_NOT_BOUND                        (declared ``...warnings[].category
+        == batch_effect``)
+    CONTROL_FAILURE_BLOCKS_HANDOFF                (declared blocking control-context
+        warning, ``...warnings[].blocksDownstream == true``)
+    POD_READINESS_WITH_BLOCKERS                   (declared blocking nested warning on
+        a dose-response-ready feature)
+
+  DROPPED — producer-emission-contract DEAD ARMS (ADR 0001):
+    POD_OUTSIDE_APPLICABILITY_DOMAIN, POD_APPLICABILITY_STATUS_REQUIRED — could only
+        fire from a root ``applicabilityDomainStatus`` field; and
+    POD_READINESS_REQUIRES_CONFIDENCE_CEILING — could only fire by emptying the
+        ceiling refs via a root ``decisionBoundary`` field. The handoff schema is
+        additionalProperties:false at root, so .strict() rejects BOTH fields — the
+        producer never emits them, so these codes bit only on a schema-INVALID
+        fixture, never on a real packet. They are now subsumed by the upstream
+        SOURCE_CONTRACT_VIOLATION guard (a smuggled undeclared root field fails the
+        emission contract before projection). Re-introduce only if a future release
+        adds a GENUINE declared field to the emission schema + Zod.
 
   Intentionally NOT advertised (see ADR 0001, "advertised == actual coverage"):
     INSUFFICIENT_CONCENTRATION_RESPONSE, BIOLOGICAL_REPLICATE_COUNT_REQUIRED,
@@ -47,9 +73,9 @@ these regressions into a released handoff packet:
         PROJECTED object (not a real source packet) is a DEAD ARM and is not
         advertised. The AssessmentRun projection is dropped with it (see ADR 0001).
 
-  Meta fail-closed (synthesized by the bridge / projection):
-    ENGINE_UNAVAILABLE, UNRECOGNIZED_SPINE_SCHEMA_ID, VENDOR_DIGEST_MISMATCH,
-    PROJECTION_INCOMPLETE
+  Meta fail-closed (synthesized by the source-contract guard / bridge / projection):
+    SOURCE_CONTRACT_VIOLATION, ENGINE_UNAVAILABLE, UNRECOGNIZED_SPINE_SCHEMA_ID,
+    VENDOR_DIGEST_MISMATCH, PROJECTION_INCOMPLETE
 
 This gate is ADVISORY on the free-plan private repo (no required-status-checks on
 private repos). PROMOTE-TO-BLOCKING PATH: when the repo moves to a plan with branch
@@ -76,6 +102,7 @@ if str(REPO_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from epigenomics_mcp.governance import project_to_spine as projector  # noqa: E402
+from epigenomics_mcp.governance import source_contract  # noqa: E402
 from epigenomics_mcp.governance import spine_bridge as bridge  # noqa: E402
 from epigenomics_mcp.governance.errors import (  # noqa: E402
     PROJECTION_INCOMPLETE,
@@ -94,28 +121,47 @@ DEFAULT_CORPUS: tuple[str, ...] = (
 )
 
 # The public-release-blocking scientific codes this gate asserts on. (Meta codes
-# from errors.META_FAIL_CLOSED_CODES are ALWAYS blocking and need no listing.)
+# from errors.META_FAIL_CLOSED_CODES — including SOURCE_CONTRACT_VIOLATION — are
+# ALWAYS blocking and need no listing.)
 #
-# NB: the count/basis-keyed adequacy codes AND the AI-provenance codes are
-# intentionally absent — both families are structurally unreachable through the
-# handoff-packet shape (ADR 0001). Advertising a code the projection can never make
-# the engine dispatch on a REAL SOURCE fault would be a DEAD ARM. Every code below is
-# proven to bite end-to-end from a real source mutation (see the adversarial suite).
+# RULE: advertise a scientific code ONLY when its trigger is a field the producer's
+# STRICT emission contract (additionalProperties:false JSON schema / .strict() Zod)
+# CAN carry, so the code bites on a PRODUCER-CONTRACT-VALID fault — not merely on a
+# hand-crafted schema-INVALID fixture. Every code below is proven to bite end-to-end
+# from a real, schema-VALID source mutation on a DECLARED field (see the adversarial
+# suite, each asserted Ajv/jsonschema-VALID against the strict emission schema).
+#
+# DROPPED in this commit (producer-emission-contract DEAD ARMS — see ADR 0001):
+#   POD_OUTSIDE_APPLICABILITY_DOMAIN, POD_APPLICABILITY_STATUS_REQUIRED
+#       — both can only fire from a root ``applicabilityDomainStatus`` field;
+#   POD_READINESS_REQUIRES_CONFIDENCE_CEILING
+#       — can only fire by emptying the confidenceCeilingRefs, which on a
+#         producer-emitted packet always carry the standing canonical non-claim
+#         boundary ref; the only way to suppress it is a root ``decisionBoundary``
+#         field.
+#   The handoff schema is additionalProperties:false at root, so NEITHER
+#   ``applicabilityDomainStatus`` NOR ``decisionBoundary`` can appear on a packet the
+#   producer emits (.strict() rejects them). These three codes therefore bit only on
+#   a schema-INVALID fixture and NEVER on a real producer-emitted packet — DEAD ARMS.
+#   They are now caught upstream as SOURCE_CONTRACT_VIOLATION (a smuggled undeclared
+#   root field fails the emission contract before any projection). Deterministic N/A.
+#   RE-INTRODUCTION PATH: if a future release adds a GENUINE declared
+#   ``applicabilityDomainStatus`` / ``decisionBoundary`` field to the emission schema
+#   + Zod, re-derive the projection FROM that declared field and re-advertise the
+#   code — only then will it bite on a contract-valid fault.
 BLOCKING_SCIENTIFIC_CODES: frozenset[str] = frozenset(
     {
         # anti-overclaim — bioactivity != adversity / risk / regulatory
+        # (declared root ``heritabilityClaim`` enum surfaces the overclaim)
         "BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY",
         "BIOACTIVITY_NOT_ADVERSITY",
-        # control / batch / cytotoxicity (from STRUCTURED warning categories)
+        # control / batch / cytotoxicity (declared nested
+        # ``qualifiedFeatures[].warnings[].category`` + ``blocksDownstream``)
         "CONTROL_FAILURE_BLOCKS_HANDOFF",
         "BATCH_EFFECT_NOT_BOUND",
         "CYTOTOXICITY_CONFOUNDS_POD",
-        # applicability / overclaim
-        "POD_OUTSIDE_APPLICABILITY_DOMAIN",
-        "POD_APPLICABILITY_STATUS_REQUIRED",
-        # readiness
+        # readiness (declared nested blocking warnings on a ready feature)
         "POD_READINESS_WITH_BLOCKERS",
-        "POD_READINESS_REQUIRES_CONFIDENCE_CEILING",
     }
 )
 
@@ -168,6 +214,19 @@ def run_gate(corpus: list[str], *, emit_json: bool = False) -> int:
             print(f"[scientific-invariants] FAIL: corpus file missing: {rel}", file=sys.stderr)
             return 2
         source = _load(path)
+
+        # FAIL-CLOSED SOURCE-CONTRACT VALIDATION (template step 1): validate the raw
+        # packet against the producer's STRICT emission contract BEFORE projecting.
+        # A packet that fails the contract — including any undeclared / schema-
+        # forbidden root field (the schema is additionalProperties:false) — is a
+        # SOURCE_CONTRACT_VIOLATION that BLOCKS and is NEVER projected / safe-
+        # defaulted. This closes the producer-emission-contract dead-arm class: a
+        # "fault" that could only fire a scientific code by smuggling a schema-
+        # forbidden field is caught here as a contract violation instead.
+        contract_finding = source_contract.validate_source_packet(source, corpus=rel)
+        if contract_finding is not None:
+            findings.append((rel, contract_finding))
+            continue
 
         try:
             projected = _project_objects(source, rel)
