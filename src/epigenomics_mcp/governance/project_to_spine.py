@@ -21,7 +21,7 @@ The released ``BioactivityPoDHandoffPacket`` carries, per the committed schema:
     guarded temporal/inheritance claim enums;
   * ``provenance`` — the audit trail.
 
-A single released handoff packet projects into SIX spine objects so the rich
+A single released handoff packet projects into FIVE spine objects so the rich
 bioactivity/PoD invariants the dedicated spine code family enforces actually fire:
 
   * ``PointOfDepartureRecord`` — the anti-overclaim arm
@@ -50,9 +50,13 @@ bioactivity/PoD invariants the dedicated spine code family enforces actually fir
     carries blocking warnings / mandatory caveats is a contradiction;
     ``POD_READINESS_REQUIRES_CONFIDENCE_CEILING`` — an eligible readiness with no
     substantive confidence-ceiling ref).
-  * ``AssessmentRun`` — the AI-provenance FORWARD arm (the epigenomics
-    qualification engine is deterministic / non-LLM today, so ``aiUse = none``
-    passes; a future relabel to AI-assisted without domain review BLOCKS).
+
+NO ``AssessmentRun`` (AI-provenance arm) is projected. The released handoff packet
+carries NO AI / model-use / LLM / provenance-of-generation field (the schema is
+``additionalProperties:false`` at root and in ``provenance``), and the engine is
+deterministic / non-LLM, so any AssessmentRun would have to HARDCODE ``aiUse="none"``
+— the spine AI codes could then only "fire" by mutating the projected object, never
+on a real source fault. That is a DEAD ARM, so the AI arm is dropped (ADR 0001).
 
 THE DEAD-ARM LESSON (advertised == actual coverage). The released handoff packet
 carries NO positive numeric design magnitude (dose-level count, biological
@@ -67,7 +71,13 @@ STRUCTURALLY UNREACHABLE through this packet's shape and are intentionally NOT
 advertised by this gate (see ADR 0001). ``POD_MODEL_DIAGNOSTICS_REQUIRED`` is
 likewise dropped: it keys on a *ready* PoD regime this screening-stage feeder never
 enters (its risk/regulatory arm stays guarded LIVE by
-``BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY``).
+``BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY``). The AI-provenance code family
+(``AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW`` / ``AI_MODEL_IDENTITY_REQUIRED`` /
+``AI_UNKNOWN_WITH_PUBLIC_RELEASE`` / ``HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT``
+/ ``USABLE_HUMAN_REVIEW_REQUIRED`` / ``AI_USE_NONE_WITH_MODEL_TRACE`` /
+``AI_RECORD_FREE_TEXT_OVERCLAIM`` / ``MODEL_IDENTITY_IS_NOT_VALIDATION``) is dropped
+for the same reason: the packet declares no AI / model use, so the arm could only
+fire on a projected-object mutation — see the AssessmentRun note above.
 
 Design contract (non-negotiable):
 
@@ -96,7 +106,6 @@ reviewable line-by-line.
 
 from __future__ import annotations
 
-import hashlib
 import re
 import unicodedata
 from typing import Any
@@ -116,9 +125,6 @@ POD_READINESS_SCHEMA_ID = (
 )
 MEASUREMENT_SCHEMA_ID = (
     "https://schemas.ngra.ai/toxmcp/MeasurementValue.v1.schema.json"
-)
-ASSESSMENT_RUN_SCHEMA_ID = (
-    "https://schemas.ngra.ai/toxmcp/AssessmentRun.v1.schema.json"
 )
 CONCENTRATION_RESPONSE_DESIGN_SCHEMA_ID = (
     "https://schemas.ngra.ai/toxmcp/ConcentrationResponseDesign.v1.schema.json"
@@ -1072,66 +1078,17 @@ def project_pod_readiness(
 
 
 # ---------------------------------------------------------------------------
-# AssessmentRun (AI-provenance FORWARD arm)
+# NOTE on the AI-provenance arm (DELIBERATELY ABSENT — see ADR 0001).
 # ---------------------------------------------------------------------------
-
-
-def project_assessment_run(
-    packet: dict[str, Any],
-    *,
-    run_id: str | None = None,
-    output_object_refs: list[str] | None = None,
-) -> dict[str, Any]:
-    """Project a released handoff packet's PRODUCING RUN -> spine AssessmentRun.
-
-    FAITHFUL AI projection: the epigenomics qualification engine is DETERMINISTIC and
-    NON-LLM (rule-based qualification, no model inference), so ``aiUse = none`` and
-    ``modelUseRecords = []`` — a clean run PASSES the AI arm. The output refs name
-    the PoD/bioactivity outputs so the engine's ``assessmentProducesBioactivityPod``
-    recognizes this run. FORWARD tripwire: a future relabel to AI-assisted without a
-    toxicologist/risk-assessor/regulatory-expert review fires
-    AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW / HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_
-    ASSESSMENT.
-    """
-    _require_handoff(packet)
-    provenance = packet.get("provenance") or {}
-    pid = _packet_id(packet)
-    dataset_id = str(provenance.get("datasetId") or pid)
-
-    digest = _manifest_digest(packet, provenance)
-    outputs = output_object_refs or [
-        f"epigenomics:pod:{pid}",
-        f"epigenomics:obs:{pid}",
-    ]
-
-    return {
-        "schemaId": ASSESSMENT_RUN_SCHEMA_ID,
-        "assessmentRunId": run_id or f"epigenomics:run:{pid}",
-        "assessmentObjective": (
-            "Epigenomic feature qualification for downstream Bioactivity-PoD modelling "
-            "(deterministic rule-based qualification; non-LLM)."
-        ),
-        "aiUse": "none",
-        "modelUseRecords": [],
-        "humanReviewRecords": [],
-        "workflowVersion": f"epigenomics-mcp@{packet.get('schemaVersion', '0')}",
-        "mcpManifestDigests": [digest],
-        "sourceCorpusRefs": [],
-        "inputObjectRefs": [f"epigenomics:dataset:{dataset_id}"],
-        "outputObjectRefs": outputs,
-        "reproducibilityStatus": "reproducible",
-        "publicReleaseEligible": True,
-    }
-
-
-def _manifest_digest(packet: dict[str, Any], provenance: dict[str, Any]) -> str:
-    """A sha256:<64hex> manifest digest derived from real provenance, total."""
-    source = provenance.get("sourceAccession") or provenance.get("sourceArchive")
-    if (
-        isinstance(source, str)
-        and len(source) == 64
-        and all(c in "0123456789abcdef" for c in source.lower())
-    ):
-        return f"sha256:{source.lower()}"
-    seed = str(provenance.get("datasetId") or _packet_id(packet) or "epigenomics")
-    return "sha256:" + hashlib.sha256(seed.encode("utf-8")).hexdigest()
+# epigenomics-mcp is deterministic / non-LLM, and the released
+# BioactivityPoDHandoffPacket (additionalProperties:false at root and in
+# provenance) carries NO AI / model-use / LLM / provenance-of-generation field.
+# A spine AssessmentRun projection would therefore have to HARDCODE aiUse="none"
+# (no real source field could ever set it otherwise), so the spine AI codes
+# (AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW, AI_MODEL_IDENTITY_REQUIRED, ...) could
+# only "fire" by mutating the PROJECTED object — never on a real source fault.
+# That is a DEAD ARM. We do NOT project an AssessmentRun and do NOT advertise the
+# AI codes. If a future release ever begins emitting a genuine AI/model-use field
+# in the handoff packet, re-introduce project_assessment_run() deriving aiUse /
+# modelUseRecords / humanReviewRecords FROM that source field and re-advertise the
+# AI codes — only then will they bite on a real source fault.

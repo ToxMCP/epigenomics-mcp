@@ -5,7 +5,7 @@ exit code non-zero. Two families of codes flow through it:
 
 * SCIENTIFIC codes emitted by the vendored spine policy engine itself
   (e.g. ``BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY``,
-  ``CYTOTOXICITY_CONFOUNDS_POD``, ``AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW``).
+  ``CYTOTOXICITY_CONFOUNDS_POD``, ``POD_READINESS_REQUIRES_CONFIDENCE_CEILING``).
   These are passed through verbatim from the engine's ``failures[]``.
 
 * META fail-closed codes synthesized by the *bridge* when it cannot trust the

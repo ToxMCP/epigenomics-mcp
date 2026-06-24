@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Regenerate the committed golden spine-projection fixtures.
 
-For each released handoff packet in the gate corpus, project it into its six spine
+For each released handoff packet in the gate corpus, project it into its five spine
 objects and write each projected object as a sorted-key JSON fixture under
 ``tests/fixtures/governance/spine_projection/``. These golden fixtures make the
 lossy handoff-packet -> spine projection reviewable line-by-line; a regression test
@@ -41,7 +41,6 @@ def _projections(packet: dict) -> dict[str, dict]:
         "concentrationResponseDesign": projector.project_concentration_response_design(packet),
         "claimTransitionPolicy": projector.project_claim_transition_policy(packet),
         "readiness": projector.project_pod_readiness(packet),
-        "assessmentRun": projector.project_assessment_run(packet),
     }
 
 

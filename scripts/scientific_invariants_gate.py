@@ -35,12 +35,17 @@ these regressions into a released handoff packet:
     POD_MODEL_DIAGNOSTICS_REQUIRED — keys on a *ready* PoD regime this screening
         feeder never enters (its risk/regulatory arm stays guarded LIVE by
         BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY).
-    The AI-provenance codes are LIVE as a forward tripwire (see below).
-
-  AI-provenance forward arm (LIVE; passes today because aiUse=none):
-    AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW, AI_MODEL_IDENTITY_REQUIRED,
-    AI_UNKNOWN_WITH_PUBLIC_RELEASE, HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT,
-    USABLE_HUMAN_REVIEW_REQUIRED, AI_USE_NONE_WITH_MODEL_TRACE
+    The AI-provenance codes (AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW,
+        AI_MODEL_IDENTITY_REQUIRED, AI_UNKNOWN_WITH_PUBLIC_RELEASE,
+        HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT, USABLE_HUMAN_REVIEW_REQUIRED,
+        AI_USE_NONE_WITH_MODEL_TRACE, AI_RECORD_FREE_TEXT_OVERCLAIM,
+        MODEL_IDENTITY_IS_NOT_VALIDATION) — DROPPED. epigenomics-mcp is
+        deterministic / non-LLM and the released BioactivityPoDHandoffPacket
+        (additionalProperties:false) carries NO AI / model-use / LLM / provenance-of-
+        generation field, so no real source fault can ever make the AI arm dispatch:
+        aiUse was hardcoded "none". An AI code that can only "fire" by mutating the
+        PROJECTED object (not a real source packet) is a DEAD ARM and is not
+        advertised. The AssessmentRun projection is dropped with it (see ADR 0001).
 
   Meta fail-closed (synthesized by the bridge / projection):
     ENGINE_UNAVAILABLE, UNRECOGNIZED_SPINE_SCHEMA_ID, VENDOR_DIGEST_MISMATCH,
@@ -91,9 +96,11 @@ DEFAULT_CORPUS: tuple[str, ...] = (
 # The public-release-blocking scientific codes this gate asserts on. (Meta codes
 # from errors.META_FAIL_CLOSED_CODES are ALWAYS blocking and need no listing.)
 #
-# NB: the count/basis-keyed adequacy codes are intentionally absent — they are
-# structurally unreachable through the handoff-packet shape (ADR 0001). Advertising
-# a code the projection can never make the engine dispatch would be a DEAD ARM.
+# NB: the count/basis-keyed adequacy codes AND the AI-provenance codes are
+# intentionally absent — both families are structurally unreachable through the
+# handoff-packet shape (ADR 0001). Advertising a code the projection can never make
+# the engine dispatch on a REAL SOURCE fault would be a DEAD ARM. Every code below is
+# proven to bite end-to-end from a real source mutation (see the adversarial suite).
 BLOCKING_SCIENTIFIC_CODES: frozenset[str] = frozenset(
     {
         # anti-overclaim — bioactivity != adversity / risk / regulatory
@@ -109,15 +116,6 @@ BLOCKING_SCIENTIFIC_CODES: frozenset[str] = frozenset(
         # readiness
         "POD_READINESS_WITH_BLOCKERS",
         "POD_READINESS_REQUIRES_CONFIDENCE_CEILING",
-        # AI-provenance forward arm
-        "AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW",
-        "AI_MODEL_IDENTITY_REQUIRED",
-        "AI_UNKNOWN_WITH_PUBLIC_RELEASE",
-        "HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT",
-        "USABLE_HUMAN_REVIEW_REQUIRED",
-        "AI_USE_NONE_WITH_MODEL_TRACE",
-        "AI_RECORD_FREE_TEXT_OVERCLAIM",
-        "MODEL_IDENTITY_IS_NOT_VALIDATION",
     }
 )
 
@@ -133,7 +131,11 @@ def _project_objects(
 
     A BioactivityPoDHandoffPacket projects to its PointOfDepartureRecord +
     BioactivityObservation + ConcentrationResponseDesign + ClaimTransitionPolicy +
-    BioactivityPodReadiness + AssessmentRun. Returns (label, projected_object) pairs.
+    BioactivityPodReadiness. Returns (label, projected_object) pairs.
+
+    No AssessmentRun is projected: the released packet carries no AI / model-use /
+    provenance-of-generation field (additionalProperties:false), so the spine's
+    AI-provenance arm is N/A here and is not advertised (ADR 0001).
     """
     if source.get("schemaName") != projector.HANDOFF_SCHEMA_NAME:
         raise ProjectionIncompleteError(
@@ -154,7 +156,6 @@ def _project_objects(
             f"{rel_path}#readiness",
             projector.project_pod_readiness(source, pod_ref=pod_ref, observation_ref=obs_ref),
         ),
-        (f"{rel_path}#assessmentRun", projector.project_assessment_run(source)),
     ]
 
 

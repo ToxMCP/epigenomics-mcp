@@ -14,8 +14,9 @@ and does not false-block the pristine corpus.
   (A'')applicability: an out-of-domain status -> POD_OUTSIDE_APPLICABILITY_DOMAIN; a
        disguised free-text applicability value cannot forge an 'inside' pass ->
        POD_APPLICABILITY_STATUS_REQUIRED.
-  (B)  AI-provenance gap (FORWARD): a producing AssessmentRun relabeled AI-assisted
-       with no domain review -> AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW / etc.
+  (B)  AI-provenance arm HONEST-DROPPED: the packet carries no AI/model-use field
+       (deterministic / non-LLM), so the AI codes are not advertised and no
+       AssessmentRun is projected — proven a non-dead-arm by section (E).
   (C)  the DISGUISE BATTERY: None/empty/placeholder/Unicode-dash/combining-diacritic/
        HOMOGLYPH/leetspeak/zero-width on the non-claim boundary ALL mint NO ceiling
        ref BY CONSTRUCTION -> readiness BLOCKS with POD_READINESS_REQUIRES_CONFIDENCE_
@@ -295,32 +296,16 @@ def test_aprime2_accepted_feature_status_earns_inside() -> None:
     assert bridge.validate_object(pod).valid
 
 
-# --- (B) AI-provenance gap (FORWARD tripwire) --------------------------------
-
-
-@_node_required
-def test_b_ai_assisted_run_without_domain_review_blocks() -> None:
-    src = copy.deepcopy(_load(ACCEPTED))
-    run = projector.project_assessment_run(src, run_id="adversarial-B")
-    run["aiUse"] = "generated"
-    run["humanReviewRecords"] = []
-    result = bridge.validate_object(run)
-    assert not result.valid
-    assert any(
-        code in result.blocking_codes
-        for code in (
-            "AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW",
-            "HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT",
-            "AI_MODEL_IDENTITY_REQUIRED",
-        )
-    )
-
-
-@_node_required
-def test_b_pristine_run_passes_ai_arm() -> None:
-    run = projector.project_assessment_run(_load(ACCEPTED), run_id="pristine-B")
-    assert run["aiUse"] == "none"
-    assert bridge.validate_object(run).valid
+# --- (B) AI-provenance arm: HONEST-DROPPED (deterministic / non-LLM) ----------
+#
+# The released BioactivityPoDHandoffPacket carries NO AI / model-use / LLM /
+# provenance-of-generation field (the schema is additionalProperties:false at root
+# and in provenance), and the qualification engine is deterministic / non-LLM. So no
+# real SOURCE fault can make the spine AI arm dispatch — any AssessmentRun would have
+# to hardcode aiUse="none", and the only way an AI code could "fire" is by mutating
+# the PROJECTED object directly. That is a DEAD ARM, so the AI codes are NOT
+# advertised and no AssessmentRun is projected (see ADR 0001 + the dead-arm guard in
+# section (E)). test_e_ai_arm_is_not_a_dead_arm proves it stays dropped.
 
 
 # --- (B') readiness with blockers --------------------------------------------
@@ -522,7 +507,6 @@ def test_e_golden_pass_fixture_passes() -> None:
         projector.project_concentration_response_design(src),
         projector.project_claim_transition_policy(src),
         projector.project_pod_readiness(src),
-        projector.project_assessment_run(src),
     ):
         assert bridge.validate_object(o).valid, f"golden PASS object blocked: {o['schemaId']}"
 
@@ -542,6 +526,54 @@ def test_e_advertised_dead_arm_codes_are_not_advertised() -> None:
         assert code not in gate.BLOCKING_SCIENTIFIC_CODES  # type: ignore[attr-defined]
 
 
+_AI_PROVENANCE_CODES = (
+    "AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW",
+    "AI_MODEL_IDENTITY_REQUIRED",
+    "AI_UNKNOWN_WITH_PUBLIC_RELEASE",
+    "HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT",
+    "USABLE_HUMAN_REVIEW_REQUIRED",
+    "AI_USE_NONE_WITH_MODEL_TRACE",
+    "AI_RECORD_FREE_TEXT_OVERCLAIM",
+    "MODEL_IDENTITY_IS_NOT_VALIDATION",
+)
+
+
+def test_e_ai_arm_is_not_a_dead_arm() -> None:
+    """ADR 0001 (AI-provenance HONEST-DROP). epigenomics-mcp is deterministic /
+    non-LLM and the released BioactivityPoDHandoffPacket carries NO AI / model-use /
+    provenance-of-generation field, so the spine AI codes can NEVER dispatch on a
+    real SOURCE fault. They MUST NOT be advertised, and no AssessmentRun is
+    projected — advertising a structurally-unreachable code is a dead arm."""
+    gate = _load_gate()
+    for code in _AI_PROVENANCE_CODES:
+        assert code not in gate.BLOCKING_SCIENTIFIC_CODES  # type: ignore[attr-defined]
+    # the AssessmentRun projection itself is gone (no AI arm to game)
+    assert not hasattr(projector, "project_assessment_run")
+
+
+def test_e_no_source_field_can_make_a_packet_declare_ai_use() -> None:
+    """STRUCTURAL proof of the drop: even if a future reviewer tried to smuggle an
+    AI/model-use field into a released packet, the handoff schema is
+    additionalProperties:false (root + provenance), so it cannot validly carry one —
+    there is no real source from which to derive aiUse != 'none'. This is why the AI
+    arm is N/A here rather than merely 'passing today'."""
+    handoff_schema = json.loads(
+        (REPO_ROOT / "schemas" / "current" / "bioactivity-pod-handoff-packet.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert handoff_schema.get("additionalProperties") is False
+    prov = handoff_schema["properties"]["provenance"]
+    assert prov.get("additionalProperties") is False
+    declared = set(handoff_schema["properties"]) | set(prov.get("properties", {}))
+    ai_ish = {
+        k
+        for k in declared
+        if any(t in k.lower() for t in ("aiuse", "model", "llm", "generativ", "humanreview"))
+    }
+    assert ai_ish == set(), f"unexpected AI-ish source field(s) appeared: {ai_ish}"
+
+
 def test_e_golden_projection_matches_committed_fixtures() -> None:
     """The live projection still matches the committed golden projection fixtures
     byte-for-byte (regenerate with scripts/generate_spine_projection_golden.py)."""
@@ -559,7 +591,6 @@ def test_e_golden_projection_matches_committed_fixtures() -> None:
         "concentrationResponseDesign": projector.project_concentration_response_design,
         "claimTransitionPolicy": projector.project_claim_transition_policy,
         "readiness": projector.project_pod_readiness,
-        "assessmentRun": projector.project_assessment_run,
     }
     for stem, rel in corpus.items():
         packet = _load(REPO_ROOT / rel)

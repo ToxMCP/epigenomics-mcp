@@ -43,10 +43,11 @@ Add an **advisory** Track-B scientific-invariants gate:
 
 3. **Total, deterministic projection**
    (`src/epigenomics_mcp/governance/project_to_spine.py`): one
-   `BioactivityPoDHandoffPacket` projects into six spine objects —
+   `BioactivityPoDHandoffPacket` projects into five spine objects —
    `PointOfDepartureRecord`, `BioactivityObservation`,
    `ConcentrationResponseDesign`, `ClaimTransitionPolicy`,
-   `BioactivityPodReadiness`, `AssessmentRun`. Every projected field is DERIVED
+   `BioactivityPodReadiness`. (No `AssessmentRun` / AI-provenance arm is
+   projected — see the dead-arm discipline below.) Every projected field is DERIVED
    from the source; an unmapped enum / unsupported schemaName raises
    `ProjectionIncompleteError` (a BLOCK). The projected objects are committed as
    golden fixtures (`tests/fixtures/governance/spine_projection/`) so the lossy
@@ -96,7 +97,9 @@ blocking set is:
 | `POD_APPLICABILITY_STATUS_REQUIRED` | PointOfDepartureRecord | a disguised (non-enum) applicability value → field left ABSENT |
 | `POD_READINESS_WITH_BLOCKERS` | BioactivityPodReadiness | a blocking warning on the dose-response-ready feature itself |
 | `POD_READINESS_REQUIRES_CONFIDENCE_CEILING` | BioactivityPodReadiness | a disguised non-claim boundary → no ceiling ref (the disguise battery) |
-| `AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW` (+ AI family) | AssessmentRun | a FORWARD relabel to `aiUse: generated` with no domain review |
+
+Every advertised code BITES end-to-end from a **real source-packet** mutation (not
+a projected-object mutation). No advertised code is structurally unreachable.
 
 ### Intentionally NOT advertised (structurally unreachable)
 
@@ -116,12 +119,34 @@ blocking set is:
   (`fit_for_prioritization` / risk/regulatory-ready / `decision_support`) this
   screening-stage feeder never enters by design; its risk/regulatory arm stays
   guarded LIVE by `BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY`.
+- **The AI-provenance code family** — `AI_GENERATED_POD_REQUIRES_DOMAIN_REVIEW`,
+  `AI_MODEL_IDENTITY_REQUIRED`, `AI_UNKNOWN_WITH_PUBLIC_RELEASE`,
+  `HUMAN_REVIEW_REQUIRED_FOR_PUBLIC_AI_ASSESSMENT`, `USABLE_HUMAN_REVIEW_REQUIRED`,
+  `AI_USE_NONE_WITH_MODEL_TRACE`, `AI_RECORD_FREE_TEXT_OVERCLAIM`,
+  `MODEL_IDENTITY_IS_NOT_VALIDATION`. **epigenomics-mcp is deterministic / non-LLM**
+  (rule-based feature qualification; no model inference anywhere in `src/`), and the
+  released `BioactivityPoDHandoffPacket` carries **NO AI / model-use / LLM /
+  provenance-of-generation field** — the schema is `additionalProperties:false` at
+  the root and in `provenance`, whose only audit fields are deterministic pipeline
+  steps (`toolName`/`toolVersion`/…). An `AssessmentRun` projection would therefore
+  have to **hardcode `aiUse:"none"`**: no real source field could ever set it
+  otherwise, so the spine AI codes could only "fire" by mutating the *projected
+  object*, never on a real source fault. **That is a dead arm.** These codes were
+  previously advertised-but-dead (the bioactivity-pod dead-arm lesson recurring); we
+  HONEST-DROP the whole AI arm — the codes are removed from
+  `BLOCKING_SCIENTIFIC_CODES`, the `project_assessment_run` projection is deleted, and
+  no `AssessmentRun` golden fixtures are emitted. A test pins both their absence from
+  the advertised set and the structural fact that the schema cannot carry an
+  AI/model-use field. **Re-introduction path:** if a future release ever emits a
+  genuine AI/model-use field in the handoff packet, re-add `project_assessment_run`
+  deriving `aiUse`/`modelUseRecords`/`humanReviewRecords` *from that source field* and
+  re-advertise the AI codes — only then will they bite on a real source fault.
 
 ## Consequences
 
 - The gate is GREEN on the pristine corpus (the four committed
   `bioactivity_pod_handoff_valid/*.json` examples + the authored golden PASS
-  fixture; 30 projected objects). It BLOCKS only on a real regression.
+  fixture; 25 projected objects). It BLOCKS only on a real regression.
 - Faithful blocker scoping: a blocking caveat about an *excluded* feature does NOT
   block the readiness of the qualified dose-response-ready subset (proven by the
   `excluded.json` / `exploratory_only.json` fixtures passing).
