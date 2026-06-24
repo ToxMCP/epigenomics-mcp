@@ -40,6 +40,7 @@ from typing import Any
 import pytest
 
 from epigenomics_mcp.governance import project_to_spine as projector
+from epigenomics_mcp.governance import source_contract
 from epigenomics_mcp.governance import spine_bridge as bridge
 from epigenomics_mcp.governance.errors import (
     ENGINE_UNAVAILABLE,
@@ -50,6 +51,38 @@ from epigenomics_mcp.governance.errors import (
 REPO_ROOT = Path(__file__).resolve().parents[3]
 ACCEPTED = REPO_ROOT / "examples" / "bioactivity_pod_handoff_valid" / "accepted.json"
 GOLDEN_PASS = REPO_ROOT / "tests" / "fixtures" / "governance" / "golden_pass_handoff.json"
+EMISSION_SCHEMA = REPO_ROOT / "schemas" / "current" / "bioactivity-pod-handoff-packet.json"
+
+
+def _assert_source_contract_valid(src: dict[str, Any], context: str) -> None:
+    """Every advertised-code bite proof MUST run on a fault packet that is itself
+    VALID against the producer's STRICT emission contract (a real producer-emittable
+    packet) — not a hand-crafted schema-invalid fixture.
+
+    Primary assertion uses the gate's own fail-closed source-contract guard. When
+    ``jsonschema`` is installed (it is in the dev extra), we ALSO cross-check with an
+    independent Draft7Validator against the same additionalProperties:false schema,
+    so the proof does not rely solely on our own subset validator."""
+    finding = source_contract.validate_source_packet(src, corpus=context)
+    assert finding is None, (
+        f"{context}: fault packet is NOT producer-contract-valid "
+        f"({finding.message if finding else ''}) — a contract-valid fault is required."
+    )
+    try:
+        from jsonschema import Draft7Validator
+    except ImportError:  # pragma: no cover - jsonschema present in dev extra
+        return
+    # Independent STRUCTURAL cross-check (type / const / enum / required /
+    # additionalProperties:false / minItems / minLength). jsonschema treats `format`
+    # as annotation-only by default; the gate's own validator additionally enforces
+    # date-time to match the producer's Zod `z.string().datetime()`. Every advertised
+    # fault here carries a valid date-time, so the two agree on these packets.
+    schema = json.loads(EMISSION_SCHEMA.read_text(encoding="utf-8"))
+    errors = list(Draft7Validator(schema).iter_errors(src))
+    assert errors == [], (
+        f"{context}: jsonschema Draft7 reports the fault packet INVALID against the "
+        f"strict emission schema: {[e.message for e in errors][:3]}"
+    )
 
 _node_required = pytest.mark.skipif(
     shutil.which("node") is None, reason="Node not available; the bridge requires it."
@@ -97,9 +130,11 @@ def test_a_pod_overclaim_blocks(overclaim_use: str) -> None:
 @_node_required
 def test_a_heritability_overclaim_blocks(claim: str) -> None:
     """A surviving heritable/transgenerational claim surfaces as a blocked downstream
-    use -> BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY."""
+    use -> BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY. The fault is on the DECLARED
+    root ``heritabilityClaim`` enum, so it is producer-contract-valid."""
     src = copy.deepcopy(_load(ACCEPTED))
     src["heritabilityClaim"] = claim
+    _assert_source_contract_valid(src, f"heritability={claim}")
     pod = projector.project_pod_record(src, pod_id="adversarial-Aherit")
     assert any("adversity_claim" in u for u in pod["allowedDownstreamUses"])
     result = bridge.validate_object(pod)
@@ -117,19 +152,21 @@ def test_a_pristine_pod_passes_overclaim_arm() -> None:
 # --- (A) bioactivity -> adversity claim transition ----------------------------
 
 
+@pytest.mark.parametrize("claim", ["heritable", "transgenerational"])
 @_node_required
-def test_a_claim_transition_to_adversity_blocks() -> None:
-    """A pre-authorized bioactivity->adversity claim transition BLOCKS."""
+def test_a_claim_transition_to_adversity_blocks(claim: str) -> None:
+    """A surviving heritable/transgenerational ``heritabilityClaim`` is an
+    adversity-grade escalation the screening feeder may not pre-authorize: the
+    projected claim-transition lifts to ``allowed_with_review`` ->
+    BIOACTIVITY_NOT_ADVERSITY. The fault is on the DECLARED root ``heritabilityClaim``
+    enum, so it is producer-contract-valid (no undeclared ``claimTransition``
+    field — that would fail the strict emission contract and is now caught by the
+    SOURCE-CONTRACT guard instead)."""
     src = copy.deepcopy(_load(ACCEPTED))
-    src["claimTransition"] = {
-        "sourceClaimClass": "bioactivity",
-        "targetClaimClass": "adversity",
-        "transitionStatus": "allowed",
-        "requiredEvidenceRefs": ["evidence:1"],
-        "requiredReviewState": "human_review_required",
-    }
+    src["heritabilityClaim"] = claim
+    _assert_source_contract_valid(src, f"claim-transition heritability={claim}")
     ctp = projector.project_claim_transition_policy(src)
-    assert ctp["transitionStatus"] == "allowed"
+    assert ctp["transitionStatus"] == "allowed_with_review"
     result = bridge.validate_object(ctp)
     assert not result.valid
     assert "BIOACTIVITY_NOT_ADVERSITY" in result.blocking_codes
@@ -143,16 +180,15 @@ def test_a_pristine_claim_transition_is_blocked_and_passes() -> None:
     assert bridge.validate_object(ctp).valid
 
 
-@pytest.mark.parametrize(
-    "disguise",
-    ["allowed-trust-me", "ALLOWED", "yes-allowed", "n/a", ""],
-)
+@pytest.mark.parametrize("claim", ["none", "not_claimed"])
 @_node_required
-def test_a_disguised_transition_status_cannot_forge_escalation(disguise: str) -> None:
-    """POSITIVE-EVIDENCE: a disguised transitionStatus is not a recognized enum, so
-    it leaves the transition BLOCKED (passes) — a string cannot forge an escalation."""
+def test_a_non_adversity_heritability_leaves_transition_blocked(claim: str) -> None:
+    """POSITIVE-EVIDENCE: only a heritable/transgenerational claim lifts the
+    transition off ``blocked``; a ``none``/``not_claimed`` declared claim leaves it
+    BLOCKED (passes) — the screening feeder is not pre-authorizing an escalation."""
     src = copy.deepcopy(_load(ACCEPTED))
-    src["claimTransition"] = {"transitionStatus": disguise}
+    src["heritabilityClaim"] = claim
+    _assert_source_contract_valid(src, f"heritability={claim}")
     ctp = projector.project_claim_transition_policy(src)
     assert ctp["transitionStatus"] == "blocked"
     assert bridge.validate_object(ctp).valid
@@ -176,6 +212,7 @@ def _feature_with_warning(category: str, *, blocks: bool, feature_id: str = "cg_
 def test_aprime_cytotoxicity_confounds_pod_ready_blocks() -> None:
     src = copy.deepcopy(_load(ACCEPTED))
     src["qualifiedFeatures"][0]["warnings"] = [_feature_with_warning("cytotoxicity", blocks=False)]
+    _assert_source_contract_valid(src, "cytotoxicity warning")
     ccd = projector.project_concentration_response_design(src)
     assert ccd["cytotoxicityConfounding"] == "possible"
     assert "CYTOTOXICITY_CONFOUNDS_POD" in bridge.validate_object(ccd).blocking_codes
@@ -187,6 +224,7 @@ def test_aprime_cytotoxicity_confounds_pod_ready_blocks() -> None:
 def test_aprime_batch_effect_not_bound_blocks() -> None:
     src = copy.deepcopy(_load(ACCEPTED))
     src["qualifiedFeatures"][0]["warnings"] = [_feature_with_warning("batch_effect", blocks=False)]
+    _assert_source_contract_valid(src, "batch_effect warning")
     obs = projector.project_bioactivity_observation(src)
     assert obs["batchEffectAssessment"] == "unresolved"
     assert "BATCH_EFFECT_NOT_BOUND" in bridge.validate_object(obs).blocking_codes
@@ -196,6 +234,7 @@ def test_aprime_batch_effect_not_bound_blocks() -> None:
 def test_aprime_control_failure_blocks() -> None:
     src = copy.deepcopy(_load(ACCEPTED))
     src["qualifiedFeatures"][0]["warnings"] = [_feature_with_warning("cell_composition", blocks=True)]
+    _assert_source_contract_valid(src, "cell_composition blocking warning")
     ccd = projector.project_concentration_response_design(src)
     assert ccd["controlStatus"] == "failed"
     assert "CONTROL_FAILURE_BLOCKS_HANDOFF" in bridge.validate_object(ccd).blocking_codes
@@ -250,50 +289,105 @@ def test_aprime_free_text_message_cannot_forge_confounding(field_message: str) -
     assert bridge.validate_object(ccd).valid
 
 
-# --- (A'') applicability ------------------------------------------------------
-
-
-@_node_required
-def test_aprime2_out_of_domain_applicability_blocks() -> None:
-    src = copy.deepcopy(_load(ACCEPTED))
-    src["applicabilityDomainStatus"] = "outside"
-    pod = projector.project_pod_record(src)
-    assert pod.get("applicabilityDomainStatus") == "outside"
-    assert "POD_OUTSIDE_APPLICABILITY_DOMAIN" in bridge.validate_object(pod).blocking_codes
+# --- (A'') SOURCE-CONTRACT GUARD: the dead-arm class cannot return ------------
+#
+# The applicability codes (POD_OUTSIDE_APPLICABILITY_DOMAIN /
+# POD_APPLICABILITY_STATUS_REQUIRED) and POD_READINESS_REQUIRES_CONFIDENCE_CEILING
+# were DROPPED as producer-emission-contract DEAD ARMS: their only triggers are root
+# ``applicabilityDomainStatus`` / ``decisionBoundary`` fields the strict emission
+# contract (additionalProperties:false / .strict()) cannot carry. A packet smuggling
+# one is now caught by the fail-closed SOURCE-CONTRACT guard BEFORE projection, as
+# SOURCE_CONTRACT_VIOLATION — so the dead-arm class (advertising a code that bites
+# only on a schema-invalid fixture) cannot silently return.
 
 
 @pytest.mark.parametrize(
-    "disguise",
+    "forbidden_field, value",
     [
-        pytest.param("inside-trust-me", id="suffixed"),
-        pytest.param("INSIDE", id="wrong-case"),
-        pytest.param("definitely-inside", id="prefixed"),
-        pytest.param("n/a", id="placeholder"),
-        pytest.param("", id="empty"),
-        pytest.param("   ", id="whitespace"),
+        pytest.param("applicabilityDomainStatus", "outside", id="applicabilityDomainStatus"),
+        pytest.param("decisionBoundary", "no-ber-or-final-risk-decision", id="decisionBoundary"),
+        pytest.param("applicabilityDomainStatus", "inside", id="applicability-inside"),
+        pytest.param("someFutureField", {"nested": 1}, id="arbitrary-undeclared"),
     ],
 )
-@_node_required
-def test_aprime2_disguised_applicability_cannot_forge_inside_pass(disguise: str) -> None:
-    """POSITIVE-EVIDENCE: a disguised free-text applicability value is not a
-    recognized enum, so it is treated as a refusal-to-declare (ABSENT) and an
-    actionable PoD fires POD_APPLICABILITY_STATUS_REQUIRED."""
+def test_aprime2_source_contract_guard_rejects_forbidden_root_field(
+    forbidden_field: str, value: Any
+) -> None:
+    """REGRESSION (template step 4): a packet carrying an UNDECLARED root field fails
+    the producer's strict emission contract -> SOURCE_CONTRACT_VIOLATION (fail-closed,
+    blocking). This is the structural reason the dropped dead-arm codes cannot return
+    silently — a smuggled schema-forbidden field is caught here, not safe-defaulted
+    into a projected scientific code."""
     src = copy.deepcopy(_load(ACCEPTED))
-    src["applicabilityDomainStatus"] = disguise
-    pod = projector.project_pod_record(src)
-    assert "applicabilityDomainStatus" not in pod
-    res = bridge.validate_object(pod)
-    assert not res.valid
-    assert "POD_APPLICABILITY_STATUS_REQUIRED" in res.blocking_codes
+    src[forbidden_field] = value
+    finding = source_contract.validate_source_packet(src, corpus="adversarial")
+    assert finding is not None, f"forbidden field {forbidden_field!r} was not rejected"
+    assert finding.code == source_contract.SOURCE_CONTRACT_VIOLATION
+    assert finding.origin == "meta"
+    assert forbidden_field in finding.message
+
+
+def test_aprime2_source_contract_guard_rejects_forbidden_nested_field() -> None:
+    """The strict contract is additionalProperties:false at every level: an undeclared
+    field inside a nested warning is also a SOURCE_CONTRACT_VIOLATION."""
+    src = copy.deepcopy(_load(ACCEPTED))
+    src["qualifiedFeatures"][0]["warnings"] = [
+        {
+            "warningCode": "EPI_X",
+            "severity": "warning",
+            "message": "m",
+            "category": "cytotoxicity",
+            "smuggledNestedField": True,
+        }
+    ]
+    finding = source_contract.validate_source_packet(src, corpus="adversarial")
+    assert finding is not None
+    assert finding.code == source_contract.SOURCE_CONTRACT_VIOLATION
+    assert "smuggledNestedField" in finding.message
+
+
+@pytest.mark.parametrize(
+    "rel",
+    [
+        "examples/bioactivity_pod_handoff_valid/accepted.json",
+        "examples/bioactivity_pod_handoff_valid/accepted_with_warnings.json",
+        "examples/bioactivity_pod_handoff_valid/excluded.json",
+        "examples/bioactivity_pod_handoff_valid/exploratory_only.json",
+        "tests/fixtures/governance/golden_pass_handoff.json",
+    ],
+)
+def test_aprime2_pristine_corpus_passes_source_contract(rel: str) -> None:
+    """Every PRISTINE corpus packet is VALID against the producer's strict emission
+    contract (a real producer-emittable packet) — so the guard does not false-block
+    and every advertised code is proven on a contract-valid fault."""
+    src = _load(REPO_ROOT / rel)
+    assert source_contract.validate_source_packet(src, corpus=rel) is None
+
+
+def test_aprime2_source_contract_guard_is_advertised_meta() -> None:
+    """SOURCE_CONTRACT_VIOLATION is an advertised fail-closed meta code."""
+    from epigenomics_mcp.governance.errors import META_FAIL_CLOSED_CODES
+
+    assert source_contract.SOURCE_CONTRACT_VIOLATION in META_FAIL_CLOSED_CODES
 
 
 @_node_required
-def test_aprime2_accepted_feature_status_earns_inside() -> None:
-    """A genuine accepted, dose-response-ready feature status earns 'inside' (positive
-    structured evidence the `status` enum carries) -> the pristine PoD passes."""
-    pod = projector.project_pod_record(_load(ACCEPTED))
-    assert pod.get("applicabilityDomainStatus") == "inside"
-    assert bridge.validate_object(pod).valid
+def test_aprime2_guard_blocks_in_gate_run() -> None:
+    """END-TO-END: a forbidden-field packet handed to the gate exits non-zero with a
+    SOURCE_CONTRACT_VIOLATION and is NEVER projected/safe-defaulted. (The gate
+    resolves corpus paths relative to REPO_ROOT, so the temp fixture is written
+    inside the repo tree and removed afterwards.)"""
+    gate = _load_gate()
+    src = copy.deepcopy(_load(ACCEPTED))
+    src["applicabilityDomainStatus"] = "outside"  # undeclared root field
+    repo_tmp = REPO_ROOT / "tests" / "fixtures" / "governance" / "_forbidden_tmp.json"
+    try:
+        repo_tmp.write_text(json.dumps(src), encoding="utf-8")
+        rel = str(repo_tmp.relative_to(REPO_ROOT))
+        rc = gate.run_gate([rel], emit_json=True)  # type: ignore[attr-defined]
+        assert rc == 1
+    finally:
+        repo_tmp.unlink(missing_ok=True)
 
 
 # --- (B) AI-provenance arm: HONEST-DROPPED (deterministic / non-LLM) ----------
@@ -317,6 +411,7 @@ def test_bprime_readiness_with_blocker_on_ready_feature_blocks() -> None:
     contradiction -> POD_READINESS_WITH_BLOCKERS."""
     src = copy.deepcopy(_load(ACCEPTED))
     src["qualifiedFeatures"][0]["warnings"] = [_feature_with_warning("missing_metadata", blocks=True)]
+    _assert_source_contract_valid(src, "blocking warning on ready feature")
     rdy = projector.project_pod_readiness(src)
     assert rdy["readinessStatus"] == "eligible"
     assert rdy["blockers"]
@@ -335,60 +430,53 @@ def test_bprime_excluded_feature_caveat_does_not_block_ready_subset() -> None:
     assert bridge.validate_object(rdy).valid
 
 
-# --- (C) the DISGUISE BATTERY (closed by construction) -----------------------
-
-_DISGUISE_BOUNDARIES = [
-    pytest.param("", id="empty"),
-    pytest.param("   ", id="whitespace"),
-    pytest.param("n/a", id="placeholder-na"),
-    pytest.param("tbd", id="placeholder-tbd"),
-    pytest.param("placeholder", id="placeholder-word"),
-    pytest.param("nо-ber-or-final-risk-decision", id="homoglyph-cyrillic-o"),
-    pytest.param("n0-b3r-0r-f1nal-r1sk-dec1s10n", id="leetspeak"),
-    pytest.param("no-ber-or-final-screening-verdict", id="anchor-missing"),
-    pytest.param("NoBerOrFinalRiskDecision", id="despaced-camelcase"),
-    pytest.param("final risk decision authorized", id="single-anchor-only"),
-    pytest.param("screening only context", id="unrelated-text"),
-]
+# --- (C) confidence-ceiling code DROPPED (producer-emission-contract dead arm) -
+#
+# POD_READINESS_REQUIRES_CONFIDENCE_CEILING was DROPPED: the only way to empty the
+# projected confidenceCeilingRefs is to DECLARE a disguised root ``decisionBoundary``
+# field (so the canonical-fallback ceiling ref is suppressed). The strict emission
+# contract is additionalProperties:false at root, so a producer can NEVER emit a
+# ``decisionBoundary`` field — the code bit only on a schema-INVALID fixture and is a
+# DEAD ARM. A packet smuggling ``decisionBoundary`` is now caught upstream by the
+# SOURCE-CONTRACT guard as SOURCE_CONTRACT_VIOLATION (proven below). On a
+# producer-contract-VALID packet the ceiling refs always carry the standing canonical
+# non-claim boundary, so the code can never fire.
 
 
-@pytest.mark.parametrize("boundary", _DISGUISE_BOUNDARIES)
-def test_c_disguised_boundary_mints_no_ceiling_ref(boundary: Any) -> None:
-    """Pure-Python: a DECLARED disguised non-claim boundary mints NO ceiling ref (the
-    declared value wins over the canonical fallback, and it is neither structured nor
-    a >=2-anchor canonical match). Strip all structured warnings/caveats first."""
+@pytest.mark.parametrize(
+    "boundary",
+    [
+        pytest.param("", id="empty"),
+        pytest.param("n/a", id="placeholder-na"),
+        pytest.param("no-ber-or-final-screening-verdict", id="anchor-missing"),
+        pytest.param("nо-ber-or-final-risk-decision", id="homoglyph-cyrillic-o"),
+    ],
+)
+def test_c_decision_boundary_is_contract_forbidden(boundary: str) -> None:
+    """The root ``decisionBoundary`` field — the ONLY source trigger that could have
+    emptied the ceiling refs — is UNDECLARED in the strict emission contract, so any
+    packet carrying it (disguised or not) is a SOURCE_CONTRACT_VIOLATION caught before
+    projection. This is why POD_READINESS_REQUIRES_CONFIDENCE_CEILING is a dead arm and
+    was dropped rather than advertised."""
     src = copy.deepcopy(_load(ACCEPTED))
     src["decisionBoundary"] = boundary
-    src["mandatoryCaveats"] = []
-    for f in src.get("qualifiedFeatures", []) + src.get("excludedFeatures", []):
-        f["warnings"] = []
-    refs = projector._derive_ceiling_refs(src)
-    assert refs == [], f"disguised boundary {boundary!r} fabricated ceiling ref {refs!r}"
-
-
-@pytest.mark.parametrize("boundary", _DISGUISE_BOUNDARIES)
-@_node_required
-def test_c_disguised_boundary_blocks_readiness_end_to_end(boundary: Any) -> None:
-    src = copy.deepcopy(_load(ACCEPTED))
-    src["decisionBoundary"] = boundary
-    src["mandatoryCaveats"] = []
-    for f in src.get("qualifiedFeatures", []) + src.get("excludedFeatures", []):
-        f["warnings"] = []
-    rdy = projector.project_pod_readiness(src, readiness_id="adversarial-C")
-    assert rdy["confidenceCeilingRefs"] == []
-    result = bridge.validate_object(rdy)
-    assert not result.valid
-    assert "POD_READINESS_REQUIRES_CONFIDENCE_CEILING" in result.blocking_codes
+    finding = source_contract.validate_source_packet(src, corpus="adversarial-C")
+    assert finding is not None
+    assert finding.code == source_contract.SOURCE_CONTRACT_VIOLATION
+    assert "decisionBoundary" in finding.message
 
 
 @_node_required
-def test_c_canonical_boundary_passes_readiness() -> None:
-    """The REAL canonical boundary (declared OR the standing screening-feeder default)
-    mints a ceiling ref and PASSES on merit."""
+def test_c_pristine_readiness_carries_canonical_ceiling_and_passes() -> None:
+    """A producer-contract-VALID packet (no ``decisionBoundary`` field) always mints
+    the standing canonical non-claim boundary ceiling ref -> readiness PASSES on
+    merit. There is no contract-valid way to empty it, which is exactly why the
+    confidence-ceiling code can never bite on a real packet."""
     src = copy.deepcopy(_load(ACCEPTED))
     src["mandatoryCaveats"] = []
     for f in src.get("qualifiedFeatures", []) + src.get("excludedFeatures", []):
         f["warnings"] = []
+    _assert_source_contract_valid(src, "pristine-no-decisionBoundary")
     rdy = projector.project_pod_readiness(src, readiness_id="canonical-C")
     assert "ceiling:non_claim_boundary" in rdy["confidenceCeilingRefs"]
     assert bridge.validate_object(rdy).valid
@@ -511,10 +599,22 @@ def test_e_golden_pass_fixture_passes() -> None:
         assert bridge.validate_object(o).valid, f"golden PASS object blocked: {o['schemaId']}"
 
 
+#: Producer-emission-contract DEAD ARMS dropped in the source-contract-guard
+#: commit: each could only fire from a root field (applicabilityDomainStatus /
+#: decisionBoundary) the strict additionalProperties:false emission contract cannot
+#: carry, so it bit only on a schema-INVALID fixture, never on a real packet.
+_PRODUCER_CONTRACT_DEAD_ARM_CODES = (
+    "POD_OUTSIDE_APPLICABILITY_DOMAIN",
+    "POD_APPLICABILITY_STATUS_REQUIRED",
+    "POD_READINESS_REQUIRES_CONFIDENCE_CEILING",
+)
+
+
 def test_e_advertised_dead_arm_codes_are_not_advertised() -> None:
     """ADR 0001: the count/basis-keyed adequacy codes + POD_MODEL_DIAGNOSTICS_REQUIRED
-    are structurally unreachable through the handoff-packet shape and MUST NOT be
-    advertised (no dead arms)."""
+    + the producer-emission-contract dead arms (applicability + confidence-ceiling)
+    are structurally unreachable through the strict handoff-packet shape and MUST NOT
+    be advertised (no dead arms)."""
     gate = _load_gate()
     for code in (
         "INSUFFICIENT_CONCENTRATION_RESPONSE",
@@ -522,8 +622,95 @@ def test_e_advertised_dead_arm_codes_are_not_advertised() -> None:
         "PSEUDOREPLICATION_INFLATES_SUPPORT",
         "CONCENTRATION_BASIS_MISMATCH",
         "POD_MODEL_DIAGNOSTICS_REQUIRED",
+        *_PRODUCER_CONTRACT_DEAD_ARM_CODES,
     ):
         assert code not in gate.BLOCKING_SCIENTIFIC_CODES  # type: ignore[attr-defined]
+
+
+def test_e_advertised_codes_are_exactly_the_six_live_codes() -> None:
+    """The advertised scientific set is EXACTLY the six codes each proven to bite on a
+    producer-contract-VALID fault (declared fields). No dead arms, no extras."""
+    gate = _load_gate()
+    expected = frozenset(
+        {
+            "BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY",
+            "BIOACTIVITY_NOT_ADVERSITY",
+            "CONTROL_FAILURE_BLOCKS_HANDOFF",
+            "BATCH_EFFECT_NOT_BOUND",
+            "CYTOTOXICITY_CONFOUNDS_POD",
+            "POD_READINESS_WITH_BLOCKERS",
+        }
+    )
+    assert expected == gate.BLOCKING_SCIENTIFIC_CODES  # type: ignore[attr-defined]
+
+
+@_node_required
+def test_e_every_advertised_code_bites_on_a_contract_valid_fault() -> None:
+    """SUMMARY PROOF (template step 3): for EVERY advertised scientific code there is a
+    fault packet that is VALID against the producer's strict emission contract (a real
+    producer-emittable packet) on which the code bites end-to-end via the real bridge.
+    clean -> inject-real-declared-field -> attributed red. No projected-object
+    mutations, no schema-forbidden field injections."""
+
+    def warn(cat: str, blocks: bool) -> dict[str, Any]:
+        return _feature_with_warning(cat, blocks=blocks)
+
+    base = _load(ACCEPTED)
+    # (code, source-mutation, [projectors that should surface it])
+    cases: list[tuple[str, Any, list[Any]]] = []
+
+    s = copy.deepcopy(base)
+    s["heritabilityClaim"] = "heritable"
+    cases.append(
+        ("BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY", s, [projector.project_pod_record])
+    )
+
+    s = copy.deepcopy(base)
+    s["heritabilityClaim"] = "transgenerational"
+    cases.append(
+        ("BIOACTIVITY_NOT_ADVERSITY", s, [projector.project_claim_transition_policy])
+    )
+
+    s = copy.deepcopy(base)
+    s["qualifiedFeatures"][0]["warnings"] = [warn("cytotoxicity", False)]
+    cases.append(
+        (
+            "CYTOTOXICITY_CONFOUNDS_POD",
+            s,
+            [projector.project_concentration_response_design, projector.project_bioactivity_observation],
+        )
+    )
+
+    s = copy.deepcopy(base)
+    s["qualifiedFeatures"][0]["warnings"] = [warn("batch_effect", False)]
+    cases.append(("BATCH_EFFECT_NOT_BOUND", s, [projector.project_bioactivity_observation]))
+
+    s = copy.deepcopy(base)
+    s["qualifiedFeatures"][0]["warnings"] = [warn("cell_composition", True)]
+    cases.append(
+        (
+            "CONTROL_FAILURE_BLOCKS_HANDOFF",
+            s,
+            [projector.project_concentration_response_design, projector.project_bioactivity_observation],
+        )
+    )
+
+    s = copy.deepcopy(base)
+    s["qualifiedFeatures"][0]["warnings"] = [warn("missing_metadata", True)]
+    cases.append(("POD_READINESS_WITH_BLOCKERS", s, [projector.project_pod_readiness]))
+
+    proven = set()
+    for code, src, projs in cases:
+        _assert_source_contract_valid(src, code)  # Ajv/jsonschema-VALID
+        bit = False
+        for fn in projs:
+            if code in bridge.validate_object(fn(src)).blocking_codes:
+                bit = True
+        assert bit, f"advertised code {code} did not bite on its contract-valid fault"
+        proven.add(code)
+
+    gate = _load_gate()
+    assert proven == set(gate.BLOCKING_SCIENTIFIC_CODES)  # type: ignore[attr-defined]
 
 
 _AI_PROVENANCE_CODES = (

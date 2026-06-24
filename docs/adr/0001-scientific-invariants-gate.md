@@ -68,11 +68,31 @@ Add an **advisory** Track-B scientific-invariants gate:
      a distinct-script HOMOGLYPH or LEETSPEAK cannot FORGE one;
    - the applicability `inside` status is earned ONLY from a genuine
      `accepted_for_pod` / `accepted_with_caveats` feature `status` enum that is also
-     in the `doseResponseReadySubset` — a disguised free-text
-     `applicabilityDomainStatus` value is treated as a refusal-to-declare (left
-     ABSENT) and cannot forge an `inside` pass.
+     in the `doseResponseReadySubset`. (The applicability codes themselves are now
+     DROPPED as dead arms — see below — because their *override* trigger
+     `applicabilityDomainStatus` is an undeclared root field the strict contract
+     rejects; the `inside`-earning logic remains as the contract-valid default.)
 
-5. **Advisory CI job** (`.github/workflows/scientific-invariants.yml`, Node 20+22 ×
+5. **Fail-closed SOURCE-CONTRACT validation, BEFORE projection**
+   (`src/epigenomics_mcp/governance/source_contract.py`,
+   `SOURCE_CONTRACT_VIOLATION`). At the TOP of `run_gate`, before projecting each
+   corpus/source packet, the raw packet is validated against the producer's STRICT
+   emission contract — the `additionalProperties:false` JSON schema
+   `schemas/current/bioactivity-pod-handoff-packet.json` (the `.strict()` Zod mirror
+   `BioactivityPoDHandoffPacketSchema`). A packet that FAILS the contract — including
+   ANY undeclared / schema-forbidden root or nested field — is a
+   `SOURCE_CONTRACT_VIOLATION` that BLOCKS (exit 1) and is **never projected /
+   safe-defaulted**. The validator is a self-contained, dependency-free Draft-07
+   *subset* checker (the schema's `$schema`) covering exactly the keywords the
+   emission schema uses; a schema it cannot fully enforce is itself a hard block (it
+   refuses to under-validate). This guard is the structural fix for the
+   producer-emission-contract DEAD-ARM class (below): a "fault" that could only fire a
+   scientific code by carrying a schema-forbidden field is caught here as a contract
+   violation, so the dead-arm class cannot silently return. It is an advertised meta
+   fail-closed code alongside `ENGINE_UNAVAILABLE` /
+   `UNRECOGNIZED_SPINE_SCHEMA_ID` / `VENDOR_DIGEST_MISMATCH` / `PROJECTION_INCOMPLETE`.
+
+6. **Advisory CI job** (`.github/workflows/scientific-invariants.yml`, Node 20+22 ×
    Python 3.12): `vendor:verify` first, then the gate on the pristine corpus, then
    the adversarial self-tests. Advisory because the ToxMCP org is on the GitHub
    Free plan (branch-protection / rulesets 403 on private repos). Promote-to-blocking
@@ -82,24 +102,50 @@ Add an **advisory** Track-B scientific-invariants gate:
 ## Advertised == actual coverage (the dead-arm discipline)
 
 For **every** advertised public-release-blocking code, the projection emits the
-shape the engine dispatches that code on, and a self-test proves it BITES on a real
-structured fault (clean → inject → attributed red → revert → green). The advertised
-blocking set is:
+shape the engine dispatches that code on, and a self-test proves it BITES on a fault
+packet that is itself **VALID against the producer's strict emission contract** (a
+real producer-emittable packet — Ajv/jsonschema VALID against the
+`additionalProperties:false` schema), injected on a **DECLARED** source field:
+clean → inject-real-declared-field → attributed red → revert → green. The advertised
+blocking set is the six LIVE codes:
 
-| code | dispatched shape | fault that bites |
+| code | dispatched shape | DECLARED source field the contract-valid fault uses |
 | --- | --- | --- |
-| `BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY` | PointOfDepartureRecord | a risk/regulatory/adversity downstream-use token, or a surviving `heritable`/`transgenerational` claim, surfaced into `allowedDownstreamUses` |
-| `BIOACTIVITY_NOT_ADVERSITY` | ClaimTransitionPolicy | a structured `claimTransition` authorizing bioactivity→adversity (`allowed`), or a surviving heritability claim (`allowed_with_review`) |
-| `CYTOTOXICITY_CONFOUNDS_POD` | ConcentrationResponseDesign + BioactivityObservation | a `cytotoxicity`-category warning on a dose-response-ready feature |
-| `BATCH_EFFECT_NOT_BOUND` | BioactivityObservation | a `batch_effect`-category warning |
-| `CONTROL_FAILURE_BLOCKS_HANDOFF` | ConcentrationResponseDesign + BioactivityObservation | a blocking `cell_composition`/`stress_response`-category warning |
-| `POD_OUTSIDE_APPLICABILITY_DOMAIN` | PointOfDepartureRecord | a declared `applicabilityDomainStatus: outside` |
-| `POD_APPLICABILITY_STATUS_REQUIRED` | PointOfDepartureRecord | a disguised (non-enum) applicability value → field left ABSENT |
-| `POD_READINESS_WITH_BLOCKERS` | BioactivityPodReadiness | a blocking warning on the dose-response-ready feature itself |
-| `POD_READINESS_REQUIRES_CONFIDENCE_CEILING` | BioactivityPodReadiness | a disguised non-claim boundary → no ceiling ref (the disguise battery) |
+| `BIOACTIVITY_POD_NOT_RISK_OR_REGULATORY_READY` | PointOfDepartureRecord | a surviving `heritabilityClaim: heritable`/`transgenerational` (declared root enum) surfaced into `allowedDownstreamUses` |
+| `BIOACTIVITY_NOT_ADVERSITY` | ClaimTransitionPolicy | a surviving `heritabilityClaim: heritable`/`transgenerational` (declared root enum) → `allowed_with_review` transition |
+| `CYTOTOXICITY_CONFOUNDS_POD` | ConcentrationResponseDesign + BioactivityObservation | declared nested `qualifiedFeatures[].warnings[].category: cytotoxicity` on a dose-response-ready feature |
+| `BATCH_EFFECT_NOT_BOUND` | BioactivityObservation | declared nested `qualifiedFeatures[].warnings[].category: batch_effect` |
+| `CONTROL_FAILURE_BLOCKS_HANDOFF` | ConcentrationResponseDesign + BioactivityObservation | declared nested blocking `cell_composition`/`stress_response`-category warning (`blocksDownstream: true`) |
+| `POD_READINESS_WITH_BLOCKERS` | BioactivityPodReadiness | declared nested blocking warning on the dose-response-ready feature itself |
 
-Every advertised code BITES end-to-end from a **real source-packet** mutation (not
-a projected-object mutation). No advertised code is structurally unreachable.
+Every advertised code BITES end-to-end from a **real, producer-contract-VALID
+source-packet** mutation on a DECLARED field (not a projected-object mutation, not a
+schema-forbidden field injection). No advertised code is structurally unreachable.
+
+### DROPPED — producer-emission-contract DEAD ARMS (the defect fixed here)
+
+The original gate advertised three codes whose only source trigger is a **root field
+the producer's STRICT emission contract cannot carry**, so each bit only on a
+hand-crafted, schema-INVALID fixture and NEVER on a packet the real producer emits —
+a producer-emission-contract DEAD ARM. The `.strict()` Zod object / root
+`additionalProperties:false` JSON schema reject these fields, so the new
+SOURCE-CONTRACT guard catches any packet carrying them as `SOURCE_CONTRACT_VIOLATION`
+*before* projection. We DROP all three from `BLOCKING_SCIENTIFIC_CODES`:
+
+| dropped code | dead source trigger (UNDECLARED root field) | deterministic N/A reason |
+| --- | --- | --- |
+| `POD_OUTSIDE_APPLICABILITY_DOMAIN` | `applicabilityDomainStatus` | not in the emission schema; `.strict()` rejects it. On a contract-valid packet the projected `applicabilityDomainStatus` is only ever `inside` (earned from an accepted, dose-response-ready feature `status`) or ABSENT-with-no-actionable-PoD — never `outside`. |
+| `POD_APPLICABILITY_STATUS_REQUIRED` | `applicabilityDomainStatus` (disguised) | same field; a disguised value could only be supplied by declaring the forbidden root field. A contract-valid actionable PoD always earns `inside`. |
+| `POD_READINESS_REQUIRES_CONFIDENCE_CEILING` | `decisionBoundary` | not in the emission schema; `.strict()` rejects it. The only way to empty `confidenceCeilingRefs` is to declare a disguised `decisionBoundary` that suppresses the standing canonical non-claim boundary ref. A contract-valid packet always carries that canonical ref, so the code can never fire. |
+
+A self-test pins their absence from the advertised set, and a regression test proves
+the SOURCE-CONTRACT guard REJECTS a forbidden-field packet (root *and* nested)
+fail-closed, so the dead-arm class cannot silently return.
+
+**Re-introduction path:** if a future release adds a GENUINE declared
+`applicabilityDomainStatus` / `decisionBoundary` field to the emission schema + Zod
+(`.strict()`) contract, re-derive the projection FROM that declared field and
+re-advertise the code — only then will it bite on a producer-contract-valid fault.
 
 ### Intentionally NOT advertised (structurally unreachable)
 
@@ -146,7 +192,15 @@ a projected-object mutation). No advertised code is structurally unreachable.
 
 - The gate is GREEN on the pristine corpus (the four committed
   `bioactivity_pod_handoff_valid/*.json` examples + the authored golden PASS
-  fixture; 25 projected objects). It BLOCKS only on a real regression.
+  fixture; 25 projected objects). Every corpus packet is now also VALID against the
+  producer's strict emission contract — the authored golden PASS fixture, which
+  previously carried the now-forbidden `applicabilityDomainStatus` / `decisionBoundary`
+  root fields (the symptom of the dead arm), was corrected to a real
+  producer-emittable packet; its projection is byte-identical (those fields never
+  affected the contract-valid projection). It BLOCKS only on a real regression.
+- The source-contract guard, like the rest of the gate, uses only the Python
+  standard library (the dependency-free Draft-07 subset validator), so the advisory
+  CI job still does not need the heavy `epigenomics_mcp` runtime dependency stack.
 - Faithful blocker scoping: a blocking caveat about an *excluded* feature does NOT
   block the readiness of the qualified dose-response-ready subset (proven by the
   `excluded.json` / `exploratory_only.json` fixtures passing).
