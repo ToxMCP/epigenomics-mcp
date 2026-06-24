@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-06-22T20:30:49.518Z",
+  "generatedAt": "2026-06-24T09:31:59.841Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-06-22T20:30:48.779Z",
-    "finishedAt": "2026-06-22T20:30:49.517Z"
+    "startedAt": "2026-06-24T09:31:59.072Z",
+    "finishedAt": "2026-06-24T09:31:59.841Z"
   },
   "environment": {
     "nodeVersion": "v20.20.2",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "9aa99d0db36c0e4e700bd7841f5d8bae01b9eee6",
+    "commit": "6c05fa5ff268f7fc5da664cee08388ebbc5c5796",
     "dirty": false
   },
   "releaseGate": {
@@ -61,10 +61,10 @@
       "id": "epigenomics-mcp@0.1.0",
       "name": "epigenomics-mcp",
       "version": "0.1.0",
-      "size": 404726,
-      "unpackedSize": 2621478,
-      "shasum": "c455b366db82459e4ff92e44d0856ca8bbc15f46",
-      "integrity": "sha512-KFqMZNefLkNWZe09UN1OwlZ5tevqR5qlsisI6SzpHVPUPpoQSw0PTTxkUilt04G/RfRomit5iVBzq6FEAKnTug==",
+      "size": 408569,
+      "unpackedSize": 2630452,
+      "shasum": "b106a37d80b09439faebcaf951d405af1f64e4f5",
+      "integrity": "sha512-oifJyCAhsQ6GVRFsorJqi/hYfo1HTF5Y49daRldcMuyy+2lwyE5PabxgFLmomyqRRVuqA7IQ6xuEx1cCWA8Vng==",
       "filename": "epigenomics-mcp-0.1.0.tgz",
       "files": [
         {
@@ -2143,6 +2143,11 @@
           "mode": 420
         },
         {
+          "path": "docs/adr/0001-scientific-invariants-gate.md",
+          "size": 8433,
+          "mode": 420
+        },
+        {
           "path": "docs/cell-composition-confounding-guide.md",
           "size": 6586,
           "mode": 420
@@ -2314,7 +2319,7 @@
         },
         {
           "path": "package.json",
-          "size": 3104,
+          "size": 3244,
           "mode": 420
         },
         {
@@ -2404,11 +2409,11 @@
         },
         {
           "path": "toxmcp.manifest.yaml",
-          "size": 4579,
+          "size": 4980,
           "mode": 420
         }
       ],
-      "entryCount": 468,
+      "entryCount": 469,
       "bundled": []
     }
   ],
@@ -2770,8 +2775,8 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "b6c14e163ed9e1776fed84f7c1f023ce23b8f8198b618f674df9193b53d5c737",
-      "bytes": 55267
+      "sha256": "1ac217c7ee5bd336c3a8c2c7b4d09c4565b31e9698282d189afb08cdff8c18b1",
+      "bytes": 55389
     },
     {
       "path": "release-evidence/release-gate.json",
@@ -2815,8 +2820,8 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "be28df9a5fb49cf0bbeb8235d7ff0b8e3820b04a779656caf00cdf9995021b72",
-      "bytes": 4579
+      "sha256": "9a61e6eed09aa5450b635a062af78a785c8af9e9fd38e13f7a0314c2d2d0d0e0",
+      "bytes": 4980
     }
   ]
 }
