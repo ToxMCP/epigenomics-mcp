@@ -3,10 +3,10 @@
     "id": "epigenomics-mcp@0.1.0",
     "name": "epigenomics-mcp",
     "version": "0.1.0",
-    "size": 408569,
-    "unpackedSize": 2630452,
-    "shasum": "b106a37d80b09439faebcaf951d405af1f64e4f5",
-    "integrity": "sha512-oifJyCAhsQ6GVRFsorJqi/hYfo1HTF5Y49daRldcMuyy+2lwyE5PabxgFLmomyqRRVuqA7IQ6xuEx1cCWA8Vng==",
+    "size": 409300,
+    "unpackedSize": 2632325,
+    "shasum": "d0e6cdf8b1d9f642bd58c89e0806a0a94e453537",
+    "integrity": "sha512-iq5LXHNI8iNaSoTyRmLvvW+K2MTy9ZgPlJUDlAV8IJ6KwDCfsTY0MxQpHLQt6trlYuatneMZDwO0XNtbKYAZxA==",
     "filename": "epigenomics-mcp-0.1.0.tgz",
     "files": [
       {
@@ -2086,7 +2086,7 @@
       },
       {
         "path": "docs/adr/0001-scientific-invariants-gate.md",
-        "size": 8433,
+        "size": 10306,
         "mode": 420
       },
       {
