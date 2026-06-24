@@ -1,0 +1,30 @@
+{
+  "allowedConsumers": [
+    "bioactivity_pod_mcp",
+    "external-orchestrator"
+  ],
+  "applicabilityBoundaryRefs": [
+    "epigenomics:applicability:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "bioactivityObservationRefs": [
+    "epigenomics:obs:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "bioactivityPodReadinessId": "epigenomics:readiness:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "blockers": [],
+  "confidenceCeilingRefs": [
+    "ceiling:caveat[0]",
+    "ceiling:warning:cg_excluded_001[0]",
+    "ceiling:non_claim_boundary"
+  ],
+  "notARegulatoryConclusion": true,
+  "notARiskConclusion": true,
+  "notAnAdversityConclusion": true,
+  "podRef": "epigenomics:pod:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "readinessStatus": "eligible",
+  "requiredRecordRefs": [
+    "epigenomics:obs:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+    "epigenomics:pod:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "requiredReviewState": "human_review_required",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/BioactivityPodReadiness.v1.schema.json"
+}

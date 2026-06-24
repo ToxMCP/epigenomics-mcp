@@ -41,6 +41,8 @@
     "release:evidence": "npm run build && node scripts/release-evidence.mjs",
     "verify:evidence": "npm run build && node scripts/verify-evidence.mjs",
     "validate:handoff": "node scripts/validate-handoffs.mjs",
+    "vendor:verify": "python3 scripts/vendor_verify.py",
+    "gate:scientific-invariants": "python3 scripts/scientific_invariants_gate.py",
     "benchmark": ".venv/bin/python benchmarks/qualification_engine_benchmark.py --features 10000 --replicates 6",
     "benchmark:gate": "node scripts/release-gate.mjs",
     "benchmark:ci": "npm run build && node scripts/release-gate.mjs",

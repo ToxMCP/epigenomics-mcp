@@ -1,0 +1,57 @@
+{
+  "actionability": "screening",
+  "allowedDownstreamUses": [
+    "bioactivity_screening_prioritization"
+  ],
+  "applicabilityBoundaryRefs": [
+    "epigenomics:applicability:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "applicabilityDomainStatus": "inside",
+  "confidenceCeilingRefs": [
+    "ceiling:non_claim_boundary"
+  ],
+  "derivationMethod": "minimum_platform",
+  "fitDiagnostics": {
+    "benchmarkResponse": "not_reported",
+    "goodnessOfFit": "acceptable",
+    "modelConverged": true,
+    "residualPattern": "acceptable"
+  },
+  "limitations": [
+    "Epigenomic feature qualification is a screening handoff for downstream Bioactivity-PoD modelling, not a BER, adversity, persistence, heritability, or final risk decision."
+  ],
+  "modelSelectionRationale": "Epigenomic feature qualification handoff (deterministic, non-model-fitting screening feeder).",
+  "notARegulatoryConclusion": true,
+  "notARiskConclusion": true,
+  "notAnAdversityConclusion": true,
+  "podId": "epigenomics:pod:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "podType": "minimum_platform_pod",
+  "podValue": {
+    "censoring": "none",
+    "measurementId": "epigenomics:pod:b2c3d4e5-f6a7-8901-bcde-f23456789012:value",
+    "normalizedUnit": "1",
+    "normalizedValue": 1,
+    "originalUnit": "1",
+    "originalValue": 1,
+    "qualifier": "equal",
+    "schemaId": "https://schemas.ngra.ai/toxmcp/MeasurementValue.v1.schema.json",
+    "uncertainty": [],
+    "valueType": "numeric"
+  },
+  "prohibitedDownstreamUses": [
+    "risk_assessment",
+    "regulatory_translation",
+    "adversity_conclusion",
+    "safety_decision"
+  ],
+  "qualificationStatus": "fit_for_screening",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/PointOfDepartureRecord.v1.schema.json",
+  "sourceBioactivityRefs": [
+    "epigenomics:obs:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "supportLevel": "moderate",
+  "uncertaintyQuantification": "not_assessed",
+  "uncertaintyRefs": [
+    "none"
+  ]
+}

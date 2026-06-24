@@ -1,0 +1,22 @@
+{
+  "aiUse": "none",
+  "assessmentObjective": "Epigenomic feature qualification for downstream Bioactivity-PoD modelling (deterministic rule-based qualification; non-LLM).",
+  "assessmentRunId": "epigenomics:run:golden-pass-handoff-0001",
+  "humanReviewRecords": [],
+  "inputObjectRefs": [
+    "epigenomics:dataset:golden-pass-ds-0001"
+  ],
+  "mcpManifestDigests": [
+    "sha256:e76a9ad4c437843aec4a1770758a27e9659628969f4188fa10e2603e2d100138"
+  ],
+  "modelUseRecords": [],
+  "outputObjectRefs": [
+    "epigenomics:pod:golden-pass-handoff-0001",
+    "epigenomics:obs:golden-pass-handoff-0001"
+  ],
+  "publicReleaseEligible": true,
+  "reproducibilityStatus": "reproducible",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/AssessmentRun.v1.schema.json",
+  "sourceCorpusRefs": [],
+  "workflowVersion": "epigenomics-mcp@0.1.0"
+}

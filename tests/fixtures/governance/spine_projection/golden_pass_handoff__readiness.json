@@ -1,0 +1,28 @@
+{
+  "allowedConsumers": [
+    "bioactivity_pod_mcp",
+    "external-orchestrator"
+  ],
+  "applicabilityBoundaryRefs": [
+    "epigenomics:applicability:golden-pass-handoff-0001"
+  ],
+  "bioactivityObservationRefs": [
+    "epigenomics:obs:golden-pass-handoff-0001"
+  ],
+  "bioactivityPodReadinessId": "epigenomics:readiness:golden-pass-handoff-0001",
+  "blockers": [],
+  "confidenceCeilingRefs": [
+    "ceiling:non_claim_boundary"
+  ],
+  "notARegulatoryConclusion": true,
+  "notARiskConclusion": true,
+  "notAnAdversityConclusion": true,
+  "podRef": "epigenomics:pod:golden-pass-handoff-0001",
+  "readinessStatus": "eligible",
+  "requiredRecordRefs": [
+    "epigenomics:obs:golden-pass-handoff-0001",
+    "epigenomics:pod:golden-pass-handoff-0001"
+  ],
+  "requiredReviewState": "human_review_required",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/BioactivityPodReadiness.v1.schema.json"
+}

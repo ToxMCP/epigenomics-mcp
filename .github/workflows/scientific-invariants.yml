@@ -1,0 +1,75 @@
+name: Scientific Invariants (Track-B)
+
+# Advisory Track-B scientific-invariants gate. This job adds a visible CI signal,
+# enforced by merge discipline (this repo is on the GitHub Free plan, so the check
+# is NOT configured as a required status check and does not hard-block merges by
+# itself).
+#
+# What it does:
+#   1. vendor:verify — recompute sha256 of every vendored schema-spine engine file
+#      against vendor/schema-spine/VENDORED_FROM.json (digest-pinned at gitSha
+#      e0a6a05) and hard-fail on any tamper / drift / untracked file. Runs FIRST so
+#      a tampered engine never executes.
+#   2. scientific-invariants gate — project each released BioactivityPoDHandoffPacket
+#      onto its canonical ToxMCP schema-spine bioactivity/PoD shapes, run the
+#      vendored spine policy engine over the projection via the fail-closed Node
+#      bridge, and exit non-zero if any public-release-blocking code fires.
+#   3. governance self-tests — the adversarial clean->fault per-code bite proofs,
+#      the disguise battery, the fail-closed self-tests, and the golden-projection
+#      drift check. These require BOTH Node (for the bridge) and Python.
+#
+# PROMOTE-TO-BLOCKING: when the repo moves to a plan with branch protection /
+# rulesets (Team/Pro or public), mark this job a required status check — the gate
+# already exits non-zero on any blocking code, so no script change is needed.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scientific-invariants:
+    name: Scientific Invariants (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install gate Python dependencies
+        # The gate toolchain (projection + fail-closed bridge + vendor:verify) uses
+        # only the Python standard library and shells out to the vendored Node
+        # engine. We install pytest for the adversarial self-tests; the heavy
+        # epigenomics_mcp runtime deps are NOT needed to run the gate.
+        run: python -m pip install --upgrade pip pytest
+
+      - name: Verify vendored schema-spine engine integrity (vendor:verify)
+        run: python scripts/vendor_verify.py
+
+      - name: Run scientific-invariants gate (pristine corpus must pass)
+        run: python scripts/scientific_invariants_gate.py --json
+
+      - name: Run governance self-tests (per-code bites + fail-closed + disguise)
+        env:
+          PYTHONPATH: src
+        run: pytest tests/python/governance -o addopts="" -q

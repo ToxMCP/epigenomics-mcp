@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "BioactivityPoDHandoffPacket",
+  "handoffId": "golden-pass-handoff-0001",
+  "sourcePacketRef": "golden-pass-packet-0001",
+  "applicabilityDomainStatus": "inside",
+  "decisionBoundary": "no-ber-or-final-risk-decision",
+  "qualifiedFeatures": [
+    {
+      "featureId": "cg_golden_001",
+      "status": "accepted_for_pod",
+      "warnings": [],
+      "mappedGeneIds": [],
+      "mappingConfidence": "none",
+      "mappingMethod": "unknown",
+      "explainability": {
+        "ruleCode": "RULE_010_ACCEPTED",
+        "reasonTemplate": "Feature cg_golden_001 satisfies all policy thresholds and carries no blocking warnings. Accepted for downstream Bioactivity-PoD modelling.",
+        "reviewRequired": false,
+        "policyReference": "none"
+      }
+    }
+  ],
+  "excludedFeatures": [],
+  "doseResponseReadySubset": [
+    "cg_golden_001"
+  ],
+  "mandatoryCaveats": [],
+  "generatedAt": "2026-05-05T00:00:00Z",
+  "persistenceStatus": "not_assessed",
+  "reversibilityStatus": "not_assessed",
+  "heritabilityClaim": "none",
+  "provenance": {
+    "datasetId": "golden-pass-ds-0001",
+    "upstreamSteps": [
+      {
+        "stepName": "normalisation",
+        "toolName": "minfi",
+        "toolVersion": "1.44.0",
+        "parameters": {
+          "method": "SWAN"
+        },
+        "timestamp": "2026-04-01T11:00:00Z",
+        "inputFiles": [
+          "intensities.rds"
+        ],
+        "outputFiles": [
+          "beta_values.csv"
+        ]
+      }
+    ],
+    "normalisationMethod": "SWAN",
+    "probeManifestVersion": "Illumina EPIC v2.0",
+    "annotationVersion": "hg38"
+  }
+}
