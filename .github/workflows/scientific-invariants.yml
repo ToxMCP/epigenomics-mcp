@@ -57,11 +57,14 @@ jobs:
           python-version: "3.12"
 
       - name: Install gate Python dependencies
-        # The gate toolchain (projection + fail-closed bridge + vendor:verify) uses
-        # only the Python standard library and shells out to the vendored Node
-        # engine. We install pytest for the adversarial self-tests; the heavy
-        # epigenomics_mcp runtime deps are NOT needed to run the gate.
-        run: python -m pip install --upgrade pip pytest
+        # The gate toolchain (source-contract guard + projection + fail-closed bridge
+        # + vendor:verify) uses only the Python standard library and shells out to the
+        # vendored Node engine. We install pytest for the adversarial self-tests, plus
+        # jsonschema so those tests can ALSO cross-check each contract-valid fault with
+        # an independent Draft7Validator against the strict emission schema (the gate
+        # itself does not need it — it has a self-contained Draft-07 subset validator).
+        # The heavy epigenomics_mcp runtime deps are NOT needed to run the gate.
+        run: python -m pip install --upgrade pip pytest jsonschema
 
       - name: Verify vendored schema-spine engine integrity (vendor:verify)
         run: python scripts/vendor_verify.py

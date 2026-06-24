@@ -34,6 +34,16 @@ VENDOR_DIGEST_MISMATCH = "VENDOR_DIGEST_MISMATCH"
 #: The projection could not faithfully map a required field / unmapped enum.
 PROJECTION_INCOMPLETE = "PROJECTION_INCOMPLETE"
 
+#: The raw source packet failed the producer's STRICT emission contract
+#: (additionalProperties:false JSON schema / .strict() Zod) — validated BEFORE any
+#: projection. Blocks; the packet is never projected. This guard closes the
+#: producer-emission-contract dead-arm class: a "fault" that can only fire a
+#: scientific code by carrying a schema-forbidden / undeclared field is caught here
+#: as a contract violation instead of silently advertising a code that never bites
+#: on a real producer-emitted packet. (Code constant lives in source_contract.py to
+#: avoid an import cycle; re-exported into META_FAIL_CLOSED_CODES below.)
+SOURCE_CONTRACT_VIOLATION = "SOURCE_CONTRACT_VIOLATION"
+
 #: Every meta code, for gate aggregation / documentation.
 META_FAIL_CLOSED_CODES: frozenset[str] = frozenset(
     {
@@ -41,6 +51,7 @@ META_FAIL_CLOSED_CODES: frozenset[str] = frozenset(
         UNRECOGNIZED_SPINE_SCHEMA_ID,
         VENDOR_DIGEST_MISMATCH,
         PROJECTION_INCOMPLETE,
+        SOURCE_CONTRACT_VIOLATION,
     }
 )
 
