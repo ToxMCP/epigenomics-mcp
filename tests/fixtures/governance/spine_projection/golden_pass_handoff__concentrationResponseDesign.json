@@ -1,0 +1,17 @@
+{
+  "bioactivityObservationRef": "epigenomics:obs:golden-pass-handoff-0001",
+  "concentrationBasis": "nominal",
+  "concentrationLevels": 4,
+  "concentrationResponseDesignId": "epigenomics:concdesign:golden-pass-handoff-0001",
+  "concentrationUnit": "1",
+  "controlStatus": "passed",
+  "cytotoxicityConfounding": "ruled_out",
+  "limitations": [
+    "Epigenomic feature qualification is a screening handoff for downstream Bioactivity-PoD modelling, not a BER, adversity, persistence, heritability, or final risk decision."
+  ],
+  "podEligibility": "pod_ready",
+  "route": "in_vitro",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/ConcentrationResponseDesign.v1.schema.json",
+  "spacing": "not_assessed",
+  "timeBasis": "not_reported"
+}

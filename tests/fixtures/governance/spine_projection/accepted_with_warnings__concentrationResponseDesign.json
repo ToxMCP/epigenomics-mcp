@@ -1,0 +1,17 @@
+{
+  "bioactivityObservationRef": "epigenomics:obs:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "concentrationBasis": "nominal",
+  "concentrationLevels": 4,
+  "concentrationResponseDesignId": "epigenomics:concdesign:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "concentrationUnit": "1",
+  "controlStatus": "passed",
+  "cytotoxicityConfounding": "ruled_out",
+  "limitations": [
+    "Epigenomic feature qualification is a screening handoff for downstream Bioactivity-PoD modelling, not a BER, adversity, persistence, heritability, or final risk decision."
+  ],
+  "podEligibility": "pod_ready",
+  "route": "in_vitro",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/ConcentrationResponseDesign.v1.schema.json",
+  "spacing": "not_assessed",
+  "timeBasis": "not_reported"
+}

@@ -140,3 +140,7 @@ releaseGates:
   - name: release_evidence
     description: npm run release:evidence writes checksummed audit evidence and npm run verify:evidence verifies freshness, checksums, and package coverage
     required: true
+
+  - name: scientific_invariants
+    description: Track-B scientific-invariants gate projects each released BioactivityPoDHandoffPacket onto the digest-pinned (e0a6a05) vendored ToxMCP schema-spine bioactivity/PoD policy engine via a fail-closed bridge and blocks any public-release-blocking overclaim/adequacy/readiness/AI-provenance regression (advisory on the GitHub Free plan)
+    required: false

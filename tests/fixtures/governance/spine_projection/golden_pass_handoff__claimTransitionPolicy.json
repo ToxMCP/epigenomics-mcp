@@ -1,0 +1,10 @@
+{
+  "reason": "Epigenomic feature qualification is a screening handoff; promotion to adversity / heritability / risk is owned by an external WoE / Bioactivity-PoD orchestrator and is not pre-authorized here.",
+  "requiredEvidenceRefs": [],
+  "requiredReviewState": "blocked",
+  "schemaId": "https://schemas.ngra.ai/toxmcp/ClaimTransitionPolicy.v1.schema.json",
+  "sourceClaimClass": "bioactivity",
+  "targetClaimClass": "adversity",
+  "transitionPolicyId": "epigenomics:claimtransition:golden-pass-handoff-0001",
+  "transitionStatus": "blocked"
+}

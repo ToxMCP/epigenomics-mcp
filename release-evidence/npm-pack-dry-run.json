@@ -3,10 +3,10 @@
     "id": "epigenomics-mcp@0.1.0",
     "name": "epigenomics-mcp",
     "version": "0.1.0",
-    "size": 404726,
-    "unpackedSize": 2621478,
-    "shasum": "c455b366db82459e4ff92e44d0856ca8bbc15f46",
-    "integrity": "sha512-KFqMZNefLkNWZe09UN1OwlZ5tevqR5qlsisI6SzpHVPUPpoQSw0PTTxkUilt04G/RfRomit5iVBzq6FEAKnTug==",
+    "size": 409300,
+    "unpackedSize": 2632325,
+    "shasum": "d0e6cdf8b1d9f642bd58c89e0806a0a94e453537",
+    "integrity": "sha512-iq5LXHNI8iNaSoTyRmLvvW+K2MTy9ZgPlJUDlAV8IJ6KwDCfsTY0MxQpHLQt6trlYuatneMZDwO0XNtbKYAZxA==",
     "filename": "epigenomics-mcp-0.1.0.tgz",
     "files": [
       {
@@ -2085,6 +2085,11 @@
         "mode": 420
       },
       {
+        "path": "docs/adr/0001-scientific-invariants-gate.md",
+        "size": 10306,
+        "mode": 420
+      },
+      {
         "path": "docs/cell-composition-confounding-guide.md",
         "size": 6586,
         "mode": 420
@@ -2256,7 +2261,7 @@
       },
       {
         "path": "package.json",
-        "size": 3104,
+        "size": 3244,
         "mode": 420
       },
       {
@@ -2346,11 +2351,11 @@
       },
       {
         "path": "toxmcp.manifest.yaml",
-        "size": 4579,
+        "size": 4980,
         "mode": 420
       }
     ],
-    "entryCount": 468,
+    "entryCount": 469,
     "bundled": []
   }
 ]
