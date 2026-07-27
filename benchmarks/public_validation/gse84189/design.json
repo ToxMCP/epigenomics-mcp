@@ -1,0 +1,80 @@
+{
+  "designId": "GSE84189-vpa-5d",
+  "studyId": "GSE84189",
+  "species": "Homo sapiens",
+  "doseGroups": [
+    {
+      "doseGroupId": "vehicle-control",
+      "doseValue": 0,
+      "doseUnit": "mM",
+      "timepointHours": 120
+    },
+    {
+      "doseGroupId": "vpa-15mm",
+      "doseValue": 15,
+      "doseUnit": "mM",
+      "timepointHours": 120
+    }
+  ],
+  "samples": [
+    {
+      "sampleId": "545106",
+      "doseGroupId": "vehicle-control",
+      "replicateIndex": 1,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "1% ethanol vehicle"
+    },
+    {
+      "sampleId": "545035",
+      "doseGroupId": "vehicle-control",
+      "replicateIndex": 2,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "1% ethanol vehicle"
+    },
+    {
+      "sampleId": "545075",
+      "doseGroupId": "vehicle-control",
+      "replicateIndex": 3,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "1% ethanol vehicle"
+    },
+    {
+      "sampleId": "544488",
+      "doseGroupId": "vpa-15mm",
+      "replicateIndex": 1,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "valproic acid"
+    },
+    {
+      "sampleId": "544485",
+      "doseGroupId": "vpa-15mm",
+      "replicateIndex": 2,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "valproic acid"
+    },
+    {
+      "sampleId": "545026",
+      "doseGroupId": "vpa-15mm",
+      "replicateIndex": 3,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "valproic acid"
+    }
+  ],
+  "hasControls": true,
+  "minReplicatesPerGroup": 3
+}

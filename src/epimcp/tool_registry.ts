@@ -36,6 +36,10 @@ import {
   ingestFeatureTable,
   IngestFeatureTableOptionsObjectSchema,
 } from "../ingestion/feature_table.js";
+import {
+  streamIngestFeatureTableFile,
+  StreamingIngestOptionsSchema,
+} from "../ingestion/streaming_ingest.js";
 import { generateQcReport } from "../reports/qc_report.js";
 import { EpigenomicsFeatureResponsePacketSchema } from "../contracts/packets.js";
 import { ExperimentalDesignSchema } from "../contracts/design.js";
@@ -221,6 +225,15 @@ export const IngestDatasetOptionsSchema = z
       .string()
       .min(1)
       .describe("DatasetProvenance JSON path under an allowed file root"),
+    executionMode: z
+      .enum(["bounded", "streaming"])
+      .default("bounded")
+      .describe(
+        "bounded applies the configured row cap; streaming canonicalizes an explicitly authorized large file in bounded batches",
+      ),
+    streamingOptions: StreamingIngestOptionsSchema.optional().describe(
+      "Compression, delimiter, header, and batch controls used only in streaming mode",
+    ),
   })
   .strict();
 
@@ -231,6 +244,30 @@ export const IngestDatasetResultSchema = z
     featureCount: z.number().int().nonnegative().describe("Parsed feature count"),
     errors: z.array(z.string()).default([]).describe("Blocking ingestion errors"),
     warnings: z.array(z.string()).default([]).describe("Non-blocking ingestion warnings"),
+    executionMode: z.enum(["bounded", "streaming"]).optional(),
+    dataValid: z.boolean().optional(),
+    designValid: z.boolean().optional(),
+    provenanceValid: z.boolean().optional(),
+    dataRowCount: z.number().int().nonnegative().optional(),
+    batchCount: z.number().int().nonnegative().optional(),
+    sampleCount: z.number().int().nonnegative().optional(),
+    firstFeatureId: z.string().nullable().optional(),
+    lastFeatureId: z.string().nullable().optional(),
+    sourceFileBytes: z.number().int().nonnegative().optional(),
+    sourceChecksumSha256: z.string().length(64).optional(),
+    contentChecksumSha256: z.string().length(64).optional(),
+    errorCount: z
+      .number()
+      .int()
+      .nonnegative()
+      .optional()
+      .describe("Total blocking errors across feature, design, and provenance checks"),
+    warningCount: z
+      .number()
+      .int()
+      .nonnegative()
+      .optional()
+      .describe("Total non-blocking warnings across feature, design, and provenance checks"),
   })
   .strict();
 
@@ -586,7 +623,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     name: "ingest_dataset",
     title: "Ingest Epigenomics Dataset",
     description:
-      "Validate and ingest a processed CSV or TSV feature table together with design and provenance JSON evidence. Reads only paths allowed by the server file policy.",
+      "Validate and ingest a processed feature table together with design and provenance JSON evidence. Bounded mode enforces the configured row cap; explicit streaming mode supports authorized large or gzip-compressed tables in bounded batches. All paths remain subject to the server file policy.",
     inputSchema: IngestDatasetOptionsSchema,
     outputSchema: IngestDatasetResultSchema,
     handler: async (args, context) => {
@@ -594,6 +631,8 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
       const typedArgs = IngestDatasetOptionsSchema.parse(args);
       const errors: string[] = [];
       const warnings: string[] = [];
+      let designValid = false;
+      let provenanceValid = false;
 
       const featuresAccess = resolveMcpReadableFile(typedArgs.featuresPath, config);
       if (!featuresAccess.ok) {
@@ -613,6 +652,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           const designValidation = validateDesign(design);
           errors.push(...designValidation.errors.map((e) => `design: ${e}`));
           warnings.push(...designValidation.warnings.map((w) => `design: ${w}`));
+          designValid = designValidation.errors.length === 0;
         }
       }
 
@@ -627,6 +667,8 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           errors.push(
             `provenance: datasetId "${provenanceParse.data.datasetId}" does not match requested datasetId "${typedArgs.datasetId}"`,
           );
+        } else {
+          provenanceValid = true;
         }
       }
 
@@ -637,8 +679,79 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           featureCount: 0,
           errors,
           warnings,
+          executionMode: typedArgs.executionMode,
+          dataValid: false,
+          designValid,
+          provenanceValid,
+          errorCount: errors.length,
+          warningCount: warnings.length,
         });
         return jsonResult(result);
+      }
+
+      if (typedArgs.executionMode === "streaming") {
+        try {
+          const streamResult = await streamIngestFeatureTableFile(
+            featuresAccess.path,
+            {
+              ...typedArgs.tableOptions,
+              tableId: typedArgs.datasetId,
+              modality: typedArgs.modality,
+              designSampleIds: design?.samples.map((sample) => sample.sampleId),
+              sampleIdColumns:
+                typedArgs.tableOptions.sampleIdColumns ??
+                design?.samples.map((sample) => sample.sampleId),
+            },
+            typedArgs.streamingOptions,
+          );
+          errors.push(...streamResult.errors.map((e) => `features: ${e}`));
+          warnings.push(...streamResult.warnings.map((w) => `features: ${w}`));
+          const result = IngestDatasetResultSchema.parse({
+            datasetId: typedArgs.datasetId,
+            ingested:
+              streamResult.ingestionCompatible &&
+              designValid &&
+              provenanceValid,
+            featureCount: streamResult.featureCount,
+            errors,
+            warnings,
+            executionMode: typedArgs.executionMode,
+            dataValid: streamResult.ingestionCompatible,
+            designValid,
+            provenanceValid,
+            dataRowCount: streamResult.dataRowCount,
+            batchCount: streamResult.batchCount,
+            sampleCount: streamResult.sampleCount,
+            firstFeatureId: streamResult.firstFeatureId,
+            lastFeatureId: streamResult.lastFeatureId,
+            sourceFileBytes: streamResult.sourceFileBytes,
+            sourceChecksumSha256: streamResult.sourceChecksumSha256,
+            contentChecksumSha256: streamResult.contentChecksumSha256,
+            errorCount: errors.length,
+            warningCount: warnings.length,
+          });
+          return jsonResult(result);
+        } catch (error) {
+          errors.push(
+            `features: streaming ingestion failed: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+          const result = IngestDatasetResultSchema.parse({
+            datasetId: typedArgs.datasetId,
+            ingested: false,
+            featureCount: 0,
+            errors,
+            warnings,
+            executionMode: typedArgs.executionMode,
+            dataValid: false,
+            designValid,
+            provenanceValid,
+            errorCount: errors.length,
+            warningCount: warnings.length,
+          });
+          return jsonResult(result);
+        }
       }
 
       const tableResult = readTableFile(featuresAccess.path, {
@@ -654,6 +767,12 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           featureCount: 0,
           errors,
           warnings,
+          executionMode: typedArgs.executionMode,
+          dataValid: false,
+          designValid,
+          provenanceValid,
+          errorCount: errors.length,
+          warningCount: warnings.length,
         });
         return jsonResult(result);
       }
@@ -678,6 +797,25 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
         featureCount: ingestResult.features.length,
         errors,
         warnings,
+        executionMode: typedArgs.executionMode,
+        dataValid: ingestResult.parseErrors.length === 0 && !tableResult.hasMore,
+        designValid,
+        provenanceValid,
+        dataRowCount: tableResult.totalDataRowCount,
+        batchCount: 1,
+        sampleCount:
+          typedArgs.tableOptions.sampleIdColumns?.length ??
+          design?.samples.length ??
+          0,
+        firstFeatureId: ingestResult.features[0]?.featureId ?? null,
+        lastFeatureId:
+          ingestResult.features[ingestResult.features.length - 1]?.featureId ??
+          null,
+        sourceFileBytes: statSync(featuresAccess.path).size,
+        sourceChecksumSha256: tableResult.checksumSha256,
+        contentChecksumSha256: tableResult.checksumSha256,
+        errorCount: errors.length,
+        warningCount: warnings.length,
       });
       return jsonResult(result);
     },

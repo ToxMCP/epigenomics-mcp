@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
     "version": "0.2.1",
-    "size": 729274,
-    "unpackedSize": 4033584,
-    "shasum": "8b3765c410a0856a3f5b800caf4464ee665cda12",
-    "integrity": "sha512-YCWzrOCyd7LBPQTizHIkBlzRI5+jpZjEt35qDIQlYUkhjLVt1b47Q4Z+I3W5KCbOgwqjPPkTuIrRNN0cUo6ncQ==",
+    "size": 743938,
+    "unpackedSize": 4101646,
+    "shasum": "286c7c0c2f7494f4e3c302d368f273bc8fcba981",
+    "integrity": "sha512-4/AQrUBH0MZ6fmiMW0KsO/3EtTxgoyZhuM5JFvpSt9cWEwzfHFeMoV9VhGSMaJ2RKff0XwwHvN6n/pqPd0oT2Q==",
     "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 3453,
+        "size": 4117,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 15118,
+        "size": 16606,
         "mode": 420
       },
       {
@@ -700,6 +700,41 @@
         "mode": 420
       },
       {
+        "path": "benchmarks/public_validation/encsr220asc/design.json",
+        "size": 1188,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/encsr220asc/provenance.json",
+        "size": 746,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/gse67005/provenance.json",
+        "size": 718,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/gse84189/design.json",
+        "size": 2067,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/gse84189/provenance.json",
+        "size": 757,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/manifest.json",
+        "size": 8472,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/public_validation/README.md",
+        "size": 1612,
+        "mode": 420
+      },
+      {
         "path": "benchmarks/qualification_engine_benchmark.mjs",
         "size": 5913,
         "mode": 420
@@ -1286,22 +1321,22 @@
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts",
-        "size": 231810,
+        "size": 235969,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts.map",
-        "size": 6480,
+        "size": 6579,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js",
-        "size": 37829,
+        "size": 44233,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js.map",
-        "size": 30302,
+        "size": 34573,
         "mode": 420
       },
       {
@@ -1396,12 +1431,12 @@
       },
       {
         "path": "dist/ingestion/feature_table.js",
-        "size": 31563,
+        "size": 31770,
         "mode": 420
       },
       {
         "path": "dist/ingestion/feature_table.js.map",
-        "size": 27303,
+        "size": 27358,
         "mode": 420
       },
       {
@@ -1446,22 +1481,22 @@
       },
       {
         "path": "dist/ingestion/index.d.ts",
-        "size": 4161,
+        "size": 4384,
         "mode": 420
       },
       {
         "path": "dist/ingestion/index.d.ts.map",
-        "size": 2304,
+        "size": 2435,
         "mode": 420
       },
       {
         "path": "dist/ingestion/index.js",
-        "size": 2556,
+        "size": 2686,
         "mode": 420
       },
       {
         "path": "dist/ingestion/index.js.map",
-        "size": 1362,
+        "size": 1434,
         "mode": 420
       },
       {
@@ -1542,6 +1577,26 @@
       {
         "path": "dist/ingestion/region_feature_classifier.js.map",
         "size": 12862,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/streaming_ingest.d.ts",
+        "size": 3519,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/streaming_ingest.d.ts.map",
+        "size": 655,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/streaming_ingest.js",
+        "size": 8245,
+        "mode": 420
+      },
+      {
+        "path": "dist/ingestion/streaming_ingest.js.map",
+        "size": 7640,
         "mode": 420
       },
       {
@@ -2006,7 +2061,7 @@
       },
       {
         "path": "dist/release_evidence/artifacts.d.ts",
-        "size": 986,
+        "size": 1018,
         "mode": 420
       },
       {
@@ -2016,12 +2071,12 @@
       },
       {
         "path": "dist/release_evidence/artifacts.js",
-        "size": 1101,
+        "size": 1137,
         "mode": 420
       },
       {
         "path": "dist/release_evidence/artifacts.js.map",
-        "size": 861,
+        "size": 874,
         "mode": 420
       },
       {
@@ -2506,12 +2561,12 @@
       },
       {
         "path": "docs/tool-reference.md",
-        "size": 29713,
+        "size": 31275,
         "mode": 420
       },
       {
         "path": "docs/validation-statement.md",
-        "size": 25390,
+        "size": 27377,
         "mode": 420
       },
       {
@@ -2626,7 +2681,7 @@
       },
       {
         "path": "package.json",
-        "size": 5369,
+        "size": 5531,
         "mode": 420
       },
       {
@@ -2787,6 +2842,11 @@
       {
         "path": "scripts/validate-handoffs.mjs",
         "size": 3183,
+        "mode": 420
+      },
+      {
+        "path": "scripts/validate-public-data.mjs",
+        "size": 10748,
         "mode": 420
       },
       {
@@ -3275,7 +3335,7 @@
         "mode": 420
       }
     ],
-    "entryCount": 653,
+    "entryCount": 665,
     "bundled": []
   }
 ]

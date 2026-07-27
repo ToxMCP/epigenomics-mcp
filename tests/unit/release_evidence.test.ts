@@ -79,6 +79,9 @@ describe("release evidence schema", () => {
       "benchmarks/fixtures/frozen_public",
     );
     expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(
+      "benchmarks/public_validation",
+    );
+    expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(
       "vendor/schema-spine",
     );
     expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(

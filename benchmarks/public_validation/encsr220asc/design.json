@@ -1,0 +1,47 @@
+{
+  "designId": "ENCSR220ASC-baseline-atac",
+  "studyId": "ENCSR220ASC",
+  "species": "Homo sapiens",
+  "doseGroups": [
+    {
+      "doseGroupId": "baseline",
+      "doseValue": 0,
+      "doseUnit": "nM",
+      "timepointHours": 0
+    }
+  ],
+  "samples": [
+    {
+      "sampleId": "biological-replicate-1",
+      "doseGroupId": "baseline",
+      "replicateIndex": 1,
+      "replicateType": "biological",
+      "cellType": "A549",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "0-hour dexamethasone baseline"
+    },
+    {
+      "sampleId": "biological-replicate-2",
+      "doseGroupId": "baseline",
+      "replicateIndex": 2,
+      "replicateType": "biological",
+      "cellType": "A549",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "0-hour dexamethasone baseline"
+    },
+    {
+      "sampleId": "biological-replicate-3",
+      "doseGroupId": "baseline",
+      "replicateIndex": 3,
+      "replicateType": "biological",
+      "cellType": "A549",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "0-hour dexamethasone baseline"
+    }
+  ],
+  "hasControls": true,
+  "minReplicatesPerGroup": 3
+}

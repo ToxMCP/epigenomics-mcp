@@ -5,6 +5,7 @@ export const RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES = [
   "benchmarks/expected",
   "benchmarks/fixtures/synthetic",
   "benchmarks/fixtures/frozen_public",
+  "benchmarks/public_validation",
   "src/epigenomics_mcp/governance",
   "tests/fixtures/governance",
   "vendor/schema-spine",

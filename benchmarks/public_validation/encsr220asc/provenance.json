@@ -1,0 +1,28 @@
+{
+  "datasetId": "ENCSR220ASC-ENCFF205CPH-replicated-peaks",
+  "upstreamSteps": [
+    {
+      "stepName": "encode_atac_pipeline",
+      "toolName": "ENCODE ATAC-seq pipeline",
+      "toolVersion": "1.8.0",
+      "parameters": {
+        "assembly": "GRCh38",
+        "outputType": "replicated peaks",
+        "fileFormat": "narrowPeak"
+      },
+      "inputFiles": [
+        "ENCFF899WFS",
+        "ENCFF964ZKK",
+        "ENCFF356LFX",
+        "ENCFF669VTY"
+      ],
+      "outputFiles": [
+        "ENCFF205CPH.bed.gz"
+      ]
+    }
+  ],
+  "normalisationMethod": "ENCODE ATAC-seq uniform processing pipeline replicated-peak output",
+  "annotationVersion": "ENCODE4 v1.8.0 GRCh38",
+  "sourceArchive": "ENCODE",
+  "sourceAccession": "ENCFF205CPH"
+}

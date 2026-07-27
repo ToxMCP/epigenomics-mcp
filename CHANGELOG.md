@@ -5,6 +5,25 @@ All notable changes to the Epigenomics MCP schema contracts will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Explicit bounded-batch streaming ingestion for authorized complete and
+  gzip-compressed feature tables, with compressed-source and
+  decompressed-content SHA-256 evidence.
+- A reproducible three-source public-data panel covering full GEO GSE67005 and
+  GSE84189 MeDIP matrices plus an intentional fail-closed ENCODE replicated-peak
+  case.
+- A manually dispatched public-data validation workflow with cached,
+  reviewable reports.
+
+### Fixed
+
+- Explicit wide-form sample columns are now authoritative, preventing numeric
+  annotations such as probe position, peak score, or q-value from being
+  misclassified as biological samples.
+
 ## [0.2.1] - 2026-07-27
 
 ### Changed
