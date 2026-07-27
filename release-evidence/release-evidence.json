@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T14:02:58.785Z",
+  "generatedAt": "2026-07-27T14:08:55.997Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T14:02:54.687Z",
-    "finishedAt": "2026-07-27T14:02:58.785Z"
+    "startedAt": "2026-07-27T14:08:46.405Z",
+    "finishedAt": "2026-07-27T14:08:55.997Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "91c4c5668bb4e7f0c1b77761cfb0b96d18c76693",
+    "commit": "670e8a84fcc33993a2db25574a7b49760aa277b8",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.144s; 74.1 MiB RSS increase"
+        "details": "10000 real qualifications in 0.474s; 75.3 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -66,10 +66,10 @@
       "id": "epigenomics-mcp@0.2.0",
       "name": "epigenomics-mcp",
       "version": "0.2.0",
-      "size": 767177,
-      "unpackedSize": 4121161,
-      "shasum": "03b37e1e75b3f63b2e56af22c971a12e2030d7bd",
-      "integrity": "sha512-ObLtCVRR6YdS+lIkuudPqiXFgyyd2Cd7aLN+kVxI1u5B7uqMRNKq1pE0DJO1RrQiCTntpq/4JlfoCo9n71Pn/g==",
+      "size": 725525,
+      "unpackedSize": 4022712,
+      "shasum": "5f1ae303be3a3963160bda5fab8e9b5b94c482e1",
+      "integrity": "sha512-2wgLyYDForY0zmkK5wp9HN++o9ahambM7Pi28y2bcMCorIcet/VBfS8ei787ai6CnCQ4jQjicE4A0hhYQA/50w==",
       "filename": "epigenomics-mcp-0.2.0.tgz",
       "files": [
         {
@@ -2689,7 +2689,7 @@
         },
         {
           "path": "package.json",
-          "size": 4504,
+          "size": 5362,
           "mode": 420
         },
         {
@@ -2788,11 +2788,6 @@
           "mode": 420
         },
         {
-          "path": "scripts/__pycache__/scientific_invariants_gate.cpython-314.pyc",
-          "size": 14245,
-          "mode": 420
-        },
-        {
           "path": "scripts/export-schemas.mjs",
           "size": 580,
           "mode": 420
@@ -2814,7 +2809,7 @@
         },
         {
           "path": "scripts/release-evidence.mjs",
-          "size": 8890,
+          "size": 9044,
           "mode": 420
         },
         {
@@ -2864,7 +2859,7 @@
         },
         {
           "path": "scripts/verify-evidence.mjs",
-          "size": 8943,
+          "size": 9097,
           "mode": 420
         },
         {
@@ -2873,43 +2868,8 @@
           "mode": 420
         },
         {
-          "path": "src/epigenomics_mcp/__pycache__/__init__.cpython-314.pyc",
-          "size": 695,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/__pycache__/version.cpython-314.pyc",
-          "size": 253,
-          "mode": 420
-        },
-        {
           "path": "src/epigenomics_mcp/governance/__init__.py",
           "size": 80,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/governance/__pycache__/__init__.cpython-314.pyc",
-          "size": 266,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/governance/__pycache__/errors.cpython-314.pyc",
-          "size": 4181,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/governance/__pycache__/project_to_spine.cpython-314.pyc",
-          "size": 51384,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/governance/__pycache__/source_contract.cpython-314.pyc",
-          "size": 12099,
-          "mode": 420
-        },
-        {
-          "path": "src/epigenomics_mcp/governance/__pycache__/spine_bridge.cpython-314.pyc",
-          "size": 16492,
           "mode": 420
         },
         {
@@ -3378,7 +3338,7 @@
           "mode": 420
         }
       ],
-      "entryCount": 661,
+      "entryCount": 653,
       "bundled": []
     }
   ],
@@ -4075,17 +4035,17 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "97d1b2d823aec7db1264981be46b72a4f35aa899404311a5dd7892e5a4363090",
-      "bytes": 82285
+      "sha256": "4bdb54a6722bb68428218ad5a18955f37ac9d3c361bd4281bfbcbfa7c7445bc1",
+      "bytes": 81127
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "6eda53e89274e50012108164bf2750f2fd80a9b0ea0a4dcc5aa9bd5eb7b76dd9",
+      "sha256": "13c0430d40bceffceeb29771a938d4260b1fc54785d3a74862b1d4c6846ac456",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "fde9a4f7d55a4fb6227375404cdc8a699c5d456002450adf57a552a62ba960e4",
+      "sha256": "bb0e34f28debe959925f32a46f23da2deddb1bd00c71bf82a2d4b2ad6ac5b8fc",
       "bytes": 497
     },
     {
@@ -4142,31 +4102,6 @@
       "path": "src/epigenomics_mcp/governance/__init__.py",
       "sha256": "aa6dbd8d705e82954ea618aefbaeb08a143ded0d53a4349e923b1d2cff20c7bf",
       "bytes": 80
-    },
-    {
-      "path": "src/epigenomics_mcp/governance/__pycache__/__init__.cpython-314.pyc",
-      "sha256": "ed08c51269ba2758bc2af97bbed729a133a417ee9b53ebe5b58cdb09c07a21df",
-      "bytes": 266
-    },
-    {
-      "path": "src/epigenomics_mcp/governance/__pycache__/errors.cpython-314.pyc",
-      "sha256": "f2039f8eafb7b02c656f3c1673bbca6a0ba068a49a915651cf203447811a7522",
-      "bytes": 4181
-    },
-    {
-      "path": "src/epigenomics_mcp/governance/__pycache__/project_to_spine.cpython-314.pyc",
-      "sha256": "1d7d02fbe7a62e404cbe5ce92d0e46b5ae85a2c5a0a8b942fbfdf7ba77460958",
-      "bytes": 51384
-    },
-    {
-      "path": "src/epigenomics_mcp/governance/__pycache__/source_contract.cpython-314.pyc",
-      "sha256": "26467bd031ddb690580945d41fe016da95caa9b6ff4818e642d7c57da53ad3e1",
-      "bytes": 12099
-    },
-    {
-      "path": "src/epigenomics_mcp/governance/__pycache__/spine_bridge.cpython-314.pyc",
-      "sha256": "82b3c4c4645f9b167b80a072eec677746c1fecb52dde803cadc1cb0ba31a7e6f",
-      "bytes": 16492
     },
     {
       "path": "src/epigenomics_mcp/governance/errors.py",

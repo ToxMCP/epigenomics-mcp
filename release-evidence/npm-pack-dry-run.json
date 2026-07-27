@@ -3,10 +3,10 @@
     "id": "epigenomics-mcp@0.2.0",
     "name": "epigenomics-mcp",
     "version": "0.2.0",
-    "size": 767177,
-    "unpackedSize": 4121161,
-    "shasum": "03b37e1e75b3f63b2e56af22c971a12e2030d7bd",
-    "integrity": "sha512-ObLtCVRR6YdS+lIkuudPqiXFgyyd2Cd7aLN+kVxI1u5B7uqMRNKq1pE0DJO1RrQiCTntpq/4JlfoCo9n71Pn/g==",
+    "size": 725525,
+    "unpackedSize": 4022712,
+    "shasum": "5f1ae303be3a3963160bda5fab8e9b5b94c482e1",
+    "integrity": "sha512-2wgLyYDForY0zmkK5wp9HN++o9ahambM7Pi28y2bcMCorIcet/VBfS8ei787ai6CnCQ4jQjicE4A0hhYQA/50w==",
     "filename": "epigenomics-mcp-0.2.0.tgz",
     "files": [
       {
@@ -2626,7 +2626,7 @@
       },
       {
         "path": "package.json",
-        "size": 4504,
+        "size": 5362,
         "mode": 420
       },
       {
@@ -2725,11 +2725,6 @@
         "mode": 420
       },
       {
-        "path": "scripts/__pycache__/scientific_invariants_gate.cpython-314.pyc",
-        "size": 14245,
-        "mode": 420
-      },
-      {
         "path": "scripts/export-schemas.mjs",
         "size": 580,
         "mode": 420
@@ -2751,7 +2746,7 @@
       },
       {
         "path": "scripts/release-evidence.mjs",
-        "size": 8890,
+        "size": 9044,
         "mode": 420
       },
       {
@@ -2801,7 +2796,7 @@
       },
       {
         "path": "scripts/verify-evidence.mjs",
-        "size": 8943,
+        "size": 9097,
         "mode": 420
       },
       {
@@ -2810,43 +2805,8 @@
         "mode": 420
       },
       {
-        "path": "src/epigenomics_mcp/__pycache__/__init__.cpython-314.pyc",
-        "size": 695,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/__pycache__/version.cpython-314.pyc",
-        "size": 253,
-        "mode": 420
-      },
-      {
         "path": "src/epigenomics_mcp/governance/__init__.py",
         "size": 80,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/governance/__pycache__/__init__.cpython-314.pyc",
-        "size": 266,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/governance/__pycache__/errors.cpython-314.pyc",
-        "size": 4181,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/governance/__pycache__/project_to_spine.cpython-314.pyc",
-        "size": 51384,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/governance/__pycache__/source_contract.cpython-314.pyc",
-        "size": 12099,
-        "mode": 420
-      },
-      {
-        "path": "src/epigenomics_mcp/governance/__pycache__/spine_bridge.cpython-314.pyc",
-        "size": 16492,
         "mode": 420
       },
       {
@@ -3315,7 +3275,7 @@
         "mode": 420
       }
     ],
-    "entryCount": 661,
+    "entryCount": 653,
     "bundled": []
   }
 ]
