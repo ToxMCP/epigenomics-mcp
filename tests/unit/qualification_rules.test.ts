@@ -202,6 +202,31 @@ describe("qualifyFeature", () => {
     expect(result.ruleTriggered).toBe("RULE_003_INSUFFICIENT_DESIGN");
   });
 
+  it("does not count duplicate treated group labels as distinct dose levels", () => {
+    const design = makeDesign({
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+        { doseGroupId: "treated-a", doseValue: 1, doseUnit: "µM" },
+        { doseGroupId: "treated-b", doseValue: 1, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "c1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "c2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "a1", doseGroupId: "treated-a", species: "Homo sapiens" },
+        { sampleId: "a2", doseGroupId: "treated-a", species: "Homo sapiens" },
+        { sampleId: "b1", doseGroupId: "treated-b", species: "Homo sapiens" },
+        { sampleId: "b2", doseGroupId: "treated-b", species: "Homo sapiens" },
+      ],
+    });
+
+    const result = qualifyFeature(makeFeature(), makeContext({ design }));
+    expect(result.qualification.status).toBe("excluded_insufficient_design");
+    expect(result.ruleTriggered).toBe("RULE_003_INSUFFICIENT_DESIGN");
+    expect(result.qualification.warnings[0].message).toContain(
+      "1 non-zero",
+    );
+  });
+
   it("excludes feature with insufficient replicates (RULE_004)", () => {
     const design = makeDesign({
       samples: [

@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
     "version": "0.2.1",
-    "size": 743938,
-    "unpackedSize": 4101646,
-    "shasum": "286c7c0c2f7494f4e3c302d368f273bc8fcba981",
-    "integrity": "sha512-4/AQrUBH0MZ6fmiMW0KsO/3EtTxgoyZhuM5JFvpSt9cWEwzfHFeMoV9VhGSMaJ2RKff0XwwHvN6n/pqPd0oT2Q==",
+    "size": 751590,
+    "unpackedSize": 4154215,
+    "shasum": "f8c61063b55cf4ceecc0e17f386a36487fc97292",
+    "integrity": "sha512-VIZ+O0aSJLHrIVipz0CwyxBwjxmyDWf+4jywSpBBmkyBmNLqMdrupOOKPrTR8ZYTml3ZTXZDiPpayknfDTm+tA==",
     "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 4117,
+        "size": 5146,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 16606,
+        "size": 16665,
         "mode": 420
       },
       {
@@ -46,7 +46,7 @@
       },
       {
         "path": "benchmarks/expected/bm_beta_manifest_complete/design_validation.json",
-        "size": 77,
+        "size": 922,
         "mode": 420
       },
       {
@@ -71,12 +71,12 @@
       },
       {
         "path": "benchmarks/expected/bm_beta_manifest_complete/qualification_result.json",
-        "size": 3545,
+        "size": 3572,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_build_missing/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -106,7 +106,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dmr_nearest_gene_only/design_validation.json",
-        "size": 77,
+        "size": 922,
         "mode": 420
       },
       {
@@ -131,12 +131,12 @@
       },
       {
         "path": "benchmarks/expected/bm_dmr_nearest_gene_only/qualification_result.json",
-        "size": 3482,
+        "size": 3500,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_dominant_cytotoxicity/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -161,7 +161,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dominant_cytotoxicity/qualification_result.json",
-        "size": 3138,
+        "size": 3147,
         "mode": 420
       },
       {
@@ -186,7 +186,7 @@
       },
       {
         "path": "benchmarks/expected/bm_high_missingness/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -211,12 +211,12 @@
       },
       {
         "path": "benchmarks/expected/bm_high_missingness/qualification_result.json",
-        "size": 3740,
+        "size": 3758,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_insufficient_replicates/design_validation.json",
-        "size": 158,
+        "size": 1102,
         "mode": 420
       },
       {
@@ -241,12 +241,12 @@
       },
       {
         "path": "benchmarks/expected/bm_insufficient_replicates/qualification_result.json",
-        "size": 1997,
+        "size": 2006,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_invalid_coordinate_format/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -276,7 +276,7 @@
       },
       {
         "path": "benchmarks/expected/bm_missing_cell_context/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -301,12 +301,12 @@
       },
       {
         "path": "benchmarks/expected/bm_missing_cell_context/qualification_result.json",
-        "size": 2217,
+        "size": 2226,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_missing_cytotoxicity_context/design_validation.json",
-        "size": 77,
+        "size": 1043,
         "mode": 420
       },
       {
@@ -331,12 +331,12 @@
       },
       {
         "path": "benchmarks/expected/bm_missing_cytotoxicity_context/qualification_result.json",
-        "size": 2167,
+        "size": 2176,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_summary_contrast_only/design_validation.json",
-        "size": 77,
+        "size": 1148,
         "mode": 420
       },
       {
@@ -361,7 +361,7 @@
       },
       {
         "path": "benchmarks/expected/bm_summary_contrast_only/qualification_result.json",
-        "size": 4082,
+        "size": 4100,
         "mode": 420
       },
       {
@@ -726,12 +726,12 @@
       },
       {
         "path": "benchmarks/public_validation/manifest.json",
-        "size": 8472,
+        "size": 9649,
         "mode": 420
       },
       {
         "path": "benchmarks/public_validation/README.md",
-        "size": 1612,
+        "size": 1699,
         "mode": 420
       },
       {
@@ -1321,22 +1321,22 @@
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts",
-        "size": 235969,
+        "size": 240359,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts.map",
-        "size": 6579,
+        "size": 6688,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js",
-        "size": 44233,
+        "size": 45715,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js.map",
-        "size": 34573,
+        "size": 35055,
         "mode": 420
       },
       {
@@ -2051,12 +2051,12 @@
       },
       {
         "path": "dist/qualification/rules.js",
-        "size": 19206,
+        "size": 19431,
         "mode": 420
       },
       {
         "path": "dist/qualification/rules.js.map",
-        "size": 14002,
+        "size": 14231,
         "mode": 420
       },
       {
@@ -2321,22 +2321,22 @@
       },
       {
         "path": "dist/validators/design_validation_report.d.ts",
-        "size": 9346,
+        "size": 19377,
         "mode": 420
       },
       {
         "path": "dist/validators/design_validation_report.d.ts.map",
-        "size": 1167,
+        "size": 1791,
         "mode": 420
       },
       {
         "path": "dist/validators/design_validation_report.js",
-        "size": 10826,
+        "size": 19441,
         "mode": 420
       },
       {
         "path": "dist/validators/design_validation_report.js.map",
-        "size": 9116,
+        "size": 15183,
         "mode": 420
       },
       {
@@ -2361,22 +2361,22 @@
       },
       {
         "path": "dist/validators/design.d.ts",
-        "size": 370,
+        "size": 4212,
         "mode": 420
       },
       {
         "path": "dist/validators/design.d.ts.map",
-        "size": 328,
+        "size": 430,
         "mode": 420
       },
       {
         "path": "dist/validators/design.js",
-        "size": 1655,
+        "size": 2274,
         "mode": 420
       },
       {
         "path": "dist/validators/design.js.map",
-        "size": 1790,
+        "size": 1542,
         "mode": 420
       },
       {
@@ -2471,12 +2471,12 @@
       },
       {
         "path": "dist/validators/replicate_validator.js",
-        "size": 10579,
+        "size": 10967,
         "mode": 420
       },
       {
         "path": "dist/validators/replicate_validator.js.map",
-        "size": 7323,
+        "size": 7574,
         "mode": 420
       },
       {
@@ -2521,7 +2521,7 @@
       },
       {
         "path": "docs/handoff.md",
-        "size": 1493,
+        "size": 2126,
         "mode": 420
       },
       {
@@ -2556,17 +2556,17 @@
       },
       {
         "path": "docs/scientific-scope.md",
-        "size": 6775,
+        "size": 6805,
         "mode": 420
       },
       {
         "path": "docs/tool-reference.md",
-        "size": 31275,
+        "size": 33179,
         "mode": 420
       },
       {
         "path": "docs/validation-statement.md",
-        "size": 27377,
+        "size": 27482,
         "mode": 420
       },
       {
@@ -2846,7 +2846,7 @@
       },
       {
         "path": "scripts/validate-public-data.mjs",
-        "size": 10748,
+        "size": 11467,
         "mode": 420
       },
       {

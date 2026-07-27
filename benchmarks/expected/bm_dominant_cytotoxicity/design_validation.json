@@ -1,6 +1,30 @@
 {
   "valid": true,
   "schemaValid": true,
+  "structurallyValid": true,
+  "comparisonReady": true,
+  "doseResponseReady": false,
+  "preferredForDoseResponse": false,
+  "readinessStatus": "comparison_only",
+  "observedDesign": {
+    "declaredDoseGroups": 2,
+    "distinctDoseLevels": 2,
+    "distinctNonZeroDoseLevels": 1,
+    "minEffectiveBiologicalReplicatesPerGroup": 2
+  },
+  "readinessThresholds": {
+    "minimumTotalDoseLevels": 2,
+    "minimumNonZeroDoseLevels": 2,
+    "preferredTotalDoseLevels": 4,
+    "minimumBiologicalReplicatesPerGroup": 2,
+    "preferredBiologicalReplicatesPerGroup": 3
+  },
   "errors": [],
-  "warnings": []
+  "warnings": [],
+  "readinessReasons": [
+    "Design is structurally valid for ingestion.",
+    "Incomplete batch metadata (0/4 samples); unannotated batch effects may confound dose-response estimates.",
+    "The design has 1 distinct non-zero dose level(s); 2 are required by project policy for dose-response readiness.",
+    "Design supports a treatment-versus-control comparison but not dose-response modelling."
+  ]
 }

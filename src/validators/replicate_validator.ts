@@ -119,6 +119,9 @@ const WARNING_CODES = {
 export function countReplicatesByType(
   design: ExperimentalDesign,
 ): ReplicateGroupCounts[] {
+  const declaredGroupIds = new Set(
+    design.doseGroups.map((group) => group.doseGroupId),
+  );
   const groupMap = new Map<
     string,
     {
@@ -131,6 +134,12 @@ export function countReplicatesByType(
   >();
 
   for (const sample of design.samples) {
+    // Referential-integrity errors are reported by design validation. Ignore
+    // undeclared groups here so replicate assessment remains total and does
+    // not manufacture a NaN dose value.
+    if (!declaredGroupIds.has(sample.doseGroupId)) {
+      continue;
+    }
     const entry = groupMap.get(sample.doseGroupId) ?? {
       doseGroupId: sample.doseGroupId,
       biological: 0,

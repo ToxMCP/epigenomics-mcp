@@ -15,7 +15,7 @@ Epigenomics MCP is the **qualification and packetisation layer** between upstrea
 | # | Responsibility | What it means |
 |---|----------------|---------------|
 | 1 | Ingest processed feature tables | Accept tabular outputs from upstream pipelines (methylation beta matrices, differential methylation results, ATAC/ChIP peak tables). Reject raw FASTQ, IDAT, or BAM inputs. |
-| 2 | Validate experimental design | Verify control groups, dose axis ordering, replicate layout, timepoint structure, and batch metadata. Block designs that cannot support dose-response inference. |
+| 2 | Validate experimental design | Verify control groups, dose axis ordering, replicate layout, timepoint structure, and batch metadata. Report structural ingestion, comparison, and dose-response readiness as separate states. |
 | 3 | Validate genome build and coordinates | Require explicit `genome_build` and `coordinate_system` for every coordinate-bearing feature. Reject mixed builds, malformed intervals, and silent coordinate guessing. |
 | 4 | Classify measured features | Map platform identifiers or region types onto explicit feature classes (`cpg_methylation_feature`, `dmr_feature`, `generic_region_feature`, etc.). Never guess metric semantics. |
 | 5 | Profile QC deterministically | Compute missingness, variance, replicate consistency, and design adequacy using transparent, versioned algorithms. No opaque rescue operations. |

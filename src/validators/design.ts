@@ -1,58 +1,66 @@
-import { ExperimentalDesignSchema } from "../contracts/design.js";
+import { z } from "zod";
+import {
+  DesignReadinessStatusSchema,
+  DesignReadinessThresholdsSchema,
+  ObservedDesignReadinessSchema,
+  emitDesignValidationReport,
+} from "./design_validation_report.js";
 
-export interface DesignValidationResult {
-  valid: boolean;
-  schemaValid: boolean;
-  errors: string[];
-  warnings: string[];
-}
+export const DesignValidationResultSchema = z
+  .object({
+    valid: z
+      .boolean()
+      .describe("Backward-compatible alias for structurallyValid"),
+    schemaValid: z.boolean(),
+    structurallyValid: z
+      .boolean()
+      .describe("True when the design is valid for ingestion"),
+    comparisonReady: z
+      .boolean()
+      .describe("True when a treatment-versus-control comparison is supported"),
+    doseResponseReady: z
+      .boolean()
+      .describe("True when minimum project dose-response thresholds are met"),
+    preferredForDoseResponse: z
+      .boolean()
+      .describe("True when preferred project dose-response thresholds are met"),
+    readinessStatus: DesignReadinessStatusSchema,
+    observedDesign: ObservedDesignReadinessSchema,
+    readinessThresholds: DesignReadinessThresholdsSchema,
+    errors: z.array(z.string()),
+    warnings: z.array(z.string()),
+    readinessReasons: z.array(z.string()),
+  })
+  .strict();
+
+export type DesignValidationResult = z.infer<
+  typeof DesignValidationResultSchema
+>;
 
 /**
- * Validate an experimental design object for dose-response readiness.
- * Fails closed on schema violations.
+ * Validate an experimental design and report progressively stricter
+ * readiness states.
+ *
+ * Structural validity governs ingestion. Comparison and dose-response
+ * readiness are explicit and must not be inferred from the generic `valid`
+ * field.
  */
 export function validateDesign(design: unknown): DesignValidationResult {
-  const errors: string[] = [];
-  const warnings: string[] = [];
+  const report = emitDesignValidationReport(design);
+  const readiness = report.downstreamEligibility;
 
-  const parseResult = ExperimentalDesignSchema.safeParse(design);
-  if (!parseResult.success) {
-    for (const issue of parseResult.error.issues) {
-      errors.push(`${issue.path.join(".")}: ${issue.message}`);
-    }
-    return { valid: false, schemaValid: false, errors, warnings };
-  }
-
-  const d = parseResult.data;
-
-  // Replicate adequacy
-  if (d.minReplicatesPerGroup < 2) {
-    warnings.push(
-      "minReplicatesPerGroup is fewer than 2; statistical power may be limited",
-    );
-  }
-
-  // Dose monotonicity check
-  const doses = d.doseGroups.map((g) => g.doseValue).sort((a, b) => a - b);
-  const uniqueDoses = new Set(doses);
-  if (uniqueDoses.size < 2) {
-    errors.push("At least two distinct dose levels are required");
-  }
-
-  // Sample-to-dose-group linkage
-  const groupIds = new Set(d.doseGroups.map((g) => g.doseGroupId));
-  for (const sample of d.samples) {
-    if (!groupIds.has(sample.doseGroupId)) {
-      errors.push(
-        `Sample ${sample.sampleId} references unknown doseGroupId ${sample.doseGroupId}`,
-      );
-    }
-  }
-
-  // Control presence
-  if (!d.hasControls && !d.doseGroups.some((g) => g.doseValue === 0)) {
-    errors.push("Design must include controls or a zero-dose group");
-  }
-
-  return { valid: errors.length === 0, schemaValid: true, errors, warnings };
+  return DesignValidationResultSchema.parse({
+    valid: readiness.structurallyValid,
+    schemaValid: report.schemaValid ?? false,
+    structurallyValid: readiness.structurallyValid,
+    comparisonReady: readiness.eligibleForComparison,
+    doseResponseReady: readiness.eligibleForDoseResponse,
+    preferredForDoseResponse: readiness.preferredForDoseResponse,
+    readinessStatus: readiness.readinessStatus,
+    observedDesign: readiness.observed,
+    readinessThresholds: readiness.thresholds,
+    errors: report.errors,
+    warnings: report.warnings,
+    readinessReasons: readiness.eligibilityNotes,
+  });
 }

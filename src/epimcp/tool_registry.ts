@@ -5,7 +5,11 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult, ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import { VERSION } from "./version.js";
 import { ConfigSchema, type Config } from "./config.js";
-import { validateDesign } from "../validators/design.js";
+import {
+  DesignValidationResultSchema,
+  validateDesign,
+} from "../validators/design.js";
+import { DesignReadinessStatusSchema } from "../validators/design_validation_report.js";
 import { qualifyFeatures } from "../qualification/engine.js";
 import { buildHandoffPacket } from "../handoff/builder.js";
 import { validateCoordinateSystemDeclarations } from "../validators/coordinate_validator.js";
@@ -55,6 +59,9 @@ import {
 } from "../contracts/coordinate_conversion.js";
 import { normalizeCoordinateRecords } from "../coordinate_mapping/normalise.js";
 import { CoordinateSystemDeclarationSchema } from "../validators/coordinate_validator.js";
+
+/** Backward-compatible tool-registry export. */
+export const ValidateDesignResultSchema = DesignValidationResultSchema;
 
 // ---------------------------------------------------------------------------
 // Shared output envelope
@@ -246,7 +253,27 @@ export const IngestDatasetResultSchema = z
     warnings: z.array(z.string()).default([]).describe("Non-blocking ingestion warnings"),
     executionMode: z.enum(["bounded", "streaming"]).optional(),
     dataValid: z.boolean().optional(),
-    designValid: z.boolean().optional(),
+    designValid: z
+      .boolean()
+      .optional()
+      .describe("Backward-compatible alias for designStructurallyValid"),
+    designStructurallyValid: z
+      .boolean()
+      .optional()
+      .describe("True when the design is valid for ingestion"),
+    comparisonReady: z
+      .boolean()
+      .optional()
+      .describe("True when treatment-versus-control comparison is supported"),
+    doseResponseReady: z
+      .boolean()
+      .optional()
+      .describe("True when minimum project dose-response thresholds are met"),
+    preferredForDoseResponse: z
+      .boolean()
+      .optional()
+      .describe("True when preferred project dose-response thresholds are met"),
+    designReadinessStatus: DesignReadinessStatusSchema.optional(),
     provenanceValid: z.boolean().optional(),
     dataRowCount: z.number().int().nonnegative().optional(),
     batchCount: z.number().int().nonnegative().optional(),
@@ -276,15 +303,6 @@ export const ValidateDesignOptionsSchema = z
     design: z
       .record(z.string(), z.unknown())
       .describe("Candidate ExperimentalDesign object to validate"),
-  })
-  .strict();
-
-export const ValidateDesignResultSchema = z
-  .object({
-    valid: z.boolean().describe("True when schema and dose-response checks pass"),
-    schemaValid: z.boolean().describe("True when the design contract validates"),
-    errors: z.array(z.string()).describe("Blocking design errors"),
-    warnings: z.array(z.string()).describe("Non-blocking design warnings"),
   })
   .strict();
 
@@ -623,7 +641,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     name: "ingest_dataset",
     title: "Ingest Epigenomics Dataset",
     description:
-      "Validate and ingest a processed feature table together with design and provenance JSON evidence. Bounded mode enforces the configured row cap; explicit streaming mode supports authorized large or gzip-compressed tables in bounded batches. All paths remain subject to the server file policy.",
+      "Validate and ingest a processed feature table together with design and provenance JSON evidence. Ingestion success is reported separately from comparison and dose-response readiness. Bounded mode enforces the configured row cap; explicit streaming mode supports authorized large or gzip-compressed tables in bounded batches. All paths remain subject to the server file policy.",
     inputSchema: IngestDatasetOptionsSchema,
     outputSchema: IngestDatasetResultSchema,
     handler: async (args, context) => {
@@ -632,7 +650,21 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
       const errors: string[] = [];
       const warnings: string[] = [];
       let designValid = false;
+      let comparisonReady = false;
+      let doseResponseReady = false;
+      let preferredForDoseResponse = false;
+      let designReadinessStatus: z.infer<
+        typeof DesignReadinessStatusSchema
+      > = "invalid";
       let provenanceValid = false;
+      const designReadinessFields = () => ({
+        designValid,
+        designStructurallyValid: designValid,
+        comparisonReady,
+        doseResponseReady,
+        preferredForDoseResponse,
+        designReadinessStatus,
+      });
 
       const featuresAccess = resolveMcpReadableFile(typedArgs.featuresPath, config);
       if (!featuresAccess.ok) {
@@ -652,7 +684,12 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           const designValidation = validateDesign(design);
           errors.push(...designValidation.errors.map((e) => `design: ${e}`));
           warnings.push(...designValidation.warnings.map((w) => `design: ${w}`));
-          designValid = designValidation.errors.length === 0;
+          designValid = designValidation.structurallyValid;
+          comparisonReady = designValidation.comparisonReady;
+          doseResponseReady = designValidation.doseResponseReady;
+          preferredForDoseResponse =
+            designValidation.preferredForDoseResponse;
+          designReadinessStatus = designValidation.readinessStatus;
         }
       }
 
@@ -681,7 +718,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           warnings,
           executionMode: typedArgs.executionMode,
           dataValid: false,
-          designValid,
+          ...designReadinessFields(),
           provenanceValid,
           errorCount: errors.length,
           warningCount: warnings.length,
@@ -717,7 +754,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
             warnings,
             executionMode: typedArgs.executionMode,
             dataValid: streamResult.ingestionCompatible,
-            designValid,
+            ...designReadinessFields(),
             provenanceValid,
             dataRowCount: streamResult.dataRowCount,
             batchCount: streamResult.batchCount,
@@ -745,7 +782,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
             warnings,
             executionMode: typedArgs.executionMode,
             dataValid: false,
-            designValid,
+            ...designReadinessFields(),
             provenanceValid,
             errorCount: errors.length,
             warningCount: warnings.length,
@@ -769,7 +806,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           warnings,
           executionMode: typedArgs.executionMode,
           dataValid: false,
-          designValid,
+          ...designReadinessFields(),
           provenanceValid,
           errorCount: errors.length,
           warningCount: warnings.length,
@@ -799,7 +836,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
         warnings,
         executionMode: typedArgs.executionMode,
         dataValid: ingestResult.parseErrors.length === 0 && !tableResult.hasMore,
-        designValid,
+        ...designReadinessFields(),
         provenanceValid,
         dataRowCount: tableResult.totalDataRowCount,
         batchCount: 1,
@@ -824,18 +861,13 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
     name: "validate_design",
     title: "Validate Experimental Design",
     description:
-      "Validate a candidate experimental design for schema conformance, controls, replicates, and dose-response readiness.",
+      "Validate schema and structural integrity, then separately report control-comparison, minimum dose-response, and preferred dose-response readiness using distinct dose levels and effective biological replicates.",
     inputSchema: ValidateDesignOptionsSchema,
     outputSchema: ValidateDesignResultSchema,
     handler: async (args) => {
       const typedArgs = ValidateDesignOptionsSchema.parse(args);
       const validation = validateDesign(typedArgs.design);
-      const result = ValidateDesignResultSchema.parse({
-        valid: validation.valid,
-        schemaValid: validation.schemaValid,
-        errors: validation.errors,
-        warnings: validation.warnings,
-      });
+      const result = ValidateDesignResultSchema.parse(validation);
       return jsonResult(result);
     },
   },

@@ -24,6 +24,11 @@ describe("validateDesign", () => {
       minReplicatesPerGroup: 2,
     });
     expect(result.valid).toBe(true);
+    expect(result.structurallyValid).toBe(true);
+    expect(result.comparisonReady).toBe(true);
+    expect(result.doseResponseReady).toBe(true);
+    expect(result.preferredForDoseResponse).toBe(false);
+    expect(result.readinessStatus).toBe("dose_response_minimum");
     expect(result.errors).toHaveLength(0);
   });
 
@@ -45,6 +50,46 @@ describe("validateDesign", () => {
     expect(result.errors.some((e) => e.includes("missing"))).toBe(true);
   });
 
+  it("fails structural validation on duplicate sample identifiers", () => {
+    const result = validateDesign({
+      designId: "design-duplicate-sample",
+      species: "Homo sapiens",
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+        { doseGroupId: "low", doseValue: 1, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "s1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "s1", doseGroupId: "low", species: "Homo sapiens" },
+      ],
+      hasControls: true,
+      minReplicatesPerGroup: 1,
+    });
+
+    expect(result.structurallyValid).toBe(false);
+    expect(result.errors.some((error) => error.includes("Duplicate sampleId"))).toBe(true);
+  });
+
+  it("fails structural validation on duplicate dose-group identifiers", () => {
+    const result = validateDesign({
+      designId: "design-duplicate-group",
+      species: "Homo sapiens",
+      doseGroups: [
+        { doseGroupId: "group", doseValue: 0, doseUnit: "µM" },
+        { doseGroupId: "group", doseValue: 1, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "s1", doseGroupId: "group", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "s2", doseGroupId: "group", species: "Homo sapiens" },
+      ],
+      hasControls: true,
+      minReplicatesPerGroup: 1,
+    });
+
+    expect(result.structurallyValid).toBe(false);
+    expect(result.errors.some((error) => error.includes("Duplicate doseGroupId"))).toBe(true);
+  });
+
   it("warns when fewer than 2 replicates per group", () => {
     const result = validateDesign({
       designId: "design-low-n",
@@ -61,6 +106,56 @@ describe("validateDesign", () => {
       minReplicatesPerGroup: 1,
     });
     expect(result.warnings.some((w) => w.includes("fewer than 2"))).toBe(true);
+    expect(result.structurallyValid).toBe(true);
+    expect(result.comparisonReady).toBe(false);
+    expect(result.doseResponseReady).toBe(false);
+    expect(result.observedDesign.minEffectiveBiologicalReplicatesPerGroup).toBe(1);
+  });
+
+  it("separates baseline ingestion from analytical readiness", () => {
+    const result = validateDesign({
+      designId: "design-baseline",
+      species: "Homo sapiens",
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "s1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "s2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+      ],
+      hasControls: true,
+      minReplicatesPerGroup: 2,
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.structurallyValid).toBe(true);
+    expect(result.comparisonReady).toBe(false);
+    expect(result.doseResponseReady).toBe(false);
+    expect(result.readinessStatus).toBe("structural_only");
+  });
+
+  it("classifies control plus one treated level as comparison-only", () => {
+    const result = validateDesign({
+      designId: "design-comparison",
+      species: "Homo sapiens",
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+        { doseGroupId: "treated", doseValue: 1, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "c1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "c2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "t1", doseGroupId: "treated", species: "Homo sapiens" },
+        { sampleId: "t2", doseGroupId: "treated", species: "Homo sapiens" },
+      ],
+      hasControls: true,
+      minReplicatesPerGroup: 2,
+    });
+
+    expect(result.structurallyValid).toBe(true);
+    expect(result.comparisonReady).toBe(true);
+    expect(result.doseResponseReady).toBe(false);
+    expect(result.readinessStatus).toBe("comparison_only");
   });
 });
 

@@ -17,7 +17,13 @@ type PublicValidationDataset = {
   designPath: string;
   provenancePath: string;
   expectedOutput: {
+    ingested: boolean;
     designValid: boolean;
+    designStructurallyValid: boolean;
+    comparisonReady: boolean;
+    doseResponseReady: boolean;
+    preferredForDoseResponse: boolean;
+    designReadinessStatus: string;
     sourceFileBytes: number;
     sourceChecksumSha256: string;
     contentChecksumSha256: string;
@@ -42,7 +48,7 @@ describe("public-data validation manifest", () => {
   };
 
   it("declares three unique, source-anchored public datasets", () => {
-    expect(manifest.version).toBe("0.1.0");
+    expect(manifest.version).toBe("0.2.0");
     expect(manifest.reviewStatus).toBe(
       "source_anchored_pending_external_expert_signoff",
     );
@@ -64,6 +70,10 @@ describe("public-data validation manifest", () => {
       expect(dataset.expectedOutput.contentChecksumSha256).toBe(
         dataset.source.contentChecksumSha256,
       );
+      expect(dataset.expectedOutput.designValid).toBe(
+        dataset.expectedOutput.designStructurallyValid,
+      );
+      expect(dataset.expectedOutput.preferredForDoseResponse).toBe(false);
       expect(dataset.review.status).toBe("source_anchored_internal_review");
       expect(dataset.review.assertions.length).toBeGreaterThan(0);
     }
@@ -88,16 +98,42 @@ describe("public-data validation manifest", () => {
     }
   });
 
-  it("includes two admissible designs and one intentional fail-closed case", () => {
+  it("separates structural ingestion, comparison, and dose-response readiness", () => {
     expect(
       manifest.datasets.map((dataset) => ({
         accession: dataset.source.accession,
-        designValid: dataset.expectedOutput.designValid,
+        ingested: dataset.expectedOutput.ingested,
+        structurallyValid:
+          dataset.expectedOutput.designStructurallyValid,
+        comparisonReady: dataset.expectedOutput.comparisonReady,
+        doseResponseReady: dataset.expectedOutput.doseResponseReady,
+        status: dataset.expectedOutput.designReadinessStatus,
       })),
     ).toEqual([
-      { accession: "GSE67005", designValid: true },
-      { accession: "GSE84189", designValid: true },
-      { accession: "ENCFF205CPH", designValid: false },
+      {
+        accession: "GSE67005",
+        ingested: true,
+        structurallyValid: true,
+        comparisonReady: true,
+        doseResponseReady: false,
+        status: "comparison_only",
+      },
+      {
+        accession: "GSE84189",
+        ingested: true,
+        structurallyValid: true,
+        comparisonReady: true,
+        doseResponseReady: false,
+        status: "comparison_only",
+      },
+      {
+        accession: "ENCFF205CPH",
+        ingested: true,
+        structurallyValid: true,
+        comparisonReady: false,
+        doseResponseReady: false,
+        status: "structural_only",
+      },
     ]);
   });
 });

@@ -200,17 +200,17 @@ function formatMarkdown(report) {
     `- Manifest: ${report.manifestVersion}`,
     `- Overall: **${report.passed ? "PASS" : "FAIL"}**`,
     "",
-    "| Dataset | Source | Features | Data | Design | Overall |",
-    "|---|---|---:|---|---|---|",
+    "| Dataset | Source | Features | Data | Ingest | Comparison | Dose-response | Overall |",
+    "|---|---|---:|---|---|---|---|---|",
   ];
   for (const dataset of report.datasets) {
     lines.push(
-      `| ${dataset.datasetId} | ${dataset.sourceAccession} | ${dataset.actual.featureCount ?? 0} | ${dataset.actual.dataValid ? "PASS" : "FAIL"} | ${dataset.actual.designValid ? "PASS" : "FAIL"} | ${dataset.passed ? "PASS" : "FAIL"} |`,
+      `| ${dataset.datasetId} | ${dataset.sourceAccession} | ${dataset.actual.featureCount ?? 0} | ${dataset.actual.dataValid ? "PASS" : "FAIL"} | ${dataset.actual.ingested ? "PASS" : "FAIL"} | ${dataset.actual.comparisonReady ? "READY" : "NOT READY"} | ${dataset.actual.doseResponseReady ? "READY" : "NOT READY"} | ${dataset.passed ? "PASS" : "FAIL"} |`,
     );
   }
   lines.push("", "## Review boundary", "");
   lines.push(
-    "These checks establish source identity, complete-file structural ingestion, declared design handling, and fail-closed behavior. They do not establish differential-methylation truth, causal interpretation, statistical power, or regulatory validity.",
+    "These checks establish source identity, complete-file structural ingestion, and explicit comparison/dose-response readiness classification. They do not establish differential-methylation truth, a fitted dose-response relationship, causal interpretation, endpoint-specific statistical power, regulatory validity, or external expert sign-off.",
   );
   return `${lines.join("\n")}\n`;
 }
@@ -294,6 +294,21 @@ async function main() {
           });
         }
       }
+      for (const prefix of dataset.expectedWarningPrefixes ?? []) {
+        if (
+          !Array.isArray(actual.warnings) ||
+          !actual.warnings.some(
+            (warning) =>
+              typeof warning === "string" && warning.startsWith(prefix),
+          )
+        ) {
+          differences.push({
+            field: "warnings",
+            expected: `a warning beginning with ${prefix}`,
+            actual: actual.warnings,
+          });
+        }
+      }
       datasetReports.push({
         datasetId: dataset.datasetId,
         label: dataset.label,
@@ -309,7 +324,7 @@ async function main() {
   }
 
   const report = {
-    schemaVersion: "0.1.0",
+    schemaVersion: "0.2.0",
     generatedAt: new Date().toISOString(),
     manifestVersion: manifest.version,
     reviewStatus: manifest.reviewStatus,

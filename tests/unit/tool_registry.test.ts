@@ -107,6 +107,12 @@ describe("tool registry", () => {
     const result = await tool!.handler({ design });
     const parsed = JSON.parse(result.content[0].text);
     expect(parsed.valid).toBe(true);
+    expect(parsed.structurallyValid).toBe(true);
+    expect(parsed.comparisonReady).toBe(true);
+    expect(parsed.doseResponseReady).toBe(false);
+    expect(parsed.preferredForDoseResponse).toBe(false);
+    expect(parsed.readinessStatus).toBe("comparison_only");
+    expect(parsed.observedDesign.distinctNonZeroDoseLevels).toBe(1);
     expect(parsed.errors).toEqual([]);
   });
 
@@ -335,6 +341,10 @@ describe("tool registry", () => {
       expect(parsed).toMatchObject({
         datasetId: "ds1",
         ingested: true,
+        designStructurallyValid: true,
+        comparisonReady: true,
+        doseResponseReady: false,
+        designReadinessStatus: "comparison_only",
         featureCount: 1,
         errors: [],
       });
@@ -439,6 +449,11 @@ describe("tool registry", () => {
         ingested: true,
         dataValid: true,
         designValid: true,
+        designStructurallyValid: true,
+        comparisonReady: true,
+        doseResponseReady: false,
+        preferredForDoseResponse: false,
+        designReadinessStatus: "comparison_only",
         provenanceValid: true,
         executionMode: "streaming",
         featureCount: 3,
