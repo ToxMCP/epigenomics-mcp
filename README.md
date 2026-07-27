@@ -180,6 +180,7 @@ Over stdio or Streamable HTTP, the public tool surface includes:
 | `ingest_cytotoxicity` | Ingest cytotoxicity context |
 | `summarize_by_group` | Summarize feature responses by dose group |
 | `assess_response_patterns` | Classify bounded observed dose-level mean patterns without fitting a model |
+| `assess_ordered_trends` | Test a bounded feature family for exploratory ordered trends with permutation p-values, bootstrap intervals, and FDR adjustment |
 | `read_table` | Read a delimited table with file guardrails and pagination |
 | `read_design` | Read a design table into the design contract |
 | `generate_qc_report` | Generate a regulator-readable QC report |

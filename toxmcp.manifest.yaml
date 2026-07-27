@@ -25,6 +25,7 @@ capabilities:
   - export_feature_response_packet
   - export_bioactivity_pod_handoff
   - generate_qc_reports
+  - assess_bounded_exploratory_ordered_trends
   - expose_audit_resources
 
 ownedResponsibilities:
@@ -38,6 +39,7 @@ ownedResponsibilities:
   - Preserve measured coordinates and identifiers separately from mapped targets
   - Export EpigenomicsFeatureResponsePacket and BioactivityPoDHandoffPacket
   - Generate regulator-readable QC reports
+  - Assess bounded exploratory ordered-trend evidence without fitting a BMD model
 
 nonGoals:
   - Raw FASTQ processing
@@ -75,6 +77,7 @@ mcpToolNames:
   - ingest_cytotoxicity
   - summarize_by_group
   - assess_response_patterns
+  - assess_ordered_trends
   - read_table
   - read_design
   - generate_qc_report

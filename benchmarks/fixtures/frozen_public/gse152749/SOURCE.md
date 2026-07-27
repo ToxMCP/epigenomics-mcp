@@ -39,14 +39,21 @@ decompressed SHA-256 values, and exact equality with the committed packet.
 ## Interpretation boundary
 
 This fixture validates source identity, design handling, deterministic
-aggregation, and observed-pattern computation on deposited measurements. It
-does not establish differential accessibility, statistical significance,
-biological significance, causal regulation, BMD suitability, or a biological
-truth label. Chromosome-wide peak counts and signal sums can reflect library,
-peak-calling, and other assay-level effects; their observed shapes must not be
-interpreted as locus-level mechanisms.
+aggregation, observed-pattern computation, and bounded exploratory
+ordered-trend testing on deposited measurements. It does not establish
+differential accessibility, biological significance, causal regulation, BMD
+suitability, or a biological truth label. Chromosome-wide peak counts and
+signal sums can reflect library, peak-calling, and other assay-level effects;
+their observed shapes must not be interpreted as locus-level mechanisms.
 
 All ten bounded summary features are non-monotonic under exact comparison of
 the four group means. That is a test of transparent pattern preservation, not
 an adverse-effect or modelability conclusion. Independent external
 domain-expert sign-off remains deferred.
+
+With the default seeded 4,999-permutation assessment and
+Benjamini–Yekutieli adjustment across this complete ten-feature fixture, no
+feature is below the 0.05 FDR threshold (all adjusted two-sided p-values are
+1; the smallest unadjusted two-sided p-value is 0.1044). These are
+deterministic software-validation expectations for this bounded summary
+family, not a genome-wide test or evidence of absence of a biological effect.

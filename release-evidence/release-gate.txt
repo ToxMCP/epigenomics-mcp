@@ -13,5 +13,5 @@
        Benchmark results are deterministic across two runs.
 
 === Release Status: READY ===
-PASS: qualification_performance — 10000 real qualifications in 0.093s; 74.7 MiB RSS increase
+PASS: qualification_performance — 10000 real qualifications in 0.100s; 75.3 MiB RSS increase
 Overall with performance: READY

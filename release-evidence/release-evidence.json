@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T18:49:00.168Z",
+  "generatedAt": "2026-07-27T21:53:04.187Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T18:48:56.845Z",
-    "finishedAt": "2026-07-27T18:49:00.168Z"
+    "startedAt": "2026-07-27T21:53:01.088Z",
+    "finishedAt": "2026-07-27T21:53:04.187Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "42df08bc4d41119bc0c548a1c1aabc3bdbef6133",
+    "commit": "0b49f252bb34b830432ca01793e879d7c726c464",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.093s; 74.7 MiB RSS increase"
+        "details": "10000 real qualifications in 0.100s; 75.3 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -66,15 +66,15 @@
       "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
       "version": "0.2.1",
-      "size": 778375,
-      "unpackedSize": 4381218,
-      "shasum": "5acec0fd4ee5e424a92177ead767d447388413b6",
-      "integrity": "sha512-z1m+QzGd0Iw613jQqgpAFzCnSj0SHAr2qCW/vWtzH/3uNEBI5tjHCdIvk/H0ldhPZo1j3rumUmtswfz3Y49q1A==",
+      "size": 799736,
+      "unpackedSize": 4578449,
+      "shasum": "61accb2017a296afd033c27be7de9263f7c02527",
+      "integrity": "sha512-B0UTSr8evNnof+DpLOaHTS7v0a6sKSX1oV412xi1Sde1E75LfaZ3GH+MUj7A6VO+Q1D5/L1zmi/X/f3j9m+IHw==",
       "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 6232,
+          "size": 6525,
           "mode": 420
         },
         {
@@ -94,7 +94,7 @@
         },
         {
           "path": "README.md",
-          "size": 17403,
+          "size": 17561,
           "mode": 420
         },
         {
@@ -479,7 +479,7 @@
         },
         {
           "path": "benchmarks/fixtures/frozen_public/gse152749.yaml",
-          "size": 1861,
+          "size": 1901,
           "mode": 420
         },
         {
@@ -499,7 +499,7 @@
         },
         {
           "path": "benchmarks/fixtures/frozen_public/gse152749/SOURCE.md",
-          "size": 2365,
+          "size": 2812,
           "mode": 420
         },
         {
@@ -1409,22 +1409,22 @@
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts",
-          "size": 332592,
+          "size": 415396,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts.map",
-          "size": 8390,
+          "size": 9949,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js",
-          "size": 48262,
+          "size": 52663,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js.map",
-          "size": 36725,
+          "size": 39571,
           "mode": 420
         },
         {
@@ -2368,6 +2368,26 @@
           "mode": 420
         },
         {
+          "path": "dist/trend/ordered_trend.d.ts",
+          "size": 43606,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/ordered_trend.d.ts.map",
+          "size": 2048,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/ordered_trend.js",
+          "size": 26976,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/ordered_trend.js.map",
+          "size": 26092,
+          "mode": 420
+        },
+        {
           "path": "dist/validators/chromosome_bounds.d.ts",
           "size": 2425,
           "mode": 420
@@ -2664,22 +2684,22 @@
         },
         {
           "path": "docs/scientific-scope.md",
-          "size": 7473,
+          "size": 8175,
           "mode": 420
         },
         {
           "path": "docs/tool-reference.md",
-          "size": 36058,
+          "size": 38879,
           "mode": 420
         },
         {
           "path": "docs/validation-statement.md",
-          "size": 30437,
+          "size": 32607,
           "mode": 420
         },
         {
           "path": "evaluation.xml",
-          "size": 4008,
+          "size": 4122,
           "mode": 420
         },
         {
@@ -3134,7 +3154,7 @@
         },
         {
           "path": "toxmcp.manifest.yaml",
-          "size": 5905,
+          "size": 6059,
           "mode": 420
         },
         {
@@ -3443,7 +3463,7 @@
           "mode": 420
         }
       ],
-      "entryCount": 674,
+      "entryCount": 678,
       "bundled": []
     }
   ],
@@ -3805,13 +3825,13 @@
     },
     {
       "path": "benchmarks/fixtures/frozen_public/gse152749.yaml",
-      "sha256": "a834cfc89892494c495c1380efb90c63b1914a919e60a2d8c5c44abed511f899",
-      "bytes": 1861
+      "sha256": "9c240198c39a37ccd4efb8135e50f16d6da52aea07636d4705bae7e268553f59",
+      "bytes": 1901
     },
     {
       "path": "benchmarks/fixtures/frozen_public/gse152749/SOURCE.md",
-      "sha256": "7d65ef99ceea1a6690f9fc55993fd97448dc89cb47109cca7dca559ceb6fea6b",
-      "bytes": 2365
+      "sha256": "2f81db5057b83616b506c82b3af7fc8f2c5709be739e145cd780d8c43a353212",
+      "bytes": 2812
     },
     {
       "path": "benchmarks/fixtures/frozen_public/gse152749/derive_fixture.mjs",
@@ -4180,18 +4200,18 @@
     },
     {
       "path": "docs/tool-reference.md",
-      "sha256": "7d9fe2469abcca8cd7eb1eacef05c4b166b20e61e8a19bbf65b108bfa9c1306d",
-      "bytes": 36058
+      "sha256": "0430fdcfef5474f5f12f69662ce9c2925f68124657b538fd3565fee3ba55bd4a",
+      "bytes": 38879
     },
     {
       "path": "docs/validation-statement.md",
-      "sha256": "40d8176ce2e9894a91be5c2590ae453b30f2f0de23fef238c09ba7a1ef317401",
-      "bytes": 30437
+      "sha256": "de55702b70bad0cb1885eddf4dc94a76573a6d27b91b8a5bc94a385bc1175ebf",
+      "bytes": 32607
     },
     {
       "path": "evaluation.xml",
-      "sha256": "a45cefc68d6d6a1f5336598923d27b907dc19b010300425474f96312588c5e78",
-      "bytes": 4008
+      "sha256": "8e32b7d99de2ed6826e56edbb0c8cc3331c3b6f15add348ae7f941fae6d16e6d",
+      "bytes": 4122
     },
     {
       "path": "pyproject.toml",
@@ -4200,17 +4220,17 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "a4ecdc6f1515b6f9e04af6018071df94b518d562890647da6542fda1299fd1aa",
-      "bytes": 83772
+      "sha256": "16aaa7d152cb4b37d278556c9ff27e17344976f3847688816a284ba103c2538a",
+      "bytes": 84211
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "6fed002ef9d144347cb4b0420c7de3969e83ca1912b3cee7166fcc3b58ebe594",
+      "sha256": "622139e930119d0bf514a648be9f91ab3011cda616a335db8b28aa171a4ef959",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "c0a6c0f6314b7acde26ad024239847b0a710f52ff0b5e93dff96c90be2dc5816",
+      "sha256": "774f69f5c0e36d32bcc020af8c241b3e62cf4ae52f2e1510a6e8ee472ab72f6f",
       "bytes": 497
     },
     {
@@ -4420,8 +4440,8 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "5edeb0c6fbba96cba9c03e432ac09f3f6b1adcbdff8f202d703f237925c0c7cd",
-      "bytes": 5905
+      "sha256": "907086b74868cb49bfddadb8336f83f967f93fede61eac1f9edaaa8452872323",
+      "bytes": 6059
     },
     {
       "path": "uv.lock",

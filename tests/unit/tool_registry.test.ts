@@ -33,6 +33,7 @@ describe("tool registry", () => {
       "ingest_cytotoxicity",
       "summarize_by_group",
       "assess_response_patterns",
+      "assess_ordered_trends",
       "read_table",
       "read_design",
       "generate_qc_report",
@@ -546,6 +547,41 @@ describe("tool registry", () => {
       biologicalSignificance: "not_assessed",
       bmdSuitability: "not_assessed",
       monotonicityRequiredForQualification: false,
+    });
+  });
+
+  it("assess_ordered_trends returns uncertainty-aware bounded-family evidence", async () => {
+    const packetPath = resolve(
+      process.cwd(),
+      "examples/methylation_matrix/packet.json",
+    );
+    const tool = TOOL_DEFINITIONS.find(
+      (definition) => definition.name === "assess_ordered_trends",
+    )!;
+    const result = await tool.handler({
+      packetPath,
+      limit: 1,
+      bootstrapResamples: 199,
+    });
+    const assessment = JSON.parse(result.content[0].text);
+
+    expect(result.isError).not.toBe(true);
+    expect(assessment.schemaName).toBe("OrderedTrendAssessmentResult");
+    expect(assessment.features).toHaveLength(1);
+    expect(assessment.features[0].assessmentStatus).toBe("assessed");
+    expect(assessment.features[0].test.direction).toBe("decreasing");
+    expect(assessment.features[0].test.permutation.mode).toBe("exact");
+    expect(assessment.multiplicity).toMatchObject({
+      familyDefinition: "bounded_packet_feature_slice",
+      selectedFeatureCount: 1,
+      testedFeatureCount: 1,
+      coversEntirePacket: false,
+    });
+    expect(assessment.scientificScope).toMatchObject({
+      biologicalSignificance: "not_assessed",
+      causalInference: "not_assessed",
+      bmdSuitability: "not_assessed",
+      featureQualificationChanged: false,
     });
   });
 

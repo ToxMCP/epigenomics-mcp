@@ -122,9 +122,16 @@ control mean. The expected labels are deterministic software assertions, not
 claims of differential accessibility or biological ground truth.
 
 This fixture verifies that a preferred-depth real design and non-monotonic
-deposited measurements remain representable without automatic exclusion.
-Trend significance, biological significance, BMD suitability, and expert
-interpretation remain explicitly unassessed.
+deposited measurements remain representable without automatic exclusion. It
+also executes the bounded `assess_ordered_trends` path with 4,999 seeded
+permutations, 1,999 dose-stratified bootstrap resamples, and
+Benjamini–Yekutieli adjustment across the complete ten-feature fixture. All
+ten features are assessed; none is below the 0.05 adjusted threshold, all
+adjusted two-sided p-values are 1, and the smallest unadjusted two-sided
+p-value is 0.1044. These are deterministic software assertions for coarse
+chromosome summaries—not locus-level differential-accessibility results,
+genome-wide FDR control, evidence of no effect, biological significance, BMD
+suitability, or expert interpretation.
 
 ---
 
@@ -298,8 +305,29 @@ The rule engine applies rules in fixed priority order:
   classification.
 - Non-monotonic patterns remain descriptive observations and do not change
   qualification.
-- Trend significance, biological significance, and BMD suitability are always
-  reported as `not_assessed`.
+- Within the descriptive response-pattern result, trend significance,
+  biological significance, and BMD suitability remain `not_assessed`.
+
+### 4.8 Exploratory ordered-trend assessment
+
+- The Jonckheere–Terpstra statistic and its increasing, decreasing, and
+  two-sided permutation tails are checked against exact six-sample cases with
+  90 unique label allocations.
+- Ties receive half credit, perfect increasing and decreasing effects reach
+  the expected -1/1 bounds, and flat tied responses return no ordered
+  direction.
+- Larger allocation spaces use a recorded 32-bit seed, never-zero Monte Carlo
+  p-values, a reported p-value resolution and Monte Carlo standard error, and
+  deterministic dose-stratified percentile-bootstrap intervals.
+- Benjamini–Hochberg and conservative Benjamini–Yekutieli adjustments are
+  tested independently; the adjusted family is an explicit bounded feature
+  slice.
+- Missing values, non-biological or undeclared replicates, fewer than two
+  observations per dose, multiple batches, and the response-pattern design
+  blockers prevent testing.
+- Statistical evidence never changes feature qualification and is not
+  promoted to biological significance, causal inference, BMD suitability, or
+  a regulatory conclusion.
 
 ---
 
@@ -320,6 +348,7 @@ Key coverage areas:
 | Handoff | `handoff.test.ts`, `handoff_validator.test.ts` | Packet construction, schema validation, subset correctness |
 | Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `streaming_ingest.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature construction, gzip streaming, bounded batching, and explicit sample-column authority |
 | Response patterns | `response_pattern_assessment.test.ts` | Dose-label collapsing, ordered means, tolerance handling, monotonic and non-monotonic labels, incomplete/multi-timepoint blocking, explicit non-assessment of significance and BMD suitability, and bounded pagination |
+| Ordered trends | `ordered_trend.test.ts`, `public_fixtures.test.ts` | Exact permutation tails, deterministic Monte Carlo behavior, tie handling, ordered-pair effect bounds, pointwise bootstrap intervals, BH/BY adjustments, bounded-family warnings, fail-closed design restrictions, and frozen-public behavior |
 | Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `public_validation_manifest.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, fixture completeness, frozen-public checksums, and full-public manifest integrity |
 | Release evidence | `release_evidence.test.ts`, `release_gate.test.ts`, `benchmark_cli.test.ts` | Audit manifest schema, checksums, output isolation |
 | MCP and transport | `tool_registry.test.ts`, `transport_equivalence.test.ts`, protocol smoke scripts | Tool schema quality, service/MCP/CLI equivalence, stdio and Streamable HTTP initialization |
@@ -366,7 +395,7 @@ exported source directories and local validation bundles.
 | Limitation | Explanation |
 |------------|-------------|
 | **Biological ground truth** | Three complete public files establish ingestion realism and fail-closed design handling, while the GSE152749-derived fixture establishes real multi-dose pattern handling. No biological truth label, differential-methylation/accessibility conclusion, or predictive accuracy is asserted. Golden qualification outcomes remain synthetic. |
-| **Statistical modelling** | The benchmarks verify deterministic profiling, response-shape description, and rule-based qualification, not statistical power, false-discovery rate, trend significance, effect-size significance, model fit, or BMD suitability. |
+| **Statistical inference breadth** | Exact synthetic cases and deterministic GSE152749 behavior validate the implemented exploratory ordered-trend path. They do not establish power or type-I-error performance across assay distributions, validate every dependence or tie regime against an independent package, create genome-wide FDR control from a bounded slice, assess biological significance, fit a dose-response model, or establish BMD suitability. |
 | **Batch-effect correction** | Batch-effect modelling is behind the `enableBatchEffectModeling` feature flag (default `false`). No benchmark exercises it. |
 | **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Declared/measured profile ingestion and deterministic confounding classification are tested instead. |
 | **Chromatin-state context** | ChromHMM / Segway integration is behind `enableChromatinStateContext` (default `false`). |

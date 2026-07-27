@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A reproducible GSE152749 real-data fixture derived from 12 checksummed
   multi-dose ATAC-seq peak files, demonstrating preservation of
   non-monotonic observed patterns without automatic exclusion.
+- A bounded `assess_ordered_trends` MCP tool implementing exact or seeded
+  Monte Carlo Jonckheere–Terpstra tests, never-zero random-permutation
+  p-values, pointwise dose-stratified bootstrap effect intervals, and explicit
+  Benjamini–Yekutieli or Benjamini–Hochberg family adjustment.
 
 ### Changed
 
