@@ -124,6 +124,15 @@ This establishes complete-file ingestion and fail-closed design handling, not
 biological ground truth or statistical validity. External domain-expert
 sign-off of the expectations remains pending.
 
+A separate frozen-public realism fixture derives ten bounded chromosome-level
+summaries from all 12 deposited GSE152749 ATAC-seq peak files: matched vehicle,
+50, 200, and 400 nM retinoic-acid groups with three biological replicates
+each. The fixture and reproducible checksum-verifying derivation are under
+[`benchmarks/fixtures/frozen_public/gse152749/`](./benchmarks/fixtures/frozen_public/gse152749/SOURCE.md).
+It verifies real multi-dose response-pattern handling while explicitly making
+no differential-accessibility, biological-significance, or BMD-suitability
+claim.
+
 ## Quickstart TL;DR
 
 ```bash
@@ -170,6 +179,7 @@ Over stdio or Streamable HTTP, the public tool surface includes:
 | `ingest_cell_composition` | Ingest cell-composition evidence |
 | `ingest_cytotoxicity` | Ingest cytotoxicity context |
 | `summarize_by_group` | Summarize feature responses by dose group |
+| `assess_response_patterns` | Classify bounded observed dose-level mean patterns without fitting a model |
 | `read_table` | Read a delimited table with file guardrails and pagination |
 | `read_design` | Read a design table into the design contract |
 | `generate_qc_report` | Generate a regulator-readable QC report |

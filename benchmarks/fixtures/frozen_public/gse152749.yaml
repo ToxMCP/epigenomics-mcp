@@ -1,0 +1,52 @@
+fixtureId: "frozen_public_geo_gse152749_response_patterns"
+accession: "GSE152749"
+secondaryAccessions:
+  - "PRJNA640339"
+  - "GSM4625578"
+  - "GSM4625580"
+  - "GSM4625581"
+  - "GSM4625587"
+  - "GSM4625590"
+  - "GSM4625592"
+  - "GSM4625598"
+  - "GSM4625599"
+  - "GSM4625601"
+  - "GSM4625602"
+  - "GSM4625607"
+  - "GSM4625611"
+source: "geo"
+title: "Retinoic-acid dose-series ATAC-seq in MCF-7 cells"
+description: >
+  Frozen derived panel from 12 complete deposited blacklist-filtered peak
+  files: ethanol vehicle plus 50, 200, and 400 nM retinoic acid at 72 hours,
+  with three biological replicates per dose.
+assayModality: "atac_seq"
+organism: "Homo sapiens"
+cellLineOrTissue: "MCF-7"
+genomeBuild: "GRCh38"
+processedDataUrl: "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152749"
+licensing:
+  classification: "custom"
+  verbatim: "NCBI GEO repository policies and the source study terms apply"
+checksums:
+  - algorithm: "sha256"
+    hash: "1bd0bcae39526e25138a6024015d48ddfdc5decaece85060e969a27265c5d15b"
+    filePath: "gse152749/response_packet.json"
+  - algorithm: "sha256"
+    hash: "0b748dfd19810532e4d78ca60699f8aee20888c9507ba05d562c62fa6594a6fe"
+    filePath: "gse152749/source_files.json"
+  - algorithm: "sha256"
+    hash: "2bd4f68364e601dd369b92cc9fe46d0cf8ab5c960ed8cea32339d7f3533d8b34"
+    filePath: "gse152749/derive_fixture.mjs"
+  - algorithm: "sha256"
+    hash: "7d65ef99ceea1a6690f9fc55993fd97448dc89cb47109cca7dca559ceb6fea6b"
+    filePath: "gse152749/SOURCE.md"
+curationStatus: "validated"
+availability: "available"
+curationNotes: >
+  The ten features are outcome-independent chromosome aggregates for the first
+  five autosomes. They validate real-data response-pattern handling but are
+  not differential-accessibility calls, biological truth labels, or BMD
+  suitability evidence.
+expectedFeatureCount: 10
+expectedSampleCount: 12

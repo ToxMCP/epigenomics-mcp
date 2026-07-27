@@ -1,6 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import {
+  cpSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+  mkdtempSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join, relative } from "node:path";
 import {
   runBenchmarks,
   formatRunnerReport,
@@ -48,27 +55,14 @@ describe("benchmark drift detection", () => {
   const DRIFT_FIXTURE_NAME = "bm_beta_manifest_complete";
   const DRIFT_STEP_OUTPUT = "design_validation.json";
   const expectedDir = join(process.cwd(), "benchmarks", "expected", DRIFT_FIXTURE_NAME);
-  const backupPath = join(expectedDir, `.${DRIFT_STEP_OUTPUT}.backup`);
-
-  function backupGolden() {
-    const originalPath = join(expectedDir, DRIFT_STEP_OUTPUT);
-    writeFileSync(backupPath, readFileSync(originalPath));
-  }
-
-  function restoreGolden() {
-    const originalPath = join(expectedDir, DRIFT_STEP_OUTPUT);
-    if (existsSync(backupPath)) {
-      writeFileSync(originalPath, readFileSync(backupPath));
-      rmSync(backupPath);
-    }
-  }
 
   it("fails with actionable diffs when a golden output drifts", () => {
-    backupGolden();
+    const tempRoot = mkdtempSync(join(tmpdir(), "epimcp-benchmark-drift-"));
 
     try {
-      // Intentionally drift the golden output
-      const originalPath = join(expectedDir, DRIFT_STEP_OUTPUT);
+      const tempExpectedDir = join(tempRoot, DRIFT_FIXTURE_NAME);
+      cpSync(expectedDir, tempExpectedDir, { recursive: true });
+      const originalPath = join(tempExpectedDir, DRIFT_STEP_OUTPUT);
       const original = loadJson(originalPath) as Record<string, unknown>;
       const drifted = {
         ...original,
@@ -77,7 +71,17 @@ describe("benchmark drift detection", () => {
       writeFileSync(originalPath, JSON.stringify(drifted, null, 2) + "\n");
 
       const manifest = loadBenchmarkManifest(MANIFEST_PATH);
-      const result = runBenchmarks(manifest);
+      const result = runBenchmarks({
+        ...manifest,
+        benchmarks: manifest.benchmarks.map((benchmark) =>
+          benchmark.name === DRIFT_FIXTURE_NAME
+            ? {
+                ...benchmark,
+                expected: relative(process.cwd(), tempExpectedDir),
+              }
+            : benchmark,
+        ),
+      });
 
       expect(result.passed).toBe(false);
 
@@ -106,7 +110,7 @@ describe("benchmark drift detection", () => {
       expect(report).toContain("[FAIL]");
       expect(report).toContain("schemaValid");
     } finally {
-      restoreGolden();
+      rmSync(tempRoot, { recursive: true, force: true });
     }
   });
 });

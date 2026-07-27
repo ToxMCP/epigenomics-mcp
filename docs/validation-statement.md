@@ -103,6 +103,29 @@ Source files are downloaded to an ignored cache and are not redistributed.
 Expected outcomes are source-anchored and internally reviewed; independent
 external domain-expert sign-off is deferred to a later stage.
 
+### 2.2 Multi-dose response-pattern realism
+
+The frozen-public fixture under
+`benchmarks/fixtures/frozen_public/gse152749/` uses the deposited GSE152749
+ATAC-seq dose series: matched MCF-7 ethanol vehicle plus 50, 200, and 400 nM
+retinoic acid at 72 hours, with three biological replicates per condition.
+Compressed and decompressed SHA-256 values are recorded for all 12 complete
+blacklist-filtered narrowPeak files.
+
+To keep the committed fixture bounded and redistribution-conscious, a
+checksum-verifying script derives two transparent assay summaries for each of
+the first five autosomes: deposited peak count and deposited `signalValue`
+sum. The resulting ten features exercise the complete response-pattern
+contract. Under exact comparison, all ten have non-monotonic group-mean
+sequences; five remain below control at every treated dose and five cross the
+control mean. The expected labels are deterministic software assertions, not
+claims of differential accessibility or biological ground truth.
+
+This fixture verifies that a preferred-depth real design and non-monotonic
+deposited measurements remain representable without automatic exclusion.
+Trend significance, biological significance, BMD suitability, and expert
+interpretation remain explicitly unassessed.
+
 ---
 
 ## 3. Fixture scope and scientific intent
@@ -260,6 +283,24 @@ The rule engine applies rules in fixed priority order:
 - `readyForPod` is `true` only when the packet is schema-valid and at least one feature is dose-response ready.
 - Fail-closed: zero eligible features yields `readyForPod = false` (or `null` handoff in the export client).
 
+### 4.7 Observed response-pattern assessment
+
+- Dose-group labels sharing a numeric dose are pooled before group means are
+  compared.
+- Numeric dose levels are ordered ascending and bounded feature pagination is
+  deterministic.
+- Adjacent mean differences are classified with exact comparison by default
+  or an explicit caller-supplied absolute tolerance.
+- A caller tolerance is reported in signal-metric units and is never promoted
+  to a biological-significance threshold.
+- Structurally invalid designs, negative doses, missing dose levels, non-finite
+  values, mixed units, and aggregate multi-timepoint designs prevent pattern
+  classification.
+- Non-monotonic patterns remain descriptive observations and do not change
+  qualification.
+- Trend significance, biological significance, and BMD suitability are always
+  reported as `not_assessed`.
+
 ---
 
 ## 5. Unit-test coverage supporting the benchmarks
@@ -278,6 +319,7 @@ Key coverage areas:
 | Qualification | `qualification_rules.test.ts`, `qualification_policy.test.ts`, `qualification.test.ts`, `claim_guards.test.ts` | Rule priority, policy validation, claim stripping, status assignment |
 | Handoff | `handoff.test.ts`, `handoff_validator.test.ts` | Packet construction, schema validation, subset correctness |
 | Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `streaming_ingest.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature construction, gzip streaming, bounded batching, and explicit sample-column authority |
+| Response patterns | `response_pattern_assessment.test.ts` | Dose-label collapsing, ordered means, tolerance handling, monotonic and non-monotonic labels, incomplete/multi-timepoint blocking, explicit non-assessment of significance and BMD suitability, and bounded pagination |
 | Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `public_validation_manifest.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, fixture completeness, frozen-public checksums, and full-public manifest integrity |
 | Release evidence | `release_evidence.test.ts`, `release_gate.test.ts`, `benchmark_cli.test.ts` | Audit manifest schema, checksums, output isolation |
 | MCP and transport | `tool_registry.test.ts`, `transport_equivalence.test.ts`, protocol smoke scripts | Tool schema quality, service/MCP/CLI equivalence, stdio and Streamable HTTP initialization |
@@ -323,8 +365,8 @@ exported source directories and local validation bundles.
 
 | Limitation | Explanation |
 |------------|-------------|
-| **Biological ground truth** | Three complete public files establish ingestion realism and fail-closed design handling, but no biological truth label, differential-methylation conclusion, or predictive accuracy is asserted. Golden qualification outcomes remain synthetic. |
-| **Statistical modelling** | The benchmarks verify deterministic profiling and rule-based qualification, not statistical power, false-discovery rate, or effect-size significance. |
+| **Biological ground truth** | Three complete public files establish ingestion realism and fail-closed design handling, while the GSE152749-derived fixture establishes real multi-dose pattern handling. No biological truth label, differential-methylation/accessibility conclusion, or predictive accuracy is asserted. Golden qualification outcomes remain synthetic. |
+| **Statistical modelling** | The benchmarks verify deterministic profiling, response-shape description, and rule-based qualification, not statistical power, false-discovery rate, trend significance, effect-size significance, model fit, or BMD suitability. |
 | **Batch-effect correction** | Batch-effect modelling is behind the `enableBatchEffectModeling` feature flag (default `false`). No benchmark exercises it. |
 | **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Declared/measured profile ingestion and deterministic confounding classification are tested instead. |
 | **Chromatin-state context** | ChromHMM / Segway integration is behind `enableChromatinStateContext` (default `false`). |

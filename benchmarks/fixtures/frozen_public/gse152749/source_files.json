@@ -1,0 +1,151 @@
+{
+  "seriesAccession": "GSE152749",
+  "recordUrl": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE152749",
+  "retrievedAt": "2026-07-27",
+  "files": [
+    {
+      "sampleAccession": "GSM4625580",
+      "condition": "ethanol vehicle control",
+      "doseNm": 0,
+      "replicate": 1,
+      "fileName": "GSM4625580_05-EtOH-nlDensity-rep1_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625580/suppl/GSM4625580_05-EtOH-nlDensity-rep1_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4798991,
+      "rowCount": 295198,
+      "sourceChecksumSha256": "a14c94c9609947be6cea485f0c90475a8754abcadad33086ca130f4a17654e29",
+      "contentChecksumSha256": "c2f6ce111fe8d97c3145e3ac210ab18bd2b6f86bbb8cc923e1f86b5feccf065b"
+    },
+    {
+      "sampleAccession": "GSM4625590",
+      "condition": "ethanol vehicle control",
+      "doseNm": 0,
+      "replicate": 2,
+      "fileName": "GSM4625590_15-EtOH-nlDensity-rep2_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625590/suppl/GSM4625590_15-EtOH-nlDensity-rep2_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4479151,
+      "rowCount": 279823,
+      "sourceChecksumSha256": "9f99a544731d23e3ea8a08b8eb6f4c0d042ca2d04a5f8994a97e88ab1e1075de",
+      "contentChecksumSha256": "015cd024119a34a8d6e943b27bdbda26a23b6caa109fb0debc9c5649cb6caed6"
+    },
+    {
+      "sampleAccession": "GSM4625602",
+      "condition": "ethanol vehicle control",
+      "doseNm": 0,
+      "replicate": 3,
+      "fileName": "GSM4625602_27-EtOH-nlDensity-rep3_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625602/suppl/GSM4625602_27-EtOH-nlDensity-rep3_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4836722,
+      "rowCount": 298735,
+      "sourceChecksumSha256": "13d502c3dfe86d60a3b97cba2795b46a0d80ee180ab437836cc1f2fd1d844baf",
+      "contentChecksumSha256": "50734973983070da79bb490a705dd050216e98b8537859143a820cbb439cfb72"
+    },
+    {
+      "sampleAccession": "GSM4625578",
+      "condition": "retinoic acid",
+      "doseNm": 50,
+      "replicate": 1,
+      "fileName": "GSM4625578_03-RA-low-rep1_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625578/suppl/GSM4625578_03-RA-low-rep1_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4559137,
+      "rowCount": 289103,
+      "sourceChecksumSha256": "c4d1a3aab0ea484c7c878b8e1d25fb9f3f048638ce71810041668560e356da34",
+      "contentChecksumSha256": "68fa6ef393570fab6fd74f2c9fc2a5d6f1450b7db5a22cee65272c63cf130194"
+    },
+    {
+      "sampleAccession": "GSM4625599",
+      "condition": "retinoic acid",
+      "doseNm": 50,
+      "replicate": 2,
+      "fileName": "GSM4625599_24-RA-low-rep2_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625599/suppl/GSM4625599_24-RA-low-rep2_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4202447,
+      "rowCount": 268996,
+      "sourceChecksumSha256": "29b8308c2eb3f73cb9c6cc12787f3595b45e5808410add78f2322c2b7dc90e48",
+      "contentChecksumSha256": "400557254b67e01b2884244ee43e20d41398f63c430728e72b752297625a976b"
+    },
+    {
+      "sampleAccession": "GSM4625611",
+      "condition": "retinoic acid",
+      "doseNm": 50,
+      "replicate": 3,
+      "fileName": "GSM4625611_36-RA-low-rep3_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625611/suppl/GSM4625611_36-RA-low-rep3_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4255344,
+      "rowCount": 276320,
+      "sourceChecksumSha256": "18d9471487132fde1866ce4a08490cf69cdedd5bc40123d63400bc4074075963",
+      "contentChecksumSha256": "995ffb8f3c9771e3d9cf0d1492e58a82056f9623e840b465a54fe8d678a8ce07"
+    },
+    {
+      "sampleAccession": "GSM4625587",
+      "condition": "retinoic acid",
+      "doseNm": 200,
+      "replicate": 1,
+      "fileName": "GSM4625587_12-RA-med-rep1_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625587/suppl/GSM4625587_12-RA-med-rep1_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4177235,
+      "rowCount": 271402,
+      "sourceChecksumSha256": "445a8663e6b72fbc0af358f35cf3ed66da1e0660527617917824d6125917c054",
+      "contentChecksumSha256": "e79c576e627919bf636f561dd0d554f500b55ab5732dee3c3c9f29db9a417471"
+    },
+    {
+      "sampleAccession": "GSM4625592",
+      "condition": "retinoic acid",
+      "doseNm": 200,
+      "replicate": 2,
+      "fileName": "GSM4625592_17-RA-med-rep2_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625592/suppl/GSM4625592_17-RA-med-rep2_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4634783,
+      "rowCount": 295736,
+      "sourceChecksumSha256": "044bdf48a8d00cb9bdbb4a556692733a9a8eda066a91fb7d6d89a3ab3092fc58",
+      "contentChecksumSha256": "ca2378d8fd91d1334ebd4c45e4498f32c4208861746c1994887b8abee719c527"
+    },
+    {
+      "sampleAccession": "GSM4625601",
+      "condition": "retinoic acid",
+      "doseNm": 200,
+      "replicate": 3,
+      "fileName": "GSM4625601_26-RA-med-rep3_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625601/suppl/GSM4625601_26-RA-med-rep3_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4802020,
+      "rowCount": 301597,
+      "sourceChecksumSha256": "514262a40b96d9ac3b1960fe25e065362ed55730b24ce65e369433f3c1e3e2b1",
+      "contentChecksumSha256": "df0230b186200fcde61bcf44f431b7084d96be944e6c2ca040e80ace8c92f59d"
+    },
+    {
+      "sampleAccession": "GSM4625581",
+      "condition": "retinoic acid",
+      "doseNm": 400,
+      "replicate": 1,
+      "fileName": "GSM4625581_06-RA-high-rep1_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625581/suppl/GSM4625581_06-RA-high-rep1_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4581340,
+      "rowCount": 289472,
+      "sourceChecksumSha256": "10885600a80e50e4737a6b78ee92dd28b5c9e0137b7adce5d2184bfc7cdc04ad",
+      "contentChecksumSha256": "0f04f33f7779aa11fd28531a237f52ad49fd679dce102ea5a0f34ef4b0b8c161"
+    },
+    {
+      "sampleAccession": "GSM4625598",
+      "condition": "retinoic acid",
+      "doseNm": 400,
+      "replicate": 2,
+      "fileName": "GSM4625598_23-RA-high-rep2_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625598/suppl/GSM4625598_23-RA-high-rep2_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4693114,
+      "rowCount": 298618,
+      "sourceChecksumSha256": "842fd09ec464e9332a0567c9f5fa7a77d8f7def7f3c0f7b12b177f1c241d5a07",
+      "contentChecksumSha256": "01a2dfdce635d949dea0d51e6b4072ad521d67fea2018aa12d7ae7333cd7e565"
+    },
+    {
+      "sampleAccession": "GSM4625607",
+      "condition": "retinoic acid",
+      "doseNm": 400,
+      "replicate": 3,
+      "fileName": "GSM4625607_32-RA-high-rep3_blacklistFiltered.narrowPeak.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM4625nnn/GSM4625607/suppl/GSM4625607_32-RA-high-rep3_blacklistFiltered.narrowPeak.gz",
+      "fileBytes": 4575466,
+      "rowCount": 291390,
+      "sourceChecksumSha256": "12ce734733d67050579a979cf80eefd124565fbc8352887eabf1394639937f27",
+      "contentChecksumSha256": "5f40d305c55ea45e39c75fdb596979b5bbd904c5d372f8f9e5e67ee6c06c097b"
+    }
+  ]
+}

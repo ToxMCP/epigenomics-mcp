@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dose-response readiness states in design-validation and ingestion outputs.
 - Machine-readable comparison and dose-response blocker codes in design
   validation and feature-qualification outputs.
+- A bounded `assess_response_patterns` MCP tool that collapses duplicate
+  numeric dose labels, reports transparent group-mean response shapes, and
+  explicitly leaves trend significance, biological significance, and BMD
+  suitability unassessed.
+- A reproducible GSE152749 real-data fixture derived from 12 checksummed
+  multi-dose ATAC-seq peak files, demonstrating preservation of
+  non-monotonic observed patterns without automatic exclusion.
 
 ### Changed
 
@@ -50,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ready Bioactivity-PoD handoff.
 - Undeclared sample-to-group references now return structural validation
   errors instead of allowing replicate assessment to throw.
+- Benchmark drift tests now mutate isolated temporary golden copies, removing
+  a cross-file race with the release-gate test.
 
 ## [0.2.1] - 2026-07-27
 

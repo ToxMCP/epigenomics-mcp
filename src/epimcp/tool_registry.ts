@@ -34,6 +34,10 @@ import {
   GroupSummaryPacketSchema,
   summarizeByGroup,
 } from "../summarization/group_summary.js";
+import {
+  assessResponsePatterns,
+  ResponsePatternAssessmentResultSchema,
+} from "../response_pattern/assessment.js";
 import { readTableFile, ReadTableResultSchema } from "../ingestion/csv_reader.js";
 import { readDesignTable, ReadDesignResultSchema } from "../ingestion/design_reader.js";
 import {
@@ -525,6 +529,40 @@ export const SummarizeByGroupResultSchema = z
     featureCount: z.number().int().nonnegative(),
     groupCount: z.number().int().nonnegative(),
     totalSummaries: z.number().int().nonnegative(),
+  })
+  .strict();
+
+export const AssessResponsePatternsOptionsSchema = z
+  .object({
+    packet: EpigenomicsFeatureResponsePacketSchema.optional().describe(
+      "Validated packet whose observed dose-level mean patterns will be assessed",
+    ),
+    packetPath: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("JSON packet path under an allowed file root; use instead of packet"),
+    absoluteTolerance: z
+      .number()
+      .finite()
+      .nonnegative()
+      .default(0)
+      .describe(
+        "Caller-declared absolute tolerance in each feature's signal-metric units; this is not a biological-significance threshold",
+      ),
+    offset: z
+      .number()
+      .int()
+      .nonnegative()
+      .default(0)
+      .describe("Zero-based feature offset"),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(200)
+      .default(50)
+      .describe("Maximum feature assessments to return"),
   })
   .strict();
 
@@ -1074,6 +1112,40 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           featureCount: result.featureCount,
           groupCount: result.groupCount,
           totalSummaries: result.totalSummaries,
+        }),
+      );
+    },
+  },
+  {
+    name: "assess_response_patterns",
+    title: "Assess Observed Response Patterns",
+    description:
+      "Classify bounded, descriptive patterns across distinct numeric dose-level means without testing trend significance, choosing a biological threshold, fitting a BMD model, or changing feature qualification.",
+    inputSchema: AssessResponsePatternsOptionsSchema,
+    outputSchema: ResponsePatternAssessmentResultSchema,
+    handler: async (args, context) => {
+      const config = context?.config ?? ConfigSchema.parse({});
+      const typedArgs = AssessResponsePatternsOptionsSchema.parse(args);
+      const packet = resolvePacketInput(
+        typedArgs.packet,
+        typedArgs.packetPath,
+        config,
+      );
+      if (!packet.ok) {
+        return errorResult(packet.error);
+      }
+      const packetParse =
+        EpigenomicsFeatureResponsePacketSchema.safeParse(packet.value);
+      if (!packetParse.success) {
+        return errorResult(
+          `Invalid response packet: ${zodIssues(packetParse.error).join("; ")}`,
+        );
+      }
+      return jsonResult(
+        assessResponsePatterns(packetParse.data, {
+          absoluteTolerance: typedArgs.absoluteTolerance,
+          offset: typedArgs.offset,
+          limit: typedArgs.limit,
         }),
       );
     },
