@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T15:00:30.555Z",
+  "generatedAt": "2026-07-27T16:44:47.632Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T15:00:27.307Z",
-    "finishedAt": "2026-07-27T15:00:30.555Z"
+    "startedAt": "2026-07-27T16:44:44.702Z",
+    "finishedAt": "2026-07-27T16:44:47.632Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "ac14b12abe3336f4701bc837d1548c33868b613c",
+    "commit": "a1b124bd8bd73f51ad603b6cd1ea040287e68d44",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.102s; 76.2 MiB RSS increase"
+        "details": "10000 real qualifications in 0.115s; 73.2 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -66,15 +66,15 @@
       "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
       "version": "0.2.1",
-      "size": 729274,
-      "unpackedSize": 4033584,
-      "shasum": "8b3765c410a0856a3f5b800caf4464ee665cda12",
-      "integrity": "sha512-YCWzrOCyd7LBPQTizHIkBlzRI5+jpZjEt35qDIQlYUkhjLVt1b47Q4Z+I3W5KCbOgwqjPPkTuIrRNN0cUo6ncQ==",
+      "size": 743938,
+      "unpackedSize": 4101646,
+      "shasum": "286c7c0c2f7494f4e3c302d368f273bc8fcba981",
+      "integrity": "sha512-4/AQrUBH0MZ6fmiMW0KsO/3EtTxgoyZhuM5JFvpSt9cWEwzfHFeMoV9VhGSMaJ2RKff0XwwHvN6n/pqPd0oT2Q==",
       "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 3453,
+          "size": 4117,
           "mode": 420
         },
         {
@@ -94,7 +94,7 @@
         },
         {
           "path": "README.md",
-          "size": 15118,
+          "size": 16606,
           "mode": 420
         },
         {
@@ -763,6 +763,41 @@
           "mode": 420
         },
         {
+          "path": "benchmarks/public_validation/encsr220asc/design.json",
+          "size": 1188,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/encsr220asc/provenance.json",
+          "size": 746,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/gse67005/provenance.json",
+          "size": 718,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/gse84189/design.json",
+          "size": 2067,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/gse84189/provenance.json",
+          "size": 757,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/manifest.json",
+          "size": 8472,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/public_validation/README.md",
+          "size": 1612,
+          "mode": 420
+        },
+        {
           "path": "benchmarks/qualification_engine_benchmark.mjs",
           "size": 5913,
           "mode": 420
@@ -1349,22 +1384,22 @@
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts",
-          "size": 231810,
+          "size": 235969,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts.map",
-          "size": 6480,
+          "size": 6579,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js",
-          "size": 37829,
+          "size": 44233,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js.map",
-          "size": 30302,
+          "size": 34573,
           "mode": 420
         },
         {
@@ -1459,12 +1494,12 @@
         },
         {
           "path": "dist/ingestion/feature_table.js",
-          "size": 31563,
+          "size": 31770,
           "mode": 420
         },
         {
           "path": "dist/ingestion/feature_table.js.map",
-          "size": 27303,
+          "size": 27358,
           "mode": 420
         },
         {
@@ -1509,22 +1544,22 @@
         },
         {
           "path": "dist/ingestion/index.d.ts",
-          "size": 4161,
+          "size": 4384,
           "mode": 420
         },
         {
           "path": "dist/ingestion/index.d.ts.map",
-          "size": 2304,
+          "size": 2435,
           "mode": 420
         },
         {
           "path": "dist/ingestion/index.js",
-          "size": 2556,
+          "size": 2686,
           "mode": 420
         },
         {
           "path": "dist/ingestion/index.js.map",
-          "size": 1362,
+          "size": 1434,
           "mode": 420
         },
         {
@@ -1605,6 +1640,26 @@
         {
           "path": "dist/ingestion/region_feature_classifier.js.map",
           "size": 12862,
+          "mode": 420
+        },
+        {
+          "path": "dist/ingestion/streaming_ingest.d.ts",
+          "size": 3519,
+          "mode": 420
+        },
+        {
+          "path": "dist/ingestion/streaming_ingest.d.ts.map",
+          "size": 655,
+          "mode": 420
+        },
+        {
+          "path": "dist/ingestion/streaming_ingest.js",
+          "size": 8245,
+          "mode": 420
+        },
+        {
+          "path": "dist/ingestion/streaming_ingest.js.map",
+          "size": 7640,
           "mode": 420
         },
         {
@@ -2069,7 +2124,7 @@
         },
         {
           "path": "dist/release_evidence/artifacts.d.ts",
-          "size": 986,
+          "size": 1018,
           "mode": 420
         },
         {
@@ -2079,12 +2134,12 @@
         },
         {
           "path": "dist/release_evidence/artifacts.js",
-          "size": 1101,
+          "size": 1137,
           "mode": 420
         },
         {
           "path": "dist/release_evidence/artifacts.js.map",
-          "size": 861,
+          "size": 874,
           "mode": 420
         },
         {
@@ -2569,12 +2624,12 @@
         },
         {
           "path": "docs/tool-reference.md",
-          "size": 29713,
+          "size": 31275,
           "mode": 420
         },
         {
           "path": "docs/validation-statement.md",
-          "size": 25390,
+          "size": 27377,
           "mode": 420
         },
         {
@@ -2689,7 +2744,7 @@
         },
         {
           "path": "package.json",
-          "size": 5369,
+          "size": 5531,
           "mode": 420
         },
         {
@@ -2850,6 +2905,11 @@
         {
           "path": "scripts/validate-handoffs.mjs",
           "size": 3183,
+          "mode": 420
+        },
+        {
+          "path": "scripts/validate-public-data.mjs",
+          "size": 10748,
           "mode": 420
         },
         {
@@ -3338,7 +3398,7 @@
           "mode": 420
         }
       ],
-      "entryCount": 653,
+      "entryCount": 665,
       "bundled": []
     }
   ],
@@ -4014,14 +4074,49 @@
       "bytes": 3508
     },
     {
+      "path": "benchmarks/public_validation/README.md",
+      "sha256": "bdd3fb9ec737f4f6d7553869a9dde6f7c7c403911788d0cb467c6c7990be77bc",
+      "bytes": 1612
+    },
+    {
+      "path": "benchmarks/public_validation/encsr220asc/design.json",
+      "sha256": "8dbbb31aa798d5f69de83bb06c894630dba85390ab0ea9dfbb62dc0993366bee",
+      "bytes": 1188
+    },
+    {
+      "path": "benchmarks/public_validation/encsr220asc/provenance.json",
+      "sha256": "5c6568c5d0f85c42f7cc1d264598637921fbaeeff38c3eda9d7e4fad1ec8b90c",
+      "bytes": 746
+    },
+    {
+      "path": "benchmarks/public_validation/gse67005/provenance.json",
+      "sha256": "7cee39770ffa55aa29c0e9f80f875356a78713bb91594a3969449f08ff142b35",
+      "bytes": 718
+    },
+    {
+      "path": "benchmarks/public_validation/gse84189/design.json",
+      "sha256": "3b202d20a40b2e44e5fd0189d59de7b03fbfa1444decde04f2755ee64e7470e9",
+      "bytes": 2067
+    },
+    {
+      "path": "benchmarks/public_validation/gse84189/provenance.json",
+      "sha256": "c078f2618a646b2fe5f10bdfb4fc8a25626c1f90ecf730323d08e7967db30749",
+      "bytes": 757
+    },
+    {
+      "path": "benchmarks/public_validation/manifest.json",
+      "sha256": "5aaad20f59fb852d1a6cc19570f9f73faa74bd9e240094531a23283b29d4ec58",
+      "bytes": 8472
+    },
+    {
       "path": "docs/tool-reference.md",
-      "sha256": "1fdacf48ffb45d9f90d6e95a59b5c0cf75698f699c71921f3c5cdda506304e07",
-      "bytes": 29713
+      "sha256": "67a6191a48766dc89c3c512c85095959b638e72a5fa7a9dbe6ae9383a8c356e9",
+      "bytes": 31275
     },
     {
       "path": "docs/validation-statement.md",
-      "sha256": "731897ccc064ff564b5dcd8741a5c21f87827646fe2fe3c373c3bcb3aeb9a0b1",
-      "bytes": 25390
+      "sha256": "bea960c13539a429a8aa0d25f2e02351d10fa41073039d41a21dfa3a77ed806e",
+      "bytes": 27377
     },
     {
       "path": "evaluation.xml",
@@ -4035,17 +4130,17 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "91a63401cdb2b6d2a60dd22ab0d134886c83b0165ae52a28a4d9f5ab1a685fae",
-      "bytes": 81128
+      "sha256": "9327971d9a03d51a2d9e240755d0d514757d81333c60ec255f987e3a7ca4c1c7",
+      "bytes": 82597
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "8119165d9363a442b663323daf8c054e8aa29b1070c7c07b03d57c6f6836f6db",
+      "sha256": "a3c9adc8020c6fbbd6ebbb54e869ab4809cc58935f41d20c492264e6555cbfaa",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "37c09fe9e668e33492391f21e5754c52fe38b9e50cc71a54fdc8320aa4be60d8",
+      "sha256": "5f2b6a2ca65362eacc6345929038d6718ff18df408ac52f93bd2670bcfd911cd",
       "bytes": 497
     },
     {
