@@ -1,8 +1,8 @@
 # Epigenomics MCP — Tool Reference & Usage Examples
 
 **Document status:** Implementation reference  
-**Product version:** 0.1.0  
-**Date:** 2026-05-07
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
@@ -38,9 +38,17 @@ All tools are registered on the MCP server via `registerTools()`. The same opera
 # stdio transport (default)
 npx epimcp serve
 
+# local Streamable HTTP transport
+EPIMCP_MCP_PORT=8000 npx epimcp-http
+
 # With custom config
 npx epimcp serve --config ./epimcp.config.json
 ```
+
+HTTP binds to `127.0.0.1` by default. A non-loopback bind requires both
+`EPIMCP_ALLOWED_HOSTS` and `EPIMCP_AUTH_TOKEN`; use
+`EPIMCP_ALLOWED_ORIGINS` for browser clients and terminate TLS at a trusted
+reverse proxy. Request bodies and per-client request rates are bounded.
 
 ### 2.2 JSON output convention
 
@@ -61,13 +69,13 @@ content item for compatibility:
 {
   "structuredContent": {
     "status": "ok",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "timestamp": "2026-05-07T00:00:00.000Z"
   },
   "content": [
     {
       "type": "text",
-      "text": "{\"status\":\"ok\",\"version\":\"0.1.0\",\"timestamp\":\"2026-05-07T00:00:00.000Z\"}"
+      "text": "{\"status\":\"ok\",\"version\":\"0.2.0\",\"timestamp\":\"2026-05-07T00:00:00.000Z\"}"
     }
   ]
 }
@@ -99,6 +107,7 @@ the MCP server is launched from another working directory.
 | `epimcp://release-evidence/checksums` | Latest generated SHA-256 checksum file |
 | `epimcp://release-evidence/release-gate-json` | Latest captured release-gate JSON report |
 | `epimcp://release-evidence/release-gate-report` | Latest captured release-gate text report |
+| `epimcp://release-evidence/scientific-invariants` | Latest checksummed schema-spine scientific-invariants result |
 
 Generate or refresh the release evidence bundle with:
 
@@ -121,6 +130,45 @@ can be configured with `EPIMCP_ALLOWED_FILE_ROOTS`, `EPIMCP_MAX_FILE_BYTES`,
 `read_table` accepts `options.offset` and `options.limit`. Results include
 `totalDataRowCount`, `hasMore`, and `nextOffset` so callers can page through
 large tables without requesting an unbounded response.
+
+### 2.6 File-backed packet workflows
+
+`qualify_features`, `generate_handoff`, and `summarize_by_group` accept exactly
+one of an inline `packet` or a JSON `packetPath`. A path is resolved through the
+same allowed-root and maximum-size policy as the table readers. Supplying both,
+or neither, is rejected.
+
+`qualify_features` and `generate_handoff` also accept the optional
+`cellCompositionProfile` and `cytotoxicityProfile` objects returned by the two
+context-ingestion tools. When supplied, the profiles are deterministically
+classified and applied to every feature; dominant confounding can make a
+handoff not ready. Omitted profiles are not silently treated as measured
+evidence.
+
+### 2.7 Explicit ingestion semantics
+
+`ingest_dataset` requires a `tableOptions` object. Callers must declare feature
+class, signal metric, table shape or sufficient sample columns, identifier
+columns, and coordinate semantics instead of relying on biological inference
+from column names.
+
+```json
+{
+  "datasetId": "GSE67005-low-dose-excerpt",
+  "modality": "dna_methylation_array",
+  "featuresPath": "benchmarks/fixtures/frozen_public/gse67005/raw_excerpt.tsv",
+  "designPath": "benchmarks/fixtures/frozen_public/gse67005/design.json",
+  "provenancePath": "benchmarks/fixtures/frozen_public/gse67005/provenance.json",
+  "tableOptions": {
+    "featureClass": "generic_region_feature",
+    "signalMetric": "declared_other",
+    "declaredOtherDescription": "centered log2 MeDIP/Input ratio",
+    "explicitShape": "wide_matrix",
+    "featureIdColumn": "PROBE_ID",
+    "sampleIdColumns": ["562919", "562954", "563005", "563033", "563268", "563365"]
+  }
+}
+```
 
 ---
 
@@ -272,7 +320,7 @@ npx epimcp qualify examples/methylation_matrix/packet.json --json
         "acceptedCount": 2,
         "excludedCount": 0,
         "exploratoryCount": 0,
-        "caveatCount": 0
+        "caveatCount": 2
       },
       "qcReportRef": "qc-report-001",
       "warnings": [],
@@ -294,8 +342,17 @@ The `qualify` command returns a qualification result:
   "qualifications": [
     {
       "featureId": "cg00000001",
-      "status": "accepted_for_pod",
-      "warnings": [],
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": ["cg00000001"]
+        }
+      ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown",
@@ -303,8 +360,17 @@ The `qualify` command returns a qualification result:
     },
     {
       "featureId": "cg00000002",
-      "status": "accepted_for_pod",
-      "warnings": [],
+      "status": "accepted_with_caveats",
+      "warnings": [
+        {
+          "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+          "severity": "warning",
+          "message": "Design has 3 dose groups; preferred is 4",
+          "category": "missing_metadata",
+          "blocksDownstream": false,
+          "featureIds": ["cg00000002"]
+        }
+      ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown",
@@ -317,10 +383,10 @@ The `qualify` command returns a qualification result:
     "heritabilityClaim": "none"
   },
   "explainabilitySummary": {
-    "uniqueRuleCodes": ["ACCEPTED"],
-    "ruleCodeCounts": { "ACCEPTED": 2 },
+    "uniqueRuleCodes": ["RULE_009_MAJOR_WARNINGS"],
+    "ruleCodeCounts": { "RULE_009_MAJOR_WARNINGS": 2 },
     "reviewRequiredCount": 0,
-    "featuresWithRemediation": 0
+    "featuresWithRemediation": 2
   }
 }
 ```
@@ -406,7 +472,10 @@ npx epimcp build-packet examples/methylation_matrix/packet.json --json
 
 ### 4.2 Qualify with nearest-gene mapping metadata
 
-When the packet includes `mappingMetadata.mappingMethod: "nearest_gene"`, the qualification engine emits a warning because nearest-gene linkage is low-confidence and does not imply causality.
+When the packet includes `mappingPayloads.regionToGeneMappings` entries using
+`method: "nearest_gene"`, the qualification engine preserves the mapped gene
+IDs and emits a warning because proximity is low-confidence context and does
+not imply causality.
 
 ```bash
 npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
@@ -418,42 +487,37 @@ npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
 {
   "qualifiedCount": 2,
   "excludedCount": 0,
-  "warnings": [
-    {
-      "warningCode": "EPIW007_NEAREST_GENE_ONLY",
-      "severity": "warning",
-      "message": "Feature dmr_chr1_1000000_1000500 mapped by nearest-gene only; low-confidence contextual linkage, suppress pathway rollup",
-      "category": "mapping_proximity",
-      "blocksDownstream": false,
-      "featureIds": ["dmr_chr1_1000000_1000500"]
-    },
-    {
-      "warningCode": "EPIW007_NEAREST_GENE_ONLY",
-      "severity": "warning",
-      "message": "Feature dmr_chr2_500000_500600 mapped by nearest-gene only; low-confidence contextual linkage, suppress pathway rollup",
-      "category": "mapping_proximity",
-      "blocksDownstream": false,
-      "featureIds": ["dmr_chr2_500000_500600"]
-    }
-  ],
+  "warnings": [],
   "qualifications": [
     {
       "featureId": "dmr_chr1_1000000_1000500",
       "status": "accepted_with_caveats",
-      "warnings": [ /* nearest-gene warning */ ],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown"
+      "warnings": [
+        { "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS" },
+        { "warningCode": "EPIW007_NEAREST_GENE_ONLY" }
+      ],
+      "mappedGeneIds": ["ENSG_DEMO_001"],
+      "mappingConfidence": "low",
+      "mappingMethod": "nearest_gene"
     },
     {
       "featureId": "dmr_chr2_500000_500600",
       "status": "accepted_with_caveats",
-      "warnings": [ /* nearest-gene warning */ ],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown"
+      "warnings": [
+        { "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS" },
+        { "warningCode": "EPIW007_NEAREST_GENE_ONLY" }
+      ],
+      "mappedGeneIds": ["ENSG_DEMO_002"],
+      "mappingConfidence": "low",
+      "mappingMethod": "nearest_gene"
     }
-  ]
+  ],
+  "explainabilitySummary": {
+    "uniqueRuleCodes": ["RULE_009_MAJOR_WARNINGS"],
+    "ruleCodeCounts": { "RULE_009_MAJOR_WARNINGS": 2 },
+    "reviewRequiredCount": 0,
+    "featuresWithRemediation": 2
+  }
 }
 ```
 
@@ -463,7 +527,9 @@ npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
 
 ## 5. Example 3 — Invalid Build Mismatch
 
-**Scenario:** One feature in your dataset declares an unsupported genome build or omits the build entirely. The fail-closed qualification engine excludes the feature with a coordinate-ambiguity error.
+**Scenario:** Features in one dataset declare different genome builds. The
+fail-closed qualification engine rejects the mixed-build dataset rather than
+silently lifting or partially accepting coordinates.
 
 ### 5.1 Input
 
@@ -472,10 +538,10 @@ npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
 ```json
 [
   {
-    "featureId": "cg_valid_001",
+    "featureId": "cg_hg38_001",
     "featureClass": "cpg_methylation",
     "modality": "dna_methylation_array",
-    "measuredIdentifier": "cg_valid_001",
+    "measuredIdentifier": "cg_hg38_001",
     "measuredRegion": {
       "chrom": "chr1",
       "start": 1000000,
@@ -492,14 +558,15 @@ npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
     }
   },
   {
-    "featureId": "cg_missing_build_001",
+    "featureId": "cg_mm10_001",
     "featureClass": "cpg_methylation",
     "modality": "dna_methylation_array",
-    "measuredIdentifier": "cg_missing_build_001",
+    "measuredIdentifier": "cg_mm10_001",
     "measuredRegion": {
       "chrom": "chr1",
       "start": 2000000,
       "end": 2000001,
+      "build": "mm10",
       "coordinateSystem": "0-based-half-open"
     },
     "signalMetric": "beta_value",
@@ -513,7 +580,8 @@ npx epimcp qualify examples/dmr_nearest_gene_warning/packet.json --json
 ]
 ```
 
-Note that `cg_missing_build_001` has `measuredRegion` but omits the `build` field.
+The packet mixes `hg38` and `mm10` without a declared, provenance-backed
+coordinate conversion.
 
 ### 5.2 Qualify
 
@@ -525,49 +593,44 @@ npx epimcp qualify examples/invalid_build_mismatch/packet.json --json
 
 ```json
 {
-  "qualifiedCount": 1,
-  "excludedCount": 1,
+  "qualifiedCount": 0,
+  "excludedCount": 2,
   "warnings": [
     {
-      "warningCode": "EPI004_BUILD_MISSING",
+      "warningCode": "EPI004_BUILD_VALIDATION_FAILED",
       "severity": "error",
-      "message": "Feature cg_missing_build_001 has measuredRegion but missing genome build",
+      "message": "EPI004: Mixed genome builds detected in dataset (hg38, mm10); split upstream or use a single assembly",
       "category": "coordinate_semantics",
-      "blocksDownstream": true,
-      "featureIds": ["cg_missing_build_001"]
+      "blocksDownstream": true
     }
   ],
   "qualifications": [
     {
-      "featureId": "cg_valid_001",
-      "status": "accepted_for_pod",
-      "warnings": [],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown"
-    },
-    {
-      "featureId": "cg_missing_build_001",
+      "featureId": "cg_hg38_001",
       "status": "excluded_coordinate_ambiguity",
       "warnings": [
-        {
-          "warningCode": "EPI004_BUILD_MISSING",
-          "severity": "error",
-          "message": "Feature cg_missing_build_001 has measuredRegion but missing genome build",
-          "category": "coordinate_semantics",
-          "blocksDownstream": true,
-          "featureIds": ["cg_missing_build_001"]
-        }
-      ],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown"
+        { "warningCode": "EPI004_BUILD_VALIDATION_FAILED" }
+      ]
+    },
+    {
+      "featureId": "cg_mm10_001",
+      "status": "excluded_coordinate_ambiguity",
+      "warnings": [
+        { "warningCode": "EPI004_BUILD_VALIDATION_FAILED" }
+      ]
     }
-  ]
+  ],
+  "explainabilitySummary": {
+    "uniqueRuleCodes": ["RULE_002_INVALID_COORDINATES"],
+    "ruleCodeCounts": { "RULE_002_INVALID_COORDINATES": 2 },
+    "reviewRequiredCount": 2,
+    "featuresWithRemediation": 2
+  }
 }
 ```
 
-The feature with the missing build is excluded with `excluded_coordinate_ambiguity`. The remaining valid feature is still accepted for PoD.
+Both features are excluded because coordinate interpretation is a
+dataset-level invariant. The handoff is therefore not ready for PoD.
 
 ---
 
@@ -677,7 +740,7 @@ The feature with the missing build is excluded with `excluded_coordinate_ambigui
     "acceptedCount": 2,
     "excludedCount": 0,
     "exploratoryCount": 0,
-    "caveatCount": 0
+    "caveatCount": 2
   },
   "qcReportRef": "qc-report-001",
   "warnings": [],
@@ -720,16 +783,20 @@ npx epimcp export-pod examples/bioactivity_pod_handoff/packet.json --json
   "qualifiedFeatures": [
     {
       "featureId": "cg00000001",
-      "status": "accepted_for_pod",
-      "warnings": [],
+      "status": "accepted_with_caveats",
+      "warnings": [
+        { "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS" }
+      ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown"
     },
     {
       "featureId": "cg00000002",
-      "status": "accepted_for_pod",
-      "warnings": [],
+      "status": "accepted_with_caveats",
+      "warnings": [
+        { "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS" }
+      ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown"

@@ -1,9 +1,7 @@
 name: MCP Conformance
 
-# Advisory Track-A conformance gates. These jobs add a visible CI signal,
-# enforced by merge discipline (this repo is on the GitHub Free plan, so the
-# checks are not configured as required status checks and do not hard-block
-# merges by themselves).
+# Blocking Track-A conformance gates. The public repository ruleset marks this
+# workflow's matrix checks as required for main.
 #
 # Gates exercised here:
 #   - mcp-conformance baseline + manifest-drift

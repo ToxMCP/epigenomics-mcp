@@ -10,7 +10,14 @@ import { profileQc } from "../../src/qc/profiler.js";
 import { profileMissingness } from "../../src/qc/missingness.js";
 import { qualifyFeatures } from "../../src/qualification/engine.js";
 import { buildHandoffPacket } from "../../src/handoff/builder.js";
-import { BioactivityPoDHandoffPacketSchema } from "../../src/contracts/packets.js";
+import {
+  BioactivityPoDHandoffPacketSchema,
+  EpigenomicsFeatureResponsePacketSchema,
+} from "../../src/contracts/packets.js";
+import {
+  buildBenchmarkPacket,
+  loadBenchmarkQualificationContext,
+} from "../../src/benchmarks/runner.js";
 
 const EXPECTED_BASE = join(process.cwd(), "benchmarks", "expected");
 
@@ -21,51 +28,6 @@ const DETERMINISTIC_TIMESTAMP = "2026-05-05T00:00:00Z";
 function loadExpected(fixtureName: string, filename: string): unknown {
   const path = join(EXPECTED_BASE, fixtureName, filename);
   return JSON.parse(readFileSync(path, "utf-8"));
-}
-
-function buildPacket(
-  fixtureName: string,
-  featureTable: unknown[] | null,
-  design: unknown | null,
-  metadata: unknown | null,
-) {
-  const meta = metadata as Record<string, unknown> | null;
-  const datasetId =
-    (meta?.datasetId as string) ?? `${fixtureName}-ds-001`;
-  const provenance =
-    (meta?.provenance as Record<string, unknown>) ?? {
-      datasetId,
-      upstreamSteps: [
-        {
-          stepName: "normalisation",
-          toolName: "minfi",
-          toolVersion: "1.44.0",
-          parameters: {},
-        },
-      ],
-    };
-
-  const features = featureTable ?? [];
-
-  return {
-    schemaVersion: "0.1.0" as const,
-    schemaName: "EpigenomicsFeatureResponsePacket" as const,
-    packetId: DETERMINISTIC_PACKET_ID,
-    datasetMetadataRef: datasetId,
-    designRef: (design as Record<string, unknown> | null)?.designId ?? `${fixtureName}-design-001`,
-    features,
-    design,
-    provenance,
-    qualificationSummary: {
-      acceptedCount: features.length,
-      excludedCount: 0,
-      exploratoryCount: 0,
-      caveatCount: 0,
-    },
-    qcReportRef: "qc-report-001",
-    warnings: [],
-    generatedAt: DETERMINISTIC_TIMESTAMP,
-  };
 }
 
 describe("golden expected outputs", () => {
@@ -102,7 +64,20 @@ describe("golden expected outputs", () => {
       const featureTable = fixture.featureTable ?? [];
       const design = fixture.design;
       const metadata = fixture.metadata;
-      const packet = buildPacket(fixtureName, featureTable, design, metadata);
+      const fixturePath = join(
+        process.cwd(),
+        "benchmarks",
+        "fixtures",
+        "synthetic",
+        fixtureName,
+      );
+      const packet = buildBenchmarkPacket(fixturePath, fixtureName, {
+        deterministicPacketId: DETERMINISTIC_PACKET_ID,
+        deterministicHandoffId: DETERMINISTIC_HANDOFF_ID,
+        deterministicTimestamp: DETERMINISTIC_TIMESTAMP,
+      });
+      const qualificationContext =
+        loadBenchmarkQualificationContext(fixturePath);
 
       it("matches golden design_validation.json", () => {
         const actual = validateDesign(design);
@@ -137,7 +112,7 @@ describe("golden expected outputs", () => {
       });
 
       it("matches golden qualification_result.json", () => {
-        const actual = qualifyFeatures(packet);
+        const actual = qualifyFeatures(packet, qualificationContext);
         const expected = loadExpected(fixtureName, "qualification_result.json");
         expect(actual).toEqual(expected);
       });
@@ -146,6 +121,7 @@ describe("golden expected outputs", () => {
         const actual = buildHandoffPacket(packet, {
           handoffId: DETERMINISTIC_HANDOFF_ID,
           generatedAt: DETERMINISTIC_TIMESTAMP,
+          qualificationContext,
         });
         const expected = loadExpected(fixtureName, "handoff_result.json");
         expect(actual).toEqual(expected);
@@ -154,6 +130,55 @@ describe("golden expected outputs", () => {
       it("matches golden packet.json", () => {
         const expected = loadExpected(fixtureName, "packet.json");
         expect(packet).toEqual(expected);
+      });
+
+      it("matches the human-readable expected policy declaration", () => {
+        const qualification = qualifyFeatures(packet, qualificationContext);
+        const handoff = buildHandoffPacket(packet, {
+          handoffId: DETERMINISTIC_HANDOFF_ID,
+          generatedAt: DETERMINISTIC_TIMESTAMP,
+          qualificationContext,
+        });
+        const allWarnings = [
+          ...qualification.warnings,
+          ...(qualification.qualifications ?? []).flatMap(
+            (item) => item.warnings,
+          ),
+        ];
+        const actualWarningCodes = new Set(
+          allWarnings.map((warning) => warning.warningCode),
+        );
+
+        expect(
+          EpigenomicsFeatureResponsePacketSchema.safeParse(packet).success,
+        ).toBe(fixture.expectedPolicy.expectedSchemaValid);
+        if (fixture.expectedPolicy.expectedQualificationStatus) {
+          if (
+            fixture.expectedPolicy.expectedQualificationStatus ===
+            "packet_schema_invalid"
+          ) {
+            expect(qualification.warnings[0]?.warningCode).toBe(
+              "EPI001_PACKET_SCHEMA_INVALID",
+            );
+          } else {
+            expect(
+              qualification.qualifications?.some(
+                (item) =>
+                  item.status ===
+                  fixture.expectedPolicy.expectedQualificationStatus,
+              ),
+            ).toBe(true);
+          }
+        }
+        for (const warningCode of fixture.expectedPolicy.expectedWarnings ?? []) {
+          expect(actualWarningCodes.has(warningCode)).toBe(true);
+        }
+        expect(
+          allWarnings.some((warning) => warning.blocksDownstream),
+        ).toBe(fixture.expectedPolicy.expectedBlocksDownstream);
+        expect(handoff.readyForPod).toBe(
+          fixture.expectedPolicy.expectedHandoffReady,
+        );
       });
     });
   }

@@ -1,6 +1,10 @@
 import { z } from "zod";
-import type { EpigenomicFeature } from "../contracts/features.js";
 import type { ExperimentalDesign } from "../contracts/design.js";
+
+export interface MissingnessFeature {
+  featureId: string;
+  values: Record<string, number | null>;
+}
 
 /**
  * Missingness threshold band assigned to a metric or summary.
@@ -110,8 +114,8 @@ export const MissingnessProfileSchema = z
 
 export type MissingnessProfile = z.infer<typeof MissingnessProfileSchema>;
 
-function isMissing(value: number | null): boolean {
-  return value === null || Number.isNaN(value);
+function isMissing(value: number | null | undefined): boolean {
+  return value === null || value === undefined || Number.isNaN(value);
 }
 
 function assignBand(
@@ -152,7 +156,7 @@ function computeSummaryBand(
  */
 export function profileMissingness(
   datasetId: string,
-  features: EpigenomicFeature[],
+  features: MissingnessFeature[],
   design: ExperimentalDesign,
   policy: MissingnessPolicy = DEFAULT_MISSINGNESS_POLICY,
 ): MissingnessProfile {

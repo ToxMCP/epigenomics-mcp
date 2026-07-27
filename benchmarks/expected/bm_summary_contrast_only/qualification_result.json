@@ -1,11 +1,11 @@
 {
-  "qualifiedCount": 2,
-  "excludedCount": 0,
+  "qualifiedCount": 0,
+  "excludedCount": 2,
   "warnings": [],
   "qualifications": [
     {
       "featureId": "dmr_summary_001",
-      "status": "accepted_with_caveats",
+      "status": "excluded_qc_failure",
       "warnings": [
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
@@ -26,23 +26,34 @@
           "featureIds": [
             "dmr_summary_001"
           ]
+        },
+        {
+          "warningCode": "EPIE002_EXCESSIVE_MISSINGNESS",
+          "severity": "error",
+          "message": "Feature dmr_summary_001 has 100.0% missing values (threshold 20.0%)",
+          "category": "platform_specific",
+          "blocksDownstream": true,
+          "featureIds": [
+            "dmr_summary_001"
+          ]
         }
       ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown",
       "explainability": {
-        "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature dmr_summary_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
-        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
-        "reviewRequired": false,
-        "policyReference": "warning_accumulation",
-        "observedValue": "2"
+        "ruleCode": "RULE_005_HIGH_MISSINGNESS",
+        "reasonTemplate": "Feature dmr_summary_001 has 100.0% missing values, exceeding the policy exclusion threshold of 20.0%. High missingness reduces reliability for dose-response modelling.",
+        "remediationHint": "Investigate sample-level missingness; consider imputation or exclusion of low-quality samples.",
+        "reviewRequired": true,
+        "policyReference": "missingness.exclusionThreshold",
+        "thresholdValue": "20.0%",
+        "observedValue": "100.0%"
       }
     },
     {
       "featureId": "dmr_summary_002",
-      "status": "accepted_with_caveats",
+      "status": "excluded_qc_failure",
       "warnings": [
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
@@ -63,18 +74,29 @@
           "featureIds": [
             "dmr_summary_002"
           ]
+        },
+        {
+          "warningCode": "EPIE002_EXCESSIVE_MISSINGNESS",
+          "severity": "error",
+          "message": "Feature dmr_summary_002 has 100.0% missing values (threshold 20.0%)",
+          "category": "platform_specific",
+          "blocksDownstream": true,
+          "featureIds": [
+            "dmr_summary_002"
+          ]
         }
       ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown",
       "explainability": {
-        "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature dmr_summary_002 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
-        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
-        "reviewRequired": false,
-        "policyReference": "warning_accumulation",
-        "observedValue": "2"
+        "ruleCode": "RULE_005_HIGH_MISSINGNESS",
+        "reasonTemplate": "Feature dmr_summary_002 has 100.0% missing values, exceeding the policy exclusion threshold of 20.0%. High missingness reduces reliability for dose-response modelling.",
+        "remediationHint": "Investigate sample-level missingness; consider imputation or exclusion of low-quality samples.",
+        "reviewRequired": true,
+        "policyReference": "missingness.exclusionThreshold",
+        "thresholdValue": "20.0%",
+        "observedValue": "100.0%"
       }
     }
   ],
@@ -85,12 +107,12 @@
   },
   "explainabilitySummary": {
     "uniqueRuleCodes": [
-      "RULE_009_MAJOR_WARNINGS"
+      "RULE_005_HIGH_MISSINGNESS"
     ],
     "ruleCodeCounts": {
-      "RULE_009_MAJOR_WARNINGS": 2
+      "RULE_005_HIGH_MISSINGNESS": 2
     },
-    "reviewRequiredCount": 0,
+    "reviewRequiredCount": 2,
     "featuresWithRemediation": 2
   }
 }

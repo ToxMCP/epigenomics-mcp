@@ -36,41 +36,8 @@ jobs:
           docker run --rm --entrypoint node epigenomics-mcp:smoke \
             -e "import('./dist/epimcp/index.js').then(m => console.log('VERSION:', m.VERSION))"
 
-      - name: Smoke test — Python import
-        run: |
-          docker run --rm --entrypoint python epigenomics-mcp:smoke \
-            -c "import epigenomics_mcp; print('Python version:', epigenomics_mcp.__version__)"
+      - name: Smoke test — stdio protocol lifecycle
+        run: docker run --rm --entrypoint node epigenomics-mcp:smoke scripts/smoke_mcp_stdio.mjs
 
-      - name: Smoke test — stdio server startup
-        run: |
-          set +e
-          RESPONSE_FILE=$(mktemp)
-
-          # Run the stdio server in a container, send an initialize request,
-          # and capture the first JSON-RPC response.
-          (
-            sleep 1
-            echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"smoke","version":"0.1.0"}}}'
-            sleep 2
-          ) | timeout 10 docker run --rm -i epigenomics-mcp:smoke serve > "$RESPONSE_FILE" 2>/tmp/stdio-stderr.log
-
-          set -e
-          echo "--- Server stdout ---"
-          cat "$RESPONSE_FILE"
-          echo "---"
-          echo "--- Server stderr ---"
-          cat /tmp/stdio-stderr.log || true
-          echo "---"
-
-          # The response file must not be empty.
-          test -s "$RESPONSE_FILE"
-
-          FIRST_LINE=$(head -n 1 "$RESPONSE_FILE")
-          echo "First response line: $FIRST_LINE"
-
-          # Verify it is a JSON-RPC response containing a result object.
-          echo "$FIRST_LINE" | grep -q '"jsonrpc"'
-          echo "$FIRST_LINE" | grep -q '"result"'
-
-          rm -f "$RESPONSE_FILE" /tmp/stdio-stderr.log
-          echo "Stdio server startup smoke passed."
+      - name: Smoke test — Streamable HTTP protocol lifecycle
+        run: docker run --rm --entrypoint node epigenomics-mcp:smoke scripts/smoke_mcp_http.mjs

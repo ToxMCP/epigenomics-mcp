@@ -1,21 +1,23 @@
-# Epigenomics MCP v0.1 — Validation Statement
+# Epigenomics MCP v0.2 — Validation Statement
 
 **Document status:** Regulator-facing benchmark coverage statement  
-**Product version:** 0.1.0  
-**Date:** 2026-05-07  
-**Scope:** Benchmark manifest, synthetic fixture coverage, deterministic behaviour guarantees, release evidence, explicit limitations
+**Product version:** 0.2.0
+**Schema and policy version:** 0.1.0
+**Date:** 2026-07-27
+**Scope:** Golden benchmarks, frozen-public fixture integrity, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations
 
 ---
 
 ## 1. What this statement covers
 
-This document explains the benchmark suite that gates the v0.1 release of Epigenomics MCP. It describes:
+This document explains the validation suite that gates the v0.2 release of Epigenomics MCP. It describes:
 
-- The **fixture scope** — what synthetic datasets are used and why
+- The **fixture scope** — what synthetic and frozen-public inputs are used and why
+- The **performance scope** — what real implementation path and workload are gated
 - **Deterministic behaviours** that are tested and guaranteed
 - **Explicit limitations** — what the benchmarks do not prove
 - **Release evidence** — which generated artifacts carry audit checksums
-- **Non-goals** — product boundaries that remain outside v0.1 validation
+- **Non-goals** — product boundaries that remain outside v0.2 validation
 - **Traceability** from each benchmark case to the Product Requirements Document (PRD)
 
 This statement is intended for regulator-facing reviewers, downstream Bioactivity-PoD MCP consumers, and audit teams who need to understand what "benchmark pass" means in terms of evidence quality and safety.
@@ -24,7 +26,7 @@ This statement is intended for regulator-facing reviewers, downstream Bioactivit
 
 ## 2. Benchmark manifest overview
 
-The v0.1 release is gated by **12 release benchmarks** declared in `benchmark_manifest.yaml`:
+The v0.2 release retains **12 golden release benchmarks** declared in `benchmark_manifest.yaml`:
 
 | # | Benchmark name | Type | PRD linkage |
 |---|----------------|------|-------------|
@@ -67,22 +69,41 @@ under `release-evidence/`. `npm run verify:evidence` verifies the committed
 bundle against the current source lineage, checksum file, MCP audit resources,
 and npm package dry-run coverage.
 
+The same gate also runs `benchmarks/qualification_engine_benchmark.mjs`
+against the actual compiled qualification engine with 10,000 features and six
+samples (60,000 response values). It checks expected accepted/excluded counts,
+a 20-second wall-clock budget, and a 512 MiB RSS-increase budget. These broad
+budgets catch regressions and accidental algorithmic blow-ups; they are not
+capacity-planning guarantees.
+
+A separate checksummed public-data excerpt under
+`benchmarks/fixtures/frozen_public/gse67005/` exercises file paging, design
+reading, and canonicalized ingestion against deposited GEO values. Its YAML
+record and local files are checksum-validated in unit tests. The public excerpt
+does not participate in golden biological outcome assertions.
+
 ---
 
 ## 3. Fixture scope and scientific intent
 
 ### 3.1 Happy path — `bm_beta_manifest_complete`
 
-**Fixture contents:** Three CpG methylation features from an Illumina EPIC array, complete beta-value matrix, valid GRCh38 coordinates, 2 biological replicates per dose group (3 dose groups: 0, 1, 10 µM), declared cell-composition context, concurrent cytotoxicity data, low missingness.
+**Fixture contents:** Three CpG methylation features from an Illumina EPIC
+array, complete beta-value matrix, valid GRCh38 coordinates, 3 biological
+replicates per dose group (3 dose groups: 0, 1, 10 µM), declared
+cell-composition context, concurrent cytotoxicity data, and low missingness.
 
 **What it tests:**
 - Schema validation accepts well-formed features and design.
 - QC profiler computes deterministic summary statistics (mean, variance, range).
 - Missingness profiler reports zero exclusion-band features.
-- Qualification engine assigns `accepted_for_pod` to all features.
+- Qualification engine assigns `accepted_with_caveats` because three dose
+  groups are below the policy preference of four.
 - Handoff builder marks the packet `readyForPod = true`.
 
-**Expected outcome:** `schemaValid = true`, `qualificationStatus = accepted_for_pod`, `handoffReady = true`, no warnings.
+**Expected outcome:** `schemaValid = true`,
+`qualificationStatus = accepted_with_caveats`,
+`EPIW005_BELOW_PREFERRED_DOSE_GROUPS`, `handoffReady = true`.
 
 ### 3.2 Coordinate semantics — `bm_build_missing` and `bm_invalid_coordinate_format`
 
@@ -90,8 +111,8 @@ These two benchmarks test the **fail-closed coordinate validator** (PRD §2.2).
 
 | Benchmark | Defect | Expected outcome |
 |-----------|--------|-----------------|
-| `bm_build_missing` | One feature omits `measuredRegion.build` | `excluded_coordinate_ambiguity`, warning `EPIW001_COORDINATE_SYSTEM_NONSTANDARD` |
-| `bm_invalid_coordinate_format` | `end <= start` and malformed chromosome | `excluded_coordinate_ambiguity`, schema invalid |
+| `bm_build_missing` | One feature omits `measuredRegion.build` | packet schema invalid, `EPI001_PACKET_SCHEMA_INVALID`, no handoff |
+| `bm_invalid_coordinate_format` | `end <= start` and malformed chromosome | packet schema invalid, `EPI001_PACKET_SCHEMA_INVALID`, no handoff |
 
 **Scientific rationale:** Genomic coordinates are meaningless without an explicit genome build. The engine rejects ambiguous or malformed coordinates rather than silently defaulting to a build.
 
@@ -101,15 +122,19 @@ These two benchmarks test the **fail-closed coordinate validator** (PRD §2.2).
 
 **What it tests:** The default qualification policy requires `minBiologicalReplicatesPerGroup = 2`. Although the design schema permits `minReplicatesPerGroup = 1`, the policy engine excludes the dataset because it falls below the biological-replicate threshold.
 
-**Expected outcome:** `excluded_insufficient_design`, `handoffReady = false`.
+**Expected outcome:** `excluded_qc_failure`,
+`EPI006_INSUFFICIENT_REPLICATES`, `handoffReady = false`.
 
 ### 3.4 QC missingness — `bm_high_missingness`
 
-**Fixture contents:** One feature with 75 % missing values (3 of 4 samples null).
+**Fixture contents:** One feature with 75 % missing values (3 of 4 samples
+null) plus one complete feature.
 
 **What it tests:** The default policy has `missingness.exclusionThreshold = 0.2`. Any feature exceeding 20 % missingness is excluded.
 
-**Expected outcome:** `excluded_qc_failure`, warning `EPIE002_EXCESSIVE_MISSINGNESS`, `handoffReady = false`.
+**Expected outcome:** The incomplete feature is `excluded_qc_failure` with
+`EPIE002_EXCESSIVE_MISSINGNESS`; the complete feature remains usable, so
+`handoffReady = true`.
 
 ### 3.5 Confounding context — `bm_missing_cell_context`, `bm_missing_cytotoxicity_context`, `bm_dominant_cytotoxicity`
 
@@ -117,27 +142,39 @@ These three benchmarks cover the **confounding-context model** (PRD §2.4).
 
 | Benchmark | Condition | Policy default | Expected outcome |
 |-----------|-----------|---------------|------------------|
-| `bm_missing_cell_context` | No cell-composition declared | `blockOnMissingContext = false` | `accepted_for_pod`, warning `CC_NOT_DECLARED`, `handoffReady = true` |
-| `bm_missing_cytotoxicity_context` | No cytotoxicity data | `blockOnMissingContext = false` | `accepted_for_pod`, warning `CTX_MISSING_CONTEXT`, `handoffReady = true` |
-| `bm_dominant_cytotoxicity` | Viability < 0.8 + stress flags | `cytotoxicityBlockLevel = dominant_confounding` | `accepted_for_pod`, warnings `CTX_CYTOTOXICITY_DETECTED` + `CTX_STRESS_FLAG`, `handoffReady = true` |
+| `bm_missing_cell_context` | No cell-composition declared | `blockOnMissingContext = false` | `accepted_with_caveats`, `EPIW001_CELL_COMPOSITION_CONTEXT_MISSING`, `handoffReady = true` |
+| `bm_missing_cytotoxicity_context` | No cytotoxicity data | `blockOnMissingContext = false` | `accepted_with_caveats`, `CTX_MISSING_CONTEXT`, `handoffReady = true` |
+| `bm_dominant_cytotoxicity` | Severe viability loss plus a stress flag | `cytotoxicityBlockLevel = dominant_confounding` | `exploratory_only`, `RULE_007_DOMINANT_CONFOUNDING`, `handoffReady = false` |
 
-**Limitation note:** The v0.1 engine detects and warns on dominant cytotoxicity but does **not** yet block handoff for it (see §7.2). This is a deliberate v0.1 limitation; blocking logic is reserved for v0.2 unless promoted behind a feature flag.
+The same profile objects emitted by `ingest_cell_composition` and
+`ingest_cytotoxicity` can be supplied to `qualify_features` and
+`generate_handoff`; qualification classifies them before applying the
+confounding thresholds.
 
 ### 3.6 Mapping causality guard — `bm_dmr_nearest_gene_only`
 
 **Fixture contents:** DMR features mapped by nearest-gene only, no direct promoter overlap.
 
-**What it tests:** The qualification engine warns that `nearest_gene` does not imply causality (`EPIW003_PROXIMITY_NOT_CAUSALITY`). Because `blockNearestGenePathwayByDefault = true`, the handoff is blocked even though features are `accepted_with_caveats`.
+**What it tests:** The packet carries separated
+`mappingPayloads.regionToGeneMappings`; qualification preserves the gene IDs
+and low confidence, and warns that `nearest_gene` does not imply causality
+(`EPIW007_NEAREST_GENE_ONLY`). The mapping payload blocks automatic pathway
+roll-up, while the feature handoff remains usable with caveats.
 
-**Expected outcome:** `accepted_with_caveats`, `handoffReady = false`.
+**Expected outcome:** `accepted_with_caveats`, `handoffReady = true`,
+`mappingMethod = nearest_gene`, `mappingConfidence = low`.
 
 ### 3.7 Contrast-only data — `bm_summary_contrast_only`
 
 **Fixture contents:** Feature values are summary contrasts (e.g., log2 fold-change) rather than per-sample measurements.
 
-**What it tests:** Schema validation passes because values are non-null numbers, but the qualification engine classifies the data as `exploratory_only` because it is not dose-response ready.
+**What it tests:** Schema validation passes because the contrast values are
+numeric, but their keys do not match any design sample IDs. Missingness is
+therefore 100% over the declared samples and the fail-closed QC rule excludes
+both features.
 
-**Expected outcome:** `exploratory_only`, `handoffReady = false`.
+**Expected outcome:** `excluded_qc_failure`,
+`RULE_005_HIGH_MISSINGNESS`, `handoffReady = false`.
 
 ### 3.8 Handoff schema — `bm_handoff_schema_valid` and `bm_handoff_schema_invalid`
 
@@ -216,11 +253,16 @@ Key coverage areas:
 | Qualification | `qualification_rules.test.ts`, `qualification_policy.test.ts`, `qualification.test.ts`, `claim_guards.test.ts` | Rule priority, policy validation, claim stripping, status assignment |
 | Handoff | `handoff.test.ts`, `handoff_validator.test.ts` | Packet construction, schema validation, subset correctness |
 | Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature table construction |
-| Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, fixture completeness |
+| Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, synthetic-fixture completeness, frozen-public checksums |
 | Release evidence | `release_evidence.test.ts`, `release_gate.test.ts`, `benchmark_cli.test.ts` | Audit manifest schema, checksums, output isolation |
-| Smoke | `server-smoke.test.ts`, `cli-help.test.ts`, `makefile-commands.test.ts` | CLI availability, MCP server start-up, resource exposure, build commands |
+| MCP and transport | `tool_registry.test.ts`, `transport_equivalence.test.ts`, protocol smoke scripts | Tool schema quality, service/MCP/CLI equivalence, stdio and Streamable HTTP initialization |
+| HTTP security | `http.test.ts`, `smoke_mcp_http.mjs` | Loopback defaults, Host/Origin checks, bearer auth, body limit, request rate |
+| Performance | `qualification_engine_benchmark.mjs` | Real schema validation, missingness, qualification, and explainability at 10,000 features |
+| Evaluation | `evaluation.xml`, `validate-evaluation.mjs` | Ten stable, read-only, multi-tool user workflows |
 
-All tests run under **Vitest** with deterministic ordering and no external network dependencies during the benchmark path.
+Tests run under **Vitest** with deterministic ordering and no external network
+dependency during CI. The checked-in public excerpt is frozen; CI never fetches
+the upstream GEO file.
 
 ---
 
@@ -239,8 +281,9 @@ All tests run under **Vitest** with deterministic ordering and no external netwo
 Release evidence is generated from a clean source tree. The intended release
 sequence is: commit code/docs/config changes, run `npm run release:evidence`,
 then commit the refreshed `release-evidence/` bundle. The npm package includes
-the schemas, validation docs, benchmark manifest, golden benchmark outputs, and
-release-evidence files backing the registered MCP audit resources.
+the schemas, validation docs, benchmark manifest, synthetic and frozen-public
+inputs, golden benchmark outputs, evaluation set, and release-evidence files
+backing the registered MCP audit resources.
 
 When the working directory has no Git metadata, the evidence manifest records
 `git.available = false` instead of failing. This preserves reproducibility in
@@ -250,43 +293,51 @@ exported source directories and local validation bundles.
 
 ## 7. Explicit limitations
 
-### 7.1 What v0.1 benchmarks do not cover
+### 7.1 What v0.2 validation does not cover
 
 | Limitation | Explanation |
 |------------|-------------|
-| **Real biological datasets** | All benchmarks use synthetic fixtures. No validation against public GEO, ArrayExpress, or EGA data is performed in the v0.1 gate. |
+| **Biological ground truth** | A checksummed 10-probe excerpt from GEO GSE67005 exercises ingestion realism, but no biological truth label, differential-methylation conclusion, or predictive accuracy is asserted. Golden outcome benchmarks remain synthetic. |
 | **Statistical modelling** | The benchmarks verify deterministic profiling and rule-based qualification, not statistical power, false-discovery rate, or effect-size significance. |
 | **Batch-effect correction** | Batch-effect modelling is behind the `enableBatchEffectModeling` feature flag (default `false`). No benchmark exercises it. |
-| **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Only declared-context flagging is tested. |
+| **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Declared/measured profile ingestion and deterministic confounding classification are tested instead. |
 | **Chromatin-state context** | ChromHMM / Segway integration is behind `enableChromatinStateContext` (default `false`). |
 | **miRNA / ncRNA expression** | Dedicated miRNA and ncRNA classifiers are behind feature flags (default `false`). Generic region tables are tested instead. |
 | **Liftover** | Silent genome-build liftover is disallowed by default (`silentLiftoverAllowed = false`). No liftover benchmark exists. |
 
-### 7.2 Behours that warn but do not yet block
+### 7.2 Behaviors that warn but do not block by default
 
-The v0.1 engine emits warnings for the following conditions but, under the default policy, may still produce a handoff:
+The v0.2 engine emits warnings for the following conditions but, under the default policy, may still produce a handoff:
 
-- **Dominant cytotoxicity** — `CTX_CYTOTOXICITY_DETECTED` and `CTX_STRESS_FLAG` are emitted. The default `cytotoxicityBlockLevel = dominant_confounding`, but the current engine warns rather than blocks (see fixture `bm_dominant_cytotoxicity`).
-- **Missing confounding context** — `CC_NOT_DECLARED` and `CTX_MISSING_CONTEXT` are emitted, but because `blockOnMissingContext = false`, handoff proceeds.
+- **Missing confounding context** —
+  `EPIW001_CELL_COMPOSITION_CONTEXT_MISSING` or `CTX_MISSING_CONTEXT` is
+  emitted, but because `blockOnMissingContext = false`, handoff can proceed
+  when features otherwise qualify.
+- **Below-preferred design depth** — three dose groups or two biological
+  replicates can meet minimum thresholds while producing
+  `EPIW005_BELOW_PREFERRED_DOSE_GROUPS` or
+  `EPIW006_BELOW_PREFERRED_REPLICATES`.
 
-These are **deliberate v0.1 limitations** documented in the fixture `expected_policy.json` files. A regulator may tighten the policy (e.g., set `blockOnMissingContext = true`) and re-run qualification; the engine will then block accordingly.
+Dominant cytotoxicity is not in this category: at the default
+`cytotoxicityBlockLevel = dominant_confounding`, it downgrades features to
+`exploratory_only` and prevents a ready handoff.
 
 ### 7.3 What benchmark success does not prove
 
 **Benchmark pass does NOT prove:**
 
-1. **Biological correctness** — The synthetic fixtures contain plausible but invented data. Benchmarks verify algorithmic correctness, not biological ground truth.
-2. **Regulatory acceptance** — Passing benchmarks demonstrates conformance to the v0.1 specification, not endorsement by any regulatory authority.
+1. **Biological correctness** — The golden fixtures contain plausible but invented data, while the public excerpt has no ground-truth outcome label. Validation proves contract and algorithm behavior, not biological truth.
+2. **Regulatory acceptance** — Passing benchmarks demonstrates conformance to the v0.2 product boundary and v0.1 schema/policy contracts, not endorsement by any regulatory authority.
 3. **Downstream model validity** — The benchmarks verify that handoff packets are schema-valid and contain the correct feature subsets. They do not verify that Bioactivity-PoD MCP will produce accurate PoD / BMD estimates.
-4. **Production robustness at scale** — Benchmark fixtures are small (≤ 10 features). Performance, memory, or concurrency at genome-scale is not gated by v0.1 benchmarks.
-5. **Security or access control** — Authentication, authorisation, and audit-logging are outside the v0.1 benchmark scope.
-6. **External service availability** — Annotation / Ontology MCP integration is mocked or omitted in the benchmark path.
+4. **Genome-scale capacity** — A 10,000-feature real-engine gate detects gross regressions, but whole-methylome workloads, sustained concurrency, and infrastructure capacity are not certified.
+5. **Complete security assurance** — Production dependency auditing and HTTP controls are tested, but no independent penetration test, identity-provider integration, or centralized audit-log certification has been performed.
+6. **External service availability** — Annotation/Ontology and Evidence Registry transports are planned and are not part of the active tool workflow.
 
 ---
 
 ## 8. Non-goals reaffirmed
 
-Epigenomics MCP v0.1 explicitly does **not** benchmark, test, or guarantee:
+Epigenomics MCP v0.2 explicitly does **not** benchmark, test, or guarantee:
 
 - Raw FASTQ / IDAT preprocessing
 - Bisulphite alignment or methylation calling from raw reads
@@ -298,11 +349,11 @@ Epigenomics MCP v0.1 explicitly does **not** benchmark, test, or guarantee:
 - Regulatory conclusion generation
 - Persistence, heritability, or transgenerational-effect claims without multi-timepoint / multigenerational design evidence
 
-See `docs/non_goals.md` for the complete non-goals list.
+See [`docs/non-goals.md`](non-goals.md) for the complete non-goals list.
 
 ---
 
-## 8. Traceability matrix
+## 9. Traceability matrix
 
 | PRD requirement | Benchmark(s) | Unit-test support |
 |-----------------|--------------|-------------------|
@@ -319,7 +370,7 @@ See `docs/non_goals.md` for the complete non-goals list.
 
 ---
 
-## 9. How to reproduce
+## 10. How to reproduce
 
 ```bash
 # Run all unit and integration tests
@@ -329,33 +380,46 @@ npm test
 npm run test:contract
 
 # Run benchmark golden-output comparison
-npm test -- --run tests/unit/benchmark_runner.test.ts
+npm run benchmark:ci
 
 # Validate all synthetic fixture files are present
 npm test -- --run tests/unit/synthetic_fixtures.test.ts
+
+# Validate the frozen-public fixture, MCP evaluation set, and transports
+npx vitest run tests/unit/public_fixtures.test.ts
+npm run eval:validate
+npm run smoke:mcp
 ```
 
 All benchmark golden outputs are stored in `benchmarks/expected/<benchmark_name>/`. The benchmark runner (`src/benchmarks/runner.ts`) performs deep equality comparison and emits actionable diffs on drift.
 
 ---
 
-## 10. Sign-off summary
+## 11. Sign-off summary
 
-| Property | v0.1 state |
+| Property | v0.2 state |
 |----------|-----------|
 | Benchmark count | 12 (10 feature + 2 handoff) |
 | Synthetic fixtures | 12 |
+| Frozen-public inputs | 1 checksummed 10-probe GSE67005 excerpt |
 | Golden output files | 68 |
-| Unit / integration tests | ~1,280 |
+| MCP evaluation questions | 10 independent read-only workflows |
+| Real-engine performance gate | 10,000 features × 6 samples |
 | Deterministic output guarantee | Yes (normalised timestamps, UUIDs, seeds) |
 | Fail-closed on schema invalidity | Yes |
 | Fail-closed on ambiguous coordinates | Yes |
 | Fail-closed on insufficient design | Yes |
-| Coverage of real biological datasets | No |
+| Coverage of real biological data ingestion | Limited frozen excerpt; no ground truth |
 | Coverage of statistical power / FDR | No |
-| Coverage of production-scale performance | No |
+| Coverage of production-scale performance | Regression gate only; no capacity certification |
 
-**Conclusion:** The v0.1 benchmark suite demonstrates that Epigenomics MCP correctly ingests processed epigenomic feature tables, validates design integrity and coordinate semantics, classifies features, computes deterministic QC profiles, flags confounding context, applies fail-closed qualification rules, and emits schema-valid handoff packets under controlled synthetic conditions. It does **not** demonstrate biological ground-truth accuracy, regulatory acceptance, or production-scale robustness.
+**Conclusion:** The v0.2 validation suite demonstrates that Epigenomics MCP
+ingests bounded processed tables, validates design and coordinate semantics,
+computes deterministic QC, applies fail-closed qualification, emits
+schema-valid handoffs, operates over stdio and guarded Streamable HTTP, and
+processes a 10,000-feature workload within broad regression budgets. It does
+**not** demonstrate biological ground-truth accuracy, regulatory acceptance,
+or genome-scale capacity.
 
 ---
 

@@ -463,18 +463,18 @@ describe("AnnotationClient response schema validation", () => {
 // Legacy placeholder compatibility
 // ---------------------------------------------------------------------------
 
-describe("Legacy requestAnnotation placeholder", () => {
-  it("returns a safe empty trace", async () => {
+describe("Legacy requestAnnotation boundary", () => {
+  it("fails closed instead of fabricating an empty annotation trace", async () => {
     const { requestAnnotation } = await import("../../src/integrations/annotation_client.js");
-    const trace = await requestAnnotation({
-      featureId: "feat-001",
-      identifiers: ["TP53"],
-      species: "Homo sapiens",
-      build: "hg38",
+    await expect(
+      requestAnnotation({
+        featureId: "feat-001",
+        identifiers: ["TP53"],
+        species: "Homo sapiens",
+        build: "hg38",
+      }),
+    ).rejects.toMatchObject({
+      code: "LEGACY_API_UNSUPPORTED",
     });
-    expect(trace.resolvedGeneIds).toEqual([]);
-    expect(trace.confidence).toBe("none");
-    expect(trace.method).toBe("placeholder");
-    expect(trace.requestId).toMatch(/^[0-9a-f-]{36}$/);
   });
 });

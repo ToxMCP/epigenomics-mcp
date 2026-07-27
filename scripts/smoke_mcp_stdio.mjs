@@ -1,52 +1,69 @@
 #!/usr/bin/env node
-/**
- * Quick stdio smoke test for the Epigenomics MCP server.
- */
-import { spawn } from "node:child_process";
+
+import { strict as assert } from "node:assert";
 import { resolve } from "node:path";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 const serverPath = resolve(process.cwd(), "dist/epimcp/cli.js");
-let serverExe = "node";
-let args = [serverPath, "serve"];
-try {
-  await import("node:fs").then((fs) => fs.promises.access(serverPath));
-} catch {
-  serverExe = "npx";
-  args = ["tsx", resolve(process.cwd(), "src/epimcp/cli.ts"), "serve"];
-}
-
-const child = spawn(serverExe, args, {
+const transport = new StdioClientTransport({
+  command: "node",
+  args: [serverPath, "serve"],
   cwd: process.cwd(),
-  stdio: ["pipe", "pipe", "inherit"],
+  stderr: "pipe",
+});
+const client = new Client({ name: "epimcp-stdio-smoke", version: "0.1.0" });
+
+let stderr = "";
+transport.stderr?.setEncoding("utf8");
+transport.stderr?.on("data", (chunk) => {
+  stderr += chunk;
 });
 
-const initRequest = {
-  jsonrpc: "2.0",
-  id: 1,
-  method: "initialize",
-  params: {
-    protocolVersion: "2024-11-05",
-    capabilities: {},
-    clientInfo: { name: "smoke-client", version: "0.1.0" },
-  },
-};
+try {
+  await client.connect(transport);
 
-const healthRequest = {
-  jsonrpc: "2.0",
-  id: 2,
-  method: "tools/call",
-  params: {
-    name: "health",
-    arguments: {},
-  },
-};
+  const listed = await client.listTools();
+  assert.equal(listed.tools.length, 15);
+  const readTable = listed.tools.find((tool) => tool.name === "read_table");
+  assert.ok(readTable?.outputSchema);
+  assert.deepEqual(readTable.annotations, {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  });
 
-await new Promise((r) => setTimeout(r, 500));
-child.stdin.write(JSON.stringify(initRequest) + "\n");
-await new Promise((r) => setTimeout(r, 300));
-child.stdin.write(JSON.stringify(healthRequest) + "\n");
-await new Promise((r) => setTimeout(r, 300));
+  const health = await client.callTool({ name: "health", arguments: {} });
+  assert.notEqual(health.isError, true);
+  assert.equal(health.structuredContent?.status, "ok");
 
-child.kill("SIGTERM");
-await new Promise((r) => child.on("exit", r));
-console.log("Smoke test completed.");
+  const invalidQualification = await client.callTool({
+    name: "qualify_features",
+    arguments: { packet: { invalid: true } },
+  });
+  assert.notEqual(invalidQualification.isError, true);
+  assert.equal(invalidQualification.structuredContent?.qualifiedCount, 0);
+
+  const resources = await client.listResources();
+  assert.ok(
+    resources.resources.some(
+      (resource) => resource.uri === "epimcp://docs/tool-reference",
+    ),
+  );
+  const toolReference = await client.readResource({
+    uri: "epimcp://docs/tool-reference",
+  });
+  assert.match(toolReference.contents[0]?.text ?? "", /MCP payload envelope/);
+
+  console.log(
+    `stdio smoke passed: initialize, listTools, health, qualification, resources (${listed.tools.length} tools)`,
+  );
+} catch (error) {
+  if (stderr) {
+    process.stderr.write(stderr);
+  }
+  throw error;
+} finally {
+  await client.close().catch(() => undefined);
+}

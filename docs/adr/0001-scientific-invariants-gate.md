@@ -26,7 +26,7 @@ bioactivity-pod-mcp).
 
 ## Decision
 
-Add an **advisory** Track-B scientific-invariants gate:
+Add a **blocking** Track-B scientific-invariants gate:
 
 1. **Vendor** the schema-spine policy engine, digest-pinned at
    `gitSha e0a6a05` (the same pin all Track-B pilots used), under
@@ -92,12 +92,10 @@ Add an **advisory** Track-B scientific-invariants gate:
    fail-closed code alongside `ENGINE_UNAVAILABLE` /
    `UNRECOGNIZED_SPINE_SCHEMA_ID` / `VENDOR_DIGEST_MISMATCH` / `PROJECTION_INCOMPLETE`.
 
-6. **Advisory CI job** (`.github/workflows/scientific-invariants.yml`, Node 20+22 ×
+6. **Blocking CI job** (`.github/workflows/scientific-invariants.yml`, Node 20+22 ×
    Python 3.12): `vendor:verify` first, then the gate on the pristine corpus, then
-   the adversarial self-tests. Advisory because the ToxMCP org is on the GitHub
-   Free plan (branch-protection / rulesets 403 on private repos). Promote-to-blocking
-   path: mark the job a required status check once the repo moves to Team/Pro or
-   public — the gate already exits non-zero on any blocking code.
+   the adversarial self-tests. The public repository ruleset requires both matrix
+   checks on `main`; local and release-evidence generation also fail closed.
 
 ## Advertised == actual coverage (the dead-arm discipline)
 

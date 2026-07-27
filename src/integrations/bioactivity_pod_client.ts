@@ -3,7 +3,7 @@
  *
  * Responsibilities:
  * - Create BioactivityPoDHandoffPacket from qualified EpigenomicsFeatureResponsePackets
- * - Never call Bioactivity-PoD models directly in v0.1
+ * - Never call Bioactivity-PoD models directly in v0.2
  */
 
 import {
@@ -21,7 +21,7 @@ export interface HandoffSubmission {
 /**
  * Export a BioactivityPoDHandoffPacket from a validated feature-response packet.
  *
- * This is the primary v0.1 handoff entry point.  It runs the deterministic
+ * This is the primary v0.2 handoff entry point. It runs the deterministic
  * qualification engine, partitions features into qualified/excluded sets, and
  * constructs the dose-response-ready subset containing both
  * accepted_for_pod and accepted_with_caveats features.
@@ -36,18 +36,16 @@ export function exportHandoffPacket(
 }
 
 /**
- * Placeholder client for Bioactivity-PoD MCP.
+ * Reject direct Bioactivity-PoD submission until a real transport is configured.
  *
- * v0.1 does not invoke downstream Bioactivity-PoD models directly.
- * The handoff packet is returned to the caller for explicit submission.
+ * Returning a fabricated packet reference would falsely imply delivery. Callers
+ * must export the schema-validated handoff and submit it through an orchestrator.
  */
 export async function submitHandoff(
   _handoffId: string,
   _endpoint?: string,
 ): Promise<HandoffSubmission> {
-  return {
-    handoffId: _handoffId,
-    packetRef: "placeholder",
-    submittedAt: new Date().toISOString(),
-  };
+  throw new Error(
+    "Direct Bioactivity-PoD submission is not implemented; use exportHandoffPacket and submit the validated packet through an orchestrator.",
+  );
 }

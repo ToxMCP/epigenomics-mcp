@@ -10,10 +10,22 @@ import { registerAuditResources } from "./resources.js";
 // ---------------------------------------------------------------------------
 
 export function createEpigenomicsMcpServer(config: Config): McpServer {
-  const server = new McpServer({
-    name: "epigenomics-mcp",
-    version: VERSION,
-  });
+  const server = new McpServer(
+    {
+      name: config.name,
+      version: VERSION,
+    },
+    {
+      capabilities: {
+        tools: { listChanged: false },
+      },
+      instructions:
+        "Epigenomics MCP qualifies processed epigenomic feature evidence for downstream " +
+        "Bioactivity-PoD use. Start with validate_design and validate_coordinates, use " +
+        "the QC profiling tools before qualify_features, then generate_handoff only for " +
+        "qualified packets. All decisions are deterministic, read-only, and fail closed.",
+    },
+  );
 
   registerTools(server, config);
   registerAuditResources(server);

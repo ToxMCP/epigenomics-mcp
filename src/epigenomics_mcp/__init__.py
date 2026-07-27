@@ -1,16 +1,10 @@
-"""Epigenomics MCP – Model Context Protocol server for processed epigenomic feature evidence qualification.
+"""Metadata compatibility package for the TypeScript Epigenomics MCP server.
 
-This package provides the core domain logic for converting processed epigenomic assay outputs
-into qualified, annotation-aware, provenance-rich feature-response packets that downstream
-Bioactivity-PoD MCP can consume for quantitative modelling.
-
-The package is deliberately bounded:
-- It is NOT a raw sequencing workbench
-- It is NOT a peak caller
-- It is NOT a chromatin-state learner
-- It is NOT a PoD/BMD modeller
-- It IS the qualification and packetisation layer between upstream epigenomic preprocessing
-  and downstream quantitative bioactivity modelling.
+The production server and scientific implementation live in the Node.js
+package. This distribution intentionally exports only the matching version for
+Python-based suite tooling. Historical analysis dependencies remain available
+through the ``analysis-compat`` extra; installing this package alone does not
+provide a second MCP implementation.
 """
 
 from epigenomics_mcp.version import __version__

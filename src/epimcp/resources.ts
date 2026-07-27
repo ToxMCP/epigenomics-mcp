@@ -120,6 +120,15 @@ export const AUDIT_RESOURCES: AuditResourceDefinition[] = [
     path: "release-evidence/release-gate.txt",
     mimeType: "text/plain",
   },
+  {
+    name: "scientific-invariants-json",
+    title: "Latest Scientific Invariants Gate JSON",
+    uri: "epimcp://release-evidence/scientific-invariants",
+    description:
+      "Checksummed schema-spine scientific-invariants result captured into release evidence.",
+    path: "release-evidence/scientific-invariants.json",
+    mimeType: "application/json",
+  },
 ];
 
 function readResource(definition: AuditResourceDefinition): ReadResourceResult {

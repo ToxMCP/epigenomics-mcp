@@ -57,7 +57,7 @@ export type CoordinateColumnMapping = z.infer<typeof CoordinateColumnMappingSche
 /**
  * Options for feature table canonicalization.
  */
-export const IngestFeatureTableOptionsSchema = z
+export const IngestFeatureTableOptionsObjectSchema = z
   .object({
     tableId: z.string().min(1).describe("Stable table identifier"),
     featureClass: FeatureClassSchema.describe("Feature class for all rows"),
@@ -107,7 +107,10 @@ export const IngestFeatureTableOptionsSchema = z
       "Literal coordinate system when not present as a column",
     ),
   })
-  .strict()
+  .strict();
+
+export const IngestFeatureTableOptionsSchema =
+  IngestFeatureTableOptionsObjectSchema
   .refine(
     (o) => {
       if (o.signalMetric === "declared_other") {

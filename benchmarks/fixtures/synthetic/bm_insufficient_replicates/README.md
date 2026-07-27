@@ -7,7 +7,7 @@ Benchmark for insufficient biological replicates.
 - `feature_table.json` — 1 valid CpG feature.
 - `design.json` — 3 dose groups with only 1 replicate each.
 - `metadata.json` — Minimal provenance.
-- `expected_policy.json` — Expected outcome: `excluded_insufficient_design` because replicates fall below the policy minimum of 2.
+- `expected_policy.json` — Expected outcome: `excluded_qc_failure` because replicates fall below the policy minimum of 2.
 
 ## Scenario
 

@@ -1,0 +1,42 @@
+<evaluation>
+  <qa_pair>
+    <question>Audit the frozen GSE67005 low-dose excerpt. Read benchmarks/fixtures/frozen_public/gse67005/raw_excerpt.tsv in pages of at most four rows, then ingest it with datasetId GSE67005-low-dose-excerpt, modality dna_methylation_array, feature class generic_region_feature, signal metric declared_other described as centered log2 MeDIP/Input ratio, explicit wide shape, feature ID column PROBE_ID, and sample columns 562919, 562954, 563005, 563033, 563268, and 563365. Use the colocated design.json and provenance.json. How many features are both present in the complete paged table and accepted by ingestion?</question>
+    <answer>10</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Read benchmarks/fixtures/frozen_public/gse67005/design.tsv as design GSE67005-low-dose for study GSE67005 and species Homo sapiens, then independently validate the returned design. What is the minimum replicate count per dose group in the valid design?</question>
+    <answer>3</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Using examples/methylation_matrix/packet.json, qualify the packet, generate a Bioactivity-PoD handoff summary, and summarize every feature by dose group. Return qualified feature count, total group summaries, and PoD readiness in exactly this pipe-delimited order.</question>
+    <answer>2|6|true</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Review examples/invalid_build_mismatch/packet.json by qualifying it and checking whether its handoff is usable. Both features are excluded and the handoff is not ready. What single explainability rule code accounts for both exclusions?</question>
+    <answer>RULE_002_INVALID_COORDINATES</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Review examples/dmr_nearest_gene_warning/packet.json by qualifying it, checking the handoff readiness, and summarizing it across groups. Both DMRs remain usable only with caveats. What single explainability rule code is shared by their qualification decisions?</question>
+    <answer>RULE_009_MAJOR_WARNINGS</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Page through every row of benchmarks/fixtures/frozen_public/gse67005/raw_excerpt.tsv using pages no larger than four. For each probe, average its six deposited numeric sample values, without using CHROMOSOME or POSITION. Which probe ID has the lowest six-sample mean?</question>
+    <answer>CHR01FS000016058</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Validate declarations for a DMR using gff_gtf_1based_closed coordinates and an ATAC peak using ucsc_bed_0based_half_open coordinates. Then normalize chr1:1001-2000 from the former system and chr1:1000-2000 from the latter, both on hg38. If validation and both conversions succeed, what start coordinate do the normalized records share?</question>
+    <answer>1000</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Read and validate the frozen GSE67005 design. Profile both QC and missingness for two features: mostly-complete has values 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 for samples 562954, 563005, 563268, 562919, 563033, 563365; missing-control has null, null, 0.3, 0.4, 0.5, 0.6 in that same order. Use warning threshold 0.05 and exclusion threshold 0.2. What is the missingness summary band?</question>
+    <answer>exclusion</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Read and validate the frozen GSE67005 design, then ingest concurrent viability context at 120 hours: control at dose 0 has viability 0.98 and low-dose at 0.3 has viability 0.45, both in fraction units. What is the resulting cytotoxicityDetected value?</question>
+    <answer>true</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Read and validate the frozen GSE67005 design, then ingest externally estimated cell fractions for all six samples. Every control sample is 0.8 hepatocyte and 0.2 other; every low-dose sample is 0.2 hepatocyte and 0.8 other. With a shift threshold of 0.1, what maxFractionDelta is reported for the low-dose group?</question>
+    <answer>0.6</answer>
+  </qa_pair>
+</evaluation>

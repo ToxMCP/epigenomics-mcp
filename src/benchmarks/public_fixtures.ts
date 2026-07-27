@@ -1,10 +1,11 @@
+import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { join, extname } from "node:path";
+import { join, extname, relative, resolve } from "node:path";
 import { z } from "zod";
 import yaml from "js-yaml";
 
 /**
- * Public data archive sources supported for frozen fixture placeholders.
+ * Public data archive sources supported for frozen fixtures.
  */
 export const PublicFixtureSourceSchema = z.enum([
   "geo",
@@ -17,7 +18,7 @@ export const PublicFixtureSourceSchema = z.enum([
 export type PublicFixtureSource = z.infer<typeof PublicFixtureSourceSchema>;
 
 /**
- * Curation lifecycle status for a public fixture placeholder.
+ * Curation lifecycle status for a public fixture.
  */
 export const PublicFixtureCurationStatusSchema = z.enum([
   "placeholder",
@@ -76,11 +77,7 @@ export const FixtureChecksumSchema = z
 export type FixtureChecksum = z.infer<typeof FixtureChecksumSchema>;
 
 /**
- * Single public-realism fixture placeholder.
- *
- * Describes a processed public dataset that may become a benchmark fixture
- * in v0.2/v1.0.  The placeholder itself is lightweight and does not contain
- * actual assay data.
+ * Single public-realism fixture record.
  */
 export const PublicFixturePlaceholderSchema = z
   .object({
@@ -166,6 +163,52 @@ export const PublicFixturePlaceholderSchema = z
 export type PublicFixturePlaceholder = z.infer<
   typeof PublicFixturePlaceholderSchema
 >;
+
+export interface PublicFixtureChecksumValidation {
+  valid: boolean;
+  errors: string[];
+}
+
+/**
+ * Verify all declared SHA-256 files for a locally available fixture.
+ *
+ * Paths are resolved relative to the directory containing the YAML record and
+ * cannot escape that directory.
+ */
+export function validatePublicFixtureChecksums(
+  fixture: PublicFixturePlaceholder,
+  manifestDirectory: string,
+): PublicFixtureChecksumValidation {
+  const root = resolve(manifestDirectory);
+  const errors: string[] = [];
+
+  for (const checksum of fixture.checksums) {
+    if (checksum.algorithm !== "sha256") {
+      errors.push(
+        `${checksum.filePath}: unsupported verification algorithm ${checksum.algorithm}`,
+      );
+      continue;
+    }
+    const path = resolve(root, checksum.filePath);
+    const rel = relative(root, path);
+    if (rel.startsWith("..") || rel.includes(`..${process.platform === "win32" ? "\\" : "/"}`)) {
+      errors.push(`${checksum.filePath}: path escapes fixture directory`);
+      continue;
+    }
+    if (!existsSync(path)) {
+      errors.push(`${checksum.filePath}: file is missing`);
+      continue;
+    }
+    const actual = createHash("sha256")
+      .update(readFileSync(path))
+      .digest("hex");
+    if (actual !== checksum.hash) {
+      errors.push(`${checksum.filePath}: SHA-256 mismatch`);
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
 
 /**
  * Manifest containing all frozen public fixture placeholders.

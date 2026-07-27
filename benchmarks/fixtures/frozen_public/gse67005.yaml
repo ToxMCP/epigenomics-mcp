@@ -1,0 +1,42 @@
+fixtureId: "frozen_public_geo_gse67005"
+accession: "GSE67005"
+secondaryAccessions:
+  - "PRJNA278863"
+  - "GPL16284"
+source: "geo"
+title: "Aflatoxin B1 exposure in primary human hepatocytes (MeDIP)"
+description: >
+  Frozen 10-probe excerpt of the deposited low-dose processed matrix, with
+  vehicle and 0.3 µM aflatoxin B1 biological triplicates.
+assayModality: "dna_methylation_array"
+organism: "Homo sapiens"
+cellLineOrTissue: "primary human hepatocytes"
+genomeBuild: "not_asserted"
+processedDataUrl: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE67nnn/GSE67005/suppl/GSE67005_T5_LD_ratios.txt.gz"
+licensing:
+  classification: "custom"
+  verbatim: "NCBI GEO repository policies and the source study terms apply"
+checksums:
+  - algorithm: "sha256"
+    hash: "0a99a2d72fb492d1393fc2bf520740f4ad71c5c9854540484b8ecb0be39bc068"
+    filePath: "gse67005/raw_excerpt.tsv"
+  - algorithm: "sha256"
+    hash: "692852c73f6aaa9c58b8e87b74c3960de4c90401d821077bf347890a21820f1b"
+    filePath: "gse67005/design.json"
+  - algorithm: "sha256"
+    hash: "70a0c362591a3925210bf898cedd511ca778e13430d5d083f3cb13ff8c39fe6c"
+    filePath: "gse67005/design.tsv"
+  - algorithm: "sha256"
+    hash: "cd2d339cbc59ec49abb46d968cb780b2ef6eb7b8def161465e8f4ffd60c355ca"
+    filePath: "gse67005/provenance.json"
+  - algorithm: "sha256"
+    hash: "bb6df9663ba2dc3bffe7560d4acbcee09882fd30370183b1f08cb79bfe96dd03"
+    filePath: "gse67005/SOURCE.md"
+curationStatus: "validated"
+availability: "available"
+curationNotes: >
+  Values are an untransformed excerpt of centered log2 MeDIP/Input ratios.
+  Deposited probe positions are retained without a coordinate-system or
+  genome-build assertion and are excluded from coordinate validation.
+expectedFeatureCount: 10
+expectedSampleCount: 6

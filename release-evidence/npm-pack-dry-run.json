@@ -1,14 +1,29 @@
 [
   {
-    "id": "epigenomics-mcp@0.1.0",
+    "id": "epigenomics-mcp@0.2.0",
     "name": "epigenomics-mcp",
-    "version": "0.1.0",
-    "size": 410695,
-    "unpackedSize": 2636789,
-    "shasum": "0d2513471cea69d554b75754f205f9256d4787a9",
-    "integrity": "sha512-6AxDSgmUBRh5pkIavhgcQtj9ia/YHLKHDg3SAuzSXozPRFJddoLrWhofU/Hj4FopSF+RZfJeougJYMIr6fQYOw==",
-    "filename": "epigenomics-mcp-0.1.0.tgz",
+    "version": "0.2.0",
+    "size": 725524,
+    "unpackedSize": 4022712,
+    "shasum": "4d8e55ae283eb61ebf6a1019651893d93f0db631",
+    "integrity": "sha512-Fny2aeFDJz78znTBOTqX1IvcRBE0GicjPFbZC1Cu63s1c5iFy9mV3GbXZdTY0lwv1lPTaFj2sm2L9J5fmcsHgA==",
+    "filename": "epigenomics-mcp-0.2.0.tgz",
     "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 3129,
+        "mode": 420
+      },
+      {
+        "path": "CITATION.cff",
+        "size": 392,
+        "mode": 420
+      },
+      {
+        "path": "CONTRIBUTING.md",
+        "size": 1162,
+        "mode": 420
+      },
       {
         "path": "LICENSE",
         "size": 1063,
@@ -16,7 +31,12 @@
       },
       {
         "path": "README.md",
-        "size": 12405,
+        "size": 14314,
+        "mode": 420
+      },
+      {
+        "path": "SECURITY.md",
+        "size": 1009,
         "mode": 420
       },
       {
@@ -101,7 +121,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dmr_nearest_gene_only/packet.json",
-        "size": 5240,
+        "size": 5949,
         "mode": 420
       },
       {
@@ -111,7 +131,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dmr_nearest_gene_only/qualification_result.json",
-        "size": 2596,
+        "size": 3482,
         "mode": 420
       },
       {
@@ -121,7 +141,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dominant_cytotoxicity/handoff_result.json",
-        "size": 111,
+        "size": 112,
         "mode": 420
       },
       {
@@ -141,7 +161,7 @@
       },
       {
         "path": "benchmarks/expected/bm_dominant_cytotoxicity/qualification_result.json",
-        "size": 1853,
+        "size": 3138,
         "mode": 420
       },
       {
@@ -281,7 +301,7 @@
       },
       {
         "path": "benchmarks/expected/bm_missing_cell_context/qualification_result.json",
-        "size": 1853,
+        "size": 2217,
         "mode": 420
       },
       {
@@ -311,7 +331,7 @@
       },
       {
         "path": "benchmarks/expected/bm_missing_cytotoxicity_context/qualification_result.json",
-        "size": 1853,
+        "size": 2167,
         "mode": 420
       },
       {
@@ -321,12 +341,12 @@
       },
       {
         "path": "benchmarks/expected/bm_summary_contrast_only/handoff_result.json",
-        "size": 111,
+        "size": 112,
         "mode": 420
       },
       {
         "path": "benchmarks/expected/bm_summary_contrast_only/missingness_profile.json",
-        "size": 1510,
+        "size": 1726,
         "mode": 420
       },
       {
@@ -341,7 +361,7 @@
       },
       {
         "path": "benchmarks/expected/bm_summary_contrast_only/qualification_result.json",
-        "size": 3242,
+        "size": 4082,
         "mode": 420
       },
       {
@@ -362,6 +382,326 @@
       {
         "path": "benchmarks/expected/golden_handoff_examples/exploratory_only/packet.json",
         "size": 5763,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005.yaml",
+        "size": 1754,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005/design.json",
+        "size": 2019,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005/design.tsv",
+        "size": 424,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005/provenance.json",
+        "size": 1143,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005/raw_excerpt.tsv",
+        "size": 1462,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/frozen_public/gse67005/SOURCE.md",
+        "size": 1073,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_beta_manifest_complete/design.json",
+        "size": 2407,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_beta_manifest_complete/expected_policy.json",
+        "size": 478,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_beta_manifest_complete/feature_table.json",
+        "size": 1927,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_beta_manifest_complete/metadata.json",
+        "size": 4191,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_beta_manifest_complete/README.md",
+        "size": 924,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_build_missing/design.json",
+        "size": 688,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_build_missing/expected_policy.json",
+        "size": 441,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_build_missing/feature_table.json",
+        "size": 1016,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_build_missing/metadata.json",
+        "size": 326,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_build_missing/README.md",
+        "size": 563,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only/design.json",
+        "size": 2162,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only/expected_policy.json",
+        "size": 590,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only/feature_table.json",
+        "size": 1216,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only/metadata.json",
+        "size": 1249,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dmr_nearest_gene_only/README.md",
+        "size": 930,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/design.json",
+        "size": 683,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/expected_policy.json",
+        "size": 589,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/feature_table.json",
+        "size": 511,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/metadata.json",
+        "size": 2020,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/README.md",
+        "size": 714,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_invalid/expected_policy.json",
+        "size": 417,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_invalid/handoff.json",
+        "size": 275,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_invalid/README.md",
+        "size": 609,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_valid/expected_policy.json",
+        "size": 240,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_valid/handoff.json",
+        "size": 818,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_valid/README.md",
+        "size": 526,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_high_missingness/design.json",
+        "size": 684,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_high_missingness/expected_policy.json",
+        "size": 471,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_high_missingness/feature_table.json",
+        "size": 1021,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_high_missingness/metadata.json",
+        "size": 318,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_high_missingness/README.md",
+        "size": 622,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_insufficient_replicates/design.json",
+        "size": 643,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_insufficient_replicates/expected_policy.json",
+        "size": 472,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_insufficient_replicates/feature_table.json",
+        "size": 481,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_insufficient_replicates/metadata.json",
+        "size": 314,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_insufficient_replicates/README.md",
+        "size": 654,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_invalid_coordinate_format/design.json",
+        "size": 689,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_invalid_coordinate_format/expected_policy.json",
+        "size": 372,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_invalid_coordinate_format/feature_table.json",
+        "size": 1013,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_invalid_coordinate_format/metadata.json",
+        "size": 328,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_invalid_coordinate_format/README.md",
+        "size": 571,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/design.json",
+        "size": 687,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/expected_policy.json",
+        "size": 534,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/feature_table.json",
+        "size": 511,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/metadata.json",
+        "size": 1205,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/README.md",
+        "size": 694,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/design.json",
+        "size": 687,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/expected_policy.json",
+        "size": 380,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/feature_table.json",
+        "size": 511,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/metadata.json",
+        "size": 1163,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/README.md",
+        "size": 604,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/design.json",
+        "size": 923,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/expected_policy.json",
+        "size": 607,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/feature_table.json",
+        "size": 876,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/metadata.json",
+        "size": 507,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/README.md",
+        "size": 908,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/fixtures/synthetic/index.ts",
+        "size": 3508,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/qualification_engine_benchmark.mjs",
+        "size": 5913,
         "mode": 420
       },
       {
@@ -406,22 +746,22 @@
       },
       {
         "path": "dist/benchmarks/public_fixtures.d.ts",
-        "size": 16822,
+        "size": 17054,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/public_fixtures.d.ts.map",
-        "size": 1678,
+        "size": 1857,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/public_fixtures.js",
-        "size": 7120,
+        "size": 8277,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/public_fixtures.js.map",
-        "size": 5169,
+        "size": 6380,
         "mode": 420
       },
       {
@@ -446,22 +786,22 @@
       },
       {
         "path": "dist/benchmarks/runner.d.ts",
-        "size": 851,
+        "size": 1410,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/runner.d.ts.map",
-        "size": 729,
+        "size": 1138,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/runner.js",
-        "size": 8681,
+        "size": 10559,
         "mode": 420
       },
       {
         "path": "dist/benchmarks/runner.js.map",
-        "size": 8037,
+        "size": 9571,
         "mode": 420
       },
       {
@@ -846,22 +1186,22 @@
       },
       {
         "path": "dist/epimcp/http.d.ts",
-        "size": 749,
+        "size": 1130,
         "mode": 420
       },
       {
         "path": "dist/epimcp/http.d.ts.map",
-        "size": 135,
+        "size": 735,
         "mode": 420
       },
       {
         "path": "dist/epimcp/http.js",
-        "size": 3493,
+        "size": 12606,
         "mode": 420
       },
       {
         "path": "dist/epimcp/http.js.map",
-        "size": 3198,
+        "size": 12183,
         "mode": 420
       },
       {
@@ -916,12 +1256,12 @@
       },
       {
         "path": "dist/epimcp/resources.js",
-        "size": 5859,
+        "size": 6246,
         "mode": 420
       },
       {
         "path": "dist/epimcp/resources.js.map",
-        "size": 3374,
+        "size": 3522,
         "mode": 420
       },
       {
@@ -931,37 +1271,37 @@
       },
       {
         "path": "dist/epimcp/server.d.ts.map",
-        "size": 327,
+        "size": 328,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.js",
-        "size": 1258,
+        "size": 1731,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.js.map",
-        "size": 961,
+        "size": 1102,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts",
-        "size": 26009,
+        "size": 231810,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts.map",
-        "size": 2232,
+        "size": 6480,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js",
-        "size": 27024,
+        "size": 37829,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js.map",
-        "size": 24904,
+        "size": 30302,
         "mode": 420
       },
       {
@@ -986,22 +1326,22 @@
       },
       {
         "path": "dist/handoff/builder.d.ts",
-        "size": 1296,
+        "size": 1505,
         "mode": 420
       },
       {
         "path": "dist/handoff/builder.d.ts.map",
-        "size": 597,
+        "size": 695,
         "mode": 420
       },
       {
         "path": "dist/handoff/builder.js",
-        "size": 3944,
+        "size": 3974,
         "mode": 420
       },
       {
         "path": "dist/handoff/builder.js.map",
-        "size": 2794,
+        "size": 2818,
         "mode": 420
       },
       {
@@ -1046,22 +1386,22 @@
       },
       {
         "path": "dist/ingestion/feature_table.d.ts",
-        "size": 36955,
+        "size": 44057,
         "mode": 420
       },
       {
         "path": "dist/ingestion/feature_table.d.ts.map",
-        "size": 1817,
+        "size": 1967,
         "mode": 420
       },
       {
         "path": "dist/ingestion/feature_table.js",
-        "size": 31471,
+        "size": 31563,
         "mode": 420
       },
       {
         "path": "dist/ingestion/feature_table.js.map",
-        "size": 27257,
+        "size": 27303,
         "mode": 420
       },
       {
@@ -1246,27 +1586,27 @@
       },
       {
         "path": "dist/integrations/annotation_client.d.ts",
-        "size": 25342,
+        "size": 25429,
         "mode": 420
       },
       {
         "path": "dist/integrations/annotation_client.d.ts.map",
-        "size": 5641,
+        "size": 5643,
         "mode": 420
       },
       {
         "path": "dist/integrations/annotation_client.js",
-        "size": 17358,
+        "size": 17435,
         "mode": 420
       },
       {
         "path": "dist/integrations/annotation_client.js.map",
-        "size": 15802,
+        "size": 15698,
         "mode": 420
       },
       {
         "path": "dist/integrations/bioactivity_pod_client.d.ts",
-        "size": 1386,
+        "size": 1443,
         "mode": 420
       },
       {
@@ -1276,32 +1616,32 @@
       },
       {
         "path": "dist/integrations/bioactivity_pod_client.js",
-        "size": 1259,
+        "size": 1343,
         "mode": 420
       },
       {
         "path": "dist/integrations/bioactivity_pod_client.js.map",
-        "size": 520,
+        "size": 455,
         "mode": 420
       },
       {
         "path": "dist/integrations/evidence_registry_client.d.ts",
-        "size": 466,
+        "size": 649,
         "mode": 420
       },
       {
         "path": "dist/integrations/evidence_registry_client.d.ts.map",
-        "size": 385,
+        "size": 388,
         "mode": 420
       },
       {
         "path": "dist/integrations/evidence_registry_client.js",
-        "size": 454,
+        "size": 596,
         "mode": 420
       },
       {
         "path": "dist/integrations/evidence_registry_client.js.map",
-        "size": 371,
+        "size": 294,
         "mode": 420
       },
       {
@@ -1446,32 +1786,32 @@
       },
       {
         "path": "dist/qc/missingness.d.ts",
-        "size": 7472,
+        "size": 7512,
         "mode": 420
       },
       {
         "path": "dist/qc/missingness.d.ts.map",
-        "size": 1292,
+        "size": 1357,
         "mode": 420
       },
       {
         "path": "dist/qc/missingness.js",
-        "size": 8147,
+        "size": 8170,
         "mode": 420
       },
       {
         "path": "dist/qc/missingness.js.map",
-        "size": 6910,
+        "size": 6930,
         "mode": 420
       },
       {
         "path": "dist/qc/profiler.d.ts",
-        "size": 508,
+        "size": 544,
         "mode": 420
       },
       {
         "path": "dist/qc/profiler.d.ts.map",
-        "size": 463,
+        "size": 528,
         "mode": 420
       },
       {
@@ -1545,23 +1885,43 @@
         "mode": 420
       },
       {
+        "path": "dist/qualification/context.d.ts",
+        "size": 864,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/context.d.ts.map",
+        "size": 524,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/context.js",
+        "size": 1586,
+        "mode": 420
+      },
+      {
+        "path": "dist/qualification/context.js.map",
+        "size": 1290,
+        "mode": 420
+      },
+      {
         "path": "dist/qualification/engine.d.ts",
-        "size": 1240,
+        "size": 1330,
         "mode": 420
       },
       {
         "path": "dist/qualification/engine.d.ts.map",
-        "size": 741,
+        "size": 814,
         "mode": 420
       },
       {
         "path": "dist/qualification/engine.js",
-        "size": 4671,
+        "size": 6883,
         "mode": 420
       },
       {
         "path": "dist/qualification/engine.js.map",
-        "size": 3231,
+        "size": 5028,
         "mode": 420
       },
       {
@@ -1626,27 +1986,27 @@
       },
       {
         "path": "dist/qualification/rules.d.ts",
-        "size": 2631,
+        "size": 2719,
         "mode": 420
       },
       {
         "path": "dist/qualification/rules.d.ts.map",
-        "size": 1294,
+        "size": 1368,
         "mode": 420
       },
       {
         "path": "dist/qualification/rules.js",
-        "size": 18276,
+        "size": 19206,
         "mode": 420
       },
       {
         "path": "dist/qualification/rules.js.map",
-        "size": 13193,
+        "size": 14002,
         "mode": 420
       },
       {
         "path": "dist/release_evidence/artifacts.d.ts",
-        "size": 606,
+        "size": 986,
         "mode": 420
       },
       {
@@ -1656,12 +2016,12 @@
       },
       {
         "path": "dist/release_evidence/artifacts.js",
-        "size": 665,
+        "size": 1101,
         "mode": 420
       },
       {
         "path": "dist/release_evidence/artifacts.js.map",
-        "size": 686,
+        "size": 861,
         "mode": 420
       },
       {
@@ -2086,22 +2446,22 @@
       },
       {
         "path": "docs/adr/0001-scientific-invariants-gate.md",
-        "size": 14770,
+        "size": 14613,
         "mode": 420
       },
       {
         "path": "docs/cell-composition-confounding-guide.md",
-        "size": 6586,
+        "size": 6584,
         "mode": 420
       },
       {
         "path": "docs/cytotoxicity-context-guide.md",
-        "size": 7375,
+        "size": 7373,
         "mode": 420
       },
       {
         "path": "docs/genome-build-and-coordinate-guide.md",
-        "size": 5926,
+        "size": 5924,
         "mode": 420
       },
       {
@@ -2111,47 +2471,52 @@
       },
       {
         "path": "docs/input_formats.md",
-        "size": 1405,
+        "size": 170,
         "mode": 420
       },
       {
         "path": "docs/input-format-guide.md",
-        "size": 7448,
+        "size": 7544,
         "mode": 420
       },
       {
         "path": "docs/non_goals.md",
-        "size": 936,
+        "size": 152,
         "mode": 420
       },
       {
         "path": "docs/non-goals.md",
-        "size": 5796,
+        "size": 5483,
         "mode": 420
       },
       {
         "path": "docs/region-to-gene-mapping-guide.md",
-        "size": 6856,
+        "size": 6854,
         "mode": 420
       },
       {
         "path": "docs/scientific_scope.md",
-        "size": 1775,
+        "size": 173,
         "mode": 420
       },
       {
         "path": "docs/scientific-scope.md",
-        "size": 6785,
+        "size": 6775,
         "mode": 420
       },
       {
         "path": "docs/tool-reference.md",
-        "size": 27175,
+        "size": 29713,
         "mode": 420
       },
       {
         "path": "docs/validation-statement.md",
-        "size": 22660,
+        "size": 25390,
+        "mode": 420
+      },
+      {
+        "path": "evaluation.xml",
+        "size": 4008,
         "mode": 420
       },
       {
@@ -2196,7 +2561,7 @@
       },
       {
         "path": "examples/dmr_nearest_gene_warning/packet.json",
-        "size": 4533,
+        "size": 5202,
         "mode": 420
       },
       {
@@ -2261,7 +2626,12 @@
       },
       {
         "path": "package.json",
-        "size": 3244,
+        "size": 5362,
+        "mode": 420
+      },
+      {
+        "path": "pyproject.toml",
+        "size": 2901,
         "mode": 420
       },
       {
@@ -2281,12 +2651,17 @@
       },
       {
         "path": "release-evidence/release-gate.json",
-        "size": 667,
+        "size": 823,
         "mode": 420
       },
       {
         "path": "release-evidence/release-gate.txt",
-        "size": 370,
+        "size": 497,
+        "mode": 420
+      },
+      {
+        "path": "release-evidence/scientific-invariants.json",
+        "size": 66,
         "mode": 420
       },
       {
@@ -2350,12 +2725,557 @@
         "mode": 420
       },
       {
+        "path": "scripts/export-schemas.mjs",
+        "size": 580,
+        "mode": 420
+      },
+      {
+        "path": "scripts/generate_spine_projection_golden.py",
+        "size": 2489,
+        "mode": 420
+      },
+      {
+        "path": "scripts/generate-golden-handoffs.mjs",
+        "size": 1023,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lint.mjs",
+        "size": 3495,
+        "mode": 420
+      },
+      {
+        "path": "scripts/release-evidence.mjs",
+        "size": 9044,
+        "mode": 420
+      },
+      {
+        "path": "scripts/release-gate.mjs",
+        "size": 4332,
+        "mode": 420
+      },
+      {
+        "path": "scripts/run-benchmarks.mjs",
+        "size": 4361,
+        "mode": 420
+      },
+      {
+        "path": "scripts/scientific_invariants_gate.py",
+        "size": 14972,
+        "mode": 420
+      },
+      {
+        "path": "scripts/smoke_mcp_http.mjs",
+        "size": 4117,
+        "mode": 420
+      },
+      {
+        "path": "scripts/smoke_mcp_stdio.mjs",
+        "size": 2133,
+        "mode": 420
+      },
+      {
+        "path": "scripts/update-benchmark-goldens.mjs",
+        "size": 2726,
+        "mode": 420
+      },
+      {
+        "path": "scripts/validate-evaluation.mjs",
+        "size": 1452,
+        "mode": 420
+      },
+      {
+        "path": "scripts/validate-handoffs.mjs",
+        "size": 3183,
+        "mode": 420
+      },
+      {
+        "path": "scripts/vendor_verify.py",
+        "size": 5192,
+        "mode": 420
+      },
+      {
+        "path": "scripts/verify-evidence.mjs",
+        "size": 9097,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/__init__.py",
+        "size": 502,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/governance/__init__.py",
+        "size": 80,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/governance/errors.py",
+        "size": 3890,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/governance/project_to_spine.py",
+        "size": 49074,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/governance/source_contract.py",
+        "size": 10160,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/governance/spine_bridge.py",
+        "size": 13706,
+        "mode": 420
+      },
+      {
+        "path": "src/epigenomics_mcp/version.py",
+        "size": 73,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/golden_pass_handoff.json",
+        "size": 1529,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted__claimTransitionPolicy.json",
+        "size": 559,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted__concentrationResponseDesign.json",
+        "size": 758,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted__observation.json",
+        "size": 1612,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted__pod.json",
+        "size": 1939,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted__readiness.json",
+        "size": 960,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted_with_warnings__claimTransitionPolicy.json",
+        "size": 559,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted_with_warnings__concentrationResponseDesign.json",
+        "size": 758,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted_with_warnings__observation.json",
+        "size": 1662,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted_with_warnings__pod.json",
+        "size": 2103,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/accepted_with_warnings__readiness.json",
+        "size": 1124,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/excluded__claimTransitionPolicy.json",
+        "size": 559,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/excluded__concentrationResponseDesign.json",
+        "size": 685,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/excluded__observation.json",
+        "size": 1539,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/excluded__pod.json",
+        "size": 1933,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/excluded__readiness.json",
+        "size": 1027,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/exploratory_only__claimTransitionPolicy.json",
+        "size": 559,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/exploratory_only__concentrationResponseDesign.json",
+        "size": 713,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/exploratory_only__observation.json",
+        "size": 1570,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/exploratory_only__pod.json",
+        "size": 1964,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/exploratory_only__readiness.json",
+        "size": 1030,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/golden_pass_handoff__claimTransitionPolicy.json",
+        "size": 547,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/golden_pass_handoff__concentrationResponseDesign.json",
+        "size": 734,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/golden_pass_handoff__observation.json",
+        "size": 1585,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/golden_pass_handoff__pod.json",
+        "size": 1891,
+        "mode": 420
+      },
+      {
+        "path": "tests/fixtures/governance/spine_projection/golden_pass_handoff__readiness.json",
+        "size": 888,
+        "mode": 420
+      },
+      {
         "path": "toxmcp.manifest.yaml",
-        "size": 4980,
+        "size": 5876,
+        "mode": 420
+      },
+      {
+        "path": "uv.lock",
+        "size": 527810,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/index.mjs",
+        "size": 1141,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/policy-validator.mjs",
+        "size": 150397,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/run-policy.mjs",
+        "size": 2529,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schema-manifest.json",
+        "size": 17052,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/AiModelUseRecord.v1.schema.json",
+        "size": 4835,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ApplicabilityBoundary.v1.schema.json",
+        "size": 1535,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/AssessmentRun.v1.schema.json",
+        "size": 2200,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/AuditTraceRef.v1.schema.json",
+        "size": 1092,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ChemicalIdentity.v1.schema.json",
+        "size": 2147,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ClaimRecord.v1.schema.json",
+        "size": 2839,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ClaimTransitionPolicy.v1.schema.json",
+        "size": 1899,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ConfidenceCeiling.v1.schema.json",
+        "size": 1390,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/DataRightsPolicy.v1.schema.json",
+        "size": 1498,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/DecisionContext.v1.schema.json",
+        "size": 1426,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/EvidenceAdmissibility.v1.schema.json",
+        "size": 1084,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/EvidenceAnchor.v1.schema.json",
+        "size": 1761,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/HandoffEnvelope.v1.schema.json",
+        "size": 1936,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/HumanReviewRecord.v1.schema.json",
+        "size": 1669,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/MeasurementValue.v1.schema.json",
+        "size": 1826,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/NonClaimBoundary.v1.schema.json",
+        "size": 1126,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ProvenanceBundle.v1.schema.json",
+        "size": 4154,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ReleaseVisibilityPolicy.v1.schema.json",
+        "size": 1811,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ReviewerAttestation.v1.schema.json",
+        "size": 1761,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ReviewState.v1.schema.json",
+        "size": 1823,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/SemanticLossEvent.v1.schema.json",
+        "size": 1196,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/ToxMcpObject.v1.schema.json",
+        "size": 2932,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/core/UncertaintyRecord.v1.schema.json",
+        "size": 1635,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/AssayStudyQuality.v1.schema.json",
+        "size": 2402,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/AuditEventChain.v1.schema.json",
+        "size": 2919,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/BioactivityExposureRatioRecord.v1.schema.json",
+        "size": 3175,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/BioactivityObservation.v1.schema.json",
+        "size": 5354,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/BioactivityPodReadiness.v1.schema.json",
+        "size": 2420,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ComparabilityQualification.v1.schema.json",
+        "size": 2890,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ConcentrationResponseDesign.v1.schema.json",
+        "size": 2329,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ExposureScenarioContext.v1.schema.json",
+        "size": 2349,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/FreeConcentrationCorrection.v1.schema.json",
+        "size": 3007,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/IataStrategyDecision.v1.schema.json",
+        "size": 3920,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/InternalExposureSummary.v1.schema.json",
+        "size": 4059,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ModifierEvidenceLane.v1.schema.json",
+        "size": 2582,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/PointOfDepartureRecord.v1.schema.json",
+        "size": 4701,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/PopulationProfile.v1.schema.json",
+        "size": 2429,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ReadAcrossJustification.v1.schema.json",
+        "size": 3424,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ReplicateDesign.v1.schema.json",
+        "size": 1637,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ReverseDosimetryRecord.v1.schema.json",
+        "size": 3003,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/RouteDoseEstimate.v1.schema.json",
+        "size": 2900,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SchemaSignature.v1.schema.json",
+        "size": 2289,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SensitiveDescriptorPolicy.v1.schema.json",
+        "size": 2162,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SpineBenchmarkRunEvidenceOverlay.v1.schema.json",
+        "size": 2538,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SpineBenchmarkSuiteEvidenceOverlay.v1.schema.json",
+        "size": 2245,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SpineReleaseReadinessEvidenceOverlay.v1.schema.json",
+        "size": 3643,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SubgroupComparison.v1.schema.json",
+        "size": 2501,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SubgroupDefinition.v1.schema.json",
+        "size": 2234,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SubgroupReviewPacket.v1.schema.json",
+        "size": 3262,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/SusceptibilitySummary.v1.schema.json",
+        "size": 3276,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/TKParameterProvenance.v1.schema.json",
+        "size": 2178,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/TransportCapability.v1.schema.json",
+        "size": 5042,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/ValidationEvidenceBundle.v1.schema.json",
+        "size": 3831,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/VariabilityDimension.v1.schema.json",
+        "size": 2130,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/schemas/domain/WeightOfEvidenceEvaluation.v1.schema.json",
+        "size": 3387,
+        "mode": 420
+      },
+      {
+        "path": "vendor/schema-spine/VENDORED_FROM.json",
+        "size": 7707,
         "mode": 420
       }
     ],
-    "entryCount": 469,
+    "entryCount": 653,
     "bundled": []
   }
 ]

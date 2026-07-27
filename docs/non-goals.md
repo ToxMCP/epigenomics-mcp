@@ -1,16 +1,16 @@
 # Non-Goals
 
 **Document status:** Regulator-facing boundary statement  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
 ## 1. Purpose of this Document
 
-This document lists capabilities that Epigenomics MCP v0.1 **explicitly does not implement**. The exclusions are deliberate product-boundary decisions, not technical debt. Keeping these out of scope preserves a clear contract with downstream consumers and prevents the MCP from overreaching into domains where specialised tools already exist.
+This document lists capabilities that Epigenomics MCP v0.2 **explicitly does not implement**. The exclusions are deliberate product-boundary decisions, not technical debt. Keeping these out of scope preserves a clear contract with downstream consumers and prevents the MCP from overreaching into domains where specialised tools already exist.
 
-The v0.1 release is intentionally narrow: **qualify what you have, packetise it cleanly, and hand it off**.
+The v0.2 release is intentionally narrow: **qualify what you have, packetise it cleanly, and hand it off**.
 
 ---
 
@@ -46,7 +46,7 @@ Epigenomics MCP computes **deterministic QC profiles** (missingness, variance, r
 
 ## 4. Claims Beyond Evidence (Blocked or Stripped)
 
-Epigenomics MCP v0.1 contains **claim guards** that strip or block the following unsupported claims before they reach any downstream packet.
+Epigenomics MCP v0.2 contains **claim guards** that strip or block the following unsupported claims before they reach any downstream packet.
 
 | Claim type | Guard behaviour | Rationale |
 |------------|-----------------|-----------|
@@ -59,18 +59,18 @@ Epigenomics MCP v0.1 contains **claim guards** that strip or block the following
 
 ---
 
-## 5. v0.1 / v0.2 Boundary
+## 5. Current boundary
 
-Some capabilities are reserved for v0.2 or require explicit feature flags in v0.1.
+Some capabilities remain deferred or require explicit feature flags in v0.2.
 
-| Capability | v0.1 | v0.2 |
-|------------|------|------|
-| Direct ATAC/ChIP/CUT&Tag/CUT&RUN adapters | Generic region table only | Assay-specific peak parsers and metric semantics |
-| Processed BS-seq coverage-aware adapters | DMR tables only | Coverage-depth and CpG-density aware ingestion |
-| miRNA measured-feature support | Feature-flagged only | Direct support with validated-target guardrails |
-| lncRNA/ncRNA expression adapters | Deferred | Adapter support with Transcriptomics MCP boundary rules |
-| ENCODE/GEO/BioStudies study adapters | Not implemented | Processed study ingestion with provenance trace |
-| Controlled pseudobulk single-cell ATAC | Not implemented | Aggregation-provenance-aware ingestion |
+| Capability | v0.2 state |
+|------------|------------|
+| Direct ATAC/ChIP/CUT&Tag/CUT&RUN adapters | Generic region table only |
+| Processed BS-seq coverage-aware adapters | DMR tables only |
+| miRNA measured-feature support | Feature-flagged only |
+| lncRNA/ncRNA expression adapters | Deferred |
+| ENCODE/GEO/BioStudies study adapters | Not implemented |
+| Controlled pseudobulk single-cell ATAC | Not implemented |
 
 ---
 
@@ -81,7 +81,7 @@ Keeping the above capabilities out of scope:
 1. **Preserves auditability** — A narrow boundary means every output is traceable to a small, well-defined set of operations.
 2. **Prevents false precision** — The MCP does not manufacture biological interpretation from insufficient data.
 3. **Avoids duplication** — Raw processing, statistical modelling, and regulatory synthesis are already handled by specialised tools.
-4. **Enables deterministic validation** — Synthetic benchmarks can cover the full v0.1 scope because the scope is small and explicit.
+4. **Enables deterministic validation** — The bounded v0.2 scope can be exercised with transparent fixtures and explicit limitations.
 
 ---
 

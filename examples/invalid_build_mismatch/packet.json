@@ -78,8 +78,8 @@
     "annotationVersion": "hg38"
   },
   "qualificationSummary": {
-    "acceptedCount": 2,
-    "excludedCount": 0,
+    "acceptedCount": 0,
+    "excludedCount": 2,
     "exploratoryCount": 0,
     "caveatCount": 0
   },

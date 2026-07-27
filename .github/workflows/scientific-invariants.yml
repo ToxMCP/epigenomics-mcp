@@ -1,9 +1,8 @@
 name: Scientific Invariants (Track-B)
 
-# Advisory Track-B scientific-invariants gate. This job adds a visible CI signal,
-# enforced by merge discipline (this repo is on the GitHub Free plan, so the check
-# is NOT configured as a required status check and does not hard-block merges by
-# itself).
+# Blocking Track-B scientific-invariants gate. The release manifest and local
+# verification command both require it, and the public repository ruleset marks
+# this workflow's matrix checks as required for main.
 #
 # What it does:
 #   1. vendor:verify — recompute sha256 of every vendored schema-spine engine file
@@ -18,10 +17,6 @@ name: Scientific Invariants (Track-B)
 #      the disguise battery, the fail-closed self-tests, and the golden-projection
 #      drift check. These require BOTH Node (for the bridge) and Python.
 #
-# PROMOTE-TO-BLOCKING: when the repo moves to a plan with branch protection /
-# rulesets (Team/Pro or public), mark this job a required status check — the gate
-# already exits non-zero on any blocking code, so no script change is needed.
-
 on:
   workflow_dispatch:
   push:

@@ -1,0 +1,7 @@
+sample_id	group_id	dose_value	dose_unit	replicate_type	timepoint	treatment	control_flag
+562954	control	0	µM	biological	120	DMSO vehicle	true
+563005	control	0	µM	biological	120	DMSO vehicle	true
+563268	control	0	µM	biological	120	DMSO vehicle	true
+562919	low-dose	0.3	µM	biological	120	aflatoxin B1	false
+563033	low-dose	0.3	µM	biological	120	aflatoxin B1	false
+563365	low-dose	0.3	µM	biological	120	aflatoxin B1	false

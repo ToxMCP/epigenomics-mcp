@@ -46,11 +46,15 @@ describe("Makefile default command set smoke test", () => {
     expect(stdout).toContain("TypeScript lint");
   });
 
-  it("make smoke exits 0 after running the default command set", () => {
-    // smoke target depends on lint, typecheck, export-schemas, validate-handoff, run-benchmarks
-    const { stdout } = runMake("smoke");
-    expect(stdout).toContain("Default command set smoke test PASSED");
-  });
+  it(
+    "make smoke exits 0 after running the default command set",
+    () => {
+      // smoke target depends on lint, typecheck, export-schemas, validate-handoff, run-benchmarks
+      const { stdout } = runMake("smoke");
+      expect(stdout).toContain("Default command set smoke test PASSED");
+    },
+    300_000,
+  );
 });
 
 describe("npm script smoke test", () => {

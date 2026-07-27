@@ -34,6 +34,7 @@ const DEFAULT_OUT_DIR = "release-evidence";
 const RELEASE_GATE_JSON = RELEASE_EVIDENCE_GENERATED_FILES[0];
 const RELEASE_GATE_TEXT = RELEASE_EVIDENCE_GENERATED_FILES[1];
 const NPM_PACK_DRY_RUN_JSON = RELEASE_EVIDENCE_GENERATED_FILES[2];
+const SCIENTIFIC_INVARIANTS_JSON = RELEASE_EVIDENCE_GENERATED_FILES[3];
 
 function parseArgs(argv) {
   const args = {
@@ -87,6 +88,12 @@ function listFilesRecursively(path) {
     return [resolved];
   }
   return readdirSync(resolved, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.name !== "__pycache__" &&
+        !entry.name.endsWith(".pyc") &&
+        !entry.name.endsWith(".pyo"),
+    )
     .flatMap((entry) => listFilesRecursively(join(resolved, entry.name)))
     .sort();
 }
@@ -177,6 +184,28 @@ function runReleaseGate(outputDir) {
   );
 }
 
+function runScientificInvariantsGate(outputDir) {
+  runCommand("python3", ["scripts/vendor_verify.py"], { stdio: "inherit" });
+  const output = runCommand(
+    "python3",
+    ["scripts/scientific_invariants_gate.py", "--json"],
+  );
+  const result = JSON.parse(output);
+  if (
+    !Number.isInteger(result.checkedObjects) ||
+    result.checkedObjects <= 0 ||
+    !Array.isArray(result.blocking) ||
+    result.blocking.length > 0
+  ) {
+    throw new Error("Scientific-invariants gate did not produce a clean result.");
+  }
+  writeFileSync(
+    join(outputDir, SCIENTIFIC_INVARIANTS_JSON),
+    JSON.stringify(result, null, 2) + "\n",
+    "utf-8",
+  );
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const gitStatus = getGitStatus();
@@ -190,6 +219,7 @@ function main() {
   const startedAt = fixedOrNow("EPIMCP_RELEASE_EVIDENCE_STARTED_AT");
 
   try {
+    runScientificInvariantsGate(outDir);
     runReleaseGate(gateDir);
     copyFileSync(join(gateDir, RELEASE_GATE_JSON), join(outDir, RELEASE_GATE_JSON));
     copyFileSync(join(gateDir, RELEASE_GATE_TEXT), join(outDir, RELEASE_GATE_TEXT));
@@ -219,6 +249,7 @@ function main() {
       join(outDir, RELEASE_GATE_JSON),
       join(outDir, RELEASE_GATE_TEXT),
       npmPackPath,
+      join(outDir, SCIENTIFIC_INVARIANTS_JSON),
     ].sort();
 
     const artifactChecksums = checksumInputs.map(checksumEntry);

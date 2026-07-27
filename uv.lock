@@ -610,9 +610,14 @@ wheels = [
 
 [[package]]
 name = "epigenomics-mcp"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
-dependencies = [
+
+[package.optional-dependencies]
+adapters = [
+    { name = "biopython" },
+]
+analysis-compat = [
     { name = "bioframe" },
     { name = "duckdb" },
     { name = "httpx" },
@@ -624,11 +629,6 @@ dependencies = [
     { name = "scipy", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "statsmodels" },
     { name = "typer" },
-]
-
-[package.optional-dependencies]
-adapters = [
-    { name = "biopython" },
 ]
 dev = [
     { name = "mypy" },
@@ -643,25 +643,25 @@ large-intervals = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bioframe", specifier = ">=0.7.0" },
+    { name = "bioframe", marker = "extra == 'analysis-compat'", specifier = ">=0.7.0" },
     { name = "biopython", marker = "extra == 'adapters'", specifier = ">=1.80" },
-    { name = "duckdb", specifier = ">=1.0" },
-    { name = "httpx", specifier = ">=0.27" },
-    { name = "mcp", specifier = ">=1.0" },
+    { name = "duckdb", marker = "extra == 'analysis-compat'", specifier = ">=1.0" },
+    { name = "httpx", marker = "extra == 'analysis-compat'", specifier = ">=0.27" },
+    { name = "mcp", marker = "extra == 'analysis-compat'", specifier = ">=1.0,<2.0.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
-    { name = "pandas", specifier = ">=2.0" },
+    { name = "pandas", marker = "extra == 'analysis-compat'", specifier = ">=2.0" },
     { name = "polars", marker = "extra == 'large-intervals'", specifier = ">=1.0" },
     { name = "pyarrow", marker = "extra == 'large-intervals'", specifier = ">=15" },
-    { name = "pydantic", specifier = ">=2.0" },
+    { name = "pydantic", marker = "extra == 'analysis-compat'", specifier = ">=2.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "pyyaml", marker = "extra == 'analysis-compat'", specifier = ">=6.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
-    { name = "scipy", specifier = ">=1.12" },
-    { name = "statsmodels", specifier = ">=0.14" },
-    { name = "typer", specifier = ">=0.12" },
+    { name = "scipy", marker = "extra == 'analysis-compat'", specifier = ">=1.12" },
+    { name = "statsmodels", marker = "extra == 'analysis-compat'", specifier = ">=0.14" },
+    { name = "typer", marker = "extra == 'analysis-compat'", specifier = ">=0.12" },
 ]
-provides-extras = ["large-intervals", "adapters", "dev"]
+provides-extras = ["analysis-compat", "large-intervals", "adapters", "dev"]
 
 [[package]]
 name = "fonttools"

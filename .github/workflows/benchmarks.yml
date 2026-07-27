@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  golden-comparison:
-    name: Golden Output Comparison
+  release-benchmark:
+    name: Golden and Performance Gates
     runs-on: ubuntu-latest
 
     steps:
@@ -29,12 +29,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build TypeScript
-        run: npx tsc --noEmitOnError false
-
-      - name: Run benchmark suite
+      - name: Run benchmark release gate
         id: benchmark
-        run: node scripts/run-benchmarks.mjs
+        run: npm run benchmark:ci
 
       - name: Upload benchmark reports
         if: always()
@@ -55,7 +52,7 @@ jobs:
       - name: Annotate failures
         if: failure()
         run: |
-          echo "::error::Benchmark golden comparison failed. See uploaded artifacts for report.txt and diffs."
+          echo "::error::Benchmark release gate failed. See uploaded artifacts for reports and diffs."
           if [ -f benchmark-results/report.txt ]; then
             cat benchmark-results/report.txt
           fi

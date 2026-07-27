@@ -26,6 +26,16 @@
           "featureIds": [
             "cg_cell_ctx_001"
           ]
+        },
+        {
+          "warningCode": "EPIW001_CELL_COMPOSITION_CONTEXT_MISSING",
+          "severity": "warning",
+          "message": "No cell-composition context available; confounding cannot be assessed",
+          "category": "cell_composition",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_cell_ctx_001"
+          ]
         }
       ],
       "mappedGeneIds": [],
@@ -33,11 +43,11 @@
       "mappingMethod": "unknown",
       "explainability": {
         "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature cg_cell_ctx_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "reasonTemplate": "Feature cg_cell_ctx_001 passed all blocking rules but carries 3 warning(s) (severity: warning or error). The feature is accepted with caveats.",
         "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
         "reviewRequired": false,
         "policyReference": "warning_accumulation",
-        "observedValue": "2"
+        "observedValue": "3"
       }
     }
   ],

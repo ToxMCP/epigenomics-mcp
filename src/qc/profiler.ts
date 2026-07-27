@@ -1,6 +1,10 @@
 import { QcProfileSchema, type QcProfile } from "../contracts/qc.js";
-import type { EpigenomicFeature } from "../contracts/features.js";
 import type { ExperimentalDesign } from "../contracts/design.js";
+
+export interface QcProfileFeature {
+  featureId: string;
+  values: Record<string, number | null>;
+}
 
 export interface QcProfilerResult {
   profile: QcProfile;
@@ -12,7 +16,7 @@ export interface QcProfilerResult {
  */
 export function profileQc(
   datasetId: string,
-  features: EpigenomicFeature[],
+  features: QcProfileFeature[],
   design: ExperimentalDesign,
 ): QcProfilerResult {
   const totalFeatures = features.length;

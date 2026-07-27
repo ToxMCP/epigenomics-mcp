@@ -4,7 +4,7 @@
 # and explicit non-goals for the Epigenomics MCP suite.
 #
 name: epigenomics-mcp
-version: "0.1.0"
+version: "0.2.0"
 description: >
   Model Context Protocol server for processed epigenomic feature evidence qualification.
   Converts processed epigenomic assay outputs into qualified, annotation-aware,
@@ -13,6 +13,7 @@ toolNamespace: epimcp
 schemaRegistryPath: schemas/current
 supportedTransports:
   - stdio
+  - streamable-http
 capabilities:
   - ingest_processed_feature_tables
   - validate_experimental_design
@@ -56,9 +57,9 @@ schemaPaths:
   - schemas/current/bioactivity-pod-handoff-packet.json
 
 docsPaths:
-  - docs/scientific_scope.md
-  - docs/non_goals.md
-  - docs/input_formats.md
+  - docs/scientific-scope.md
+  - docs/non-goals.md
+  - docs/input-format-guide.md
   - docs/handoff.md
 
 mcpToolNames:
@@ -92,31 +93,39 @@ mcpResourceUris:
   - epimcp://release-evidence/checksums
   - epimcp://release-evidence/release-gate-json
   - epimcp://release-evidence/release-gate-report
+  - epimcp://release-evidence/scientific-invariants
 
 cliCommands:
   - epimcp
   - epimcp serve
-  - epimcp validate
+  - epimcp validate-design
+  - epimcp validate-coordinates
   - epimcp qualify
-  - epimcp handoff
+  - epimcp export-pod
+  - epimcp validate-handoff
+  - epimcp export-schemas
 
 integrations:
   - name: Annotation/Ontology MCP
-    status: active
-    purpose: Identifier normalization, species validation, gene mapping, pathway membership
-    contactEndpoint: "mcp://annotation-ontology/v1"
+    status: planned
+    purpose: Client contracts and fallback guardrails exist, but no annotation workflow is exposed by the v0.2 MCP tool surface
+    plannedRelease: v0.3
 
   - name: Bioactivity-PoD MCP
     status: active
-    purpose: Consumer of EpigenomicsFeatureResponsePacket for dose-response modelling
+    purpose: Schema-validated local handoff export for an orchestrator to deliver; direct network submission is not implemented
     handoffSchema: schemas/current/bioactivity-pod-handoff-packet.json
 
   - name: Evidence Registry MCP
     status: planned
     purpose: Long-term audit trail storage and cross-study evidence retrieval
-    plannedRelease: v0.2
+    plannedRelease: v0.3
 
 releaseGates:
+  - name: production_dependency_audit
+    description: npm audit reports no known production dependency vulnerabilities
+    required: true
+
   - name: typecheck
     description: tsc --noEmit with zero errors
     required: true
@@ -134,7 +143,19 @@ releaseGates:
     required: true
 
   - name: smoke_mcp
-    description: MCP stdio server starts and responds to health check
+    description: MCP stdio and Streamable HTTP transports initialize, list tools, and execute health checks
+    required: true
+
+  - name: mcp_evaluation_set
+    description: The checked-in 10-case read-only evaluation set is structurally valid, independently answerable, and exercises multi-tool workflows
+    required: true
+
+  - name: public_fixture_integrity
+    description: Frozen public-data excerpts have source records and verified SHA-256 checksums
+    required: true
+
+  - name: qualification_performance
+    description: The real qualification engine processes the 10,000-feature release workload within declared time and memory budgets
     required: true
 
   - name: release_evidence
@@ -142,5 +163,5 @@ releaseGates:
     required: true
 
   - name: scientific_invariants
-    description: Track-B scientific-invariants gate projects each released BioactivityPoDHandoffPacket onto the digest-pinned (e0a6a05) vendored ToxMCP schema-spine bioactivity/PoD policy engine via a fail-closed bridge and blocks any public-release-blocking overclaim/adequacy/readiness/AI-provenance regression (advisory on the GitHub Free plan)
-    required: false
+    description: Track-B scientific-invariants gate projects each released BioactivityPoDHandoffPacket onto the digest-pinned (e0a6a05) vendored ToxMCP schema-spine bioactivity/PoD policy engine via a fail-closed bridge and blocks any public-release-blocking overclaim, adequacy, or readiness regression
+    required: true
