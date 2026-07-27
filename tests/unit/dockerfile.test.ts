@@ -25,8 +25,12 @@ describe("Dockerfile validation", () => {
 
   it("has a multi-stage build", () => {
     expect(dockerfile).toMatch(/AS ts-build/i);
-    expect(dockerfile).toMatch(/AS python-env/i);
     expect(dockerfile).toMatch(/AS runtime/i);
+    expect(dockerfile).not.toMatch(/AS python-env/i);
+  });
+
+  it("installs production Node.js dependencies only in runtime", () => {
+    expect(dockerfile).toMatch(/npm ci --omit=dev/i);
   });
 
   it("uses the correct entrypoint for epimcp cli", () => {
@@ -37,9 +41,16 @@ describe("Dockerfile validation", () => {
     expect(dockerfile).toMatch(/CMD\s*\[\s*"serve"\s*\]/i);
   });
 
-  it("verifies both Node.js and Python installations", () => {
+  it("verifies the Node.js installation without carrying a second runtime", () => {
     expect(dockerfile).toMatch(/import\(['"]\.\/dist\/epimcp\/index\.js['"]\)/);
-    expect(dockerfile).toMatch(/import epigenomics_mcp/);
-    expect(dockerfile).toMatch(/__version__/);
+    expect(dockerfile).not.toMatch(/pip install/i);
+    expect(dockerfile).not.toMatch(/python:/i);
+  });
+
+  it("runs as the unprivileged node user and includes audit resources", () => {
+    expect(dockerfile).toMatch(/^USER node$/im);
+    expect(dockerfile).toMatch(/COPY schemas\//i);
+    expect(dockerfile).toMatch(/COPY release-evidence\//i);
+    expect(dockerfile).toMatch(/COPY benchmark_manifest\.yaml/i);
   });
 });

@@ -15,6 +15,7 @@
  */
 
 import { mkdirSync, writeFileSync, existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
 import { loadBenchmarkManifest } from "../dist/benchmarks/manifest.js";
@@ -46,6 +47,57 @@ function ensureDir(dir) {
   }
 }
 
+function runPerformanceGate() {
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--expose-gc",
+      "benchmarks/qualification_engine_benchmark.mjs",
+      "--features",
+      "10000",
+      "--replicates",
+      "6",
+      "--max-seconds",
+      process.env.EPIMCP_PERFORMANCE_MAX_SECONDS ?? "20",
+      "--max-rss-mib",
+      process.env.EPIMCP_PERFORMANCE_MAX_RSS_MIB ?? "512",
+      "--json",
+    ],
+    {
+      cwd: process.cwd(),
+      encoding: "utf-8",
+      maxBuffer: 10 * 1024 * 1024,
+    },
+  );
+
+  try {
+    const report = JSON.parse(run.stdout.trim());
+    return {
+      report,
+      check: {
+        name: "qualification_performance",
+        passed: run.status === 0 && report.passed === true,
+        details:
+          `${report.workload.features} real qualifications in ` +
+          `${report.performance.elapsedSeconds.toFixed(3)}s; ` +
+          `${report.performance.rssIncreaseMib.toFixed(1)} MiB RSS increase`,
+      },
+    };
+  } catch {
+    return {
+      report: null,
+      check: {
+        name: "qualification_performance",
+        passed: false,
+        details:
+          run.stderr.trim() ||
+          run.stdout.trim() ||
+          "Performance benchmark produced no parseable report",
+      },
+    };
+  }
+}
+
 function main() {
   const { outDir } = parseArgs(process.argv.slice(2));
   console.log("Loading benchmark manifest...");
@@ -53,17 +105,22 @@ function main() {
 
   console.log("Running release gate checks...\n");
   const result = runReleaseGate(manifest);
+  const performance = runPerformanceGate();
+  const ready = result.ready && performance.check.passed;
 
   ensureDir(outDir);
 
   // Write JSON report
   const jsonReport = {
-    ready: result.ready,
-    checks: result.checks.map((c) => ({
-      name: c.name,
-      passed: c.passed,
-      details: c.details,
-    })),
+    ready,
+    checks: [
+      ...result.checks.map((c) => ({
+        name: c.name,
+        passed: c.passed,
+        details: c.details,
+      })),
+      performance.check,
+    ],
     benchmarkSummary: {
       totalBenchmarks: result.benchmarkResult.benchmarks.length,
       passedBenchmarks: result.benchmarkResult.benchmarks.filter((b) => b.passed).length,
@@ -77,14 +134,18 @@ function main() {
   );
 
   // Write human-readable report
-  const textReport = formatReleaseGateReport(result);
+  const textReport =
+    `${formatReleaseGateReport(result)}\n` +
+    `${performance.check.passed ? "PASS" : "FAIL"}: ` +
+    `${performance.check.name} — ${performance.check.details}\n` +
+    `Overall with performance: ${ready ? "READY" : "BLOCKED"}`;
   writeFileSync(join(outDir, "release-gate.txt"), textReport + "\n", "utf-8");
 
   // Print report to stdout
   console.log(textReport);
   console.log(`\nWrote release-gate.json and release-gate.txt to ${outDir}`);
 
-  if (!result.ready) {
+  if (!ready) {
     console.error("\nRelease gate BLOCKED. Fix failing checks before releasing.");
     process.exit(1);
   }

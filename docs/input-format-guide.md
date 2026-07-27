@@ -1,8 +1,8 @@
 # Input Format Guide
 
 **Document status:** Implementation reference  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
@@ -191,9 +191,12 @@ The `feature_value_semantics` field is **mandatory** and must be one of the foll
 |--------|-----------|-------|
 | CSV | `.csv` | Standard comma-separated |
 | TSV | `.tsv`, `.txt` | Tab-separated; preferred for bioinformatics |
-| Parquet | `.parquet` | Recommended for large datasets (>100k features) |
 | JSON | `.json` | Metadata only |
 | YAML | `.yaml`, `.yml` | Metadata only |
+
+Parquet is not accepted by the current file-reading tools. Convert it to CSV
+or TSV before ingestion; the server does not silently infer a decoder from the
+file extension.
 
 ---
 

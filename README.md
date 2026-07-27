@@ -28,6 +28,7 @@ flowchart LR
 
     subgraph MCP["TypeScript MCP Server"]
         Stdio["stdio JSON-RPC runtime"]
+        Http["Stateless Streamable HTTP\nPOST /mcp"]
         Tools["Read-only tool registry"]
         Resources["Audit resources\nschemas, docs, evidence"]
     end
@@ -46,8 +47,11 @@ flowchart LR
     end
 
     Clients --> Stdio
+    Clients --> Http
     Stdio --> Tools
     Stdio --> Resources
+    Http --> Tools
+    Http --> Resources
     Tools --> Ingestion
     Tools --> Design
     Tools --> QC
@@ -74,35 +78,44 @@ The released surface is intentionally bounded:
 - Builds `EpigenomicsFeatureResponsePacket` and `BioactivityPoDHandoffPacket` outputs
 - Exposes strict MCP tool input/output schemas, structured content, annotations, and read-only audit resources
 - Generates release evidence with SHA-256 checksums for schemas, golden outputs, benchmark manifests, validation docs, and npm pack metadata
+- Gates 10,000-feature performance using the real packet-validation and qualification engine
 
-## Release status
+## Release gates
 
-The current `0.1.0` release surface is audit-ready for the bounded processed-evidence qualification scope:
+The `0.2.0` release surface uses these deterministic gates for the bounded
+processed-evidence qualification scope:
 
-- `npm run typecheck` passes
-- `npm test` passes
-- `npm run smoke:mcp` passes
-- `npm run benchmark:gate` reports `READY`
-- `npm run release:evidence` writes checksummed audit evidence under `release-evidence/`
-- `npm run verify:evidence` verifies evidence freshness, checksums, package coverage, and MCP resource coverage
-- `.venv/bin/pytest tests/python -q` passes
-- `npm run verify:release` passes
+- `npm run lint` and `npm test` cover source quality and behavior
+- `npm run smoke:mcp` exercises both transports through the official MCP client
+- `npm run security:audit` requires zero production dependency vulnerabilities
+- `npm run eval:validate` checks the committed 10-case MCP evaluation set
+- `npm run benchmark:ci` checks golden outputs and the qualification performance budget
+- `npm run verify:evidence` verifies the post-commit release-evidence bundle
+- `.venv/bin/pytest tests/python -q` checks the metadata-only Python compatibility package
+- `npm run verify:release` composes the release gates
 
-The release gate remains a product-level audit-readiness status for this MCP boundary, not a claim of biological truth, regulatory acceptance, or downstream PoD/BMD validity.
+These are product-level readiness checks for this MCP boundary, not claims of biological truth, regulatory acceptance, or downstream PoD/BMD validity.
 
 ## Quickstart TL;DR
 
 ```bash
-npm install
+npm ci
 npm run build
 npm run smoke:mcp
-npm run benchmark:gate
-npm run release:evidence
-npm run verify:evidence
+npm run benchmark:ci
 npx epimcp serve
 ```
 
-Python package smoke checks are available for the small companion package:
+For local Streamable HTTP:
+
+```bash
+EPIMCP_MCP_PORT=8000 npm run mcp:serve:http
+# MCP endpoint: http://127.0.0.1:8000/mcp
+# Health endpoint: http://127.0.0.1:8000/health
+```
+
+The Python distribution is a metadata-only compatibility package. It is not a
+second server implementation:
 
 ```bash
 python -m venv .venv
@@ -113,7 +126,7 @@ python -m pip install -e .[dev]
 
 ## MCP public tools
 
-When running as an MCP server over stdio, the public tool surface includes:
+Over stdio or Streamable HTTP, the public tool surface includes:
 
 | Tool | Description |
 |------|-------------|
@@ -173,8 +186,13 @@ This writes:
 
 The evidence manifest records package/config versions, environment details, Git availability, release-gate status, npm pack dry-run metadata, and checksums for the committed audit inputs.
 Release evidence is generated from a clean source tree. For release commits, commit code/docs/config changes first, run `npm run release:evidence`, then commit the refreshed `release-evidence/` bundle.
+An evidence bundle generated for an older source revision or product version is
+intentionally rejected by `npm run verify:evidence`.
 
-The npm package includes the files backing all registered audit resources, including current schemas, validation docs, benchmark manifest, golden benchmark outputs, and the latest release evidence bundle.
+The npm package includes the files backing all registered audit resources,
+including current schemas, validation docs, synthetic and frozen-public
+benchmark inputs, golden outputs, the evaluation set, and the latest release
+evidence bundle.
 
 ## Public verification
 
@@ -191,8 +209,8 @@ Public audit verification should check both local commands and GitHub evidence:
 |--------|-------------------|---------------------------|
 | `Epigenomics MCP` | Processed epigenomic evidence qualification and handoff | This repo |
 | `Bioactivity-PoD MCP` | Point-of-departure and dose-response modelling | Downstream handoff consumer |
-| `Evidence Ingestion Study Registry MCP` | Evidence intake, provenance, and study packaging | Upstream or adjacent evidence source |
-| `Annotation/Ontology MCP` | Identifier, ontology, and mapping context | Integration surface for annotation enrichment |
+| `Evidence Ingestion Study Registry MCP` | Evidence intake, provenance, and study packaging | Planned upstream integration; no active connector is claimed in `0.2.0` |
+| `Annotation/Ontology MCP` | Identifier, ontology, and mapping context | Planned enrichment integration; local mapping contracts are active |
 | `ToxMCP Hub` | Suite control plane and contract index | Suite-level orchestration context |
 
 ## Project boundary
@@ -229,8 +247,10 @@ See [docs/validation-statement.md](./docs/validation-statement.md), [docs/tool-r
 - `src/qc/`: QC, missingness, variance, and confounding profilers
 - `schemas/current/`: Committed JSON Schema exports
 - `benchmarks/fixtures/synthetic/`: Synthetic release benchmark inputs
+- `benchmarks/fixtures/frozen_public/`: Checksummed, source-linked public-data excerpts
 - `benchmarks/expected/`: Golden benchmark outputs
 - `benchmark-results/`: Latest benchmark and release-gate reports
+- `evaluation.xml`: Ten stable, independently answerable MCP evaluation cases
 - `release-evidence/`: Latest checksummed audit evidence bundle
 - `docs/`: Boundary, validation, format, coordinate, confounding, and tool references
 - `tests/`: Vitest, contract, smoke, equivalence, and Python tests
@@ -259,10 +279,21 @@ npm run verify:release
 | `EPIMCP_MAX_FILE_BYTES` | `26214400` | Maximum file size for MCP file reads |
 | `EPIMCP_DEFAULT_ROW_LIMIT` | `1000` | Default `read_table` row page size |
 | `EPIMCP_MAX_ROW_LIMIT` | `5000` | Maximum `read_table` row page size |
+| `EPIMCP_MCP_HOST` | `127.0.0.1` | Streamable HTTP bind host |
+| `EPIMCP_MCP_PORT` | `8000` | Streamable HTTP port |
+| `EPIMCP_ALLOWED_HOSTS` | loopback hosts | Comma-separated accepted HTTP Host names; required for non-loopback binds |
+| `EPIMCP_ALLOWED_ORIGINS` | loopback origins | Comma-separated accepted browser Origin values |
+| `EPIMCP_AUTH_TOKEN` | unset | Bearer token; required for non-loopback binds |
+| `EPIMCP_MAX_HTTP_BODY_BYTES` | `1048576` | Maximum Streamable HTTP request body |
+| `EPIMCP_RATE_LIMIT_PER_MINUTE` | `120` | Per-client request limit |
+
+Remote HTTP binding is deliberately explicit. Set a non-loopback
+`EPIMCP_MCP_HOST`, a narrow `EPIMCP_ALLOWED_HOSTS` list, and
+`EPIMCP_AUTH_TOKEN`; terminate TLS at a trusted reverse proxy.
 
 ## Version and compatibility
 
-- Package version: `0.1.0`
+- Package version: `0.2.0`
 - Schema version: `0.1.0`
 - Policy version: `0.1.0`
 - Node.js: `>=20`

@@ -1,8 +1,8 @@
 # Scientific Scope
 
 **Document status:** Regulator-facing product boundary statement  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
@@ -32,7 +32,7 @@ Everything on the **upstream** side of this boundary (raw sequencing, alignment,
 
 ---
 
-## 2. Assay Modalities Supported in v0.1
+## 2. Assay Modalities Supported in v0.2
 
 ### 2.1 Direct support (no feature flags)
 
@@ -45,29 +45,29 @@ Everything on the **upstream** side of this boundary (raw sequencing, alignment,
 
 ### 2.2 Reserved / feature-flagged support
 
-| Modality | Feature class | v0.1 status |
+| Modality | Feature class | v0.2 status |
 |----------|--------------|-------------|
 | ATAC-seq | `chromatin_accessibility_feature` | Reserved in contracts; generic region table path usable with explicit semantics |
 | ChIP-seq / CUT&Tag / CUT&RUN | `histone_mark_feature` | Reserved in contracts; generic region table path usable with explicit semantics |
-| miRNA expression | `mirna_expression_feature` | Behind feature flag; generic region table path preferred in v0.1 |
-| lncRNA / ncRNA expression | `ncrna_expression_feature` | Deferred to v0.2; boundary with Transcriptomics MCP documented |
+| miRNA expression | `mirna_expression_feature` | Behind feature flag; generic region table path preferred in v0.2 |
+| lncRNA / ncRNA expression | `ncrna_expression_feature` | Deferred; boundary with Transcriptomics MCP documented |
 
 ### 2.3 What "generic region table path" means
 
-v0.1 ships a single ingestion path for any coordinate-bearing processed table **when** the caller explicitly declares:
+v0.2 ships a single ingestion path for any coordinate-bearing processed table **when** the caller explicitly declares:
 
 - `feature_value_semantics` — what the numeric column means (e.g., `rpm`, `normalised_signal`, `peak_score`)
 - `genome_build` — e.g., `GRCh38`, `mm10`
 - `coordinate_system` — `0-based-half-open` or `1-based-closed`
 - `feature_class` — `generic_region_feature`
 
-This path is intentionally generic to avoid premature specialisation. Assay-specific adapters (ATAC peak-caller outputs, ChIP broadPeak/narrowPeak, miRNA identifier mapping) are planned for v0.2.
+This path is intentionally generic to avoid premature specialisation. Assay-specific adapters (ATAC peak-caller outputs, ChIP broadPeak/narrowPeak, miRNA identifier mapping) are not part of v0.2.
 
 ---
 
 ## 3. What Is Not Inferred
 
-Epigenomics MCP v0.1 makes **no inference** about the following:
+Epigenomics MCP v0.2 makes **no inference** about the following:
 
 1. **Causality** — Correlation between an epigenomic change and a phenotype is preserved as measured evidence only.
 2. **Regulatory conclusion** — The service does not decide whether a change is adverse, beneficial, or irrelevant.

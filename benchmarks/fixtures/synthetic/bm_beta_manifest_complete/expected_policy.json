@@ -2,8 +2,8 @@
   "fixtureName": "bm_beta_manifest_complete",
   "description": "Happy-path benchmark: complete Illumina EPIC beta-value manifest with valid coordinates, adequate replicates, declared cell composition, concurrent cytotoxicity data, and low missingness.",
   "expectedSchemaValid": true,
-  "expectedQualificationStatus": "accepted_for_pod",
-  "expectedWarnings": [],
+  "expectedQualificationStatus": "accepted_with_caveats",
+  "expectedWarnings": ["EPIW005_BELOW_PREFERRED_DOSE_GROUPS"],
   "expectedBlocksDownstream": false,
   "expectedHandoffReady": true
 }

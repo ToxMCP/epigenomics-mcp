@@ -1,0 +1,80 @@
+{
+  "designId": "GSE67005-low-dose",
+  "studyId": "GSE67005",
+  "species": "Homo sapiens",
+  "doseGroups": [
+    {
+      "doseGroupId": "control",
+      "doseValue": 0,
+      "doseUnit": "µM",
+      "timepointHours": 120
+    },
+    {
+      "doseGroupId": "low-dose",
+      "doseValue": 0.3,
+      "doseUnit": "µM",
+      "timepointHours": 120
+    }
+  ],
+  "samples": [
+    {
+      "sampleId": "562954",
+      "doseGroupId": "control",
+      "replicateIndex": 1,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "DMSO vehicle"
+    },
+    {
+      "sampleId": "563005",
+      "doseGroupId": "control",
+      "replicateIndex": 2,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "DMSO vehicle"
+    },
+    {
+      "sampleId": "563268",
+      "doseGroupId": "control",
+      "replicateIndex": 3,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "controlFlag": true,
+      "treatment": "DMSO vehicle"
+    },
+    {
+      "sampleId": "562919",
+      "doseGroupId": "low-dose",
+      "replicateIndex": 1,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "aflatoxin B1"
+    },
+    {
+      "sampleId": "563033",
+      "doseGroupId": "low-dose",
+      "replicateIndex": 2,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "aflatoxin B1"
+    },
+    {
+      "sampleId": "563365",
+      "doseGroupId": "low-dose",
+      "replicateIndex": 3,
+      "replicateType": "biological",
+      "cellType": "primary human hepatocytes",
+      "species": "Homo sapiens",
+      "treatment": "aflatoxin B1"
+    }
+  ],
+  "hasControls": true,
+  "minReplicatesPerGroup": 3
+}

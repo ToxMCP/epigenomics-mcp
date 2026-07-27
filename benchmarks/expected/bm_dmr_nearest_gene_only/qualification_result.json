@@ -16,18 +16,30 @@
           "featureIds": [
             "dmr_chr1_1000000_1000500"
           ]
+        },
+        {
+          "warningCode": "EPIW007_NEAREST_GENE_ONLY",
+          "severity": "warning",
+          "message": "Feature dmr_chr1_1000000_1000500 mapped by nearest-gene only; low-confidence contextual linkage, suppress pathway rollup",
+          "category": "mapping_proximity",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_chr1_1000000_1000500"
+          ]
         }
       ],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown",
+      "mappedGeneIds": [
+        "ENSG_DEMO_001"
+      ],
+      "mappingConfidence": "low",
+      "mappingMethod": "nearest_gene",
       "explainability": {
         "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature dmr_chr1_1000000_1000500 passed all blocking rules but carries 1 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "reasonTemplate": "Feature dmr_chr1_1000000_1000500 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
         "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
         "reviewRequired": false,
         "policyReference": "warning_accumulation",
-        "observedValue": "1"
+        "observedValue": "2"
       }
     },
     {
@@ -43,18 +55,30 @@
           "featureIds": [
             "dmr_chr2_500000_500600"
           ]
+        },
+        {
+          "warningCode": "EPIW007_NEAREST_GENE_ONLY",
+          "severity": "warning",
+          "message": "Feature dmr_chr2_500000_500600 mapped by nearest-gene only; low-confidence contextual linkage, suppress pathway rollup",
+          "category": "mapping_proximity",
+          "blocksDownstream": false,
+          "featureIds": [
+            "dmr_chr2_500000_500600"
+          ]
         }
       ],
-      "mappedGeneIds": [],
-      "mappingConfidence": "none",
-      "mappingMethod": "unknown",
+      "mappedGeneIds": [
+        "ENSG_DEMO_002"
+      ],
+      "mappingConfidence": "low",
+      "mappingMethod": "nearest_gene",
       "explainability": {
         "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature dmr_chr2_500000_500600 passed all blocking rules but carries 1 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "reasonTemplate": "Feature dmr_chr2_500000_500600 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
         "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
         "reviewRequired": false,
         "policyReference": "warning_accumulation",
-        "observedValue": "1"
+        "observedValue": "2"
       }
     }
   ],

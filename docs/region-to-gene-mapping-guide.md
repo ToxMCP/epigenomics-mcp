@@ -1,8 +1,8 @@
 # Region-to-Gene Mapping Guide
 
 **Document status:** Regulator-facing mapping policy  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 

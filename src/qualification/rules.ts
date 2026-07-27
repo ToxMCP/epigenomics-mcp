@@ -9,7 +9,10 @@ import { QualificationStatusSchema } from "../contracts/qualification.js";
 import type { QualificationPolicy, ConfoundingBlockLevel } from "./policy.js";
 import { shouldBlockForConfounding } from "./policy.js";
 import type { GenomeBuildValidationResult } from "../validators/genome_build.js";
-import type { MissingnessProfile } from "../qc/missingness.js";
+import type {
+  FeatureMissingness,
+  MissingnessProfile,
+} from "../qc/missingness.js";
 import {
   RULE_CODES,
   buildExplainability,
@@ -42,6 +45,7 @@ export interface FeatureRuleContext {
   policy: QualificationPolicy;
   buildValidation: GenomeBuildValidationResult;
   missingnessProfile?: MissingnessProfile;
+  missingnessByFeature?: ReadonlyMap<string, FeatureMissingness>;
   cellCompositionResult?: ConfoundingAssessment;
   cytotoxicityResult?: ConfoundingAssessment;
   stressResponseResult?: ConfoundingAssessment;
@@ -114,7 +118,15 @@ function countNonZeroDoseGroups(design: ExperimentalDesign): number {
 function getFeatureMissingness(
   feature: EpigenomicFeature,
   profile: MissingnessProfile | undefined,
+  byFeature: ReadonlyMap<string, FeatureMissingness> | undefined,
 ): { missingFraction: number; band: string } | undefined {
+  const indexed = byFeature?.get(feature.featureId);
+  if (indexed) {
+    return {
+      missingFraction: indexed.missingFraction,
+      band: indexed.band,
+    };
+  }
   if (profile) {
     const found = profile.perFeatureMissingness.find(
       (m) => m.featureId === feature.featureId,
@@ -187,6 +199,7 @@ export function qualifyFeature(
     policy,
     buildValidation,
     missingnessProfile,
+    missingnessByFeature,
     cellCompositionResult,
     cytotoxicityResult,
     stressResponseResult,
@@ -237,7 +250,7 @@ export function qualifyFeature(
     hasRegion &&
     buildValidation.errors.length > 0 &&
     build !== undefined &&
-    (!policy.coordinate.allowedGenomeBuilds.includes(build as any) ||
+    (!policy.coordinate.allowedGenomeBuilds.some((allowed) => allowed === build) ||
       buildValidation.mixedBuildDetected)
   ) {
     status = "excluded_coordinate_ambiguity";
@@ -430,7 +443,11 @@ export function qualifyFeature(
   }
 
   // ── Rule 5: High missingness ──
-  const featureMissingness = getFeatureMissingness(feature, missingnessProfile);
+  const featureMissingness = getFeatureMissingness(
+    feature,
+    missingnessProfile,
+    missingnessByFeature,
+  );
   const missingnessHigh =
     featureMissingness !== undefined &&
     featureMissingness.missingFraction >= policy.missingness.exclusionThreshold;
@@ -554,6 +571,25 @@ export function qualifyFeature(
   for (const assessment of confoundingAssessments) {
     if (!assessment.result) continue;
     const confStatus = assessment.result.status;
+
+    for (const warning of assessment.result.warnings) {
+      const contextualWarning = {
+        ...warning,
+        featureIds:
+          warning.featureIds && warning.featureIds.length > 0
+            ? warning.featureIds
+            : [feature.featureId],
+      };
+      const duplicate = warnings.some(
+        (existing) =>
+          existing.warningCode === contextualWarning.warningCode &&
+          existing.message === contextualWarning.message &&
+          existing.category === contextualWarning.category,
+      );
+      if (!duplicate) {
+        warnings.push(contextualWarning);
+      }
+    }
 
     if (confStatus === "no_context_available") {
       if (policy.confounding.blockOnMissingContext) {

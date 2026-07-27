@@ -54,6 +54,29 @@
       }
     }
   ],
+  "mappingPayloads": {
+    "regionToGeneMappings": [
+      {
+        "featureId": "dmr_chr1_1000000_1000500",
+        "geneIds": ["ENSG_DEMO_001"],
+        "method": "nearest_gene",
+        "confidence": "low",
+        "distanceBp": 1200,
+        "pathwayRollupAllowed": false,
+        "downstreamUseRule": "block_pathway_rollup"
+      },
+      {
+        "featureId": "dmr_chr2_500000_500600",
+        "geneIds": ["ENSG_DEMO_002"],
+        "method": "nearest_gene",
+        "confidence": "low",
+        "distanceBp": 8500,
+        "pathwayRollupAllowed": false,
+        "downstreamUseRule": "block_pathway_rollup"
+      }
+    ],
+    "externalDatabaseMappings": []
+  },
   "design": {
     "designId": "demo-dmr-design-001",
     "studyId": "demo-dmr-study-001",
@@ -102,7 +125,7 @@
     "acceptedCount": 2,
     "excludedCount": 0,
     "exploratoryCount": 0,
-    "caveatCount": 0
+    "caveatCount": 2
   },
   "qcReportRef": "qc-report-001",
   "warnings": [],

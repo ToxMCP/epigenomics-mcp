@@ -248,7 +248,10 @@ function main() {
   const packageFiles = packFileSet();
   const requiredPackagePaths = [
     ...getRegisteredAuditResources().map((resource) => resource.path),
-    ...listFilesRecursively("benchmarks/expected").map(repoRelative),
+    ...RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES.flatMap((path) =>
+      listFilesRecursively(path).map(repoRelative),
+    ),
+    ...RELEASE_EVIDENCE_CHECKSUM_FILES,
   ];
   assertPathSetContains(
     packageFiles,

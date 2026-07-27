@@ -2,9 +2,9 @@
   "fixtureName": "bm_summary_contrast_only",
   "description": "Feature values are summary contrasts rather than per-sample measurements. Schema validation passes because values are non-null numbers, but the data is not dose-response ready.",
   "expectedSchemaValid": true,
-  "expectedQualificationStatus": "exploratory_only",
-  "expectedWarnings": [],
-  "expectedBlocksDownstream": false,
+  "expectedQualificationStatus": "excluded_qc_failure",
+  "expectedWarnings": ["EPIE002_EXCESSIVE_MISSINGNESS"],
+  "expectedBlocksDownstream": true,
   "expectedHandoffReady": false,
-  "note": "Contrast summaries cannot be used for per-sample dose-response curve fitting."
+  "note": "Contrast keys do not match design sample IDs, so per-sample coverage is 0% and the fail-closed missingness gate excludes both features."
 }

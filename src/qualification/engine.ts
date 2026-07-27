@@ -2,13 +2,17 @@ import {
   type FeatureQualification,
   type QualificationWarning,
 } from "../contracts/qualification.js";
-import { EpigenomicsFeatureResponsePacketSchema } from "../contracts/packets.js";
+import {
+  EpigenomicsFeatureResponsePacketSchema,
+  type EpigenomicsFeatureResponsePacket,
+} from "../contracts/packets.js";
 import { validateGenomeBuilds } from "../validators/genome_build.js";
 import { createDefaultPolicy } from "./policy.js";
 import { profileMissingness } from "../qc/missingness.js";
-import { qualifyFeature } from "./rules.js";
+import { qualifyFeature, type FeatureMappingInfo } from "./rules.js";
 import { guardClaims } from "./claim_guards.js";
 import { summariseExplainability } from "./explainability.js";
+import type { QualificationContext } from "./context.js";
 
 export interface QualificationResult {
   qualifiedCount: number;
@@ -31,6 +35,63 @@ export interface QualificationResult {
   };
 }
 
+const MAPPING_CONFIDENCE_RANK = {
+  none: 0,
+  low: 1,
+  medium: 2,
+  high: 3,
+} as const;
+
+/**
+ * Collapse the packet's separated mapping payloads into the conservative
+ * per-feature view consumed by qualification rules.
+ *
+ * Multiple mapping methods are surfaced as `multiple_methods`; the lowest
+ * declared confidence is retained so a stronger source cannot silently
+ * upgrade weaker linked targets. An explicit unknown-target mapping is treated
+ * as ambiguous and therefore fails closed in the mapping rule.
+ */
+function indexMappingPayloads(
+  packet: EpigenomicsFeatureResponsePacket,
+): Map<string, FeatureMappingInfo> {
+  const candidates = [
+    ...(packet.mappingPayloads?.regionToGeneMappings ?? []),
+    ...(packet.mappingPayloads?.externalDatabaseMappings ?? []),
+  ];
+  const grouped = new Map<string, typeof candidates>();
+
+  for (const candidate of candidates) {
+    const existing = grouped.get(candidate.featureId) ?? [];
+    existing.push(candidate);
+    grouped.set(candidate.featureId, existing);
+  }
+
+  const indexed = new Map<string, FeatureMappingInfo>();
+  for (const [featureId, mappings] of grouped) {
+    const methods = [...new Set(mappings.map((mapping) => mapping.method))].sort();
+    const mappedGeneIds = [
+      ...new Set(mappings.flatMap((mapping) => mapping.geneIds)),
+    ].sort();
+    const mappingConfidence = mappings.reduce<FeatureMappingInfo["mappingConfidence"]>(
+      (lowest, mapping) =>
+        MAPPING_CONFIDENCE_RANK[mapping.confidence] <
+        MAPPING_CONFIDENCE_RANK[lowest]
+          ? mapping.confidence
+          : lowest,
+      "high",
+    );
+
+    indexed.set(featureId, {
+      mappedGeneIds,
+      mappingConfidence,
+      mappingMethod: methods.length === 1 ? methods[0] : "multiple_methods",
+      ambiguityDetected: methods.includes("unknown_target_gene"),
+    });
+  }
+
+  return indexed;
+}
+
 /**
  * Qualify epigenomic features for downstream Bioactivity-PoD use.
  * Fail-closed: ambiguous or under-validated features are excluded.
@@ -39,7 +100,10 @@ export interface QualificationResult {
  * precedence, policy thresholds, and context inputs are applied
  * deterministically.
  */
-export function qualifyFeatures(packet: unknown): QualificationResult {
+export function qualifyFeatures(
+  packet: unknown,
+  context: QualificationContext = {},
+): QualificationResult {
   const parseResult = EpigenomicsFeatureResponsePacketSchema.safeParse(packet);
   if (!parseResult.success) {
     return {
@@ -119,6 +183,13 @@ export function qualifyFeatures(packet: unknown): QualificationResult {
   );
 
   const qualifications: FeatureQualification[] = [];
+  const missingnessByFeature = new Map(
+    missingnessProfile.perFeatureMissingness.map((metric) => [
+      metric.featureId,
+      metric,
+    ]),
+  );
+  const mappingByFeature = indexMappingPayloads(validated);
 
   for (const feature of validated.features) {
     const ruleResult = qualifyFeature(feature, {
@@ -126,6 +197,10 @@ export function qualifyFeatures(packet: unknown): QualificationResult {
       policy,
       buildValidation,
       missingnessProfile,
+      missingnessByFeature,
+      mappingInfo: mappingByFeature.get(feature.featureId),
+      cellCompositionResult: context.cellCompositionResult,
+      cytotoxicityResult: context.cytotoxicityResult,
     });
 
     qualifications.push(ruleResult.qualification);

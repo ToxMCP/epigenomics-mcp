@@ -13,33 +13,44 @@ import { profileQc } from "../qc/profiler.js";
 import {
   profileMissingness,
   MissingnessPolicySchema,
+  MissingnessProfileSchema,
 } from "../qc/missingness.js";
 import {
   ingestCellComposition,
   CellCompositionProfileSchema,
+  SampleCellCompositionSchema,
 } from "../qc/cell_composition.js";
 import {
   ingestCytotoxicity,
+  CytotoxicityContextEntrySchema,
   CytotoxicityProfileSchema,
 } from "../qc/cytotoxicity.js";
-
-
-import { summarizeByGroup } from "../summarization/group_summary.js";
+import { qualificationContextFromProfiles } from "../qualification/context.js";
+import {
+  GroupSummaryPacketSchema,
+  summarizeByGroup,
+} from "../summarization/group_summary.js";
 import { readTableFile, ReadTableResultSchema } from "../ingestion/csv_reader.js";
 import { readDesignTable, ReadDesignResultSchema } from "../ingestion/design_reader.js";
-import { ingestFeatureTable } from "../ingestion/feature_table.js";
+import {
+  ingestFeatureTable,
+  IngestFeatureTableOptionsObjectSchema,
+} from "../ingestion/feature_table.js";
 import { generateQcReport } from "../reports/qc_report.js";
 import { EpigenomicsFeatureResponsePacketSchema } from "../contracts/packets.js";
 import { ExperimentalDesignSchema } from "../contracts/design.js";
 import { QcProfileSchema } from "../contracts/qc.js";
-import { QualificationWarningSchema } from "../contracts/qualification.js";
+import {
+  FeatureQualificationSchema,
+  QualificationWarningSchema,
+} from "../contracts/qualification.js";
 import { DatasetProvenanceSchema } from "../contracts/provenance.js";
 import {
   BatchCoordinateConversionResultSchema,
+  CoordinateConversionInputSchema,
 } from "../contracts/coordinate_conversion.js";
-import {
-  normalizeCoordinateRecords,
-} from "../coordinate_mapping/normalise.js";
+import { normalizeCoordinateRecords } from "../coordinate_mapping/normalise.js";
+import { CoordinateSystemDeclarationSchema } from "../validators/coordinate_validator.js";
 
 // ---------------------------------------------------------------------------
 // Shared output envelope
@@ -177,162 +188,364 @@ function readTableFailureResult(error: string): z.infer<typeof ReadTableResultSc
 // Tool I/O schemas
 // ---------------------------------------------------------------------------
 
-export const HealthResultSchema = z.object({
-  status: z.literal("ok"),
-  version: z.string(),
-  timestamp: z.string().datetime(),
-});
+export const HealthResultSchema = z
+  .object({
+    status: z.literal("ok").describe("Current server health state"),
+    version: z.string().describe("Epigenomics MCP package version"),
+    timestamp: z.string().datetime().describe("UTC health-check timestamp"),
+  })
+  .strict();
 
-export const IngestDatasetOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  modality: z.string().min(1),
-  featuresPath: z.string().min(1),
-  designPath: z.string().min(1),
-  provenancePath: z.string().min(1),
-});
+export const IngestDatasetOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Stable identifier for the input dataset"),
+    modality: IngestFeatureTableOptionsObjectSchema.shape.modality
+      .describe("Epigenomic assay modality, for example dna_methylation_array"),
+    tableOptions: IngestFeatureTableOptionsObjectSchema.omit({
+      tableId: true,
+      modality: true,
+      designSampleIds: true,
+      readTableOptions: true,
+    }).describe(
+      "Explicit feature class, signal semantics, table shape, sample columns, and coordinate mappings used to canonicalize the table",
+    ),
+    featuresPath: z
+      .string()
+      .min(1)
+      .describe("CSV or TSV feature table path under an allowed file root"),
+    designPath: z
+      .string()
+      .min(1)
+      .describe("ExperimentalDesign JSON path under an allowed file root"),
+    provenancePath: z
+      .string()
+      .min(1)
+      .describe("DatasetProvenance JSON path under an allowed file root"),
+  })
+  .strict();
 
-export const IngestDatasetResultSchema = z.object({
-  datasetId: z.string(),
-  ingested: z.boolean(),
-  featureCount: z.number().int(),
-  errors: z.array(z.string()).default([]),
-  warnings: z.array(z.string()).default([]),
-});
+export const IngestDatasetResultSchema = z
+  .object({
+    datasetId: z.string().describe("Dataset identifier supplied by the caller"),
+    ingested: z.boolean().describe("True when all input evidence passed ingestion checks"),
+    featureCount: z.number().int().nonnegative().describe("Parsed feature count"),
+    errors: z.array(z.string()).default([]).describe("Blocking ingestion errors"),
+    warnings: z.array(z.string()).default([]).describe("Non-blocking ingestion warnings"),
+  })
+  .strict();
 
-export const ValidateDesignOptionsSchema = z.object({
-  design: z.record(z.string(), z.unknown()),
-});
+export const ValidateDesignOptionsSchema = z
+  .object({
+    design: z
+      .record(z.string(), z.unknown())
+      .describe("Candidate ExperimentalDesign object to validate"),
+  })
+  .strict();
 
-export const ValidateDesignResultSchema = z.object({
-  valid: z.boolean(),
-  schemaValid: z.boolean(),
-  errors: z.array(z.string()),
-  warnings: z.array(z.string()),
-});
+export const ValidateDesignResultSchema = z
+  .object({
+    valid: z.boolean().describe("True when schema and dose-response checks pass"),
+    schemaValid: z.boolean().describe("True when the design contract validates"),
+    errors: z.array(z.string()).describe("Blocking design errors"),
+    warnings: z.array(z.string()).describe("Non-blocking design warnings"),
+  })
+  .strict();
 
-export const QualifyFeaturesOptionsSchema = z.object({
-  packet: z.record(z.string(), z.unknown()),
-});
+export const QualifyFeaturesOptionsSchema = z
+  .object({
+    packet: z
+      .record(z.string(), z.unknown())
+      .optional()
+      .describe("EpigenomicsFeatureResponsePacket candidate to qualify"),
+    packetPath: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("JSON packet path under an allowed file root; use instead of packet"),
+    cellCompositionProfile: CellCompositionProfileSchema.optional().describe(
+      "Optional output from ingest_cell_composition to include in qualification",
+    ),
+    cytotoxicityProfile: CytotoxicityProfileSchema.optional().describe(
+      "Optional output from ingest_cytotoxicity to include in qualification",
+    ),
+  })
+  .strict();
 
-export const QualifyFeaturesResultSchema = z.record(z.string(), z.unknown());
+export const QualifyFeaturesResultSchema = z
+  .object({
+    qualifiedCount: z.number().int().nonnegative().describe("Features accepted for PoD use"),
+    excludedCount: z.number().int().nonnegative().describe("Features excluded from PoD use"),
+    warnings: z.array(QualificationWarningSchema).describe("Dataset-level qualification warnings"),
+    qualifications: z
+      .array(FeatureQualificationSchema)
+      .optional()
+      .describe("Per-feature qualification decisions for a valid packet"),
+    claimGuardResult: z
+      .object({
+        persistenceStatus: z.enum(["persistent", "transient", "not_assessed", "unknown"]),
+        reversibilityStatus: z.enum(["reversible", "irreversible", "not_assessed", "unknown"]),
+        heritabilityClaim: z.enum(["heritable", "transgenerational", "none", "not_claimed"]),
+      })
+      .strict()
+      .optional()
+      .describe("Guarded temporal and inheritance claims"),
+    explainabilitySummary: z
+      .object({
+        uniqueRuleCodes: z.array(z.string()),
+        ruleCodeCounts: z.record(z.string(), z.number().int().nonnegative()),
+        reviewRequiredCount: z.number().int().nonnegative(),
+        featuresWithRemediation: z.number().int().nonnegative(),
+      })
+      .strict()
+      .optional()
+      .describe("Aggregate rule and remediation counts"),
+  })
+  .strict();
 
-export const GenerateHandoffOptionsSchema = z.object({
-  packet: z.record(z.string(), z.unknown()),
-});
+export const GenerateHandoffOptionsSchema = z
+  .object({
+    packet: z
+      .record(z.string(), z.unknown())
+      .optional()
+      .describe("Qualified EpigenomicsFeatureResponsePacket candidate"),
+    packetPath: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("JSON packet path under an allowed file root; use instead of packet"),
+    cellCompositionProfile: CellCompositionProfileSchema.optional().describe(
+      "Optional output from ingest_cell_composition to include in handoff qualification",
+    ),
+    cytotoxicityProfile: CytotoxicityProfileSchema.optional().describe(
+      "Optional output from ingest_cytotoxicity to include in handoff qualification",
+    ),
+  })
+  .strict();
 
-export const GenerateHandoffResultSchema = z.object({
-  handoffId: z.string(),
-  qualifiedFeatureCount: z.number().int(),
-  readyForPod: z.boolean(),
-});
+export const GenerateHandoffResultSchema = z
+  .object({
+    handoffId: z.string().describe("Generated Bioactivity-PoD handoff identifier"),
+    qualifiedFeatureCount: z.number().int().nonnegative(),
+    readyForPod: z.boolean().describe("Whether the handoff has a usable qualified subset"),
+  })
+  .strict();
 
-export const ValidateCoordinatesOptionsSchema = z.object({
-  declarations: z.array(z.record(z.string(), z.unknown())),
-});
+export const ValidateCoordinatesOptionsSchema = z
+  .object({
+    declarations: z
+      .array(CoordinateSystemDeclarationSchema)
+      .describe("Feature coordinate-system declarations to validate"),
+  })
+  .strict();
 
-export const ValidateCoordinatesResultSchema = z.object({
-  valid: z.boolean(),
-  errors: z.array(z.string()),
-  warnings: z.array(z.string()),
-});
+export const ValidateCoordinatesResultSchema = z
+  .object({
+    valid: z.boolean().describe("True when every declaration is acceptable"),
+    errors: z.array(z.string()).describe("Blocking coordinate-semantics errors"),
+    warnings: z.array(z.string()).describe("Non-blocking coordinate warnings"),
+  })
+  .strict();
 
-export const ProfileQcOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  features: z.array(z.record(z.string(), z.unknown())),
-  design: z.record(z.string(), z.unknown()),
-});
+const QcFeatureInputSchema = z
+  .object({
+    featureId: z.string().min(1).describe("Stable feature identifier"),
+    values: z
+      .record(z.string().min(1), z.number().or(z.null()))
+      .describe("Sample identifier to numeric value; null denotes missingness"),
+  })
+  .passthrough()
+  .describe("Feature fields required by QC profiling; other feature metadata is preserved");
 
-export const ProfileQcResultSchema = z.object({
-  profile: QcProfileSchema,
-  pass: z.boolean(),
-});
+export const ProfileQcOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Dataset identifier"),
+    features: z
+      .array(QcFeatureInputSchema)
+      .describe("Epigenomic features containing featureId and sample-value mappings"),
+    design: ExperimentalDesignSchema.describe("Validated experimental design"),
+  })
+  .strict();
 
-export const ProfileMissingnessOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  features: z.array(z.record(z.string(), z.unknown())),
-  design: z.record(z.string(), z.unknown()),
-  policy: MissingnessPolicySchema.optional(),
-});
+export const ProfileQcResultSchema = z
+  .object({
+    profile: QcProfileSchema,
+    pass: z.boolean().describe("Whether the deterministic QC profile passed"),
+  })
+  .strict();
 
-export const IngestCellCompositionOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  samples: z.array(z.record(z.string(), z.unknown())),
-  design: z.record(z.string(), z.unknown()).optional(),
-  options: z
-    .object({
-      fractionTolerance: z.number().optional(),
-      shiftThreshold: z.number().optional(),
-    })
-    .optional(),
-});
+export const ProfileMissingnessOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Dataset identifier"),
+    features: z
+      .array(QcFeatureInputSchema)
+      .describe("Epigenomic features containing featureId and sample-value mappings"),
+    design: ExperimentalDesignSchema.describe("Validated experimental design"),
+    policy: MissingnessPolicySchema.optional().describe("Optional threshold policy override"),
+  })
+  .strict();
 
-export const IngestCytotoxicityOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  entries: z.array(z.record(z.string(), z.unknown())),
-  design: z.record(z.string(), z.unknown()).optional(),
-  options: z
-    .object({
-      viabilityThreshold: z.number().optional(),
-      requireMeasurements: z.boolean().optional(),
-    })
-    .optional(),
-});
+export const IngestCellCompositionOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Dataset identifier"),
+    samples: z
+      .array(SampleCellCompositionSchema)
+      .describe("Per-sample cell-composition evidence"),
+    design: ExperimentalDesignSchema.optional().describe(
+      "Design used to detect dose-group composition shifts",
+    ),
+    options: z
+      .object({
+        fractionTolerance: z.number().min(0).max(1).optional(),
+        shiftThreshold: z.number().min(0).max(1).optional(),
+      })
+      .strict()
+      .optional()
+      .describe("Optional fraction validation and shift thresholds"),
+  })
+  .strict();
 
-export const SummarizeByGroupOptionsSchema = z.object({
-  packet: z.record(z.string(), z.unknown()),
-  includeSampleRefs: z.boolean().optional(),
-});
+export const IngestCytotoxicityOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Dataset identifier"),
+    entries: z
+      .array(CytotoxicityContextEntrySchema)
+      .describe("Cytotoxicity or companion-assay evidence"),
+    design: ExperimentalDesignSchema.optional().describe(
+      "Design used to assess dose and timepoint alignment",
+    ),
+    options: z
+      .object({
+        viabilityThreshold: z.number().min(0).optional(),
+        requireMeasurements: z.boolean().optional(),
+      })
+      .strict()
+      .optional()
+      .describe("Optional cytotoxicity ingestion policy"),
+  })
+  .strict();
 
-export const SummarizeByGroupResultSchema = z.object({
-  packet: z.record(z.string(), z.unknown()),
-  featureCount: z.number().int(),
-  groupCount: z.number().int(),
-  totalSummaries: z.number().int(),
-});
+export const SummarizeByGroupOptionsSchema = z
+  .object({
+    packet: EpigenomicsFeatureResponsePacketSchema.optional().describe(
+      "Validated packet whose feature values will be summarized by dose group",
+    ),
+    packetPath: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("JSON packet path under an allowed file root; use instead of packet"),
+    includeSampleRefs: z
+      .boolean()
+      .default(false)
+      .describe("Include contributing sample identifiers in summaries"),
+  })
+  .strict();
 
-export const ReadTableMcpOptionsSchema = z.object({
-  filePath: z.string().min(1),
-  options: z
-    .object({
-      delimiter: z.enum([",", "\t", ";", "|"]).optional(),
-      encoding: z.enum(["utf-8", "utf-16le", "latin1", "ascii"]).optional(),
-      fallbackEncodings: z.array(z.enum(["utf-8", "utf-16le", "latin1", "ascii"])).optional(),
-      headerRowIndex: z.number().int().nonnegative().optional(),
-      offset: z.number().int().nonnegative().optional(),
-      limit: z.number().int().positive().optional(),
-    })
-    .optional(),
-});
+function resolvePacketInput(
+  packet: unknown,
+  packetPath: string | undefined,
+  config: Config,
+): { ok: true; value: unknown } | { ok: false; error: string } {
+  if ((packet === undefined) === (packetPath === undefined)) {
+    return {
+      ok: false,
+      error: "Provide exactly one of packet or packetPath",
+    };
+  }
+  if (packetPath !== undefined) {
+    const loaded = readMcpJsonFile(packetPath, config);
+    return loaded.ok
+      ? { ok: true, value: loaded.value }
+      : { ok: false, error: loaded.error };
+  }
+  return { ok: true, value: packet };
+}
 
-export const ReadDesignOptionsSchema = z.object({
-  filePath: z.string().min(1),
-  options: z.object({
-    designId: z.string().min(1),
-    studyId: z.string().min(1).optional(),
-    species: z.string().min(1),
-    columnMapping: z.record(z.string(), z.string()).optional(),
-    readTableOptions: z.record(z.string(), z.unknown()).optional(),
-  }),
-});
+export const SummarizeByGroupResultSchema = z
+  .object({
+    packet: GroupSummaryPacketSchema,
+    featureCount: z.number().int().nonnegative(),
+    groupCount: z.number().int().nonnegative(),
+    totalSummaries: z.number().int().nonnegative(),
+  })
+  .strict();
 
-export const GenerateQcReportOptionsSchema = z.object({
-  datasetId: z.string().min(1),
-  profile: z.record(z.string(), z.unknown()),
-  warnings: z.array(z.record(z.string(), z.unknown())).default([]),
-});
+const TextEncodingSchema = z.enum(["utf-8", "utf-16le", "latin1", "ascii"]);
 
-export const GenerateQcReportResultSchema = z.object({
-  reportId: z.string(),
-  datasetId: z.string(),
-  generatedAt: z.string().datetime(),
-  profile: z.record(z.string(), z.unknown()),
-  warnings: z.array(z.record(z.string(), z.unknown())),
-  conclusion: z.string(),
-});
+export const ReadTableMcpOptionsSchema = z
+  .object({
+    filePath: z
+      .string()
+      .min(1)
+      .describe("Delimited text file path under an allowed file root"),
+    options: z
+      .object({
+        delimiter: z.enum([",", "\t", ";", "|"]).optional(),
+        encoding: TextEncodingSchema.optional(),
+        fallbackEncodings: z.array(TextEncodingSchema).optional(),
+        headerRowIndex: z.number().int().nonnegative().optional(),
+        offset: z.number().int().nonnegative().default(0).describe("Rows to skip"),
+        limit: z.number().int().positive().optional().describe("Maximum rows to return"),
+      })
+      .strict()
+      .optional()
+      .describe("Parsing and pagination options"),
+  })
+  .strict();
 
-export const ConvertCoordinatesOptionsSchema = z.object({
-  records: z.array(z.record(z.string(), z.unknown())),
-});
+export const ReadDesignOptionsSchema = z
+  .object({
+    filePath: z
+      .string()
+      .min(1)
+      .describe("Delimited design table path under an allowed file root"),
+    options: z
+      .object({
+        designId: z.string().min(1).describe("Stable output design identifier"),
+        studyId: z.string().min(1).optional(),
+        species: z.string().min(1).describe("Species name applied to design samples"),
+        columnMapping: z
+          .record(z.string(), z.string())
+          .optional()
+          .describe("Source-to-contract column name mapping"),
+        readTableOptions: z
+          .record(z.string(), z.unknown())
+          .optional()
+          .describe("Low-level delimited-table reader options"),
+      })
+      .strict(),
+  })
+  .strict();
+
+export const GenerateQcReportOptionsSchema = z
+  .object({
+    datasetId: z.string().min(1).describe("Dataset identifier"),
+    profile: QcProfileSchema.describe("Validated deterministic QC profile"),
+    warnings: z
+      .array(QualificationWarningSchema)
+      .default([])
+      .describe("Qualification warnings to include"),
+  })
+  .strict();
+
+export const GenerateQcReportResultSchema = z
+  .object({
+    reportId: z.string().describe("Generated QC report identifier"),
+    datasetId: z.string(),
+    generatedAt: z.string().datetime(),
+    profile: QcProfileSchema,
+    warnings: z.array(QualificationWarningSchema),
+    conclusion: z.string().describe("Human-readable QC conclusion"),
+  })
+  .strict();
+
+export const ConvertCoordinatesOptionsSchema = z
+  .object({
+    records: z
+      .array(CoordinateConversionInputSchema)
+      .describe("Coordinate records to normalize to 0-based half-open intervals"),
+  })
+  .strict();
 
 export const ConvertCoordinatesResultSchema = BatchCoordinateConversionResultSchema;
 
@@ -342,6 +555,7 @@ export const ConvertCoordinatesResultSchema = BatchCoordinateConversionResultSch
 
 export interface ToolDefinition {
   name: string;
+  title: string;
   description: string;
   inputSchema: z.AnyZodObject;
   outputSchema: z.ZodTypeAny;
@@ -355,8 +569,9 @@ export interface ToolDefinition {
 export const TOOL_DEFINITIONS: ToolDefinition[] = [
   {
     name: "health",
-    description: "Return server health status",
-    inputSchema: z.object({}),
+    title: "Check Epigenomics MCP Health",
+    description: "Return the running Epigenomics MCP version and a UTC health timestamp.",
+    inputSchema: z.object({}).strict(),
     outputSchema: HealthResultSchema,
     handler: async () => {
       const result = HealthResultSchema.parse({
@@ -369,7 +584,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "ingest_dataset",
-    description: "Ingest a processed epigenomic feature table with design and provenance",
+    title: "Ingest Epigenomics Dataset",
+    description:
+      "Validate and ingest a processed CSV or TSV feature table together with design and provenance JSON evidence. Reads only paths allowed by the server file policy.",
     inputSchema: IngestDatasetOptionsSchema,
     outputSchema: IngestDatasetResultSchema,
     handler: async (args, context) => {
@@ -445,7 +662,15 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           `features: table exceeds maximum row limit of ${config.fileAccess.maxRowLimit}`,
         );
       }
-      const ingestResult = ingestFeatureTable(tableResult.rows);
+      const ingestResult = ingestFeatureTable(tableResult.rows, {
+        ...typedArgs.tableOptions,
+        tableId: typedArgs.datasetId,
+        modality: typedArgs.modality,
+        designSampleIds: design?.samples.map((sample) => sample.sampleId),
+        sampleIdColumns:
+          typedArgs.tableOptions.sampleIdColumns ??
+          design?.samples.map((sample) => sample.sampleId),
+      });
       errors.push(...ingestResult.parseErrors.map((e) => `features: ${e}`));
       const result = IngestDatasetResultSchema.parse({
         datasetId: typedArgs.datasetId,
@@ -459,7 +684,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "validate_design",
-    description: "Validate experimental design for dose-response readiness",
+    title: "Validate Experimental Design",
+    description:
+      "Validate a candidate experimental design for schema conformance, controls, replicates, and dose-response readiness.",
     inputSchema: ValidateDesignOptionsSchema,
     outputSchema: ValidateDesignResultSchema,
     handler: async (args) => {
@@ -476,23 +703,56 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "qualify_features",
-    description: "Qualify epigenomic features for downstream Bioactivity-PoD use",
+    title: "Qualify Epigenomic Features",
+    description:
+      "Apply deterministic, fail-closed qualification policy to an EpigenomicsFeatureResponsePacket and return per-feature eligibility, warnings, and rule summaries.",
     inputSchema: QualifyFeaturesOptionsSchema,
     outputSchema: QualifyFeaturesResultSchema,
-    handler: async (args) => {
+    handler: async (args, context) => {
+      const config = context?.config ?? ConfigSchema.parse({});
       const typedArgs = QualifyFeaturesOptionsSchema.parse(args);
-      const result = qualifyFeatures(typedArgs.packet);
+      const packet = resolvePacketInput(
+        typedArgs.packet,
+        typedArgs.packetPath,
+        config,
+      );
+      if (!packet.ok) {
+        return errorResult(packet.error);
+      }
+      const result = qualifyFeatures(
+        packet.value,
+        qualificationContextFromProfiles({
+          cellCompositionProfile: typedArgs.cellCompositionProfile,
+          cytotoxicityProfile: typedArgs.cytotoxicityProfile,
+        }),
+      );
       return jsonResult(QualifyFeaturesResultSchema.parse(result));
     },
   },
   {
     name: "generate_handoff",
-    description: "Generate a Bioactivity-PoD handoff packet from a qualified response packet",
+    title: "Generate Bioactivity-PoD Handoff",
+    description:
+      "Build a Bioactivity-PoD handoff summary from a qualified epigenomics response packet using deterministic qualification decisions.",
     inputSchema: GenerateHandoffOptionsSchema,
     outputSchema: GenerateHandoffResultSchema,
-    handler: async (args) => {
+    handler: async (args, context) => {
+      const config = context?.config ?? ConfigSchema.parse({});
       const typedArgs = GenerateHandoffOptionsSchema.parse(args);
-      const handoff = buildHandoffPacket(typedArgs.packet);
+      const packet = resolvePacketInput(
+        typedArgs.packet,
+        typedArgs.packetPath,
+        config,
+      );
+      if (!packet.ok) {
+        return errorResult(packet.error);
+      }
+      const handoff = buildHandoffPacket(packet.value, {
+        qualificationContext: qualificationContextFromProfiles({
+          cellCompositionProfile: typedArgs.cellCompositionProfile,
+          cytotoxicityProfile: typedArgs.cytotoxicityProfile,
+        }),
+      });
       const result = GenerateHandoffResultSchema.parse({
         handoffId: handoff.handoffId,
         qualifiedFeatureCount: handoff.qualifiedFeatureCount,
@@ -503,7 +763,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "validate_coordinates",
-    description: "Validate coordinate system declarations for region-bearing features",
+    title: "Validate Coordinate Declarations",
+    description:
+      "Validate coordinate-system declarations for region-bearing features and return actionable EPI002 errors.",
     inputSchema: ValidateCoordinatesOptionsSchema,
     outputSchema: ValidateCoordinatesResultSchema,
     handler: async (args) => {
@@ -519,24 +781,22 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "profile_qc",
-    description: "Compute deterministic QC profile for an epigenomics dataset",
+    title: "Profile Dataset QC",
+    description:
+      "Compute a deterministic quality-control profile from validated epigenomic features and an experimental design.",
     inputSchema: ProfileQcOptionsSchema,
     outputSchema: ProfileQcResultSchema,
     handler: async (args) => {
       const typedArgs = ProfileQcOptionsSchema.parse(args);
       const designParse = ExperimentalDesignSchema.safeParse(typedArgs.design);
       if (!designParse.success) {
-        return jsonResult({
-          profile: null,
-          pass: false,
-          errors: designParse.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
-        });
+        return errorResult(
+          `Invalid experimental design: ${zodIssues(designParse.error).join("; ")}`,
+        );
       }
-      // Features are passed as raw objects; profileQc expects typed EpigenomicFeature[]
-      // We rely on the contract being satisfied by the caller for v0.1
       const result = profileQc(
         typedArgs.datasetId,
-        typedArgs.features as Parameters<typeof profileQc>[1],
+        typedArgs.features,
         designParse.data,
       );
       return jsonResult(ProfileQcResultSchema.parse(result));
@@ -544,20 +804,22 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "profile_missingness",
-    description: "Compute deterministic missingness profile for an epigenomics dataset",
+    title: "Profile Dataset Missingness",
+    description:
+      "Measure missingness by feature, sample, and dose group using a versioned threshold policy.",
     inputSchema: ProfileMissingnessOptionsSchema,
-    outputSchema: z.record(z.string(), z.unknown()),
+    outputSchema: MissingnessProfileSchema,
     handler: async (args) => {
       const typedArgs = ProfileMissingnessOptionsSchema.parse(args);
       const designParse = ExperimentalDesignSchema.safeParse(typedArgs.design);
       if (!designParse.success) {
-        return jsonResult({
-          errors: designParse.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
-        });
+        return errorResult(
+          `Invalid experimental design: ${zodIssues(designParse.error).join("; ")}`,
+        );
       }
       const result = profileMissingness(
         typedArgs.datasetId,
-        typedArgs.features as Parameters<typeof profileMissingness>[1],
+        typedArgs.features,
         designParse.data,
         typedArgs.policy,
       );
@@ -566,7 +828,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "ingest_cell_composition",
-    description: "Ingest and validate cell-composition evidence for a dataset",
+    title: "Ingest Cell-Composition Evidence",
+    description:
+      "Validate per-sample cell-composition evidence and detect dose-group shifts when a design is supplied.",
     inputSchema: IngestCellCompositionOptionsSchema,
     outputSchema: CellCompositionProfileSchema,
     handler: async (args) => {
@@ -576,7 +840,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
         : undefined;
       const result = ingestCellComposition(
         typedArgs.datasetId,
-        typedArgs.samples as Parameters<typeof ingestCellComposition>[1],
+        typedArgs.samples,
         design,
         typedArgs.options,
       );
@@ -585,7 +849,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "ingest_cytotoxicity",
-    description: "Ingest and validate cytotoxicity context for a dataset",
+    title: "Ingest Cytotoxicity Evidence",
+    description:
+      "Validate cytotoxicity or companion-assay context and assess dose and timepoint alignment.",
     inputSchema: IngestCytotoxicityOptionsSchema,
     outputSchema: CytotoxicityProfileSchema,
     handler: async (args) => {
@@ -595,7 +861,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
         : undefined;
       const result = ingestCytotoxicity(
         typedArgs.datasetId,
-        typedArgs.entries as Parameters<typeof ingestCytotoxicity>[1],
+        typedArgs.entries,
         design,
         typedArgs.options,
       );
@@ -604,16 +870,27 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "summarize_by_group",
-    description: "Summarize epigenomic feature responses by dose group",
+    title: "Summarize Features by Dose Group",
+    description:
+      "Aggregate validated feature responses by experimental dose group while preserving the response-packet contract.",
     inputSchema: SummarizeByGroupOptionsSchema,
     outputSchema: SummarizeByGroupResultSchema,
-    handler: async (args) => {
+    handler: async (args, context) => {
+      const config = context?.config ?? ConfigSchema.parse({});
       const typedArgs = SummarizeByGroupOptionsSchema.parse(args);
-      const packetParse = EpigenomicsFeatureResponsePacketSchema.safeParse(typedArgs.packet);
+      const packet = resolvePacketInput(
+        typedArgs.packet,
+        typedArgs.packetPath,
+        config,
+      );
+      if (!packet.ok) {
+        return errorResult(packet.error);
+      }
+      const packetParse = EpigenomicsFeatureResponsePacketSchema.safeParse(packet.value);
       if (!packetParse.success) {
-        return jsonResult({
-          errors: packetParse.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
-        });
+        return errorResult(
+          `Invalid response packet: ${zodIssues(packetParse.error).join("; ")}`,
+        );
       }
       const result = summarizeByGroup(packetParse.data, {
         includeSampleRefs: typedArgs.includeSampleRefs,
@@ -630,7 +907,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "read_table",
-    description: "Read a delimited table file with deterministic parsing",
+    title: "Read Delimited Table",
+    description:
+      "Read a bounded page of a CSV or TSV file under an allowed root with deterministic encoding, delimiter, and checksum reporting.",
     inputSchema: ReadTableMcpOptionsSchema,
     outputSchema: ReadTableResultSchema,
     handler: async (args, context) => {
@@ -649,7 +928,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "read_design",
-    description: "Read a design table and convert it to an ExperimentalDesign contract",
+    title: "Read Experimental Design Table",
+    description:
+      "Read a delimited design table under an allowed root and convert it to the ExperimentalDesign contract.",
     inputSchema: ReadDesignOptionsSchema,
     outputSchema: ReadDesignResultSchema,
     handler: async (args, context) => {
@@ -678,16 +959,18 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "generate_qc_report",
-    description: "Generate a regulator-readable QC report",
+    title: "Generate QC Report",
+    description:
+      "Generate a regulator-readable JSON QC report from a validated profile and qualification warnings.",
     inputSchema: GenerateQcReportOptionsSchema,
     outputSchema: GenerateQcReportResultSchema,
     handler: async (args) => {
       const typedArgs = GenerateQcReportOptionsSchema.parse(args);
       const profileParse = QcProfileSchema.safeParse(typedArgs.profile);
       if (!profileParse.success) {
-        return jsonResult({
-          errors: profileParse.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
-        });
+        return errorResult(
+          `Invalid QC profile: ${zodIssues(profileParse.error).join("; ")}`,
+        );
       }
       const warnings = (typedArgs.warnings ?? []).map((w) =>
         QualificationWarningSchema.parse(w),
@@ -711,7 +994,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   },
   {
     name: "convert_coordinates",
-    description: "Normalize coordinate-bearing records to internal 0-based half-open intervals",
+    title: "Convert Genomic Coordinates",
+    description:
+      "Normalize declared genomic coordinates to the internal 0-based half-open convention while retaining conversion provenance.",
     inputSchema: ConvertCoordinatesOptionsSchema,
     outputSchema: ConvertCoordinatesResultSchema,
     handler: async (args) => {
@@ -743,6 +1028,7 @@ export function registerTools(
     server.registerTool(
       tool.name,
       {
+        title: tool.title,
         description: tool.description,
         inputSchema: tool.inputSchema,
         outputSchema: tool.outputSchema,

@@ -5,8 +5,8 @@
  * - Narrow integration contracts for gene normalization, species validation,
  *   chromosome validation, region-to-gene mapping, pathway membership,
  *   cell-type normalization, and ontology release traces.
- * - Fail-closed: ambiguous or unreachable annotation services return
- *   safe defaults rather than fabricated data.
+ * - Fail-closed: ambiguous or unreachable annotation services raise typed
+ *   errors rather than returning fabricated mappings.
  * - Never cache mappings as authoritative truth.
  */
 
@@ -536,7 +536,7 @@ export class AnnotationClient {
 }
 
 // ---------------------------------------------------------------------------
-// Legacy placeholder compatibility
+// Legacy compatibility boundary
 // ---------------------------------------------------------------------------
 
 export interface AnnotationRequest {
@@ -555,19 +555,18 @@ export interface AnnotationTrace {
 }
 
 /**
- * Placeholder client function for backward compatibility.
- * Delegates to AnnotationClient when a transport is configured,
- * otherwise returns a safe empty trace.
+ * Reject the legacy helper because it cannot satisfy the current
+ * schema-validated annotation contracts.
+ *
+ * Callers must construct AnnotationClient with a real or frozen-snapshot
+ * transport and invoke the typed operation they need.
  */
 export async function requestAnnotation(
   _req: AnnotationRequest,
   _endpoint?: string,
 ): Promise<AnnotationTrace> {
-  return {
-    requestId: crypto.randomUUID(),
-    resolvedGeneIds: [],
-    method: "placeholder",
-    confidence: "none",
-    timestamp: new Date().toISOString(),
-  };
+  throw new AnnotationClientError(
+    "Legacy requestAnnotation cannot create a truthful annotation trace; use AnnotationClient with an explicit transport.",
+    "LEGACY_API_UNSUPPORTED",
+  );
 }

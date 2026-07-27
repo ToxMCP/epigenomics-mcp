@@ -3,8 +3,11 @@
   "description": "DMR features mapped by nearest-gene only. Mapping proximity warning is expected because nearest-gene does not imply causality.",
   "expectedSchemaValid": true,
   "expectedQualificationStatus": "accepted_with_caveats",
-  "expectedWarnings": ["EPIW003_PROXIMITY_NOT_CAUSALITY"],
+  "expectedWarnings": [
+    "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
+    "EPIW007_NEAREST_GENE_ONLY"
+  ],
   "expectedBlocksDownstream": false,
-  "expectedHandoffReady": false,
-  "note": "Handoff is blocked because blockNearestGenePathwayByDefault is true in default policy."
+  "expectedHandoffReady": true,
+  "note": "The feature handoff remains usable with caveats, while the mapping payload explicitly blocks automatic pathway roll-up."
 }

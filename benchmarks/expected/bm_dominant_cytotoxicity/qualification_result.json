@@ -1,12 +1,22 @@
 {
-  "qualifiedCount": 1,
-  "excludedCount": 0,
+  "qualifiedCount": 0,
+  "excludedCount": 1,
   "warnings": [],
   "qualifications": [
     {
       "featureId": "cg_cyto_dom_001",
-      "status": "accepted_with_caveats",
+      "status": "exploratory_only",
       "warnings": [
+        {
+          "warningCode": "EPI007_CYTOXICITY_BLOCKING",
+          "severity": "error",
+          "message": "Feature cg_cyto_dom_001 blocked due to cytotoxicity confounding at level dominant_confounding",
+          "category": "cytotoxicity",
+          "blocksDownstream": true,
+          "featureIds": [
+            "cg_cyto_dom_001"
+          ]
+        },
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
           "severity": "warning",
@@ -26,18 +36,39 @@
           "featureIds": [
             "cg_cyto_dom_001"
           ]
+        },
+        {
+          "warningCode": "EPIW003_CYTOXICITY_CONFOUNDING",
+          "severity": "error",
+          "message": "Cytotoxicity confounding at dominant level; downstream use blocked",
+          "category": "cytotoxicity",
+          "blocksDownstream": true,
+          "featureIds": [
+            "cg_cyto_dom_001"
+          ]
+        },
+        {
+          "warningCode": "EPIW004_STRESS_CONFOUNDING",
+          "severity": "warning",
+          "message": "Stress-response confounding detected with 1 stress flag(s)",
+          "category": "stress_response",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_cyto_dom_001"
+          ]
         }
       ],
       "mappedGeneIds": [],
       "mappingConfidence": "none",
       "mappingMethod": "unknown",
       "explainability": {
-        "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature cg_cyto_dom_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
-        "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
-        "reviewRequired": false,
-        "policyReference": "warning_accumulation",
-        "observedValue": "2"
+        "ruleCode": "RULE_007_DOMINANT_CONFOUNDING",
+        "reasonTemplate": "Feature cg_cyto_dom_001 is affected by confounding (observed level: dominant_confounding) that meets or exceeds the policy block level (dominant_confounding). The feature is downgraded to exploratory-only.",
+        "remediationHint": "Provide additional confounding-context metadata (cell composition, cytotoxicity, stress response, or differentiation drift) or adjust the confounding block level in policy.",
+        "reviewRequired": true,
+        "policyReference": "confounding.{confoundingType}BlockLevel",
+        "thresholdValue": "dominant_confounding",
+        "observedValue": "dominant_confounding"
       }
     }
   ],
@@ -48,12 +79,12 @@
   },
   "explainabilitySummary": {
     "uniqueRuleCodes": [
-      "RULE_009_MAJOR_WARNINGS"
+      "RULE_007_DOMINANT_CONFOUNDING"
     ],
     "ruleCodeCounts": {
-      "RULE_009_MAJOR_WARNINGS": 1
+      "RULE_007_DOMINANT_CONFOUNDING": 1
     },
-    "reviewRequiredCount": 0,
+    "reviewRequiredCount": 1,
     "featuresWithRemediation": 1
   }
 }

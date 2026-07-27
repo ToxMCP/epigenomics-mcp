@@ -14,6 +14,18 @@ import { buildHandoffPacket } from "../handoff/builder.js";
 import { BioactivityPoDHandoffPacketSchema } from "../contracts/packets.js";
 import type { EpigenomicFeature } from "../contracts/features.js";
 import type { ExperimentalDesign } from "../contracts/design.js";
+import {
+  CellCompositionProfileSchema,
+  ingestCellComposition,
+} from "../qc/cell_composition.js";
+import {
+  CytotoxicityProfileSchema,
+  ingestCytotoxicity,
+} from "../qc/cytotoxicity.js";
+import {
+  qualificationContextFromProfiles,
+  type QualificationContext,
+} from "../qualification/context.js";
 
 export interface StepResult {
   stepName: string;
@@ -40,7 +52,7 @@ function loadJson(path: string): unknown {
   return JSON.parse(raw) as unknown;
 }
 
-function buildPacket(
+export function buildBenchmarkPacket(
   fixturePath: string,
   fixtureName: string,
   normalization: BenchmarkManifest["normalization"],
@@ -67,6 +79,7 @@ function buildPacket(
         },
       ],
     };
+  const mappingPayloads = metadata?.mappingPayloads;
 
   return {
     schemaVersion: "0.1.0",
@@ -88,7 +101,47 @@ function buildPacket(
     qcReportRef: "qc-report-001",
     warnings: [],
     generatedAt: normalization.deterministicTimestamp,
+    ...(mappingPayloads ? { mappingPayloads } : {}),
   };
+}
+
+export function loadBenchmarkQualificationContext(
+  fixturePath: string,
+): QualificationContext {
+  const metadataPath = join(fixturePath, "metadata.json");
+  if (!existsSync(metadataPath)) {
+    return {};
+  }
+
+  const metadata = loadJson(metadataPath) as Record<string, unknown>;
+  const design = loadJson(join(fixturePath, "design.json")) as ExperimentalDesign;
+  const datasetId =
+    typeof metadata.datasetId === "string"
+      ? metadata.datasetId
+      : "benchmark-dataset";
+  const hasCellComposition = Object.prototype.hasOwnProperty.call(
+    metadata,
+    "cellComposition",
+  );
+  const hasCytotoxicity = Object.prototype.hasOwnProperty.call(
+    metadata,
+    "cytotoxicity",
+  );
+  const cellCompositionProfile = hasCellComposition
+    ? metadata.cellComposition === null
+      ? ingestCellComposition(datasetId, [], design)
+      : CellCompositionProfileSchema.parse(metadata.cellComposition)
+    : undefined;
+  const cytotoxicityProfile = hasCytotoxicity
+    ? metadata.cytotoxicity === null
+      ? ingestCytotoxicity(datasetId, [], design)
+      : CytotoxicityProfileSchema.parse(metadata.cytotoxicity)
+    : undefined;
+
+  return qualificationContextFromProfiles({
+    cellCompositionProfile,
+    cytotoxicityProfile,
+  });
 }
 
 /**
@@ -114,6 +167,10 @@ function runBenchmark(
   const fixturePath = join(process.cwd(), benchmark.fixture);
   const expectedPath = join(process.cwd(), benchmark.expected);
   const stepResults: StepResult[] = [];
+  const qualificationContext =
+    benchmark.type === "feature"
+      ? loadBenchmarkQualificationContext(fixturePath)
+      : {};
 
   // Pre-build packet for feature benchmarks when any step needs it
   let packet: unknown | undefined;
@@ -125,7 +182,11 @@ function runBenchmark(
         s.tool === "buildPacket",
     );
     if (needsPacket) {
-      packet = buildPacket(fixturePath, benchmark.name, manifest.normalization);
+      packet = buildBenchmarkPacket(
+        fixturePath,
+        benchmark.name,
+        manifest.normalization,
+      );
     }
   }
 
@@ -134,7 +195,13 @@ function runBenchmark(
     let error: string | undefined;
 
     try {
-      actual = executeStep(step, fixturePath, packet, manifest.normalization);
+      actual = executeBenchmarkStep(
+        step,
+        fixturePath,
+        packet,
+        manifest.normalization,
+        qualificationContext,
+      );
     } catch (err) {
       error = err instanceof Error ? err.message : String(err);
       stepResults.push({
@@ -179,11 +246,12 @@ function runBenchmark(
   return { benchmarkName: benchmark.name, passed: allPassed, steps: stepResults };
 }
 
-function executeStep(
+export function executeBenchmarkStep(
   step: BenchmarkStep,
   fixturePath: string,
   packet: unknown | undefined,
   normalization: BenchmarkManifest["normalization"],
+  qualificationContext: QualificationContext,
 ): unknown {
   switch (step.tool) {
     case "validateDesign": {
@@ -222,7 +290,7 @@ function executeStep(
       if (!packet) {
         throw new Error("Packet not built for qualifyFeatures step");
       }
-      return qualifyFeatures(packet);
+      return qualifyFeatures(packet, qualificationContext);
     }
     case "buildHandoffPacket": {
       if (!packet) {
@@ -231,6 +299,7 @@ function executeStep(
       return buildHandoffPacket(packet, {
         handoffId: normalization.deterministicHandoffId,
         generatedAt: normalization.deterministicTimestamp,
+        qualificationContext,
       });
     }
     case "buildPacket": {

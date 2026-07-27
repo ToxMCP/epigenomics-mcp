@@ -1,8 +1,8 @@
 # Cell-Composition Confounding Guide
 
 **Document status:** Regulator-facing confounding policy  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
@@ -116,7 +116,7 @@ A regulator may tighten the policy (e.g., set `blockOnMissingContext = true`) an
 
 ---
 
-## 8. What v0.1 Does Not Do
+## 8. What v0.2 Does Not Do
 
 1. **No default deconvolution** — The service does not run `EpiDISH`, `Houseman`, or any other deconvolution algorithm by default. Deconvolution is behind the `enableCellDeconvolution` feature flag (default `false`).
 2. **No inference from epigenomic signal** — Cell composition is never inferred from methylation or accessibility patterns alone.

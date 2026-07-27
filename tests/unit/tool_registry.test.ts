@@ -1,8 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { ConfigSchema } from "../../src/epimcp/config.js";
 import {
   registerTools,
@@ -45,6 +51,26 @@ describe("tool registry", () => {
     const names = TOOL_DEFINITIONS.map((t) => t.name);
     const uniqueNames = new Set(names);
     expect(uniqueNames.size).toBe(names.length);
+  });
+
+  it("gives every tool an explicit title, description, schema, and annotations", () => {
+    for (const tool of TOOL_DEFINITIONS) {
+      expect(tool.title.trim().length).toBeGreaterThan(0);
+      expect(tool.description.trim().length).toBeGreaterThan(20);
+      expect(tool.inputSchema).toBeDefined();
+      expect(tool.outputSchema).toBeDefined();
+      expect(tool.annotations ?? {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false,
+      }).toMatchObject({
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false,
+      });
+    }
   });
 
   it("health tool returns ok status", async () => {
@@ -205,6 +231,11 @@ describe("tool registry", () => {
         {
           datasetId: "ds1",
           modality: "dna_methylation_array",
+          tableOptions: {
+            featureClass: "cpg_methylation",
+            signalMetric: "beta_value",
+            explicitShape: "long",
+          },
           featuresPath,
           designPath,
           provenancePath,
@@ -215,6 +246,94 @@ describe("tool registry", () => {
       expect(parsed.ingested).toBe(false);
       expect(parsed.errors.some((e: string) => e.startsWith("design:"))).toBe(true);
       expect(parsed.errors.some((e: string) => e.startsWith("provenance:"))).toBe(true);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  it("ingest_dataset canonicalizes a valid delimited feature table", async () => {
+    const tmp = mkdtempSync(join(tmpdir(), "epimcp-ingest-valid-"));
+    try {
+      const featuresPath = join(tmp, "features.csv");
+      const designPath = join(tmp, "design.json");
+      const provenancePath = join(tmp, "provenance.json");
+      writeFileSync(
+        featuresPath,
+        [
+          "feature_id,sample_id,value",
+          "cg001,control-1,0.5",
+          "cg001,control-2,0.6",
+          "cg001,treated-1,0.7",
+          "cg001,treated-2,0.8",
+        ].join("\n"),
+        "utf-8",
+      );
+      writeFileSync(
+        designPath,
+        JSON.stringify({
+          designId: "design-1",
+          species: "Homo sapiens",
+          doseGroups: [
+            { doseGroupId: "control", doseValue: 0, doseUnit: "µM" },
+            { doseGroupId: "treated", doseValue: 1, doseUnit: "µM" },
+          ],
+          samples: [
+            { sampleId: "control-1", doseGroupId: "control", species: "Homo sapiens", controlFlag: true },
+            { sampleId: "control-2", doseGroupId: "control", species: "Homo sapiens", controlFlag: true },
+            { sampleId: "treated-1", doseGroupId: "treated", species: "Homo sapiens" },
+            { sampleId: "treated-2", doseGroupId: "treated", species: "Homo sapiens" },
+          ],
+          hasControls: true,
+          minReplicatesPerGroup: 2,
+        }),
+        "utf-8",
+      );
+      writeFileSync(
+        provenancePath,
+        JSON.stringify({
+          datasetId: "ds1",
+          upstreamSteps: [
+            {
+              stepName: "normalization",
+              toolName: "fixture",
+              toolVersion: "1.0.0",
+              parameters: {},
+            },
+          ],
+        }),
+        "utf-8",
+      );
+      const config = ConfigSchema.parse({
+        fileAccess: {
+          allowedRoots: [tmp],
+          maxFileBytes: 4096,
+          defaultRowLimit: 1000,
+          maxRowLimit: 5000,
+        },
+      });
+      const tool = TOOL_DEFINITIONS.find((t) => t.name === "ingest_dataset")!;
+      const result = await tool.handler(
+        {
+          datasetId: "ds1",
+          modality: "dna_methylation_array",
+          tableOptions: {
+            featureClass: "cpg_methylation",
+            signalMetric: "beta_value",
+            explicitShape: "long",
+          },
+          featuresPath,
+          designPath,
+          provenancePath,
+        },
+        { config },
+      );
+      const parsed = JSON.parse(result.content[0].text);
+      expect(parsed).toMatchObject({
+        datasetId: "ds1",
+        ingested: true,
+        featureCount: 1,
+        errors: [],
+      });
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
@@ -255,6 +374,69 @@ describe("tool registry", () => {
     expect(parsed.qualifiedCount).toBe(0);
     expect(parsed.excludedCount).toBe(0);
     expect(parsed.warnings.length).toBeGreaterThan(0);
+  });
+
+  it("qualification and handoff tools can read packet JSON under allowed roots", async () => {
+    const packetPath = resolve(process.cwd(), "examples/methylation_matrix/packet.json");
+    const qualify = TOOL_DEFINITIONS.find((t) => t.name === "qualify_features")!;
+    const handoff = TOOL_DEFINITIONS.find((t) => t.name === "generate_handoff")!;
+
+    const qualificationResult = await qualify.handler({ packetPath });
+    const qualification = JSON.parse(qualificationResult.content[0].text);
+    expect(qualification.qualifiedCount).toBeGreaterThan(0);
+
+    const handoffResult = await handoff.handler({ packetPath });
+    const handoffSummary = JSON.parse(handoffResult.content[0].text);
+    expect(handoffSummary.readyForPod).toBe(true);
+  });
+
+  it("qualification and handoff tools apply supplied cytotoxicity profiles", async () => {
+    const fixtureRoot = resolve(
+      process.cwd(),
+      "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity",
+    );
+    const packet = JSON.parse(
+      readFileSync(
+        resolve(
+          process.cwd(),
+          "benchmarks/expected/bm_dominant_cytotoxicity/packet.json",
+        ),
+        "utf-8",
+      ),
+    );
+    const metadata = JSON.parse(
+      readFileSync(resolve(fixtureRoot, "metadata.json"), "utf-8"),
+    );
+    const qualify = TOOL_DEFINITIONS.find((t) => t.name === "qualify_features")!;
+    const handoff = TOOL_DEFINITIONS.find((t) => t.name === "generate_handoff")!;
+
+    const qualificationResult = await qualify.handler({
+      packet,
+      cytotoxicityProfile: metadata.cytotoxicity,
+    });
+    const qualification = JSON.parse(qualificationResult.content[0].text);
+    expect(qualification.qualifiedCount).toBe(0);
+    expect(qualification.qualifications[0].status).toBe("exploratory_only");
+    expect(qualification.explainabilitySummary.uniqueRuleCodes).toEqual([
+      "RULE_007_DOMINANT_CONFOUNDING",
+    ]);
+
+    const handoffResult = await handoff.handler({
+      packet,
+      cytotoxicityProfile: metadata.cytotoxicity,
+    });
+    const handoffSummary = JSON.parse(handoffResult.content[0].text);
+    expect(handoffSummary.readyForPod).toBe(false);
+  });
+
+  it("packet tools reject ambiguous inline-and-file input", async () => {
+    const tool = TOOL_DEFINITIONS.find((t) => t.name === "qualify_features")!;
+    const result = await tool.handler({
+      packet: {},
+      packetPath: "examples/methylation_matrix/packet.json",
+    });
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("exactly one");
   });
 
   it("generate_handoff tool calls core service with invalid packet", async () => {

@@ -1,8 +1,8 @@
 # Cytotoxicity Context Guide
 
 **Document status:** Regulator-facing confounding policy  
-**Product version:** 0.1.0  
-**Date:** 2026-05-06
+**Product version:** 0.2.0
+**Date:** 2026-07-27
 
 ---
 
@@ -136,11 +136,11 @@ Default policy thresholds (version `0.1.0`):
 | Missing cytotoxicity context with `blockOnMissingContext = true` | Block handoff | `EPI007_MISSING_CONFOUNDING_CONTEXT` |
 | Negative viability values | Review required | `CTX_MALFORMED_VALUE` |
 
-**v0.1 limitation note:** Under the default policy, dominant cytotoxicity emits warnings but may still produce a handoff. A regulator may tighten the policy (e.g., set `cytotoxicityBlockLevel = likely_confounding`) and re-run qualification; the engine will then block accordingly.
+**v0.2 limitation note:** Under the default policy, dominant cytotoxicity emits warnings but may still produce a handoff. A regulator may tighten the policy (e.g., set `cytotoxicityBlockLevel = likely_confounding`) and re-run qualification; the engine will then block accordingly.
 
 ---
 
-## 9. What v0.1 Does Not Do
+## 9. What v0.2 Does Not Do
 
 1. **No inference from epigenomic signal** — Cytotoxicity is never inferred from methylation patterns, accessibility changes, or expression shifts.
 2. **No dose-response modelling of viability** — The service classifies confounding; it does not fit viability dose-response curves.

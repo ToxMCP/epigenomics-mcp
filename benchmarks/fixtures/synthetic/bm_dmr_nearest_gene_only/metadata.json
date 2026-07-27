@@ -21,9 +21,27 @@
     "normalisationMethod": "none",
     "annotationVersion": "hg38"
   },
-  "mappingMetadata": {
-    "mappingMethod": "nearest_gene",
-    "mappingProvenance": "bedtools closest -d 0 -k 1",
-    "blockNearestGenePathwayByDefault": true
+  "mappingPayloads": {
+    "regionToGeneMappings": [
+      {
+        "featureId": "dmr_chr1_1000000_1000500",
+        "geneIds": ["ENSG_DEMO_001"],
+        "method": "nearest_gene",
+        "confidence": "low",
+        "distanceBp": 1200,
+        "pathwayRollupAllowed": false,
+        "downstreamUseRule": "block_pathway_rollup"
+      },
+      {
+        "featureId": "dmr_chr2_500000_500600",
+        "geneIds": ["ENSG_DEMO_002"],
+        "method": "nearest_gene",
+        "confidence": "low",
+        "distanceBp": 8500,
+        "pathwayRollupAllowed": false,
+        "downstreamUseRule": "block_pathway_rollup"
+      }
+    ],
+    "externalDatabaseMappings": []
   }
 }

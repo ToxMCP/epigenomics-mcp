@@ -93,8 +93,8 @@ export-schemas:
 # ---------------------------------------------------------------------------
 .PHONY: run-benchmarks
 run-benchmarks:
-	@echo "=== Python qualification benchmark ==="
-	$(PYTHON) benchmarks/qualification_engine_benchmark.py --features 10000 --replicates 6
+	@echo "=== Real TypeScript qualification benchmark ==="
+	npm run benchmark
 
 # ---------------------------------------------------------------------------
 # Handoff validation

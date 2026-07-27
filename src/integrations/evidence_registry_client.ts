@@ -13,15 +13,16 @@ export interface EvidenceRecord {
 }
 
 /**
- * Placeholder client for Evidence Registry MCP.
+ * Reject registration until the planned Evidence Registry transport exists.
+ *
+ * Returning a generated identifier here would falsely imply that durable
+ * evidence was registered when no network or persistence operation occurred.
  */
 export async function registerEvidence(
   _packetRef: string,
   _endpoint?: string,
 ): Promise<EvidenceRecord> {
-  return {
-    recordId: crypto.randomUUID(),
-    packetRef: _packetRef,
-    registeredAt: new Date().toISOString(),
-  };
+  throw new Error(
+    "Evidence Registry submission is planned; no evidence record was created.",
+  );
 }

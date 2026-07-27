@@ -1,5 +1,4 @@
-# Multi-stage build for Epigenomics MCP
-# Stage 1: TypeScript build
+# Multi-stage Node.js build for Epigenomics MCP.
 FROM node:20-slim AS ts-build
 
 WORKDIR /build
@@ -9,46 +8,28 @@ RUN npm ci
 COPY src/ ./src/
 RUN npm run build
 
-# Stage 2: Python environment
-FROM python:3.12-slim AS python-env
+FROM node:20-slim AS runtime
 
 WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Install Python package and runtime dependencies.
-COPY pyproject.toml README.md LICENSE ./
-COPY src/epigenomics_mcp/ ./src/epigenomics_mcp/
-RUN pip install --no-cache-dir -e .
-
-# Stage 3: Runtime
-FROM python:3.12-slim AS runtime
-
-WORKDIR /app
-
-# Install Node.js for MCP server runtime
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nodejs \
-    npm \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy built artifacts
 COPY --from=ts-build /build/dist ./dist
-COPY --from=ts-build /build/node_modules ./node_modules
-COPY --from=ts-build /build/package*.json ./
-COPY --from=python-env /app/src/epigenomics_mcp ./src/epigenomics_mcp
-COPY --from=python-env /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-
-# Copy schemas and docs
 COPY schemas/ ./schemas/
 COPY docs/ ./docs/
-COPY toxmcp.manifest.yaml ./
+COPY scripts/ ./scripts/
+COPY benchmarks/expected/ ./benchmarks/expected/
+COPY benchmarks/fixtures/synthetic/ ./benchmarks/fixtures/synthetic/
+COPY benchmarks/fixtures/frozen_public/ ./benchmarks/fixtures/frozen_public/
+COPY release-evidence/ ./release-evidence/
+COPY benchmark_manifest.yaml toxmcp.manifest.yaml evaluation.xml README.md CHANGELOG.md SECURITY.md CONTRIBUTING.md CITATION.cff LICENSE ./
 
-# Verify installation
-RUN python -c "import epigenomics_mcp; print(epigenomics_mcp.__version__)" \
-    && node -e "import('./dist/epimcp/index.js').then(m => console.log(m.VERSION))"
+RUN node -e "import('./dist/epimcp/index.js').then(m => console.log(m.VERSION))"
 
 ENV NODE_ENV=production
 
-# No network transport exposed by default; MCP server uses stdio only.
-
+# stdio remains the default. Streamable HTTP is opt-in and has no implicit
+# EXPOSE; non-loopback binding additionally requires an allowlist and token.
+USER node
 ENTRYPOINT ["node", "dist/epimcp/cli.js"]
 CMD ["serve"]

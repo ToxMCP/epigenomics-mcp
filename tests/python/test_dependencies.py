@@ -1,119 +1,47 @@
-"""Import smoke tests for v0.1 runtime dependencies.
-
-These tests verify that the core dependency set declared in pyproject.toml
-is resolvable and importable in the target environment. They do NOT test
-functional correctness — only that the packages are present and expose a
-version attribute where expected.
-"""
+"""Packaging checks for the metadata-only Python compatibility distribution."""
 
 from __future__ import annotations
 
-import importlib
-
-import pytest
-
-DEPENDENCIES = [
-    ("pydantic", "pydantic"),
-    ("pandas", "pandas"),
-    ("bioframe", "bioframe"),
-    ("duckdb", "duckdb"),
-    ("scipy", "scipy"),
-    ("statsmodels", "statsmodels"),
-    ("httpx", "httpx"),
-    ("typer", "typer"),
-    ("mcp", "mcp"),
-]
-
-OPTIONAL_DEPENDENCIES = [
-    ("polars", "polars"),
-    ("pyarrow", "pyarrow"),
-    ("biopython", "Bio"),
-]
+import tomllib
+from pathlib import Path
 
 
-def _has_version(module: object) -> bool:
-    """Check whether a module exposes a __version__ attribute."""
-    return hasattr(module, "__version__")
+def _project() -> dict[str, object]:
+    repo_root = Path(__file__).resolve().parents[2]
+    with (repo_root / "pyproject.toml").open("rb") as handle:
+        parsed = tomllib.load(handle)
+    return parsed["project"]
 
 
-# Some packages (e.g. the official mcp SDK) do not expose __version__ at the
-# top-level module.  We still verify they are importable and healthy.
-_NO_VERSION_ATTR = {"mcp"}
+def test_core_install_has_no_runtime_dependencies() -> None:
+    """Installing the compatibility package must not pull a second runtime."""
+    assert _project()["dependencies"] == []
 
 
-@pytest.mark.parametrize("package_name,module_name", DEPENDENCIES)
-def test_core_dependency_importable(package_name: str, module_name: str) -> None:
-    """Each core dependency can be imported and exposes a version."""
-    try:
-        mod = importlib.import_module(module_name)
-    except ImportError as exc:
-        pytest.fail(f"Failed to import {module_name} ({package_name}): {exc}")
+def test_analysis_compat_dependencies_are_explicitly_optional() -> None:
+    """Historical analysis dependencies remain available only by opt-in."""
+    optional = _project()["optional-dependencies"]
+    analysis = optional["analysis-compat"]
 
-    if module_name not in _NO_VERSION_ATTR:
-        assert _has_version(mod), f"{module_name} does not expose __version__"
-        assert isinstance(mod.__version__, str), f"{module_name}.__version__ is not a str"
-        assert len(mod.__version__.split(".")) >= 2, f"{module_name}.__version__ looks malformed"
-
-
-@pytest.mark.parametrize("package_name,module_name", OPTIONAL_DEPENDENCIES)
-def test_optional_dependency_importable(package_name: str, module_name: str) -> None:
-    """Optional extras are present in this test environment."""
-    try:
-        mod = importlib.import_module(module_name)
-    except ImportError as exc:
-        pytest.fail(f"Failed to import optional {module_name} ({package_name}): {exc}")
-
-    assert _has_version(mod), f"{module_name} does not expose __version__"
+    expected_prefixes = {
+        "pydantic",
+        "pyyaml",
+        "pandas",
+        "bioframe",
+        "duckdb",
+        "scipy",
+        "statsmodels",
+        "httpx",
+        "typer",
+        "mcp",
+    }
+    declared = {dependency.split(">", maxsplit=1)[0] for dependency in analysis}
+    assert declared == expected_prefixes
+    assert "mcp>=1.0,<2.0.0" in analysis
 
 
-def test_pydantic_major_version() -> None:
-    """Pydantic is v2 or later (required by contract schemas)."""
-    import pydantic
-
-    major = int(pydantic.__version__.split(".")[0])
-    assert major >= 2, f"Expected pydantic>=2, got {pydantic.__version__}"
-
-
-def test_pandas_dataframe_api() -> None:
-    """Pandas exposes the DataFrame constructor used by ingestion pipelines."""
-    import pandas as pd
-
-    assert hasattr(pd, "DataFrame")
-    assert hasattr(pd, "read_csv")
-
-
-def test_bioframe_has_expected_api() -> None:
-    """Bioframe exposes interval operations used by coordinate validation."""
-    import bioframe
-
-    assert hasattr(bioframe, "overlap")
-    assert hasattr(bioframe, "from_any")
-
-
-def test_duckdb_has_connect() -> None:
-    """DuckDB exposes the connect function used for local analytics."""
-    import duckdb
-
-    assert hasattr(duckdb, "connect")
-
-
-def test_httpx_has_client() -> None:
-    """HTTPX exposes the AsyncClient used by integration clients."""
-    import httpx
-
-    assert hasattr(httpx, "AsyncClient")
-    assert hasattr(httpx, "Client")
-
-
-def test_typer_has_typer_api() -> None:
-    """Typer exposes the main Typer class used by CLI entry points."""
-    import typer
-
-    assert hasattr(typer, "Typer")
-
-
-def test_mcp_has_fastmcp() -> None:
-    """The official MCP package exposes FastMCP for server construction."""
-    import mcp.server.fastmcp
-
-    assert hasattr(mcp.server.fastmcp, "FastMCP")
+def test_specialized_extras_remain_separate() -> None:
+    """Large-table and adapter dependencies require their own opt-in extras."""
+    optional = _project()["optional-dependencies"]
+    assert optional["large-intervals"] == ["polars>=1.0", "pyarrow>=15"]
+    assert optional["adapters"] == ["biopython>=1.80"]

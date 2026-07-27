@@ -1,6 +1,6 @@
 {
   "name": "epigenomics-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Model Context Protocol server for processed epigenomic feature evidence qualification",
   "type": "module",
   "main": "./dist/epimcp/index.js",
@@ -16,10 +16,19 @@
     "schemas",
     "benchmark_manifest.yaml",
     "benchmarks/expected",
+    "benchmarks/fixtures/synthetic",
+    "benchmarks/fixtures/frozen_public",
+    "benchmarks/qualification_engine_benchmark.mjs",
     "release-evidence",
+    "scripts",
     "docs",
     "examples",
     "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CITATION.cff",
+    "evaluation.xml",
     "LICENSE",
     "toxmcp.manifest.yaml"
   ],
@@ -34,18 +43,26 @@
     "test:watch": "vitest",
     "test:contract": "vitest run tests/unit/contracts.test.ts tests/unit/schema_drift.test.ts tests/unit/schema_drift_integration.test.ts tests/unit/schema_export.test.ts tests/unit/handoff.test.ts tests/unit/handoff_validator.test.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "tsc --noEmit",
-    "smoke:mcp": "node scripts/smoke_mcp_stdio.mjs",
+    "lint": "npm run typecheck && node scripts/lint.mjs",
+    "security:audit": "npm audit --omit=dev --audit-level=low",
+    "smoke:mcp": "npm run smoke:mcp:stdio && npm run smoke:mcp:http",
+    "smoke:mcp:stdio": "npm run build && node scripts/smoke_mcp_stdio.mjs",
+    "smoke:mcp:http": "npm run build && node scripts/smoke_mcp_http.mjs",
+    "eval:validate": "node scripts/validate-evaluation.mjs evaluation.xml",
     "export:schemas": "npm run build && node scripts/export-schemas.mjs",
     "release:evidence": "npm run build && node scripts/release-evidence.mjs",
     "verify:evidence": "npm run build && node scripts/verify-evidence.mjs",
     "validate:handoff": "node scripts/validate-handoffs.mjs",
-    "benchmark": ".venv/bin/python benchmarks/qualification_engine_benchmark.py --features 10000 --replicates 6",
+    "benchmark": "npm run build && node benchmarks/qualification_engine_benchmark.mjs --features 10000 --replicates 6",
     "benchmark:gate": "node scripts/release-gate.mjs",
     "benchmark:ci": "npm run build && node scripts/release-gate.mjs",
+    "benchmark:update": "npm run build && node scripts/update-benchmark-goldens.mjs --confirm",
     "start": "node dist/epimcp/cli.js",
+    "mcp": "node dist/epimcp/cli.js serve",
+    "mcp:smoke": "npm run smoke:mcp",
     "mcp:serve:http": "node dist/epimcp/http.js",
-    "verify:release": "npm run typecheck && npm test && npm run build && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
+    "test:release-gates": "npm run security:audit && npm run eval:validate && npm run test:contract && npm run benchmark:ci",
+    "verify:release": "npm run lint && npm run security:audit && npm run eval:validate && npm test && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
   },
   "keywords": [
     "mcp",
@@ -70,14 +87,18 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "4.3.0",
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.25.2"
+  },
+  "overrides": {
+    "@hono/node-server": "^2.0.5"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
     "@vitest/coverage-v8": "^2.1.9",
+    "tsx": "^4.23.1",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

@@ -9,6 +9,7 @@ import { execSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { TOOL_DEFINITIONS } from "../../src/epimcp/tool_registry.js";
 import type { SyntheticFixtureName } from "../../benchmarks/fixtures/synthetic/index.js";
@@ -82,6 +83,10 @@ function buildPacketFromFixture(fixtureName: SyntheticFixtureName): unknown {
         },
       ],
     };
+  const mappingPayloads =
+    metadata && typeof metadata === "object" && "mappingPayloads" in metadata
+      ? metadata.mappingPayloads
+      : undefined;
 
   return {
     schemaVersion: "0.1.0",
@@ -104,6 +109,7 @@ function buildPacketFromFixture(fixtureName: SyntheticFixtureName): unknown {
     qcReportRef: "qc-report-001",
     warnings: [],
     generatedAt: DETERMINISTIC_TIMESTAMP,
+    ...(mappingPayloads ? { mappingPayloads } : {}),
   };
 }
 
@@ -259,13 +265,13 @@ export function assertEquivalent<T>(
   const mcpJson = JSON.stringify(results.mcp, null, 2);
   const cliJson = JSON.stringify(results.cli, null, 2);
 
-  if (serviceJson !== mcpJson) {
+  if (!isDeepStrictEqual(results.service, results.mcp)) {
     throw new Error(
       `${context}Service and MCP outputs differ.\nService:\n${serviceJson}\nMCP:\n${mcpJson}`,
     );
   }
 
-  if (serviceJson !== cliJson) {
+  if (!isDeepStrictEqual(results.service, results.cli)) {
     throw new Error(
       `${context}Service and CLI outputs differ.\nService:\n${serviceJson}\nCLI:\n${cliJson}`,
     );

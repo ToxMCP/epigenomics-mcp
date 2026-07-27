@@ -5,5 +5,6 @@
   "expectedQualificationStatus": "excluded_qc_failure",
   "expectedWarnings": ["EPIE002_EXCESSIVE_MISSINGNESS"],
   "expectedBlocksDownstream": true,
-  "expectedHandoffReady": false
+  "expectedHandoffReady": true,
+  "note": "The high-missingness feature is excluded, while one complete feature remains handoff-eligible."
 }

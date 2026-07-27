@@ -6,6 +6,7 @@ import {
 import { EpigenomicsFeatureResponsePacketSchema } from "../contracts/packets.js";
 import { qualifyFeatures } from "../qualification/engine.js";
 import { guardClaims } from "../qualification/claim_guards.js";
+import type { QualificationContext } from "../qualification/context.js";
 
 export interface HandoffBuildResult {
   handoffId: string;
@@ -18,6 +19,8 @@ export interface HandoffBuildOptions {
   handoffId?: string;
   /** Override the generatedAt timestamp (default: new Date().toISOString()). */
   generatedAt?: string;
+  /** Optional classified confounding context from the companion ingestion tools. */
+  qualificationContext?: QualificationContext;
 }
 
 /**
@@ -43,7 +46,10 @@ export function createHandoffPacket(
   const generatedAt = options.generatedAt ?? new Date().toISOString();
 
   // Run deterministic qualification engine
-  const qualification = qualifyFeatures(validated);
+  const qualification = qualifyFeatures(
+    validated,
+    options.qualificationContext,
+  );
 
   const qualifications = qualification.qualifications ?? [];
 

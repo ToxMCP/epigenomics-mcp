@@ -150,6 +150,23 @@ describe("profileMissingness", () => {
     expect(MissingnessProfileSchema.safeParse(result).success).toBe(true);
   });
 
+  it("treats absent declared sample keys as missing", () => {
+    const design = makeDesign();
+    const features = [
+      makeFeature("summary-only", {
+        contrast_low_vs_ctrl: 0.25,
+        contrast_high_vs_ctrl: 0.5,
+      }),
+    ];
+
+    const result = profileMissingness("ds-summary", features, design);
+
+    expect(result.overallFeatureMissingFraction).toBe(1);
+    expect(result.perFeatureMissingness[0].band).toBe("exclusion");
+    expect(result.featuresWithCompleteGroupDropout).toEqual(["summary-only"]);
+    expect(result.summaryBand).toBe("exclusion");
+  });
+
   it("returns exclusion band when a dose group has complete dropout for a feature", () => {
     const design = makeDesign();
     const features: EpigenomicFeature[] = [

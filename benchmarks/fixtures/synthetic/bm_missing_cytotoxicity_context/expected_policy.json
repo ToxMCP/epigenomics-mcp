@@ -2,7 +2,7 @@
   "fixtureName": "bm_missing_cytotoxicity_context",
   "description": "No cytotoxicity context is provided. The ingestion layer should emit a CTX_MISSING_CONTEXT warning.",
   "expectedSchemaValid": true,
-  "expectedQualificationStatus": "accepted_for_pod",
+  "expectedQualificationStatus": "accepted_with_caveats",
   "expectedWarnings": ["CTX_MISSING_CONTEXT"],
   "expectedBlocksDownstream": false,
   "expectedHandoffReady": true

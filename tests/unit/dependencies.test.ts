@@ -18,13 +18,22 @@ describe("dependency configuration", () => {
     expect(pkg.devDependencies.typescript).toBeDefined();
     expect(pkg.devDependencies.vitest).toBeDefined();
     expect(pkg.devDependencies["@vitest/coverage-v8"]).toBeDefined();
+    expect(pkg.devDependencies.tsx).toBeDefined();
   });
 
-  it("pyproject.toml declares Python 3.11+ and core dependencies", () => {
+  it("keeps the Python compatibility package metadata-only by default", () => {
     const tomlPath = resolve(process.cwd(), "pyproject.toml");
     const toml = readFileSync(tomlPath, "utf-8");
 
     expect(toml).toContain('requires-python = ">=3.11"');
+    expect(toml).toContain("dependencies = []");
+    expect(toml).toContain("analysis-compat = [");
+  });
+
+  it("retains historical Python dependencies in the analysis-compat extra", () => {
+    const tomlPath = resolve(process.cwd(), "pyproject.toml");
+    const toml = readFileSync(tomlPath, "utf-8");
+
     expect(toml).toContain('"pydantic>=2.0"');
     expect(toml).toContain('"pandas>=2.0"');
     expect(toml).toContain('"bioframe>=0.7.0"');
@@ -33,7 +42,7 @@ describe("dependency configuration", () => {
     expect(toml).toContain('"statsmodels>=0.14"');
     expect(toml).toContain('"httpx>=0.27"');
     expect(toml).toContain('"typer>=0.12"');
-    expect(toml).toContain('"mcp>=1.0"');
+    expect(toml).toContain('"mcp>=1.0,<2.0.0"');
   });
 
   it("pyproject.toml defines optional extras for large intervals and adapters", () => {

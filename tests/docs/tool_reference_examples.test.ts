@@ -114,11 +114,24 @@ describe("Example 2: DMR nearest-gene warning", () => {
 
   it("CLI qualify produces accepted_with_caveats for DMR features", () => {
     const result = callCli(`qualify ${packetPath} --json`) as {
-      qualifications: Array<{ featureId: string; status: string }>;
+      qualifications: Array<{
+        featureId: string;
+        status: string;
+        mappedGeneIds: string[];
+        mappingConfidence: string;
+        mappingMethod: string;
+        warnings: Array<{ warningCode: string }>;
+      }>;
     };
     expect(result.qualifications).toHaveLength(2);
     for (const q of result.qualifications) {
       expect(q.status).toBe("accepted_with_caveats");
+      expect(q.mappingMethod).toBe("nearest_gene");
+      expect(q.mappingConfidence).toBe("low");
+      expect(q.mappedGeneIds).toHaveLength(1);
+      expect(q.warnings.map((warning) => warning.warningCode)).toContain(
+        "EPIW007_NEAREST_GENE_ONLY",
+      );
     }
   });
 

@@ -1,71 +1,83 @@
 {
   "datasetId": "bm-summary-ds-001",
   "policyVersion": "v1.0.0",
-  "overallFeatureMissingFraction": 0,
+  "overallFeatureMissingFraction": 1,
   "perFeatureMissingness": [
     {
       "featureId": "dmr_summary_001",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "featureId": "dmr_summary_002",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     }
   ],
   "perSampleMissingness": [
     {
       "sampleId": "sample-ctrl-1",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "sampleId": "sample-ctrl-2",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "sampleId": "sample-low-1",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "sampleId": "sample-low-2",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "sampleId": "sample-high-1",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     },
     {
       "sampleId": "sample-high-2",
-      "missingFraction": 0,
-      "band": "acceptable"
+      "missingFraction": 1,
+      "band": "exclusion"
     }
   ],
   "perGroupMissingness": [
     {
       "doseGroupId": "ctrl",
-      "missingFraction": 0,
-      "band": "acceptable",
-      "completeDropoutFeatureIds": []
+      "missingFraction": 1,
+      "band": "exclusion",
+      "completeDropoutFeatureIds": [
+        "dmr_summary_001",
+        "dmr_summary_002"
+      ]
     },
     {
       "doseGroupId": "low",
-      "missingFraction": 0,
-      "band": "acceptable",
-      "completeDropoutFeatureIds": []
+      "missingFraction": 1,
+      "band": "exclusion",
+      "completeDropoutFeatureIds": [
+        "dmr_summary_001",
+        "dmr_summary_002"
+      ]
     },
     {
       "doseGroupId": "high",
-      "missingFraction": 0,
-      "band": "acceptable",
-      "completeDropoutFeatureIds": []
+      "missingFraction": 1,
+      "band": "exclusion",
+      "completeDropoutFeatureIds": [
+        "dmr_summary_001",
+        "dmr_summary_002"
+      ]
     }
   ],
-  "featuresWithCompleteGroupDropout": [],
-  "summaryBand": "acceptable"
+  "featuresWithCompleteGroupDropout": [
+    "dmr_summary_001",
+    "dmr_summary_002"
+  ],
+  "summaryBand": "exclusion"
 }

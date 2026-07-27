@@ -3,6 +3,8 @@ import type { ReleaseEvidenceChecksum } from "./schema.js";
 export const RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES = [
   "schemas/current",
   "benchmarks/expected",
+  "benchmarks/fixtures/synthetic",
+  "benchmarks/fixtures/frozen_public",
 ] as const;
 
 export const RELEASE_EVIDENCE_CHECKSUM_FILES = [
@@ -10,6 +12,9 @@ export const RELEASE_EVIDENCE_CHECKSUM_FILES = [
   "docs/validation-statement.md",
   "docs/tool-reference.md",
   "toxmcp.manifest.yaml",
+  "evaluation.xml",
+  "SECURITY.md",
+  "CITATION.cff",
 ] as const;
 
 export const RELEASE_EVIDENCE_GENERATED_FILES = [

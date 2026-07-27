@@ -26,6 +26,16 @@
           "featureIds": [
             "cg_cyto_ctx_001"
           ]
+        },
+        {
+          "warningCode": "CTX_MISSING_CONTEXT",
+          "severity": "warning",
+          "message": "No cytotoxicity context provided for dataset",
+          "category": "cytotoxicity",
+          "blocksDownstream": false,
+          "featureIds": [
+            "cg_cyto_ctx_001"
+          ]
         }
       ],
       "mappedGeneIds": [],
@@ -33,11 +43,11 @@
       "mappingMethod": "unknown",
       "explainability": {
         "ruleCode": "RULE_009_MAJOR_WARNINGS",
-        "reasonTemplate": "Feature cg_cyto_ctx_001 passed all blocking rules but carries 2 warning(s) (severity: warning or error). The feature is accepted with caveats.",
+        "reasonTemplate": "Feature cg_cyto_ctx_001 passed all blocking rules but carries 3 warning(s) (severity: warning or error). The feature is accepted with caveats.",
         "remediationHint": "Review the attached warnings and address underlying data-quality or metadata issues where possible.",
         "reviewRequired": false,
         "policyReference": "warning_accumulation",
-        "observedValue": "2"
+        "observedValue": "3"
       }
     }
   ],
