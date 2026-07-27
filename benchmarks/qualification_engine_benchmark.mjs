@@ -111,7 +111,7 @@ function createPacket(featureCount, replicateCount) {
         {
           stepName: "normalization",
           toolName: "benchmark-fixture",
-          toolVersion: "0.2.0",
+          toolVersion: "0.2.1",
           parameters: { generated: true },
         },
       ],

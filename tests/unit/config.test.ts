@@ -18,7 +18,7 @@ describe("config defaults", () => {
     const config = ConfigSchema.parse({});
 
     expect(config.name).toBe("epigenomics-mcp");
-    expect(config.version).toBe("0.2.0");
+    expect(config.version).toBe("0.2.1");
     expect(config.logLevel).toBe("info");
     expect(config.port).toBe(3000);
     expect(config.host).toBe("127.0.0.1");

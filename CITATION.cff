@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use Epigenomics MCP, please cite this software."
 title: "Epigenomics MCP"
 type: software
-version: 0.2.0
+version: 0.2.1
 date-released: 2026-07-27
 authors:
   - family-names: "Epigenomics MCP maintainers"

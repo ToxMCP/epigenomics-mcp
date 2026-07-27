@@ -1,17 +1,17 @@
 [
   {
-    "id": "epigenomics-mcp@0.2.0",
+    "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
-    "version": "0.2.0",
-    "size": 729271,
-    "unpackedSize": 4033586,
-    "shasum": "beca87c79355a36825c4f10e3397191a7fcaf385",
-    "integrity": "sha512-xOGUPUDN3Lb9+oqOB4J1pFR+E36+OCQo4UAe4cb72JdOfQeqmvarulN5WO0GcDzGkpH1c1VsYmz5SzZywHJ17w==",
-    "filename": "epigenomics-mcp-0.2.0.tgz",
+    "version": "0.2.1",
+    "size": 729274,
+    "unpackedSize": 4033584,
+    "shasum": "8b3765c410a0856a3f5b800caf4464ee665cda12",
+    "integrity": "sha512-YCWzrOCyd7LBPQTizHIkBlzRI5+jpZjEt35qDIQlYUkhjLVt1b47Q4Z+I3W5KCbOgwqjPPkTuIrRNN0cUo6ncQ==",
+    "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 3455,
+        "size": 3453,
         "mode": 420
       },
       {

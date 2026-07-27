@@ -1,7 +1,7 @@
 # Non-Goals
 
 **Document status:** Regulator-facing boundary statement  
-**Product version:** 0.2.0
+**Product version:** 0.2.1
 **Date:** 2026-07-27
 
 ---
