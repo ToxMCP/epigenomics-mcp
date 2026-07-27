@@ -71,6 +71,12 @@ function listFilesRecursively(path) {
     return [resolved];
   }
   return readdirSync(resolved, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.name !== "__pycache__" &&
+        !entry.name.endsWith(".pyc") &&
+        !entry.name.endsWith(".pyo"),
+    )
     .flatMap((entry) => listFilesRecursively(join(resolved, entry.name)))
     .sort();
 }
