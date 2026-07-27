@@ -1,0 +1,463 @@
+{
+  "schemaVersion": "0.1.0",
+  "schemaName": "EpigenomicsFeatureResponsePacket",
+  "packetId": "15274900-0000-4000-8000-000000000001",
+  "datasetMetadataRef": "GSE152749-source-files",
+  "designRef": "GSE152749-ra-dose-design",
+  "features": [
+    {
+      "featureId": "chr1-blacklist-filtered-peak-count",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr1:blacklist-filtered-peak-count",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Count of deposited blacklist-filtered narrowPeak rows on the chromosome",
+      "values": {
+        "GSM4625580": 26314,
+        "GSM4625590": 24936,
+        "GSM4625602": 26593,
+        "GSM4625578": 25813,
+        "GSM4625599": 24035,
+        "GSM4625611": 24651,
+        "GSM4625587": 24180,
+        "GSM4625592": 26374,
+        "GSM4625601": 27064,
+        "GSM4625581": 25759,
+        "GSM4625598": 26791,
+        "GSM4625607": 25957
+      }
+    },
+    {
+      "featureId": "chr1-deposited-signal-value-sum",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr1:deposited-signal-value-sum",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Sum of the deposited narrowPeak signalValue field on the chromosome",
+      "values": {
+        "GSM4625580": 449160.19254,
+        "GSM4625590": 413260.15604,
+        "GSM4625602": 451258.4159,
+        "GSM4625578": 401689.34316,
+        "GSM4625599": 381446.84664,
+        "GSM4625611": 379061.9661,
+        "GSM4625587": 364882.05432,
+        "GSM4625592": 401515.39396,
+        "GSM4625601": 444051.74396,
+        "GSM4625581": 417375.8546,
+        "GSM4625598": 406266.13931,
+        "GSM4625607": 420306.56348
+      }
+    },
+    {
+      "featureId": "chr2-blacklist-filtered-peak-count",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr2:blacklist-filtered-peak-count",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Count of deposited blacklist-filtered narrowPeak rows on the chromosome",
+      "values": {
+        "GSM4625580": 22872,
+        "GSM4625590": 21876,
+        "GSM4625602": 23332,
+        "GSM4625578": 22259,
+        "GSM4625599": 20911,
+        "GSM4625611": 21523,
+        "GSM4625587": 21209,
+        "GSM4625592": 23093,
+        "GSM4625601": 23465,
+        "GSM4625581": 22570,
+        "GSM4625598": 23559,
+        "GSM4625607": 22788
+      }
+    },
+    {
+      "featureId": "chr2-deposited-signal-value-sum",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr2:deposited-signal-value-sum",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Sum of the deposited narrowPeak signalValue field on the chromosome",
+      "values": {
+        "GSM4625580": 365134.0124,
+        "GSM4625590": 337904.96721,
+        "GSM4625602": 367823.15526,
+        "GSM4625578": 328045.73897,
+        "GSM4625599": 313552.99083,
+        "GSM4625611": 314626.4347,
+        "GSM4625587": 303989.93598,
+        "GSM4625592": 333179.13365,
+        "GSM4625601": 366467.49068,
+        "GSM4625581": 345702.69419,
+        "GSM4625598": 340442.36361,
+        "GSM4625607": 349965.30546
+      }
+    },
+    {
+      "featureId": "chr3-blacklist-filtered-peak-count",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr3:blacklist-filtered-peak-count",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Count of deposited blacklist-filtered narrowPeak rows on the chromosome",
+      "values": {
+        "GSM4625580": 21041,
+        "GSM4625590": 20112,
+        "GSM4625602": 21317,
+        "GSM4625578": 21160,
+        "GSM4625599": 19946,
+        "GSM4625611": 20482,
+        "GSM4625587": 20075,
+        "GSM4625592": 22385,
+        "GSM4625601": 22303,
+        "GSM4625581": 21391,
+        "GSM4625598": 22750,
+        "GSM4625607": 21658
+      }
+    },
+    {
+      "featureId": "chr3-deposited-signal-value-sum",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr3:deposited-signal-value-sum",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Sum of the deposited narrowPeak signalValue field on the chromosome",
+      "values": {
+        "GSM4625580": 361359.99259,
+        "GSM4625590": 337117.02431,
+        "GSM4625602": 364636.01896,
+        "GSM4625578": 332059.26583,
+        "GSM4625599": 320670.1245,
+        "GSM4625611": 320360.59657,
+        "GSM4625587": 308848.30408,
+        "GSM4625592": 341067.40181,
+        "GSM4625601": 370396.14435,
+        "GSM4625581": 349933.93224,
+        "GSM4625598": 348329.28035,
+        "GSM4625607": 354814.26238
+      }
+    },
+    {
+      "featureId": "chr4-blacklist-filtered-peak-count",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr4:blacklist-filtered-peak-count",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Count of deposited blacklist-filtered narrowPeak rows on the chromosome",
+      "values": {
+        "GSM4625580": 11023,
+        "GSM4625590": 10547,
+        "GSM4625602": 11283,
+        "GSM4625578": 10832,
+        "GSM4625599": 10128,
+        "GSM4625611": 10638,
+        "GSM4625587": 10485,
+        "GSM4625592": 11275,
+        "GSM4625601": 11446,
+        "GSM4625581": 11128,
+        "GSM4625598": 11532,
+        "GSM4625607": 11154
+      }
+    },
+    {
+      "featureId": "chr4-deposited-signal-value-sum",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr4:deposited-signal-value-sum",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Sum of the deposited narrowPeak signalValue field on the chromosome",
+      "values": {
+        "GSM4625580": 156435.7128,
+        "GSM4625590": 145317.12247,
+        "GSM4625602": 159303.75016,
+        "GSM4625578": 142453.77396,
+        "GSM4625599": 135812.9419,
+        "GSM4625611": 139240.31205,
+        "GSM4625587": 133751.13374,
+        "GSM4625592": 146136.55329,
+        "GSM4625601": 161408.62675,
+        "GSM4625581": 152179.2519,
+        "GSM4625598": 150737.90622,
+        "GSM4625607": 154089.76441
+      }
+    },
+    {
+      "featureId": "chr5-blacklist-filtered-peak-count",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr5:blacklist-filtered-peak-count",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Count of deposited blacklist-filtered narrowPeak rows on the chromosome",
+      "values": {
+        "GSM4625580": 14990,
+        "GSM4625590": 14361,
+        "GSM4625602": 15236,
+        "GSM4625578": 14871,
+        "GSM4625599": 13797,
+        "GSM4625611": 14278,
+        "GSM4625587": 14057,
+        "GSM4625592": 15285,
+        "GSM4625601": 15594,
+        "GSM4625581": 14964,
+        "GSM4625598": 15486,
+        "GSM4625607": 15118
+      }
+    },
+    {
+      "featureId": "chr5-deposited-signal-value-sum",
+      "featureClass": "generic_region_feature",
+      "modality": "atac_seq",
+      "measuredIdentifier": "chr5:deposited-signal-value-sum",
+      "signalMetric": "declared_other",
+      "declaredOtherDescription": "Sum of the deposited narrowPeak signalValue field on the chromosome",
+      "values": {
+        "GSM4625580": 242354.74289,
+        "GSM4625590": 223912.56143,
+        "GSM4625602": 244396.04925,
+        "GSM4625578": 221696.78827,
+        "GSM4625599": 208455.0665,
+        "GSM4625611": 211570.45063,
+        "GSM4625587": 205038.95462,
+        "GSM4625592": 221742.62171,
+        "GSM4625601": 245338.87579,
+        "GSM4625581": 232747.96732,
+        "GSM4625598": 226912.6556,
+        "GSM4625607": 234389.08146
+      }
+    }
+  ],
+  "design": {
+    "designId": "GSE152749-ra-dose-design",
+    "studyId": "GSE152749",
+    "species": "Homo sapiens",
+    "doseGroups": [
+      {
+        "doseGroupId": "vehicle",
+        "doseValue": 0,
+        "doseUnit": "nM",
+        "timepointHours": 72
+      },
+      {
+        "doseGroupId": "ra-50",
+        "doseValue": 50,
+        "doseUnit": "nM",
+        "timepointHours": 72
+      },
+      {
+        "doseGroupId": "ra-200",
+        "doseValue": 200,
+        "doseUnit": "nM",
+        "timepointHours": 72
+      },
+      {
+        "doseGroupId": "ra-400",
+        "doseValue": 400,
+        "doseUnit": "nM",
+        "timepointHours": 72
+      }
+    ],
+    "samples": [
+      {
+        "sampleId": "GSM4625580",
+        "doseGroupId": "vehicle",
+        "replicateIndex": 1,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": true,
+        "treatment": "ethanol vehicle"
+      },
+      {
+        "sampleId": "GSM4625590",
+        "doseGroupId": "vehicle",
+        "replicateIndex": 2,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": true,
+        "treatment": "ethanol vehicle"
+      },
+      {
+        "sampleId": "GSM4625602",
+        "doseGroupId": "vehicle",
+        "replicateIndex": 3,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": true,
+        "treatment": "ethanol vehicle"
+      },
+      {
+        "sampleId": "GSM4625578",
+        "doseGroupId": "ra-50",
+        "replicateIndex": 1,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625599",
+        "doseGroupId": "ra-50",
+        "replicateIndex": 2,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625611",
+        "doseGroupId": "ra-50",
+        "replicateIndex": 3,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625587",
+        "doseGroupId": "ra-200",
+        "replicateIndex": 1,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625592",
+        "doseGroupId": "ra-200",
+        "replicateIndex": 2,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625601",
+        "doseGroupId": "ra-200",
+        "replicateIndex": 3,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625581",
+        "doseGroupId": "ra-400",
+        "replicateIndex": 1,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625598",
+        "doseGroupId": "ra-400",
+        "replicateIndex": 2,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      },
+      {
+        "sampleId": "GSM4625607",
+        "doseGroupId": "ra-400",
+        "replicateIndex": 3,
+        "replicateType": "biological",
+        "cellType": "MCF-7",
+        "species": "Homo sapiens",
+        "controlFlag": false,
+        "treatment": "retinoic acid"
+      }
+    ],
+    "hasControls": true,
+    "minReplicatesPerGroup": 3
+  },
+  "provenance": {
+    "datasetId": "GSE152749-ra-atac-derived",
+    "upstreamSteps": [
+      {
+        "stepName": "source_processing",
+        "toolName": "MACS2",
+        "toolVersion": "not reported",
+        "parameters": {
+          "sourceFormat": "blacklist-filtered narrowPeak",
+          "genomeBuild": "GRCh38",
+          "sourceFiles": 12
+        },
+        "inputFiles": [],
+        "outputFiles": [
+          "GSM4625580_05-EtOH-nlDensity-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625590_15-EtOH-nlDensity-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625602_27-EtOH-nlDensity-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625578_03-RA-low-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625599_24-RA-low-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625611_36-RA-low-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625587_12-RA-med-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625592_17-RA-med-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625601_26-RA-med-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625581_06-RA-high-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625598_23-RA-high-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625607_32-RA-high-rep3_blacklistFiltered.narrowPeak.gz"
+        ]
+      },
+      {
+        "stepName": "fixture_derivation",
+        "toolName": "derive_fixture.mjs",
+        "toolVersion": "0.1.0",
+        "parameters": {
+          "chromosomes": [
+            "chr1",
+            "chr2",
+            "chr3",
+            "chr4",
+            "chr5"
+          ],
+          "metrics": [
+            "peakCount",
+            "sumSignalValue"
+          ],
+          "transformation": "none beyond chromosome aggregation"
+        },
+        "inputFiles": [
+          "GSM4625580_05-EtOH-nlDensity-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625590_15-EtOH-nlDensity-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625602_27-EtOH-nlDensity-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625578_03-RA-low-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625599_24-RA-low-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625611_36-RA-low-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625587_12-RA-med-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625592_17-RA-med-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625601_26-RA-med-rep3_blacklistFiltered.narrowPeak.gz",
+          "GSM4625581_06-RA-high-rep1_blacklistFiltered.narrowPeak.gz",
+          "GSM4625598_23-RA-high-rep2_blacklistFiltered.narrowPeak.gz",
+          "GSM4625607_32-RA-high-rep3_blacklistFiltered.narrowPeak.gz"
+        ],
+        "outputFiles": [
+          "response_packet.json"
+        ]
+      }
+    ],
+    "normalisationMethod": "Deposited MACS2 narrowPeak signalValue retained without additional normalization",
+    "annotationVersion": "GRCh38 declared by the GEO sample records",
+    "sourceArchive": "NCBI GEO",
+    "sourceAccession": "GSE152749"
+  },
+  "qualificationSummary": {
+    "acceptedCount": 0,
+    "excludedCount": 0,
+    "exploratoryCount": 10,
+    "caveatCount": 10
+  },
+  "qcReportRef": "not-generated-public-response-pattern-fixture",
+  "warnings": [],
+  "generatedAt": "2026-07-27T00:00:00.000Z"
+}

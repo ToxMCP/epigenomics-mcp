@@ -76,6 +76,14 @@ Epigenomics MCP v0.2 makes **no inference** about the following:
 5. **Cell-type deconvolution** — The service ingests externally supplied cell fractions; it does not deconvolve bulk epigenomic data by default.
 6. **Cytotoxicity from epigenomic signal** — Cytotoxicity must be supplied by companion assay; it is never inferred from methylation or accessibility patterns alone.
 7. **Gene regulation** — A region-to-gene mapping is a contextual linkage, not a claim that the gene is regulated.
+8. **Trend significance or biological significance** — An observed sequence of
+   dose-level means is descriptive. It is not a statistical trend test, and a
+   caller-supplied numeric tolerance is not a biological-significance threshold.
+9. **BMD suitability from response shape alone** — Monotonic, flat, or
+   non-monotonic labels do not establish model adequacy, select a benchmark
+   response, or determine whether a feature is suitable for BMD modelling.
+   Non-monotonicity is preserved for review and is not an automatic
+   qualification exclusion.
 
 ---
 

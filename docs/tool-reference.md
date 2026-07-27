@@ -23,6 +23,7 @@ All tools are registered on the MCP server via `registerTools()`. The same opera
 | `ingest_cell_composition` | `assess-cell-context` | Ingest cell-composition evidence |
 | `ingest_cytotoxicity` | `assess-cytotox` | Ingest cytotoxicity context |
 | `summarize_by_group` | — | Summarize feature responses by dose group |
+| `assess_response_patterns` | — | Classify bounded observed dose-level mean patterns without fitting a model |
 | `read_table` | — | Read a delimited table file |
 | `read_design` | `ingest-design` | Read a design table |
 | `generate_qc_report` | `qc-report` | Generate a regulator-readable QC report |
@@ -133,10 +134,10 @@ large tables without requesting an unbounded response.
 
 ### 2.6 File-backed packet workflows
 
-`qualify_features`, `generate_handoff`, and `summarize_by_group` accept exactly
-one of an inline `packet` or a JSON `packetPath`. A path is resolved through the
-same allowed-root and maximum-size policy as the table readers. Supplying both,
-or neither, is rejected.
+`qualify_features`, `generate_handoff`, `summarize_by_group`, and
+`assess_response_patterns` accept exactly one of an inline `packet` or a JSON
+`packetPath`. A path is resolved through the same allowed-root and maximum-size
+policy as the table readers. Supplying both, or neither, is rejected.
 
 `qualify_features` and `generate_handoff` also accept the optional
 `cellCompositionProfile` and `cytotoxicityProfile` objects returned by the two
@@ -209,7 +210,7 @@ not silently promoted to biological samples. Streaming results include row,
 batch, sample, byte, compressed-source SHA-256, decompressed-content SHA-256,
 and bounded error/warning evidence.
 
-### 2.6 Design-readiness states
+### 2.8 Design-readiness states
 
 `validate_design` and `ingest_dataset` do not use ingestion success as a
 proxy for dose-response suitability. They report four progressively stricter
@@ -243,6 +244,49 @@ studies with more dose groups and graded responses are generally more useful
 for modelling, while a study with only one responding treated dose may not
 support a BMD analysis. The exact numeric thresholds above remain Epigenomics
 MCP policy, not a claim of universal regulatory sufficiency.
+
+### 2.9 Observed response-pattern assessment
+
+`assess_response_patterns` provides a bounded page of descriptive,
+feature-level assessments. It collapses dose-group labels sharing one numeric
+dose, orders the resulting levels, reports mean, sample SD, missingness, and
+control differences, then classifies the observed means as:
+
+- `flat_within_tolerance`
+- `monotonic_nondecreasing`
+- `monotonic_nonincreasing`
+- `non_monotonic`
+
+The default absolute tolerance is exactly zero. A non-zero tolerance must be
+supplied by the caller in the feature signal metric's units, is echoed in the
+output, and is explicitly not treated as biological significance. Patterns are
+not assessed when there is no zero-dose control, a negative dose, fewer than
+three distinct numeric doses, an entirely missing dose level, a non-finite
+value, a structurally invalid design, mixed dose units, or an aggregate
+multi-timepoint design.
+
+Design readiness is returned independently. A mathematical pattern can be
+described even when replication or batch structure prevents automatic
+dose-response readiness. Conversely, a dose-response-ready design does not
+make an endpoint statistically significant or BMD-suitable. Every result
+therefore records:
+
+```json
+{
+  "scientificScope": {
+    "interpretationBoundary": "descriptive_group_mean_pattern_only",
+    "trendSignificance": "not_assessed",
+    "biologicalSignificance": "not_assessed",
+    "bmdSuitability": "not_assessed",
+    "monotonicityRequiredForQualification": false
+  }
+}
+```
+
+This boundary reflects current BMD guidance: response-pattern inspection is
+useful, but model selection, fit, benchmark-response choice, and uncertainty
+remain separate analytical decisions. Non-monotonic patterns are retained for
+scientific review rather than automatically discarded.
 
 ---
 
@@ -1024,4 +1068,5 @@ CLI commands that produce blocking warnings (e.g. `qualify` when `blocksDownstre
 - [Handoff Specification](handoff.md)
 - [Region-to-Gene Mapping Guide](region-to-gene-mapping-guide.md)
 - [U.S. EPA Benchmark Dose Technical Guidance](https://www.epa.gov/risk/benchmark-dose-technical-guidance)
+- [EFSA Guidance on the use of the benchmark dose approach in risk assessment (2022)](https://efsa.onlinelibrary.wiley.com/doi/10.2903/j.efsa.2022.7584)
 - [BMDExpress 2 transcriptomic dose-response workflow](https://pmc.ncbi.nlm.nih.gov/articles/PMC6513160/)

@@ -74,6 +74,7 @@ mcpToolNames:
   - ingest_cell_composition
   - ingest_cytotoxicity
   - summarize_by_group
+  - assess_response_patterns
   - read_table
   - read_design
   - generate_qc_report

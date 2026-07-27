@@ -24,7 +24,7 @@ try {
   await client.connect(transport);
 
   const listed = await client.listTools();
-  assert.equal(listed.tools.length, 15);
+  assert.equal(listed.tools.length, 16);
   const readTable = listed.tools.find((tool) => tool.name === "read_table");
   assert.ok(readTable?.outputSchema);
   assert.deepEqual(readTable.annotations, {

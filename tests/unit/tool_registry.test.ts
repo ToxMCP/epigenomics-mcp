@@ -32,6 +32,7 @@ describe("tool registry", () => {
       "ingest_cell_composition",
       "ingest_cytotoxicity",
       "summarize_by_group",
+      "assess_response_patterns",
       "read_table",
       "read_design",
       "generate_qc_report",
@@ -517,6 +518,35 @@ describe("tool registry", () => {
     const handoffResult = await handoff.handler({ packetPath });
     const handoffSummary = JSON.parse(handoffResult.content[0].text);
     expect(handoffSummary.readyForPod).toBe(true);
+  });
+
+  it("assess_response_patterns returns a bounded descriptive assessment", async () => {
+    const packetPath = resolve(
+      process.cwd(),
+      "examples/methylation_matrix/packet.json",
+    );
+    const tool = TOOL_DEFINITIONS.find(
+      (definition) => definition.name === "assess_response_patterns",
+    )!;
+    const result = await tool.handler({
+      packetPath,
+      absoluteTolerance: 0.01,
+      limit: 1,
+    });
+    const assessment = JSON.parse(result.content[0].text);
+
+    expect(result.isError).not.toBe(true);
+    expect(assessment.schemaName).toBe("ResponsePatternAssessmentResult");
+    expect(assessment.count).toBe(1);
+    expect(assessment.features[0].observedPattern).toBe(
+      "monotonic_nonincreasing",
+    );
+    expect(assessment.scientificScope).toMatchObject({
+      trendSignificance: "not_assessed",
+      biologicalSignificance: "not_assessed",
+      bmdSuitability: "not_assessed",
+      monotonicityRequiredForQualification: false,
+    });
   });
 
   it("qualification and handoff tools apply supplied cytotoxicity profiles", async () => {
