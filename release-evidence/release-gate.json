@@ -20,6 +20,11 @@
       "name": "nondeterminism",
       "passed": true,
       "details": "Benchmark results are deterministic across two runs."
+    },
+    {
+      "name": "qualification_performance",
+      "passed": true,
+      "details": "10000 real qualifications in 0.144s; 74.1 MiB RSS increase"
     }
   ],
   "benchmarkSummary": {
