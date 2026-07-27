@@ -223,7 +223,7 @@ The rule engine applies rules in fixed priority order:
 
 1. `RULE_001_MISSING_BUILD` — exclude if build absent
 2. `RULE_002_INVALID_COORDINATES` — exclude if build invalid or mixed builds detected
-3. `RULE_003_INSUFFICIENT_DESIGN` — exclude if dose groups or replicates below minimum
+3. `RULE_003_INSUFFICIENT_DESIGN` — exclude if canonical dose-response readiness has a non-replication blocker, including insufficient distinct doses, structural failure, dose–batch confounding, or an unsplit multi-timepoint design
 4. `RULE_004_INSUFFICIENT_REPLICATES` — exclude if per-group replicates below threshold
 5. `RULE_005_HIGH_MISSINGNESS` — exclude if missingness above exclusion threshold
 6. `RULE_006_NON_NUMERIC_RESPONSE` — exclude if values contain `Infinity`, `-Infinity`, or non-numeric
@@ -252,6 +252,10 @@ The rule engine applies rules in fixed priority order:
 
 ### 4.6 Handoff construction
 - Only features with status `accepted_for_pod` or `accepted_with_caveats` enter `doseResponseReadySubset`.
+- Those accepted statuses are reachable only when the shared dataset-level
+  design assessment is `dose_response_minimum` or
+  `dose_response_preferred`; comparison-only designs remain ingestible but
+  cannot produce a PoD handoff.
 - Excluded features are listed in `excludedFeatures` with their exclusion reason.
 - `readyForPod` is `true` only when the packet is schema-valid and at least one feature is dose-response ready.
 - Fail-closed: zero eligible features yields `readyForPod = false` (or `null` handoff in the export client).

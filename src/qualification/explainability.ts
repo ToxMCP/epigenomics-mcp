@@ -53,11 +53,11 @@ const REASON_TEMPLATES: Record<
   },
   [RULE_CODES.INSUFFICIENT_DESIGN]: {
     template:
-      "The experimental design provides {totalDoseGroups} dose groups ({nonZeroDoseGroups} non-zero), which is below the policy minimum of {minTotalDoseGroups} total / {minNonZeroDoseGroups} non-zero. Feature {featureId} is excluded because dose-response modelling requires sufficient dose coverage.",
+      "The canonical design-readiness assessment reports blocker(s): {designBlockers}. The design provides {totalDoseGroups} distinct dose levels ({nonZeroDoseGroups} non-zero); the policy minimum is {minTotalDoseGroups} total / {minNonZeroDoseGroups} non-zero. Feature {featureId} is excluded from dose-response modelling.",
     remediationHint:
-      "Add additional dose groups to the experimental design, or lower the policy minimum if the design is intentionally constrained.",
+      "Resolve the listed design blocker(s), then rerun design validation and feature qualification.",
     reviewRequired: true,
-    policyReference: "doseGroup.minTotalDoseGroups / doseGroup.minNonZeroDoseGroups",
+    policyReference: "designReadiness / doseGroup / replicate",
   },
   [RULE_CODES.INSUFFICIENT_REPLICATES]: {
     template:
@@ -130,6 +130,7 @@ export function buildExplainability(
     build?: string;
     totalDoseGroups?: number;
     nonZeroDoseGroups?: number;
+    designBlockers?: string[];
     minBiologicalReplicates?: number;
     missingFraction?: number;
     confoundingLevel?: string;
@@ -154,6 +155,10 @@ export function buildExplainability(
   template = template.replace(
     /{nonZeroDoseGroups}/g,
     String(context.nonZeroDoseGroups ?? "?"),
+  );
+  template = template.replace(
+    /{designBlockers}/g,
+    context.designBlockers?.join(", ") ?? "unspecified_design_blocker",
   );
   template = template.replace(
     /{minTotalDoseGroups}/g,
@@ -215,7 +220,7 @@ export function buildExplainability(
         ? `${(context.missingFraction * 100).toFixed(1)}%`
         : undefined
       : ruleCode === RULE_CODES.INSUFFICIENT_DESIGN
-        ? `${context.totalDoseGroups ?? "?"} total / ${context.nonZeroDoseGroups ?? "?"} non-zero`
+        ? `${context.totalDoseGroups ?? "?"} total / ${context.nonZeroDoseGroups ?? "?"} non-zero; blockers=${context.designBlockers?.join(", ") ?? "unspecified"}`
         : ruleCode === RULE_CODES.INSUFFICIENT_REPLICATES
           ? String(context.minBiologicalReplicates ?? "?")
           : ruleCode === RULE_CODES.DOMINANT_CONFOUNDING

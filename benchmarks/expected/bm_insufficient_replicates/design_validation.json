@@ -19,6 +19,12 @@
     "minimumBiologicalReplicatesPerGroup": 2,
     "preferredBiologicalReplicatesPerGroup": 3
   },
+  "comparisonBlockers": [
+    "insufficient_biological_replicates"
+  ],
+  "doseResponseBlockers": [
+    "insufficient_biological_replicates"
+  ],
   "errors": [],
   "warnings": [
     "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked"

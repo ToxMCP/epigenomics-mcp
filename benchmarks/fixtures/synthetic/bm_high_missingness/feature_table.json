@@ -16,7 +16,9 @@
       "sample-ctrl-1": null,
       "sample-ctrl-2": null,
       "sample-low-1": null,
-      "sample-low-2": 0.80
+      "sample-low-2": 0.80,
+      "sample-high-1": null,
+      "sample-high-2": 0.75
     }
   },
   {
@@ -36,7 +38,9 @@
       "sample-ctrl-1": 0.72,
       "sample-ctrl-2": 0.74,
       "sample-low-1": 0.70,
-      "sample-low-2": 0.71
+      "sample-low-2": 0.71,
+      "sample-high-1": 0.67,
+      "sample-high-2": 0.68
     }
   }
 ]

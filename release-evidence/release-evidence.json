@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T17:17:15.623Z",
+  "generatedAt": "2026-07-27T17:40:32.847Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T17:17:12.610Z",
-    "finishedAt": "2026-07-27T17:17:15.623Z"
+    "startedAt": "2026-07-27T17:40:29.927Z",
+    "finishedAt": "2026-07-27T17:40:32.847Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "efbc8d86f720776f58edf1c5e0cf731dd7a2890c",
+    "commit": "5aae32027ee90a43c014a103e14cac8fe95ed987",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.096s; 76.3 MiB RSS increase"
+        "details": "10000 real qualifications in 0.096s; 78.5 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -66,15 +66,15 @@
       "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
       "version": "0.2.1",
-      "size": 751590,
-      "unpackedSize": 4154215,
-      "shasum": "f8c61063b55cf4ceecc0e17f386a36487fc97292",
-      "integrity": "sha512-VIZ+O0aSJLHrIVipz0CwyxBwjxmyDWf+4jywSpBBmkyBmNLqMdrupOOKPrTR8ZYTml3ZTXZDiPpayknfDTm+tA==",
+      "size": 755239,
+      "unpackedSize": 4193610,
+      "shasum": "842018bc4d70342840d3b4f57a85e4ac07232740",
+      "integrity": "sha512-glEjsCpmWnTQT8ZAa6+Gnyo2r6kVGQPvEN4TW3kw6+kFMYAQ5IkpZvnUVOpxNfYEJhl9HMrVb8AzM8EPWYIgPA==",
       "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 5146,
+          "size": 5659,
           "mode": 420
         },
         {
@@ -94,7 +94,7 @@
         },
         {
           "path": "README.md",
-          "size": 16665,
+          "size": 16720,
           "mode": 420
         },
         {
@@ -109,7 +109,7 @@
         },
         {
           "path": "benchmarks/expected/bm_beta_manifest_complete/design_validation.json",
-          "size": 922,
+          "size": 980,
           "mode": 420
         },
         {
@@ -134,12 +134,12 @@
         },
         {
           "path": "benchmarks/expected/bm_beta_manifest_complete/qualification_result.json",
-          "size": 3572,
+          "size": 4635,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_build_missing/design_validation.json",
-          "size": 1043,
+          "size": 1143,
           "mode": 420
         },
         {
@@ -169,7 +169,7 @@
         },
         {
           "path": "benchmarks/expected/bm_dmr_nearest_gene_only/design_validation.json",
-          "size": 922,
+          "size": 980,
           "mode": 420
         },
         {
@@ -194,12 +194,12 @@
         },
         {
           "path": "benchmarks/expected/bm_dmr_nearest_gene_only/qualification_result.json",
-          "size": 3500,
+          "size": 4563,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_dominant_cytotoxicity/design_validation.json",
-          "size": 1043,
+          "size": 1206,
           "mode": 420
         },
         {
@@ -209,12 +209,12 @@
         },
         {
           "path": "benchmarks/expected/bm_dominant_cytotoxicity/missingness_profile.json",
-          "size": 1063,
+          "size": 1405,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_dominant_cytotoxicity/packet.json",
-          "size": 2211,
+          "size": 2609,
           "mode": 420
         },
         {
@@ -224,7 +224,7 @@
         },
         {
           "path": "benchmarks/expected/bm_dominant_cytotoxicity/qualification_result.json",
-          "size": 3147,
+          "size": 4440,
           "mode": 420
         },
         {
@@ -249,7 +249,7 @@
         },
         {
           "path": "benchmarks/expected/bm_high_missingness/design_validation.json",
-          "size": 1043,
+          "size": 1206,
           "mode": 420
         },
         {
@@ -259,12 +259,12 @@
         },
         {
           "path": "benchmarks/expected/bm_high_missingness/missingness_profile.json",
-          "size": 1243,
+          "size": 1615,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_high_missingness/packet.json",
-          "size": 2764,
+          "size": 3225,
           "mode": 420
         },
         {
@@ -274,12 +274,12 @@
         },
         {
           "path": "benchmarks/expected/bm_high_missingness/qualification_result.json",
-          "size": 3758,
+          "size": 5051,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_insufficient_replicates/design_validation.json",
-          "size": 1102,
+          "size": 1248,
           "mode": 420
         },
         {
@@ -304,12 +304,12 @@
         },
         {
           "path": "benchmarks/expected/bm_insufficient_replicates/qualification_result.json",
-          "size": 2006,
+          "size": 3349,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_invalid_coordinate_format/design_validation.json",
-          "size": 1043,
+          "size": 1143,
           "mode": 420
         },
         {
@@ -339,7 +339,7 @@
         },
         {
           "path": "benchmarks/expected/bm_missing_cell_context/design_validation.json",
-          "size": 1043,
+          "size": 1206,
           "mode": 420
         },
         {
@@ -349,12 +349,12 @@
         },
         {
           "path": "benchmarks/expected/bm_missing_cell_context/missingness_profile.json",
-          "size": 1067,
+          "size": 1409,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_missing_cell_context/packet.json",
-          "size": 2227,
+          "size": 2626,
           "mode": 420
         },
         {
@@ -364,12 +364,12 @@
         },
         {
           "path": "benchmarks/expected/bm_missing_cell_context/qualification_result.json",
-          "size": 2226,
+          "size": 3519,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_missing_cytotoxicity_context/design_validation.json",
-          "size": 1043,
+          "size": 1206,
           "mode": 420
         },
         {
@@ -379,12 +379,12 @@
         },
         {
           "path": "benchmarks/expected/bm_missing_cytotoxicity_context/missingness_profile.json",
-          "size": 1067,
+          "size": 1409,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_missing_cytotoxicity_context/packet.json",
-          "size": 2227,
+          "size": 2626,
           "mode": 420
         },
         {
@@ -394,12 +394,12 @@
         },
         {
           "path": "benchmarks/expected/bm_missing_cytotoxicity_context/qualification_result.json",
-          "size": 2176,
+          "size": 3469,
           "mode": 420
         },
         {
           "path": "benchmarks/expected/bm_summary_contrast_only/design_validation.json",
-          "size": 1148,
+          "size": 1206,
           "mode": 420
         },
         {
@@ -424,7 +424,7 @@
         },
         {
           "path": "benchmarks/expected/bm_summary_contrast_only/qualification_result.json",
-          "size": 4100,
+          "size": 5393,
           "mode": 420
         },
         {
@@ -554,7 +554,7 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/design.json",
-          "size": 683,
+          "size": 924,
           "mode": 420
         },
         {
@@ -564,17 +564,17 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/feature_table.json",
-          "size": 511,
+          "size": 569,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/metadata.json",
-          "size": 2020,
+          "size": 2574,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/README.md",
-          "size": 714,
+          "size": 744,
           "mode": 420
         },
         {
@@ -609,7 +609,7 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_high_missingness/design.json",
-          "size": 684,
+          "size": 925,
           "mode": 420
         },
         {
@@ -619,7 +619,7 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_high_missingness/feature_table.json",
-          "size": 1021,
+          "size": 1137,
           "mode": 420
         },
         {
@@ -629,7 +629,7 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_high_missingness/README.md",
-          "size": 622,
+          "size": 645,
           "mode": 420
         },
         {
@@ -684,7 +684,7 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/design.json",
-          "size": 687,
+          "size": 928,
           "mode": 420
         },
         {
@@ -694,22 +694,22 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/feature_table.json",
-          "size": 511,
+          "size": 569,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/metadata.json",
-          "size": 1205,
+          "size": 1451,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/README.md",
-          "size": 694,
+          "size": 715,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/design.json",
-          "size": 687,
+          "size": 928,
           "mode": 420
         },
         {
@@ -719,17 +719,17 @@
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/feature_table.json",
-          "size": 511,
+          "size": 569,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/metadata.json",
-          "size": 1163,
+          "size": 1471,
           "mode": 420
         },
         {
           "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/README.md",
-          "size": 604,
+          "size": 625,
           "mode": 420
         },
         {
@@ -799,7 +799,7 @@
         },
         {
           "path": "benchmarks/qualification_engine_benchmark.mjs",
-          "size": 5913,
+          "size": 6041,
           "mode": 420
         },
         {
@@ -1384,22 +1384,22 @@
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts",
-          "size": 240359,
+          "size": 250620,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts.map",
-          "size": 6688,
+          "size": 6849,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js",
-          "size": 45715,
+          "size": 45863,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js.map",
-          "size": 35055,
+          "size": 35123,
           "mode": 420
         },
         {
@@ -1434,12 +1434,12 @@
         },
         {
           "path": "dist/handoff/builder.js",
-          "size": 3974,
+          "size": 4280,
           "mode": 420
         },
         {
           "path": "dist/handoff/builder.js.map",
-          "size": 2818,
+          "size": 2947,
           "mode": 420
         },
         {
@@ -2024,42 +2024,42 @@
         },
         {
           "path": "dist/qualification/engine.d.ts",
-          "size": 1330,
+          "size": 1512,
           "mode": 420
         },
         {
           "path": "dist/qualification/engine.d.ts.map",
-          "size": 814,
+          "size": 913,
           "mode": 420
         },
         {
           "path": "dist/qualification/engine.js",
-          "size": 6883,
+          "size": 6680,
           "mode": 420
         },
         {
           "path": "dist/qualification/engine.js.map",
-          "size": 5028,
+          "size": 5010,
           "mode": 420
         },
         {
           "path": "dist/qualification/explainability.d.ts",
-          "size": 2127,
+          "size": 2158,
           "mode": 420
         },
         {
           "path": "dist/qualification/explainability.d.ts.map",
-          "size": 1006,
+          "size": 1042,
           "mode": 420
         },
         {
           "path": "dist/qualification/explainability.js",
-          "size": 10221,
+          "size": 10377,
           "mode": 420
         },
         {
           "path": "dist/qualification/explainability.js.map",
-          "size": 5590,
+          "size": 5759,
           "mode": 420
         },
         {
@@ -2104,22 +2104,22 @@
         },
         {
           "path": "dist/qualification/rules.d.ts",
-          "size": 2719,
+          "size": 2916,
           "mode": 420
         },
         {
           "path": "dist/qualification/rules.d.ts.map",
-          "size": 1368,
+          "size": 1467,
           "mode": 420
         },
         {
           "path": "dist/qualification/rules.js",
-          "size": 19431,
+          "size": 19026,
           "mode": 420
         },
         {
           "path": "dist/qualification/rules.js.map",
-          "size": 14231,
+          "size": 13541,
           "mode": 420
         },
         {
@@ -2384,22 +2384,22 @@
         },
         {
           "path": "dist/validators/design_validation_report.d.ts",
-          "size": 19377,
+          "size": 24123,
           "mode": 420
         },
         {
           "path": "dist/validators/design_validation_report.d.ts.map",
-          "size": 1791,
+          "size": 1925,
           "mode": 420
         },
         {
           "path": "dist/validators/design_validation_report.js",
-          "size": 19441,
+          "size": 21175,
           "mode": 420
         },
         {
           "path": "dist/validators/design_validation_report.js.map",
-          "size": 15183,
+          "size": 16384,
           "mode": 420
         },
         {
@@ -2424,22 +2424,22 @@
         },
         {
           "path": "dist/validators/design.d.ts",
-          "size": 4212,
+          "size": 5883,
           "mode": 420
         },
         {
           "path": "dist/validators/design.d.ts.map",
-          "size": 430,
+          "size": 515,
           "mode": 420
         },
         {
           "path": "dist/validators/design.js",
-          "size": 2274,
+          "size": 2572,
           "mode": 420
         },
         {
           "path": "dist/validators/design.js.map",
-          "size": 1542,
+          "size": 1757,
           "mode": 420
         },
         {
@@ -2619,17 +2619,17 @@
         },
         {
           "path": "docs/scientific-scope.md",
-          "size": 6805,
+          "size": 6913,
           "mode": 420
         },
         {
           "path": "docs/tool-reference.md",
-          "size": 33179,
+          "size": 33963,
           "mode": 420
         },
         {
           "path": "docs/validation-statement.md",
-          "size": 27482,
+          "size": 27861,
           "mode": 420
         },
         {
@@ -3420,8 +3420,8 @@
     },
     {
       "path": "benchmarks/expected/bm_beta_manifest_complete/design_validation.json",
-      "sha256": "c94eaff5c90aa08120bca9e933ed249348aac85e6ae941ce4f4ab5a4c29882b1",
-      "bytes": 922
+      "sha256": "56d936390a9a5d1bb99115e66b6bae5612b7a6a5dd87dca481baf01f526ee410",
+      "bytes": 980
     },
     {
       "path": "benchmarks/expected/bm_beta_manifest_complete/handoff_result.json",
@@ -3445,13 +3445,13 @@
     },
     {
       "path": "benchmarks/expected/bm_beta_manifest_complete/qualification_result.json",
-      "sha256": "5ac316ffb61cd270950a980ef13155a146cb4963d1763057f48267c43f3a6960",
-      "bytes": 3572
+      "sha256": "a34fd6d4099d93fc941ccced89b5fbd78a5608d78722549fc09bdf93a902d2cb",
+      "bytes": 4635
     },
     {
       "path": "benchmarks/expected/bm_build_missing/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fbefcf9c386ab196604b11e818190299fdebdc3a4b9adfceae574611edc8b04c",
+      "bytes": 1143
     },
     {
       "path": "benchmarks/expected/bm_build_missing/handoff_result.json",
@@ -3480,8 +3480,8 @@
     },
     {
       "path": "benchmarks/expected/bm_dmr_nearest_gene_only/design_validation.json",
-      "sha256": "c94eaff5c90aa08120bca9e933ed249348aac85e6ae941ce4f4ab5a4c29882b1",
-      "bytes": 922
+      "sha256": "56d936390a9a5d1bb99115e66b6bae5612b7a6a5dd87dca481baf01f526ee410",
+      "bytes": 980
     },
     {
       "path": "benchmarks/expected/bm_dmr_nearest_gene_only/handoff_result.json",
@@ -3505,13 +3505,13 @@
     },
     {
       "path": "benchmarks/expected/bm_dmr_nearest_gene_only/qualification_result.json",
-      "sha256": "725fa87e6254565805b6d36745bdc1c6c472518ac0ef1719f6b4d3b0a1805aa1",
-      "bytes": 3500
+      "sha256": "8569125a1afd1c8084c292c751a0fb12d8346888988e96bee9b4dce6a1bfc98d",
+      "bytes": 4563
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fc38a25e3ede0c8389b618128d208c855b34b5129edffcda71cdbf52f77c3430",
+      "bytes": 1206
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/handoff_result.json",
@@ -3520,13 +3520,13 @@
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/missingness_profile.json",
-      "sha256": "9435df47ed94ac9dbd79c10576987307ce24c6c1201c2261c5e59cd5636eece1",
-      "bytes": 1063
+      "sha256": "99c075abc888a38de9678d1c0b7f8bb4a147518a9776fa944799f4d50deddfbe",
+      "bytes": 1405
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/packet.json",
-      "sha256": "6c52b1c6582c502440dc0b123b9d37b87ef3d8af0e41b308d78b41aac7268457",
-      "bytes": 2211
+      "sha256": "f17550224aa4442723997f616188f249d0e68f66272ddc5d778a60a3d24621cf",
+      "bytes": 2609
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/qc_profile.json",
@@ -3535,8 +3535,8 @@
     },
     {
       "path": "benchmarks/expected/bm_dominant_cytotoxicity/qualification_result.json",
-      "sha256": "c5530129779bd670b05adfbf7e7554fc402b28114578190a05d87a707b55404f",
-      "bytes": 3147
+      "sha256": "a912ef28b7b9243500107d0cee9f969eb5d3c06cc5df06d04b0e0de3406fc9a1",
+      "bytes": 4440
     },
     {
       "path": "benchmarks/expected/bm_handoff_schema_invalid/handoff.json",
@@ -3560,8 +3560,8 @@
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fc38a25e3ede0c8389b618128d208c855b34b5129edffcda71cdbf52f77c3430",
+      "bytes": 1206
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/handoff_result.json",
@@ -3570,13 +3570,13 @@
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/missingness_profile.json",
-      "sha256": "f5251efedf015ed3ac190d4918f7c42df3aa609ae04572d9cf79b3a49c11e04f",
-      "bytes": 1243
+      "sha256": "5e8b62cf8503336dce4cd773cc8caf673d187ec8358a4517f8cdb031a5a44ebb",
+      "bytes": 1615
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/packet.json",
-      "sha256": "f29ad8fd557cce10bb8a6a21bf41abe48415de4ee95888f6bb5d0c0fc996894d",
-      "bytes": 2764
+      "sha256": "35f77d4c9ce4143a9f8912b0398a247fc7f6d227288a0cef5662f63ff7571551",
+      "bytes": 3225
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/qc_profile.json",
@@ -3585,13 +3585,13 @@
     },
     {
       "path": "benchmarks/expected/bm_high_missingness/qualification_result.json",
-      "sha256": "589c075f2d241b24e750c67a48549b1f442646d53ed6fe6e1da8f2b4eca56da8",
-      "bytes": 3758
+      "sha256": "001a6c820acf4ad7c1fb0a60faf7c89b0748e198c825daf7db823537b42842cf",
+      "bytes": 5051
     },
     {
       "path": "benchmarks/expected/bm_insufficient_replicates/design_validation.json",
-      "sha256": "3747c3daaee5d32aec6a3afd38ff80bc33a46c40b03c7f02b53a22883ebba845",
-      "bytes": 1102
+      "sha256": "c2ca0c43418e0990a891c0b0a76bcf80149198941d29ee81cd81956113054b05",
+      "bytes": 1248
     },
     {
       "path": "benchmarks/expected/bm_insufficient_replicates/handoff_result.json",
@@ -3615,13 +3615,13 @@
     },
     {
       "path": "benchmarks/expected/bm_insufficient_replicates/qualification_result.json",
-      "sha256": "012267655a019df9d6108dbc57b7f88888eb3ec5a1d48c637a437e163d8004b7",
-      "bytes": 2006
+      "sha256": "a5904cb6b782021d4c409f10fdbecbf8b5efba3f595198d9cb76608f3dcc556e",
+      "bytes": 3349
     },
     {
       "path": "benchmarks/expected/bm_invalid_coordinate_format/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fbefcf9c386ab196604b11e818190299fdebdc3a4b9adfceae574611edc8b04c",
+      "bytes": 1143
     },
     {
       "path": "benchmarks/expected/bm_invalid_coordinate_format/handoff_result.json",
@@ -3650,8 +3650,8 @@
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fc38a25e3ede0c8389b618128d208c855b34b5129edffcda71cdbf52f77c3430",
+      "bytes": 1206
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/handoff_result.json",
@@ -3660,13 +3660,13 @@
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/missingness_profile.json",
-      "sha256": "48c01c0b2dddaac10a6a9a6840d410520e925c91795d18f7738da7ac0c41b754",
-      "bytes": 1067
+      "sha256": "08fb8ed2ddd8e5a6ea90f50b834b5f3a24a2d919d357bec9a34044b9559e0e4a",
+      "bytes": 1409
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/packet.json",
-      "sha256": "d205b1ffbacd3f64158de9d0827fefeae3c60ce1f6fc5f43cb354ec2432330f3",
-      "bytes": 2227
+      "sha256": "f25820ac642200b2706a48d1206413f6e2185cd99dac8f136b32b25f264b8df4",
+      "bytes": 2626
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/qc_profile.json",
@@ -3675,13 +3675,13 @@
     },
     {
       "path": "benchmarks/expected/bm_missing_cell_context/qualification_result.json",
-      "sha256": "cb1ac13c4957c387bb7bffa7176d5edd651d337a1e3ab0933520671969c54083",
-      "bytes": 2226
+      "sha256": "26ba690baa538ea9aa699928b833bc23b1eca0353c80910e8f087ce6d08a2978",
+      "bytes": 3519
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/design_validation.json",
-      "sha256": "2661635a345e7d6cb6d53fa50a3652e5fdfb6fa915eee954eeb436875040498b",
-      "bytes": 1043
+      "sha256": "fc38a25e3ede0c8389b618128d208c855b34b5129edffcda71cdbf52f77c3430",
+      "bytes": 1206
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/handoff_result.json",
@@ -3690,13 +3690,13 @@
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/missingness_profile.json",
-      "sha256": "ac3b2ac2a4b56bfb1b0d91a873cc5766587760872dc32f18b56b66d7ccc192fd",
-      "bytes": 1067
+      "sha256": "b9ed727df56e35630dda192c49b94ece481774ecfbb294ff99537c8d0f80d336",
+      "bytes": 1409
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/packet.json",
-      "sha256": "ad274631606a2a07aabd2ba84752f290197078328d310f365621997b0d6d0980",
-      "bytes": 2227
+      "sha256": "8404661401ae7844b7f9a18295f934255fecfb3a26afbf898c46b436f2533fd0",
+      "bytes": 2626
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/qc_profile.json",
@@ -3705,13 +3705,13 @@
     },
     {
       "path": "benchmarks/expected/bm_missing_cytotoxicity_context/qualification_result.json",
-      "sha256": "9b43e9cf41bffb35ad271dd8bf1035145cada52dc2726da326da27641621a3b7",
-      "bytes": 2176
+      "sha256": "b7b43866682802484d7aa3e423c548e23807f8ad3009ce74e226def3b16a4866",
+      "bytes": 3469
     },
     {
       "path": "benchmarks/expected/bm_summary_contrast_only/design_validation.json",
-      "sha256": "d1b59424d9c522131195d0c346668a734f21f4116406dd3ad22b2cde78cd54a3",
-      "bytes": 1148
+      "sha256": "fc38a25e3ede0c8389b618128d208c855b34b5129edffcda71cdbf52f77c3430",
+      "bytes": 1206
     },
     {
       "path": "benchmarks/expected/bm_summary_contrast_only/handoff_result.json",
@@ -3735,8 +3735,8 @@
     },
     {
       "path": "benchmarks/expected/bm_summary_contrast_only/qualification_result.json",
-      "sha256": "9a03c7bfeb80336a4d40e6dfe387bfd0901881283951871639f13fd606672d53",
-      "bytes": 4100
+      "sha256": "f96f9e2607308c04a855ffa63f8f6c9b6b525b30835284d67077e9ede7d8cf0d",
+      "bytes": 5393
     },
     {
       "path": "benchmarks/expected/golden_handoff_examples/accepted/packet.json",
@@ -3865,13 +3865,13 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/README.md",
-      "sha256": "7cc5c728d614b41b746af7703b665841ebc2af2943cbb3801c9777a361e66c59",
-      "bytes": 714
+      "sha256": "6b7a59fb6a3d1bee4a7538727fd753693d934d94654da4d719ac83fc99f35daa",
+      "bytes": 744
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/design.json",
-      "sha256": "071ad9ac695b4a44c2455c6dfb4651f44a84c39f66422913fc5830be6c79aa7f",
-      "bytes": 683
+      "sha256": "15ff43299d3f312e318027199786c62c07b9c2281b349df60db88068480bdc2e",
+      "bytes": 924
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/expected_policy.json",
@@ -3880,13 +3880,13 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/feature_table.json",
-      "sha256": "e266738d5bce7ab7d3f11d88cda162da24304c27aa6fc550229c5452ae3225a5",
-      "bytes": 511
+      "sha256": "226a511e7982ee47171519c0eb26bcc5c577f4702c9ba93821bfe724cd6ed992",
+      "bytes": 569
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_dominant_cytotoxicity/metadata.json",
-      "sha256": "89c0f60aa94235a1d2c8dd4886e51a9c09b353b63bd027861b0d0a5f53b99b51",
-      "bytes": 2020
+      "sha256": "15aa165a3e215ee636c26e39334dcceee380a3f9b5390c89ef36a63cc542c4cd",
+      "bytes": 2574
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_handoff_schema_invalid/README.md",
@@ -3920,13 +3920,13 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_high_missingness/README.md",
-      "sha256": "4fd309f46d94189d3bf7e6e956b9d71a7794361af4e344972df74098ff6b31fc",
-      "bytes": 622
+      "sha256": "271ae801ba64aae28e00c44f88a30c99f7655a959b8f8d346b81d3ce9e27b12e",
+      "bytes": 645
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_high_missingness/design.json",
-      "sha256": "ce0f1a7ad828f52d641ac3d859b588ff2c6b6af879e48538911387eb43cc776e",
-      "bytes": 684
+      "sha256": "e1a78a274b81d57f56f9359241b5971dbc4e71cf157d676ae2b551721ce48c98",
+      "bytes": 925
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_high_missingness/expected_policy.json",
@@ -3935,8 +3935,8 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_high_missingness/feature_table.json",
-      "sha256": "e79901e192a5c61b8af7ca31b518fe9cea959e6fead6fa8ef265b82ba992e732",
-      "bytes": 1021
+      "sha256": "32a261ff0d2d99f61468c5f953c5ed0303c127296e739b699a11d5156b8c7f1a",
+      "bytes": 1137
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_high_missingness/metadata.json",
@@ -3995,13 +3995,13 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/README.md",
-      "sha256": "437b6c30f6f948d7073254a16a4618e889fbe541834e4b8e4ac8ccf833b1c09b",
-      "bytes": 694
+      "sha256": "cdf983d7506fc2bf6ba854e28a26d3b45da26cad97e64fd8100adce06bb7d46c",
+      "bytes": 715
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/design.json",
-      "sha256": "f1af1b9fe8f1e80bf3cbeafbc338ee8131bde7cebeb60433ea93afc488d60c91",
-      "bytes": 687
+      "sha256": "29b190e0469f48425bcd9fd58d7f79783191f905444bf60e8cc441db7abc4998",
+      "bytes": 928
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/expected_policy.json",
@@ -4010,23 +4010,23 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/feature_table.json",
-      "sha256": "1be8f7d31693596c4cfd43208d510656932dfc3fd209b68114861e2a6157a9c4",
-      "bytes": 511
+      "sha256": "fee2be5b4f17dac1a17cc14df05578a4527bc57a390769e5adea51f733dfe043",
+      "bytes": 569
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cell_context/metadata.json",
-      "sha256": "6d5c7fdd7f091785f29ec2a5ba8e558b7f8c819bf7811184c0111b9899f0e7da",
-      "bytes": 1205
+      "sha256": "fd7b57d902a4ff8ba963b7ffcc6df42fadca431a24ab8a406bd1dc06d075c712",
+      "bytes": 1451
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/README.md",
-      "sha256": "c698f85c68716880813afdcacc904ac041466a9f1d5e6ac95615c0956b1ef5d7",
-      "bytes": 604
+      "sha256": "3e4a27ac79bcc8ad3a9232f3e589a8b37ea3c6eda57da4f96b6d06ef5b9234d9",
+      "bytes": 625
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/design.json",
-      "sha256": "e720f50eb94601a7ed4d5be50a308bbbbdc4801118462ee646765034b3f9cf54",
-      "bytes": 687
+      "sha256": "5a3174d2e5a3a597f62c6a827e53ed86f465967fa920c004f76c5cc673d46882",
+      "bytes": 928
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/expected_policy.json",
@@ -4035,13 +4035,13 @@
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/feature_table.json",
-      "sha256": "87c79186487ebed027cdcfd3f7a693dec6f6f86c4f1a947b38cdf79a403de39d",
-      "bytes": 511
+      "sha256": "20d8544b3eef96bff423581b5bee77ef0708bad1ad2ad4d1286d52f36c8fe780",
+      "bytes": 569
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_missing_cytotoxicity_context/metadata.json",
-      "sha256": "6024c0ffdb7c46f4a3bda15a8ed5ee42c97128fcd4974f4f08f41adb6b43167d",
-      "bytes": 1163
+      "sha256": "55ce902fd10a2ec394bbe5c3a5dfcdf8a4921b8e3a9a5ac99ff07f98382e7bfc",
+      "bytes": 1471
     },
     {
       "path": "benchmarks/fixtures/synthetic/bm_summary_contrast_only/README.md",
@@ -4110,13 +4110,13 @@
     },
     {
       "path": "docs/tool-reference.md",
-      "sha256": "4a00ba41ad8cbfb804b1ffb83a5f98172231e3eb2b1d21940eebda9227eb2cad",
-      "bytes": 33179
+      "sha256": "c5ff469b3c2334086b54d46e60c7b3a1067ee1a967e608452d66900fc702b216",
+      "bytes": 33963
     },
     {
       "path": "docs/validation-statement.md",
-      "sha256": "4e78849bbed079c79d969004c4b72ea3760b2bd0e878898f88af9f70dccdc954",
-      "bytes": 27482
+      "sha256": "86868f149b97daab3a59a711a6559d81d8622e8136ff698de05e85bffdb41a3c",
+      "bytes": 27861
     },
     {
       "path": "evaluation.xml",
@@ -4130,17 +4130,17 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "f1eb5ffd55da521e661e4799cdc9d4d7cdf1d6c24e1ed3e7a87819551cc751cc",
+      "sha256": "d70ef9c0c7dd6d6d889ceae107eadb67244be3d038a57e1972bc6260a0f9e506",
       "bytes": 82617
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "95fda8ce248e2142a7814d9d00edccb44502b413e6eb3201f72ef22e588b4e3f",
+      "sha256": "fd09037daa3ebdf859ad4ce4ab5e2a69ef274dab03b8c58a65894967f31563a0",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "bc01205821a778bfc8f6575eb178527bbf8a82aafbf0fc519931b88e4cffa636",
+      "sha256": "6be3198a515849a9a51e4d707edc2695032e2739f4929f09fc8390c2ae214083",
       "bytes": 497
     },
     {

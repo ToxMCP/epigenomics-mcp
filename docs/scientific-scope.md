@@ -20,7 +20,7 @@ Epigenomics MCP is the **qualification and packetisation layer** between upstrea
 | 4 | Classify measured features | Map platform identifiers or region types onto explicit feature classes (`cpg_methylation_feature`, `dmr_feature`, `generic_region_feature`, etc.). Never guess metric semantics. |
 | 5 | Profile QC deterministically | Compute missingness, variance, replicate consistency, and design adequacy using transparent, versioned algorithms. No opaque rescue operations. |
 | 6 | Model confounding context | Ingest and classify cell-composition shifts, cytotoxicity, stress, differentiation drift, and batch effects as first-class machine-readable objects. |
-| 7 | Apply fail-closed qualification rules | Features that fail explicit rules are excluded, downgraded, or blocked—not silently passed through. |
+| 7 | Apply fail-closed qualification rules | Features that fail explicit rules are excluded, downgraded, or blocked—not silently passed through. `accepted_for_pod` additionally requires the canonical dataset design assessment to be dose-response-ready. |
 | 8 | Preserve measured coordinates separately from mapped targets | Store region-to-gene mappings in a separate payload. Never conflate "this region changed" with "this gene is regulated." |
 | 9 | Export normative packets | Emit `EpigenomicsFeatureResponsePacket` and `BioactivityPoDHandoffPacket` with full provenance, warnings, and mandatory caveats. |
 

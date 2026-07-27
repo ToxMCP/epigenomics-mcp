@@ -53,6 +53,13 @@ export function createHandoffPacket(
 
   const qualifications = qualification.qualifications ?? [];
 
+  // Dataset-level design readiness is a mandatory handoff invariant. This
+  // defensive gate prevents future per-feature rule changes from accidentally
+  // promoting a non-dose-response-ready design.
+  if (qualification.designValidation?.doseResponseReady !== true) {
+    return null;
+  }
+
   const qualifiedFeatures = qualifications.filter(
     (q) =>
       q.status === "accepted_for_pod" || q.status === "accepted_with_caveats",

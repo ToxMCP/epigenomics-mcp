@@ -19,12 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   reviewable reports.
 - Explicit structural, comparison-only, minimum dose-response, and preferred
   dose-response readiness states in design-validation and ingestion outputs.
+- Machine-readable comparison and dose-response blocker codes in design
+  validation and feature-qualification outputs.
 
 ### Changed
 
 - Design readiness now uses distinct numeric dose levels and observed
   effective biological replicates. Technical replicates do not satisfy the
   biological minimum.
+- Feature qualification and Bioactivity-PoD handoff now consume the same
+  canonical dataset-level design-readiness assessment. The historical
+  one-treated-dose qualification exception has been removed.
 - The public-data report now distinguishes file ingestion from comparison and
   dose-response readiness. Baseline-only ENCODE peaks ingest successfully
   without being promoted to comparison or PoD use.
@@ -40,6 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   qualification eligibility.
 - Dose–batch confounding and insufficient observed biological replication now
   block comparison and dose-response readiness.
+- Comparison-only, dose–batch-confounded, structurally invalid, and unsplit
+  multi-timepoint designs can no longer emit `accepted_for_pod` features or a
+  ready Bioactivity-PoD handoff.
 - Undeclared sample-to-group references now return structural validation
   errors instead of allowing replicate assessment to throw.
 
