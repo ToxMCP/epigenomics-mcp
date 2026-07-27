@@ -24,6 +24,7 @@ All tools are registered on the MCP server via `registerTools()`. The same opera
 | `ingest_cytotoxicity` | `assess-cytotox` | Ingest cytotoxicity context |
 | `summarize_by_group` | — | Summarize feature responses by dose group |
 | `assess_response_patterns` | — | Classify bounded observed dose-level mean patterns without fitting a model |
+| `assess_ordered_trends` | — | Assess exploratory ordered trends with replicate-level uncertainty and bounded-family multiplicity control |
 | `read_table` | — | Read a delimited table file |
 | `read_design` | `ingest-design` | Read a design table |
 | `generate_qc_report` | `qc-report` | Generate a regulator-readable QC report |
@@ -134,8 +135,9 @@ large tables without requesting an unbounded response.
 
 ### 2.6 File-backed packet workflows
 
-`qualify_features`, `generate_handoff`, `summarize_by_group`, and
-`assess_response_patterns` accept exactly one of an inline `packet` or a JSON
+`qualify_features`, `generate_handoff`, `summarize_by_group`,
+`assess_response_patterns`, and `assess_ordered_trends` accept exactly one of
+an inline `packet` or a JSON
 `packetPath`. A path is resolved through the same allowed-root and maximum-size
 policy as the table readers. Supplying both, or neither, is rejected.
 
@@ -287,6 +289,59 @@ This boundary reflects current BMD guidance: response-pattern inspection is
 useful, but model selection, fit, benchmark-response choice, and uncertainty
 remain separate analytical decisions. Non-monotonic patterns are retained for
 scientific review rather than automatically discarded.
+
+### 2.10 Exploratory ordered-trend assessment
+
+`assess_ordered_trends` tests independent biological replicate values with the
+Jonckheere–Terpstra statistic. It uses only the numeric dose ordering, not the
+distance between dose values. The reported ordered-pair probability gives half
+credit to ties; `orderedPairEffect = 2p - 1` centres that quantity on zero and
+ranges from -1 to 1.
+
+The tool enumerates every unique dose-label allocation when the allocation
+space is within the exact limit, no larger than the requested random
+permutation budget, and within the global work cap. Otherwise it uses seeded
+Monte Carlo permutations. Random-permutation p-values use the plus-one
+correction and therefore cannot be zero. Both directional p-values are
+reported, while the two-sided p-value is used for multiplicity adjustment.
+A seeded, within-dose percentile bootstrap supplies a pointwise exploratory
+interval for the ordered-pair effect; it is not a simultaneous confidence
+band or a replacement for the permutation test.
+
+Adjustment applies to the successfully tested features in one bounded packet
+slice (`offset`, `limit`, maximum 100). Benjamini–Yekutieli is the conservative
+default because epigenomic features can be dependent; Benjamini–Hochberg is
+available only as an explicit caller choice. A partial slice carries a warning
+that its adjusted p-values are neither packet-wide nor genome-wide.
+
+The test fails closed for a structurally invalid design, no zero-dose control,
+negative doses, fewer than three distinct doses, mixed units, unsplit
+timepoints, multiple batches, missing or non-finite values, fewer than two
+observations at any dose, or any replicate not explicitly declared
+`biological`. Sample independence and null exchangeability cannot be proven
+from the packet metadata and remain recorded assumptions.
+
+```json
+{
+  "packetPath": "benchmarks/fixtures/frozen_public/gse152749/response_packet.json",
+  "offset": 0,
+  "limit": 10,
+  "permutationResamples": 4999,
+  "bootstrapResamples": 1999,
+  "confidenceLevel": 0.95,
+  "seed": 20260727,
+  "pAdjustmentMethod": "benjamini_yekutieli",
+  "fdrThreshold": 0.05
+}
+```
+
+Every result records that this is exploratory ordered-trend evidence only.
+Biological significance, causal inference, BMD suitability, and feature
+qualification remain unchanged. The implementation follows the original
+[Jonckheere ordered-alternative test](https://doi.org/10.1093/biomet/41.1-2.133),
+the never-zero random-permutation correction of
+[Phipson and Smyth](https://pubmed.ncbi.nlm.nih.gov/21044043/), and the
+[Benjamini–Yekutieli dependence correction](https://doi.org/10.1214/aos/1013699998).
 
 ---
 

@@ -39,13 +39,14 @@ checksums:
     hash: "2bd4f68364e601dd369b92cc9fe46d0cf8ab5c960ed8cea32339d7f3533d8b34"
     filePath: "gse152749/derive_fixture.mjs"
   - algorithm: "sha256"
-    hash: "7d65ef99ceea1a6690f9fc55993fd97448dc89cb47109cca7dca559ceb6fea6b"
+    hash: "2f81db5057b83616b506c82b3af7fc8f2c5709be739e145cd780d8c43a353212"
     filePath: "gse152749/SOURCE.md"
 curationStatus: "validated"
 availability: "available"
 curationNotes: >
   The ten features are outcome-independent chromosome aggregates for the first
-  five autosomes. They validate real-data response-pattern handling but are
+  five autosomes. They validate real-data response-pattern and bounded
+  exploratory ordered-trend handling but are
   not differential-accessibility calls, biological truth labels, or BMD
   suitability evidence.
 expectedFeatureCount: 10

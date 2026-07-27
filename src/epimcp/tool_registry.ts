@@ -38,6 +38,11 @@ import {
   assessResponsePatterns,
   ResponsePatternAssessmentResultSchema,
 } from "../response_pattern/assessment.js";
+import {
+  assessOrderedTrends,
+  OrderedTrendAssessmentResultSchema,
+  PAdjustmentMethodSchema,
+} from "../trend/ordered_trend.js";
 import { readTableFile, ReadTableResultSchema } from "../ingestion/csv_reader.js";
 import { readDesignTable, ReadDesignResultSchema } from "../ingestion/design_reader.js";
 import {
@@ -563,6 +568,85 @@ export const AssessResponsePatternsOptionsSchema = z
       .max(200)
       .default(50)
       .describe("Maximum feature assessments to return"),
+  })
+  .strict();
+
+export const AssessOrderedTrendsOptionsSchema = z
+  .object({
+    packet: EpigenomicsFeatureResponsePacketSchema.optional().describe(
+      "Validated packet whose independent biological replicate values will be tested for an ordered dose trend",
+    ),
+    packetPath: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("JSON packet path under an allowed file root; use instead of packet"),
+    offset: z
+      .number()
+      .int()
+      .nonnegative()
+      .default(0)
+      .describe("Start of the bounded feature family used for multiplicity adjustment"),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .default(25)
+      .describe("Maximum features in the bounded multiplicity family"),
+    permutationResamples: z
+      .number()
+      .int()
+      .min(99)
+      .max(99_999)
+      .default(4_999)
+      .describe(
+        "Seeded random label permutations when exact enumeration is not used",
+      ),
+    bootstrapResamples: z
+      .number()
+      .int()
+      .min(199)
+      .max(19_999)
+      .default(1_999)
+      .describe(
+        "Seeded within-dose bootstrap resamples for the pointwise ordered-pair effect interval",
+      ),
+    confidenceLevel: z
+      .number()
+      .min(0.8)
+      .max(0.99)
+      .default(0.95)
+      .describe("Pointwise bootstrap confidence level"),
+    seed: z
+      .number()
+      .int()
+      .min(0)
+      .max(0xffff_ffff)
+      .default(20_260_727)
+      .describe("Unsigned 32-bit seed for reproducible Monte Carlo and bootstrap resampling"),
+    fdrThreshold: z
+      .number()
+      .positive()
+      .max(0.25)
+      .default(0.05)
+      .describe(
+        "Exploratory adjusted-p threshold; this is not a biological-significance threshold",
+      ),
+    pAdjustmentMethod: PAdjustmentMethodSchema.default(
+      "benjamini_yekutieli",
+    ).describe(
+      "Bounded-family adjustment; Benjamini-Yekutieli is the conservative default for dependent features",
+    ),
+    exactEnumerationLimit: z
+      .number()
+      .int()
+      .min(1)
+      .max(1_000_000)
+      .default(50_000)
+      .describe(
+        "Maximum unique dose-label allocations eligible for exact enumeration",
+      ),
   })
   .strict();
 
@@ -1148,6 +1232,53 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
           limit: typedArgs.limit,
         }),
       );
+    },
+  },
+  {
+    name: "assess_ordered_trends",
+    title: "Assess Ordered Dose Trends",
+    description:
+      "Test a bounded feature family for exploratory ordered dose trends using independent biological replicate values, exact or seeded permutation p-values, pointwise stratified-bootstrap effect intervals, and explicit FDR adjustment; does not assess biological significance, causality, BMD suitability, or feature qualification.",
+    inputSchema: AssessOrderedTrendsOptionsSchema,
+    outputSchema: OrderedTrendAssessmentResultSchema,
+    handler: async (args, context) => {
+      const config = context?.config ?? ConfigSchema.parse({});
+      const typedArgs = AssessOrderedTrendsOptionsSchema.parse(args);
+      const packet = resolvePacketInput(
+        typedArgs.packet,
+        typedArgs.packetPath,
+        config,
+      );
+      if (!packet.ok) {
+        return errorResult(packet.error);
+      }
+      const packetParse =
+        EpigenomicsFeatureResponsePacketSchema.safeParse(packet.value);
+      if (!packetParse.success) {
+        return errorResult(
+          `Invalid response packet: ${zodIssues(packetParse.error).join("; ")}`,
+        );
+      }
+      try {
+        return jsonResult(
+          assessOrderedTrends(packetParse.data, {
+            offset: typedArgs.offset,
+            limit: typedArgs.limit,
+            permutationResamples: typedArgs.permutationResamples,
+            bootstrapResamples: typedArgs.bootstrapResamples,
+            confidenceLevel: typedArgs.confidenceLevel,
+            seed: typedArgs.seed,
+            fdrThreshold: typedArgs.fdrThreshold,
+            pAdjustmentMethod: typedArgs.pAdjustmentMethod,
+            exactEnumerationLimit: typedArgs.exactEnumerationLimit,
+          }),
+        );
+      } catch (error) {
+        if (error instanceof RangeError) {
+          return errorResult(error.message);
+        }
+        throw error;
+      }
     },
   },
   {

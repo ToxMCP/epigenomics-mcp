@@ -8,8 +8,8 @@
     <answer>3</answer>
   </qa_pair>
   <qa_pair>
-    <question>Using examples/methylation_matrix/packet.json, qualify the packet, generate a Bioactivity-PoD handoff summary, and summarize every feature by dose group. Return qualified feature count, total group summaries, and PoD readiness in exactly this pipe-delimited order.</question>
-    <answer>2|6|true</answer>
+    <question>Using examples/methylation_matrix/packet.json, qualify the packet, generate a Bioactivity-PoD handoff summary, summarize every feature by dose group, and assess the complete two-feature family for ordered trends. Return qualified feature count, total group summaries, PoD readiness, and the ordered-trend direction for cg00000001 in exactly this pipe-delimited order.</question>
+    <answer>2|6|true|decreasing</answer>
   </qa_pair>
   <qa_pair>
     <question>Review examples/invalid_build_mismatch/packet.json by qualifying it and checking whether its handoff is usable. Both features are excluded and the handoff is not ready. What single explainability rule code accounts for both exclusions?</question>

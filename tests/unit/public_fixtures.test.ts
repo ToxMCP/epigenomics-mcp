@@ -8,6 +8,7 @@ import {
 } from "../../src/benchmarks/public_fixtures.js";
 import { EpigenomicsFeatureResponsePacketSchema } from "../../src/contracts/packets.js";
 import { assessResponsePatterns } from "../../src/response_pattern/assessment.js";
+import { assessOrderedTrends } from "../../src/trend/ordered_trend.js";
 
 const fixtureRoot = resolve(
   process.cwd(),
@@ -121,6 +122,68 @@ describe("frozen public fixtures", () => {
       biologicalSignificance: "not_assessed",
       bmdSuitability: "not_assessed",
       monotonicityRequiredForQualification: false,
+    });
+  });
+
+  it("runs bounded uncertainty-aware trend screening on the public dose series", () => {
+    const packet = EpigenomicsFeatureResponsePacketSchema.parse(
+      JSON.parse(
+        readFileSync(
+          resolve(
+            fixtureRoot,
+            "gse152749",
+            "response_packet.json",
+          ),
+          "utf-8",
+        ),
+      ),
+    );
+    const result = assessOrderedTrends(packet);
+
+    expect(result.multiplicity).toMatchObject({
+      method: "benjamini_yekutieli",
+      packetFeatureCount: 10,
+      selectedFeatureCount: 10,
+      testedFeatureCount: 10,
+      coversEntirePacket: true,
+      scopeWarning: null,
+    });
+    expect(
+      result.features.every(
+        (feature) =>
+          feature.assessmentStatus === "assessed" &&
+          feature.test?.permutation.mode === "monte_carlo" &&
+          feature.test.adjustedPValueTwoSided === 1 &&
+          feature.test.passesFdrThreshold === false,
+      ),
+    ).toBe(true);
+    expect(
+      result.features.map((feature) => feature.test?.pValueTwoSided),
+    ).toEqual([
+      0.7168, 0.63, 0.5248, 0.9432, 0.1044, 0.945, 0.2934, 0.9452,
+      0.4308, 1,
+    ]);
+    expect(
+      result.features.filter(
+        (feature) => feature.test?.direction === "increasing",
+      ),
+    ).toHaveLength(7);
+    expect(
+      result.features.filter(
+        (feature) => feature.test?.direction === "decreasing",
+      ),
+    ).toHaveLength(2);
+    expect(
+      result.features.filter(
+        (feature) => feature.test?.direction === "no_ordered_direction",
+      ),
+    ).toHaveLength(1);
+    expect(result.scientificScope).toMatchObject({
+      interpretationBoundary: "exploratory_ordered_trend_evidence_only",
+      biologicalSignificance: "not_assessed",
+      causalInference: "not_assessed",
+      bmdSuitability: "not_assessed",
+      featureQualificationChanged: false,
     });
   });
 });
