@@ -24,7 +24,7 @@
     {
       "name": "qualification_performance",
       "passed": true,
-      "details": "10000 real qualifications in 0.093s; 74.7 MiB RSS increase"
+      "details": "10000 real qualifications in 0.100s; 75.3 MiB RSS increase"
     }
   ],
   "benchmarkSummary": {

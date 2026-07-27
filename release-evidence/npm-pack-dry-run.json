@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
     "version": "0.2.1",
-    "size": 778375,
-    "unpackedSize": 4381218,
-    "shasum": "5acec0fd4ee5e424a92177ead767d447388413b6",
-    "integrity": "sha512-z1m+QzGd0Iw613jQqgpAFzCnSj0SHAr2qCW/vWtzH/3uNEBI5tjHCdIvk/H0ldhPZo1j3rumUmtswfz3Y49q1A==",
+    "size": 799736,
+    "unpackedSize": 4578449,
+    "shasum": "61accb2017a296afd033c27be7de9263f7c02527",
+    "integrity": "sha512-B0UTSr8evNnof+DpLOaHTS7v0a6sKSX1oV412xi1Sde1E75LfaZ3GH+MUj7A6VO+Q1D5/L1zmi/X/f3j9m+IHw==",
     "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 6232,
+        "size": 6525,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 17403,
+        "size": 17561,
         "mode": 420
       },
       {
@@ -416,7 +416,7 @@
       },
       {
         "path": "benchmarks/fixtures/frozen_public/gse152749.yaml",
-        "size": 1861,
+        "size": 1901,
         "mode": 420
       },
       {
@@ -436,7 +436,7 @@
       },
       {
         "path": "benchmarks/fixtures/frozen_public/gse152749/SOURCE.md",
-        "size": 2365,
+        "size": 2812,
         "mode": 420
       },
       {
@@ -1346,22 +1346,22 @@
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts",
-        "size": 332592,
+        "size": 415396,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts.map",
-        "size": 8390,
+        "size": 9949,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js",
-        "size": 48262,
+        "size": 52663,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js.map",
-        "size": 36725,
+        "size": 39571,
         "mode": 420
       },
       {
@@ -2305,6 +2305,26 @@
         "mode": 420
       },
       {
+        "path": "dist/trend/ordered_trend.d.ts",
+        "size": 43606,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/ordered_trend.d.ts.map",
+        "size": 2048,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/ordered_trend.js",
+        "size": 26976,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/ordered_trend.js.map",
+        "size": 26092,
+        "mode": 420
+      },
+      {
         "path": "dist/validators/chromosome_bounds.d.ts",
         "size": 2425,
         "mode": 420
@@ -2601,22 +2621,22 @@
       },
       {
         "path": "docs/scientific-scope.md",
-        "size": 7473,
+        "size": 8175,
         "mode": 420
       },
       {
         "path": "docs/tool-reference.md",
-        "size": 36058,
+        "size": 38879,
         "mode": 420
       },
       {
         "path": "docs/validation-statement.md",
-        "size": 30437,
+        "size": 32607,
         "mode": 420
       },
       {
         "path": "evaluation.xml",
-        "size": 4008,
+        "size": 4122,
         "mode": 420
       },
       {
@@ -3071,7 +3091,7 @@
       },
       {
         "path": "toxmcp.manifest.yaml",
-        "size": 5905,
+        "size": 6059,
         "mode": 420
       },
       {
@@ -3380,7 +3400,7 @@
         "mode": 420
       }
     ],
-    "entryCount": 674,
+    "entryCount": 678,
     "bundled": []
   }
 ]
