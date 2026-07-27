@@ -229,6 +229,15 @@ automatic comparison and dose-response readiness. These thresholds are
 versioned project policy; endpoint response behavior must still be evaluated
 before fitting a BMD or selecting a PoD.
 
+Both `validate_design` and `qualify_features` return machine-readable
+`comparisonBlockers` and `doseResponseBlockers`. Codes distinguish structural
+failure, missing treated doses, insufficient distinct dose levels,
+insufficient biological replication, perfect dose–batch confounding, and
+multi-timepoint designs requiring a split. `qualify_features` computes this
+assessment once for the dataset and applies it to every feature. A
+comparison-only design can therefore be ingested and compared, but it cannot
+emit `accepted_for_pod` or a ready handoff.
+
 The separation follows the scientific distinction in U.S. EPA BMD guidance:
 studies with more dose groups and graded responses are generally more useful
 for modelling, while a study with only one responding treated dose may not
@@ -404,6 +413,14 @@ The `qualify` command returns a qualification result:
   "qualifiedCount": 2,
   "excludedCount": 0,
   "warnings": [],
+  "designValidation": {
+    "structurallyValid": true,
+    "comparisonReady": true,
+    "doseResponseReady": true,
+    "readinessStatus": "dose_response_minimum",
+    "comparisonBlockers": [],
+    "doseResponseBlockers": []
+  },
   "qualifications": [
     {
       "featureId": "cg00000001",

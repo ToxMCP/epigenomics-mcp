@@ -13,11 +13,17 @@ import { qualifyFeature, type FeatureMappingInfo } from "./rules.js";
 import { guardClaims } from "./claim_guards.js";
 import { summariseExplainability } from "./explainability.js";
 import type { QualificationContext } from "./context.js";
+import {
+  validateDesign,
+  type DesignValidationResult,
+} from "../validators/design.js";
 
 export interface QualificationResult {
   qualifiedCount: number;
   excludedCount: number;
   warnings: QualificationWarning[];
+  /** Dataset-level canonical design-readiness assessment. */
+  designValidation?: DesignValidationResult;
   /** Per-feature qualification results (available when packet is valid). */
   qualifications?: FeatureQualification[];
   /** Guarded temporal and inheritance claims. */
@@ -123,17 +129,8 @@ export function qualifyFeatures(
 
   const validated = parseResult.data;
   const globalWarnings: QualificationWarning[] = [...validated.warnings];
-  const basePolicy = createDefaultPolicy();
-  // Backward-compatible override: existing v0.1 tests assume 1 non-zero
-  // dose group is sufficient for feature qualification.  The strict default
-  // policy (minNonZeroDoseGroups=2) is preserved for explicit callers.
-  const policy: typeof basePolicy = {
-    ...basePolicy,
-    doseGroup: {
-      ...basePolicy.doseGroup,
-      minNonZeroDoseGroups: 1,
-    },
-  };
+  const policy = createDefaultPolicy();
+  const designValidation = validateDesign(validated.design, policy);
 
   // Genome build allowlist and mixed-build gate
   const buildValidation = validateGenomeBuilds(validated.features, {
@@ -196,6 +193,7 @@ export function qualifyFeatures(
       design: validated.design,
       policy,
       buildValidation,
+      designValidation,
       missingnessProfile,
       missingnessByFeature,
       mappingInfo: mappingByFeature.get(feature.featureId),
@@ -225,6 +223,7 @@ export function qualifyFeatures(
     qualifiedCount,
     excludedCount,
     warnings: globalWarnings,
+    designValidation,
     qualifications,
     claimGuardResult: {
       persistenceStatus: claimGuardResult.persistenceStatus,

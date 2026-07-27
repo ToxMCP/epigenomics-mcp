@@ -93,6 +93,25 @@ export type DesignReadinessThresholds = z.infer<
 >;
 
 /**
+ * Machine-readable reasons that prevent analytical use of an experimental
+ * design. These codes complement, rather than replace, the regulator-readable
+ * eligibility notes.
+ */
+export const DesignReadinessBlockerSchema = z.enum([
+  "structural_validation_failed",
+  "no_treated_dose",
+  "insufficient_total_dose_levels",
+  "insufficient_nonzero_dose_levels",
+  "insufficient_biological_replicates",
+  "dose_batch_confounding",
+  "multi_timepoint_requires_split",
+]);
+
+export type DesignReadinessBlocker = z.infer<
+  typeof DesignReadinessBlockerSchema
+>;
+
+/**
  * Orthogonal ingestion and analysis-readiness states.
  *
  * `structurallyValid` is the ingestion boundary. Comparison and
@@ -107,6 +126,8 @@ export const DownstreamEligibilitySchema = z
     readinessStatus: DesignReadinessStatusSchema,
     observed: ObservedDesignReadinessSchema,
     thresholds: DesignReadinessThresholdsSchema,
+    comparisonBlockers: z.array(DesignReadinessBlockerSchema),
+    doseResponseBlockers: z.array(DesignReadinessBlockerSchema),
     eligibilityNotes: z.array(z.string().min(1)),
   })
   .strict();
@@ -283,6 +304,8 @@ function computeDownstreamEligibility(
   policy: QualificationPolicy,
 ): DownstreamEligibility {
   const notes: string[] = [];
+  const comparisonBlockers: DesignReadinessBlocker[] = [];
+  const doseResponseBlockers: DesignReadinessBlocker[] = [];
   const distinctDoseLevels = new Set(
     design.doseGroups.map((group) => group.doseValue),
   ).size;
@@ -319,18 +342,40 @@ function computeDownstreamEligibility(
     observed.minEffectiveBiologicalReplicatesPerGroup >=
     thresholds.preferredBiologicalReplicatesPerGroup;
   const aggregateTimepointReady = !timepointStatus.isMultiTimepoint;
-  const analyticalBlockersAbsent =
-    structurallyValid &&
-    minimumReplicationMet &&
-    !batchSummary.doseBatchConfoundingDetected &&
-    aggregateTimepointReady;
+
+  if (!structurallyValid) {
+    comparisonBlockers.push("structural_validation_failed");
+    doseResponseBlockers.push("structural_validation_failed");
+  }
+  if (distinctNonZeroDoseLevels === 0) {
+    comparisonBlockers.push("no_treated_dose");
+    doseResponseBlockers.push("no_treated_dose");
+  }
+  if (distinctDoseLevels < thresholds.minimumTotalDoseLevels) {
+    doseResponseBlockers.push("insufficient_total_dose_levels");
+  }
+  if (
+    distinctNonZeroDoseLevels > 0 &&
+    distinctNonZeroDoseLevels < thresholds.minimumNonZeroDoseLevels
+  ) {
+    doseResponseBlockers.push("insufficient_nonzero_dose_levels");
+  }
+  if (!minimumReplicationMet) {
+    comparisonBlockers.push("insufficient_biological_replicates");
+    doseResponseBlockers.push("insufficient_biological_replicates");
+  }
+  if (batchSummary.doseBatchConfoundingDetected) {
+    comparisonBlockers.push("dose_batch_confounding");
+    doseResponseBlockers.push("dose_batch_confounding");
+  }
+  if (!aggregateTimepointReady) {
+    comparisonBlockers.push("multi_timepoint_requires_split");
+    doseResponseBlockers.push("multi_timepoint_requires_split");
+  }
 
   const eligibleForComparison =
-    analyticalBlockersAbsent && distinctNonZeroDoseLevels >= 1;
-  const eligibleForDoseResponse =
-    eligibleForComparison &&
-    distinctDoseLevels >= thresholds.minimumTotalDoseLevels &&
-    distinctNonZeroDoseLevels >= thresholds.minimumNonZeroDoseLevels;
+    comparisonBlockers.length === 0;
+  const eligibleForDoseResponse = doseResponseBlockers.length === 0;
   const preferredForDoseResponse =
     eligibleForDoseResponse &&
     distinctDoseLevels >= thresholds.preferredTotalDoseLevels &&
@@ -447,6 +492,8 @@ function computeDownstreamEligibility(
     readinessStatus,
     observed,
     thresholds,
+    comparisonBlockers,
+    doseResponseBlockers,
     eligibilityNotes: notes,
   };
 }
@@ -558,6 +605,8 @@ export function emitDesignValidationReport(
       preferredBiologicalReplicatesPerGroup:
         policy.replicate.preferredBiologicalReplicatesPerGroup,
     },
+    comparisonBlockers: ["structural_validation_failed"],
+    doseResponseBlockers: ["structural_validation_failed"],
     eligibilityNotes: ["Schema validation failed; cannot assess downstream eligibility."],
   };
 

@@ -171,6 +171,40 @@ describe("createHandoffPacket", () => {
     expect(handoff).toBeNull();
   });
 
+  it("returns null for a comparison-only design", () => {
+    const packet = makeBasePacket();
+    packet.design.doseGroups = [
+      { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+      { doseGroupId: "treated", doseValue: 1, doseUnit: "µM" },
+    ];
+    packet.design.samples = [
+      { sampleId: "sample-ctrl-1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+      { sampleId: "sample-ctrl-2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+      { sampleId: "sample-low-1", doseGroupId: "treated", species: "Homo sapiens", controlFlag: false },
+      { sampleId: "sample-low-2", doseGroupId: "treated", species: "Homo sapiens", controlFlag: false },
+    ];
+    packet.features[0].values = {
+      "sample-ctrl-1": 0.82,
+      "sample-ctrl-2": 0.85,
+      "sample-low-1": 0.78,
+      "sample-low-2": 0.80,
+    };
+
+    expect(createHandoffPacket(packet)).toBeNull();
+    expect(buildHandoffPacket(packet).readyForPod).toBe(false);
+  });
+
+  it("returns null for a dose-batch-confounded design", () => {
+    const packet = makeBasePacket();
+    packet.design.samples = packet.design.samples.map((sample) => ({
+      ...sample,
+      batchId: `batch-${sample.doseGroupId}`,
+    }));
+
+    expect(createHandoffPacket(packet)).toBeNull();
+    expect(buildHandoffPacket(packet).readyForPod).toBe(false);
+  });
+
   it("creates handoff with accepted_for_pod feature in doseResponseReadySubset", () => {
     const handoff = createHandoffPacket(makeBasePacket());
     expect(handoff).not.toBeNull();

@@ -48,7 +48,7 @@ function parseArgs(argv) {
 
   return {
     features: integerArg(values.get("--features"), 10_000, "--features"),
-    replicates: integerArg(values.get("--replicates"), 6, "--replicates", 4),
+    replicates: integerArg(values.get("--replicates"), 6, "--replicates", 6),
     maxSeconds: numberArg(values.get("--max-seconds"), 20, "--max-seconds"),
     maxRssMib: numberArg(values.get("--max-rss-mib"), 512, "--max-rss-mib"),
     json,
@@ -56,12 +56,14 @@ function parseArgs(argv) {
 }
 
 function createPacket(featureCount, replicateCount) {
-  const controlCount = Math.floor(replicateCount / 2);
+  const doseGroupIds = ["control", "low", "high"];
   const samples = Array.from({ length: replicateCount }, (_, index) => {
-    const control = index < controlCount;
+    const doseGroupId =
+      doseGroupIds[Math.min(2, Math.floor((index * 3) / replicateCount))];
+    const control = doseGroupId === "control";
     return {
       sampleId: `sample-${index + 1}`,
-      doseGroupId: control ? "control" : "treated",
+      doseGroupId,
       species: "Homo sapiens",
       ...(control ? { controlFlag: true } : {}),
     };
@@ -99,7 +101,8 @@ function createPacket(featureCount, replicateCount) {
       species: "Homo sapiens",
       doseGroups: [
         { doseGroupId: "control", doseValue: 0, doseUnit: "µM" },
-        { doseGroupId: "treated", doseValue: 1, doseUnit: "µM" },
+        { doseGroupId: "low", doseValue: 1, doseUnit: "µM" },
+        { doseGroupId: "high", doseValue: 10, doseUnit: "µM" },
       ],
       samples,
       hasControls: true,

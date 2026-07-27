@@ -14,6 +14,10 @@ import type {
   MissingnessProfile,
 } from "../qc/missingness.js";
 import {
+  validateDesign,
+  type DesignValidationResult,
+} from "../validators/design.js";
+import {
   RULE_CODES,
   buildExplainability,
 } from "./explainability.js";
@@ -44,6 +48,8 @@ export interface FeatureRuleContext {
   design: ExperimentalDesign;
   policy: QualificationPolicy;
   buildValidation: GenomeBuildValidationResult;
+  /** Canonical design-readiness assessment, computed once by the engine. */
+  designValidation?: DesignValidationResult;
   missingnessProfile?: MissingnessProfile;
   missingnessByFeature?: ReadonlyMap<string, FeatureMissingness>;
   cellCompositionResult?: ConfoundingAssessment;
@@ -90,39 +96,6 @@ function buildWarning(
     w.featureIds = featureIds;
   }
   return w;
-}
-
-function countBiologicalReplicatesPerGroup(design: ExperimentalDesign): Map<string, number> {
-  const counts = new Map<string, number>();
-  for (const sample of design.samples) {
-    const rType = sample.replicateType;
-    // Technical replicates must not count toward biological minimum.
-    if (rType === "technical") continue;
-    // Pooled and pseudobulk count as biological for the minimum check,
-    // but generate warnings elsewhere.
-    counts.set(sample.doseGroupId, (counts.get(sample.doseGroupId) || 0) + 1);
-  }
-  // Ensure every declared dose group has an entry (even if zero)
-  for (const dg of design.doseGroups) {
-    if (!counts.has(dg.doseGroupId)) {
-      counts.set(dg.doseGroupId, 0);
-    }
-  }
-  return counts;
-}
-
-function countDistinctDoseLevels(design: ExperimentalDesign): number {
-  return new Set(design.doseGroups.map((group) => group.doseValue)).size;
-}
-
-function countDistinctNonZeroDoseLevels(
-  design: ExperimentalDesign,
-): number {
-  return new Set(
-    design.doseGroups
-      .map((group) => group.doseValue)
-      .filter((doseValue) => doseValue !== 0),
-  ).size;
 }
 
 function getFeatureMissingness(
@@ -208,6 +181,7 @@ export function qualifyFeature(
     design,
     policy,
     buildValidation,
+    designValidation: suppliedDesignValidation,
     missingnessProfile,
     missingnessByFeature,
     cellCompositionResult,
@@ -216,6 +190,8 @@ export function qualifyFeature(
     differentiationDriftResult,
     mappingInfo,
   } = context;
+  const designValidation =
+    suppliedDesignValidation ?? validateDesign(design, policy);
 
   let status: z.infer<typeof QualificationStatusSchema> = "accepted_for_pod";
   const warnings: QualificationWarning[] = [];
@@ -310,20 +286,27 @@ export function qualifyFeature(
   }
 
   // ── Rule 3: Insufficient design ──
-  const totalDoseGroups = countDistinctDoseLevels(design);
-  const nonZeroDoseGroups = countDistinctNonZeroDoseLevels(design);
-  const designInsufficient =
-    totalDoseGroups < policy.doseGroup.minTotalDoseGroups ||
-    nonZeroDoseGroups < policy.doseGroup.minNonZeroDoseGroups;
+  const totalDoseGroups = designValidation.observedDesign.distinctDoseLevels;
+  const nonZeroDoseGroups =
+    designValidation.observedDesign.distinctNonZeroDoseLevels;
+  // Replication remains Rule 4 so its established status and remediation are
+  // preserved. Every other canonical dose-response blocker is handled here.
+  const designBlockers = designValidation.doseResponseBlockers.filter(
+    (blocker) => blocker !== "insufficient_biological_replicates",
+  );
 
-  if (designInsufficient) {
+  if (designBlockers.length > 0) {
     status = "excluded_insufficient_design";
     warnings.push(
       buildWarning(
         "EPI005_INSUFFICIENT_DESIGN",
-        `Feature ${feature.featureId} excluded: design has ${totalDoseGroups} distinct dose levels (${nonZeroDoseGroups} non-zero), minimum required ${policy.doseGroup.minTotalDoseGroups} total / ${policy.doseGroup.minNonZeroDoseGroups} non-zero`,
+        `Feature ${feature.featureId} excluded: canonical dose-response readiness is ${designValidation.readinessStatus}; blocker(s): ${designBlockers.join(", ")}. Observed ${totalDoseGroups} distinct dose levels (${nonZeroDoseGroups} non-zero), minimum required ${policy.doseGroup.minTotalDoseGroups} total / ${policy.doseGroup.minNonZeroDoseGroups} non-zero`,
         "error",
-        "missing_metadata",
+        designBlockers.includes("dose_batch_confounding")
+          ? "batch_effect"
+          : designBlockers.includes("multi_timepoint_requires_split")
+            ? "time_dependence"
+            : "missing_metadata",
         true,
         [feature.featureId],
       ),
@@ -337,7 +320,7 @@ export function qualifyFeature(
         warnings,
         RULE_CODES.INSUFFICIENT_DESIGN,
         policy,
-        { totalDoseGroups, nonZeroDoseGroups },
+        { totalDoseGroups, nonZeroDoseGroups, designBlockers },
         mappingInfo,
       ),
       blocked,
@@ -360,10 +343,8 @@ export function qualifyFeature(
   }
 
   // ── Rule 4: Insufficient replicates ──
-  const biologicalReplicateCounts = countBiologicalReplicatesPerGroup(design);
-  const minBiologicalReplicates = Math.min(
-    ...Array.from(biologicalReplicateCounts.values()),
-  );
+  const minBiologicalReplicates =
+    designValidation.observedDesign.minEffectiveBiologicalReplicatesPerGroup;
 
   const replicatesBelowMinimum =
     minBiologicalReplicates < policy.replicate.minBiologicalReplicatesPerGroup;

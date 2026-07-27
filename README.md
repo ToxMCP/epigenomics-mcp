@@ -162,8 +162,8 @@ Over stdio or Streamable HTTP, the public tool surface includes:
 | `health` | Return server health status |
 | `ingest_dataset` | Validate the evidence chain and separately report ingestion and analysis readiness |
 | `validate_design` | Report structural, comparison, minimum dose-response, and preferred dose-response states |
-| `qualify_features` | Qualify epigenomic features for downstream Bioactivity-PoD use |
-| `generate_handoff` | Generate a Bioactivity-PoD handoff summary |
+| `qualify_features` | Qualify features using the canonical dataset design-readiness gate and feature-level QC |
+| `generate_handoff` | Generate a Bioactivity-PoD handoff only for a dose-response-ready design |
 | `validate_coordinates` | Validate coordinate system declarations |
 | `profile_qc` | Compute deterministic QC profile |
 | `profile_missingness` | Compute missingness profile |

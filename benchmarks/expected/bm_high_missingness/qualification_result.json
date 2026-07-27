@@ -2,6 +2,39 @@
   "qualifiedCount": 1,
   "excludedCount": 1,
   "warnings": [],
+  "designValidation": {
+    "valid": true,
+    "schemaValid": true,
+    "structurallyValid": true,
+    "comparisonReady": true,
+    "doseResponseReady": true,
+    "preferredForDoseResponse": false,
+    "readinessStatus": "dose_response_minimum",
+    "observedDesign": {
+      "declaredDoseGroups": 3,
+      "distinctDoseLevels": 3,
+      "distinctNonZeroDoseLevels": 2,
+      "minEffectiveBiologicalReplicatesPerGroup": 2
+    },
+    "readinessThresholds": {
+      "minimumTotalDoseLevels": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "preferredTotalDoseLevels": 4,
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "preferredBiologicalReplicatesPerGroup": 3
+    },
+    "comparisonBlockers": [],
+    "doseResponseBlockers": [],
+    "errors": [],
+    "warnings": [],
+    "readinessReasons": [
+      "Design is structurally valid for ingestion.",
+      "Incomplete batch metadata (0/6 samples); unannotated batch effects may confound dose-response estimates.",
+      "The design meets the minimum dose-response threshold but has 3 distinct total dose levels; 4 are preferred.",
+      "The design meets minimum replication but has 2 effective biological replicates per group; 3 are preferred.",
+      "Design meets the project policy's minimum dose-response readiness threshold."
+    ]
+  },
   "qualifications": [
     {
       "featureId": "cg_miss_high_001",
@@ -10,7 +43,7 @@
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
           "severity": "warning",
-          "message": "Design has 2 distinct dose levels; preferred is 4",
+          "message": "Design has 3 distinct dose levels; preferred is 4",
           "category": "missing_metadata",
           "blocksDownstream": false,
           "featureIds": [
@@ -30,7 +63,7 @@
         {
           "warningCode": "EPIE002_EXCESSIVE_MISSINGNESS",
           "severity": "error",
-          "message": "Feature cg_miss_high_001 has 75.0% missing values (threshold 20.0%)",
+          "message": "Feature cg_miss_high_001 has 66.7% missing values (threshold 20.0%)",
           "category": "platform_specific",
           "blocksDownstream": true,
           "featureIds": [
@@ -43,12 +76,12 @@
       "mappingMethod": "unknown",
       "explainability": {
         "ruleCode": "RULE_005_HIGH_MISSINGNESS",
-        "reasonTemplate": "Feature cg_miss_high_001 has 75.0% missing values, exceeding the policy exclusion threshold of 20.0%. High missingness reduces reliability for dose-response modelling.",
+        "reasonTemplate": "Feature cg_miss_high_001 has 66.7% missing values, exceeding the policy exclusion threshold of 20.0%. High missingness reduces reliability for dose-response modelling.",
         "remediationHint": "Investigate sample-level missingness; consider imputation or exclusion of low-quality samples.",
         "reviewRequired": true,
         "policyReference": "missingness.exclusionThreshold",
         "thresholdValue": "20.0%",
-        "observedValue": "75.0%"
+        "observedValue": "66.7%"
       }
     },
     {
@@ -58,7 +91,7 @@
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
           "severity": "warning",
-          "message": "Design has 2 distinct dose levels; preferred is 4",
+          "message": "Design has 3 distinct dose levels; preferred is 4",
           "category": "missing_metadata",
           "blocksDownstream": false,
           "featureIds": [

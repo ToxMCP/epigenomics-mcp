@@ -1,10 +1,12 @@
 import { z } from "zod";
 import {
+  DesignReadinessBlockerSchema,
   DesignReadinessStatusSchema,
   DesignReadinessThresholdsSchema,
   ObservedDesignReadinessSchema,
   emitDesignValidationReport,
 } from "./design_validation_report.js";
+import type { QualificationPolicy } from "../qualification/policy.js";
 
 export const DesignValidationResultSchema = z
   .object({
@@ -27,6 +29,8 @@ export const DesignValidationResultSchema = z
     readinessStatus: DesignReadinessStatusSchema,
     observedDesign: ObservedDesignReadinessSchema,
     readinessThresholds: DesignReadinessThresholdsSchema,
+    comparisonBlockers: z.array(DesignReadinessBlockerSchema),
+    doseResponseBlockers: z.array(DesignReadinessBlockerSchema),
     errors: z.array(z.string()),
     warnings: z.array(z.string()),
     readinessReasons: z.array(z.string()),
@@ -45,8 +49,11 @@ export type DesignValidationResult = z.infer<
  * readiness are explicit and must not be inferred from the generic `valid`
  * field.
  */
-export function validateDesign(design: unknown): DesignValidationResult {
-  const report = emitDesignValidationReport(design);
+export function validateDesign(
+  design: unknown,
+  policy?: QualificationPolicy,
+): DesignValidationResult {
+  const report = emitDesignValidationReport(design, { policy });
   const readiness = report.downstreamEligibility;
 
   return DesignValidationResultSchema.parse({
@@ -59,6 +66,8 @@ export function validateDesign(design: unknown): DesignValidationResult {
     readinessStatus: readiness.readinessStatus,
     observedDesign: readiness.observed,
     readinessThresholds: readiness.thresholds,
+    comparisonBlockers: readiness.comparisonBlockers,
+    doseResponseBlockers: readiness.doseResponseBlockers,
     errors: report.errors,
     warnings: report.warnings,
     readinessReasons: readiness.eligibilityNotes,

@@ -29,6 +29,16 @@
       "sampleId": "sample-low-2",
       "missingFraction": 0,
       "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-high-1",
+      "missingFraction": 0,
+      "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-high-2",
+      "missingFraction": 0,
+      "band": "acceptable"
     }
   ],
   "perGroupMissingness": [
@@ -40,6 +50,12 @@
     },
     {
       "doseGroupId": "low",
+      "missingFraction": 0,
+      "band": "acceptable",
+      "completeDropoutFeatureIds": []
+    },
+    {
+      "doseGroupId": "high",
       "missingFraction": 0,
       "band": "acceptable",
       "completeDropoutFeatureIds": []

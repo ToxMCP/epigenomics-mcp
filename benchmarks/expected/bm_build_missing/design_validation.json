@@ -19,6 +19,10 @@
     "minimumBiologicalReplicatesPerGroup": 2,
     "preferredBiologicalReplicatesPerGroup": 3
   },
+  "comparisonBlockers": [],
+  "doseResponseBlockers": [
+    "insufficient_nonzero_dose_levels"
+  ],
   "errors": [],
   "warnings": [],
   "readinessReasons": [

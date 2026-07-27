@@ -227,6 +227,47 @@ describe("qualifyFeature", () => {
     );
   });
 
+  it("blocks an otherwise adequate design with perfect dose-batch confounding", () => {
+    const design = makeDesign({
+      samples: [
+        { sampleId: "s-ctrl-1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true, batchId: "batch-control" },
+        { sampleId: "s-ctrl-2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true, batchId: "batch-control" },
+        { sampleId: "s-low-1", doseGroupId: "low", species: "Homo sapiens", batchId: "batch-low" },
+        { sampleId: "s-low-2", doseGroupId: "low", species: "Homo sapiens", batchId: "batch-low" },
+        { sampleId: "s-high-1", doseGroupId: "high", species: "Homo sapiens", batchId: "batch-high" },
+        { sampleId: "s-high-2", doseGroupId: "high", species: "Homo sapiens", batchId: "batch-high" },
+      ],
+    });
+
+    const result = qualifyFeature(makeFeature(), makeContext({ design }));
+
+    expect(result.qualification.status).toBe("excluded_insufficient_design");
+    expect(result.ruleTriggered).toBe("RULE_003_INSUFFICIENT_DESIGN");
+    expect(result.qualification.warnings[0].category).toBe("batch_effect");
+    expect(result.qualification.warnings[0].message).toContain(
+      "dose_batch_confounding",
+    );
+  });
+
+  it("blocks an aggregate multi-timepoint design before feature-level QC", () => {
+    const design = makeDesign({
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM", timepointHours: 24 },
+        { doseGroupId: "low", doseValue: 1, doseUnit: "µM", timepointHours: 24 },
+        { doseGroupId: "high", doseValue: 10, doseUnit: "µM", timepointHours: 48 },
+      ],
+    });
+
+    const result = qualifyFeature(makeFeature(), makeContext({ design }));
+
+    expect(result.qualification.status).toBe("excluded_insufficient_design");
+    expect(result.ruleTriggered).toBe("RULE_003_INSUFFICIENT_DESIGN");
+    expect(result.qualification.warnings[0].category).toBe("time_dependence");
+    expect(result.qualification.warnings[0].message).toContain(
+      "multi_timepoint_requires_split",
+    );
+  });
+
   it("excludes feature with insufficient replicates (RULE_004)", () => {
     const design = makeDesign({
       samples: [

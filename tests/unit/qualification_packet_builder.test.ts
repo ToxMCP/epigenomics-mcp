@@ -35,6 +35,8 @@ function makeValidPacket(): EpigenomicsFeatureResponsePacket {
           "sample-ctrl-2": 0.85,
           "sample-low-1": 0.78,
           "sample-low-2": 0.80,
+          "sample-high-1": 0.74,
+          "sample-high-2": 0.76,
         },
       },
       {
@@ -48,6 +50,8 @@ function makeValidPacket(): EpigenomicsFeatureResponsePacket {
           "sample-ctrl-2": null,
           "sample-low-1": null,
           "sample-low-2": 0.80,
+          "sample-high-1": null,
+          "sample-high-2": null,
         },
       },
     ],
@@ -57,12 +61,15 @@ function makeValidPacket(): EpigenomicsFeatureResponsePacket {
       doseGroups: [
         { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
         { doseGroupId: "low", doseValue: 1, doseUnit: "µM" },
+        { doseGroupId: "high", doseValue: 10, doseUnit: "µM" },
       ],
       samples: [
         { sampleId: "sample-ctrl-1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
         { sampleId: "sample-ctrl-2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
         { sampleId: "sample-low-1", doseGroupId: "low", species: "Homo sapiens" },
         { sampleId: "sample-low-2", doseGroupId: "low", species: "Homo sapiens" },
+        { sampleId: "sample-high-1", doseGroupId: "high", species: "Homo sapiens" },
+        { sampleId: "sample-high-2", doseGroupId: "high", species: "Homo sapiens" },
       ],
       hasControls: true,
       minReplicatesPerGroup: 2,

@@ -66,19 +66,26 @@ describe("buildExplainability", () => {
       RULE_CODES.INSUFFICIENT_DESIGN,
       "feat-003",
       policy,
-      { totalDoseGroups: 1, nonZeroDoseGroups: 0 },
+      {
+        totalDoseGroups: 1,
+        nonZeroDoseGroups: 0,
+        designBlockers: ["no_treated_dose"],
+      },
     );
     expect(ex.ruleCode).toBe("RULE_003_INSUFFICIENT_DESIGN");
-    expect(ex.reasonTemplate).toContain("1 dose groups");
+    expect(ex.reasonTemplate).toContain("no_treated_dose");
+    expect(ex.reasonTemplate).toContain("1 distinct dose levels");
     expect(ex.reasonTemplate).toContain("0 non-zero");
-    expect(ex.reasonTemplate).toContain("minimum of 2 total / 2 non-zero");
-    expect(ex.remediationHint).toContain("Add additional dose groups");
+    expect(ex.reasonTemplate).toContain("minimum is 2 total / 2 non-zero");
+    expect(ex.remediationHint).toContain("Resolve the listed design blocker");
     expect(ex.reviewRequired).toBe(true);
     expect(ex.policyReference).toBe(
-      "doseGroup.minTotalDoseGroups / doseGroup.minNonZeroDoseGroups",
+      "designReadiness / doseGroup / replicate",
     );
     expect(ex.thresholdValue).toBe("2 total / 2 non-zero");
-    expect(ex.observedValue).toBe("1 total / 0 non-zero");
+    expect(ex.observedValue).toBe(
+      "1 total / 0 non-zero; blockers=no_treated_dose",
+    );
   });
 
   it("builds explainability for INSUFFICIENT_REPLICATES", () => {
@@ -446,6 +453,8 @@ describe("explainability integration with qualification engine", () => {
             "sample-ctrl-2": null,
             "sample-low-1": null,
             "sample-low-2": null,
+            "sample-high-1": null,
+            "sample-high-2": null,
           },
         },
       ],
@@ -455,6 +464,7 @@ describe("explainability integration with qualification engine", () => {
         doseGroups: [
           { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
           { doseGroupId: "low", doseValue: 1, doseUnit: "µM" },
+          { doseGroupId: "high", doseValue: 10, doseUnit: "µM" },
         ],
         samples: [
           {
@@ -477,6 +487,16 @@ describe("explainability integration with qualification engine", () => {
           {
             sampleId: "sample-low-2",
             doseGroupId: "low",
+            species: "Homo sapiens",
+          },
+          {
+            sampleId: "sample-high-1",
+            doseGroupId: "high",
+            species: "Homo sapiens",
+          },
+          {
+            sampleId: "sample-high-2",
+            doseGroupId: "high",
             species: "Homo sapiens",
           },
         ],

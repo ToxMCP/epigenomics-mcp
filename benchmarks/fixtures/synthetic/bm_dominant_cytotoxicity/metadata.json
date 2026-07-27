@@ -18,7 +18,9 @@
       { "sampleId": "sample-ctrl-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
       { "sampleId": "sample-ctrl-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
       { "sampleId": "sample-low-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
-      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
+      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
     ],
     "groupShifts": [],
     "warnings": [],
@@ -35,7 +37,9 @@
           { "sampleId": "sample-ctrl-1", "doseValue": 0, "value": 0.95, "unit": "fraction", "metric": "cell_viability" },
           { "sampleId": "sample-ctrl-2", "doseValue": 0, "value": 0.96, "unit": "fraction", "metric": "cell_viability" },
           { "sampleId": "sample-low-1", "doseValue": 1, "value": 0.55, "unit": "fraction", "metric": "cell_viability" },
-          { "sampleId": "sample-low-2", "doseValue": 1, "value": 0.52, "unit": "fraction", "metric": "cell_viability" }
+          { "sampleId": "sample-low-2", "doseValue": 1, "value": 0.52, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-high-1", "doseValue": 10, "value": 0.35, "unit": "fraction", "metric": "cell_viability" },
+          { "sampleId": "sample-high-2", "doseValue": 10, "value": 0.32, "unit": "fraction", "metric": "cell_viability" }
         ],
         "stressFlags": ["membrane_damage"]
       }

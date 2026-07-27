@@ -29,6 +29,8 @@ describe("validateDesign", () => {
     expect(result.doseResponseReady).toBe(true);
     expect(result.preferredForDoseResponse).toBe(false);
     expect(result.readinessStatus).toBe("dose_response_minimum");
+    expect(result.comparisonBlockers).toEqual([]);
+    expect(result.doseResponseBlockers).toEqual([]);
     expect(result.errors).toHaveLength(0);
   });
 
@@ -109,6 +111,12 @@ describe("validateDesign", () => {
     expect(result.structurallyValid).toBe(true);
     expect(result.comparisonReady).toBe(false);
     expect(result.doseResponseReady).toBe(false);
+    expect(result.comparisonBlockers).toContain(
+      "insufficient_biological_replicates",
+    );
+    expect(result.doseResponseBlockers).toContain(
+      "insufficient_biological_replicates",
+    );
     expect(result.observedDesign.minEffectiveBiologicalReplicatesPerGroup).toBe(1);
   });
 
@@ -132,6 +140,11 @@ describe("validateDesign", () => {
     expect(result.comparisonReady).toBe(false);
     expect(result.doseResponseReady).toBe(false);
     expect(result.readinessStatus).toBe("structural_only");
+    expect(result.comparisonBlockers).toContain("no_treated_dose");
+    expect(result.doseResponseBlockers).toEqual([
+      "no_treated_dose",
+      "insufficient_total_dose_levels",
+    ]);
   });
 
   it("classifies control plus one treated level as comparison-only", () => {
@@ -156,6 +169,10 @@ describe("validateDesign", () => {
     expect(result.comparisonReady).toBe(true);
     expect(result.doseResponseReady).toBe(false);
     expect(result.readinessStatus).toBe("comparison_only");
+    expect(result.comparisonBlockers).toEqual([]);
+    expect(result.doseResponseBlockers).toEqual([
+      "insufficient_nonzero_dose_levels",
+    ]);
   });
 });
 

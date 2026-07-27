@@ -1,11 +1,11 @@
 {
   "datasetId": "bm-miss-high-ds-001",
   "policyVersion": "v1.0.0",
-  "overallFeatureMissingFraction": 0.375,
+  "overallFeatureMissingFraction": 0.3333333333333333,
   "perFeatureMissingness": [
     {
       "featureId": "cg_miss_high_001",
-      "missingFraction": 0.75,
+      "missingFraction": 0.6666666666666666,
       "band": "exclusion"
     },
     {
@@ -34,6 +34,16 @@
       "sampleId": "sample-low-2",
       "missingFraction": 0,
       "band": "acceptable"
+    },
+    {
+      "sampleId": "sample-high-1",
+      "missingFraction": 0.5,
+      "band": "exclusion"
+    },
+    {
+      "sampleId": "sample-high-2",
+      "missingFraction": 0,
+      "band": "acceptable"
     }
   ],
   "perGroupMissingness": [
@@ -47,6 +57,12 @@
     },
     {
       "doseGroupId": "low",
+      "missingFraction": 0.25,
+      "band": "exclusion",
+      "completeDropoutFeatureIds": []
+    },
+    {
+      "doseGroupId": "high",
       "missingFraction": 0.25,
       "band": "exclusion",
       "completeDropoutFeatureIds": []

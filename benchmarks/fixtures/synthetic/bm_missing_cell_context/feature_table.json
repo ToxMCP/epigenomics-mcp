@@ -16,7 +16,9 @@
       "sample-ctrl-1": 0.82,
       "sample-ctrl-2": 0.85,
       "sample-low-1": 0.78,
-      "sample-low-2": 0.80
+      "sample-low-2": 0.80,
+      "sample-high-1": 0.72,
+      "sample-high-2": 0.74
     }
   }
 ]

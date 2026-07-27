@@ -331,6 +331,9 @@ export const QualifyFeaturesResultSchema = z
     qualifiedCount: z.number().int().nonnegative().describe("Features accepted for PoD use"),
     excludedCount: z.number().int().nonnegative().describe("Features excluded from PoD use"),
     warnings: z.array(QualificationWarningSchema).describe("Dataset-level qualification warnings"),
+    designValidation: DesignValidationResultSchema.optional().describe(
+      "Canonical dataset-level design readiness used for every feature decision",
+    ),
     qualifications: z
       .array(FeatureQualificationSchema)
       .optional()

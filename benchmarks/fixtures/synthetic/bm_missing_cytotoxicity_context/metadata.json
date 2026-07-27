@@ -18,7 +18,9 @@
       { "sampleId": "sample-ctrl-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
       { "sampleId": "sample-ctrl-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
       { "sampleId": "sample-low-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
-      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
+      { "sampleId": "sample-low-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-1", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] },
+      { "sampleId": "sample-high-2", "source": "declared_pure", "declaredCellType": "HepaRG", "fractions": [{ "cellType": "HepaRG", "fraction": 1.0 }] }
     ],
     "groupShifts": [],
     "warnings": [],

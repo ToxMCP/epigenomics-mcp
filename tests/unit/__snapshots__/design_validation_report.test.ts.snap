@@ -12,6 +12,14 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (missi
     "totalSamples": 2,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [
+      "structural_validation_failed",
+      "insufficient_biological_replicates",
+    ],
+    "doseResponseBlockers": [
+      "structural_validation_failed",
+      "insufficient_biological_replicates",
+    ],
     "eligibilityNotes": [
       "Structural design validation failed; ingestion and downstream analysis are blocked.",
       "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
@@ -105,6 +113,17 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (multi
     "totalSamples": 4,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [
+      "structural_validation_failed",
+      "insufficient_biological_replicates",
+      "multi_timepoint_requires_split",
+    ],
+    "doseResponseBlockers": [
+      "structural_validation_failed",
+      "insufficient_nonzero_dose_levels",
+      "insufficient_biological_replicates",
+      "multi_timepoint_requires_split",
+    ],
     "eligibilityNotes": [
       "Structural design validation failed; ingestion and downstream analysis are blocked.",
       "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
@@ -251,6 +270,12 @@ exports[`emitDesignValidationReport > matches snapshot for design with dose-batc
     "totalSamples": 6,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [
+      "dose_batch_confounding",
+    ],
+    "doseResponseBlockers": [
+      "dose_batch_confounding",
+    ],
     "eligibilityNotes": [
       "Design is structurally valid for ingestion.",
       "Dose-batch confounding detected in group(s): ctrl, low, high; comparison and dose-response readiness are blocked.",
@@ -360,6 +385,12 @@ exports[`emitDesignValidationReport > matches snapshot for design with warnings 
     "totalSamples": 3,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [
+      "insufficient_biological_replicates",
+    ],
+    "doseResponseBlockers": [
+      "insufficient_biological_replicates",
+    ],
     "eligibilityNotes": [
       "Design is structurally valid for ingestion.",
       "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
@@ -469,6 +500,15 @@ exports[`emitDesignValidationReport > matches snapshot for split multi-timepoint
     "totalSamples": 4,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [
+      "insufficient_biological_replicates",
+      "multi_timepoint_requires_split",
+    ],
+    "doseResponseBlockers": [
+      "insufficient_nonzero_dose_levels",
+      "insufficient_biological_replicates",
+      "multi_timepoint_requires_split",
+    ],
     "eligibilityNotes": [
       "Design is structurally valid for ingestion.",
       "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
@@ -610,6 +650,8 @@ exports[`emitDesignValidationReport > matches snapshot for valid design 1`] = `
     "totalSamples": 6,
   },
   "downstreamEligibility": {
+    "comparisonBlockers": [],
+    "doseResponseBlockers": [],
     "eligibilityNotes": [
       "Design is structurally valid for ingestion.",
       "The design meets the minimum dose-response threshold but has 3 distinct total dose levels; 4 are preferred.",

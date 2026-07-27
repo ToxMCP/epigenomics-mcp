@@ -22,7 +22,9 @@
         "sample-ctrl-1": 0.82,
         "sample-ctrl-2": 0.85,
         "sample-low-1": 0.78,
-        "sample-low-2": 0.8
+        "sample-low-2": 0.8,
+        "sample-high-1": 0.72,
+        "sample-high-2": 0.74
       }
     }
   ],
@@ -38,6 +40,11 @@
       {
         "doseGroupId": "low",
         "doseValue": 1,
+        "doseUnit": "µM"
+      },
+      {
+        "doseGroupId": "high",
+        "doseValue": 10,
         "doseUnit": "µM"
       }
     ],
@@ -62,6 +69,16 @@
       {
         "sampleId": "sample-low-2",
         "doseGroupId": "low",
+        "species": "Homo sapiens"
+      },
+      {
+        "sampleId": "sample-high-1",
+        "doseGroupId": "high",
+        "species": "Homo sapiens"
+      },
+      {
+        "sampleId": "sample-high-2",
+        "doseGroupId": "high",
         "species": "Homo sapiens"
       }
     ],

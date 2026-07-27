@@ -81,6 +81,8 @@ describe("emitDesignValidationReport", () => {
     expect(report.downstreamEligibility.readinessStatus).toBe(
       "dose_response_minimum",
     );
+    expect(report.downstreamEligibility.comparisonBlockers).toEqual([]);
+    expect(report.downstreamEligibility.doseResponseBlockers).toEqual([]);
     expect(report.downstreamEligibility.eligibilityNotes.length).toBeGreaterThan(0);
   });
 
@@ -108,6 +110,10 @@ describe("emitDesignValidationReport", () => {
     ).toBe(1);
     expect(report.downstreamEligibility.eligibleForComparison).toBe(true);
     expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(false);
+    expect(report.downstreamEligibility.comparisonBlockers).toEqual([]);
+    expect(report.downstreamEligibility.doseResponseBlockers).toEqual([
+      "insufficient_nonzero_dose_levels",
+    ]);
     expect(report.downstreamEligibility.readinessStatus).toBe(
       "comparison_only",
     );
@@ -305,6 +311,12 @@ describe("emitDesignValidationReport", () => {
     expect(report.batchSummary.doseBatchConfoundingDetected).toBe(true);
     expect(report.downstreamEligibility.eligibleForComparison).toBe(false);
     expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(false);
+    expect(report.downstreamEligibility.comparisonBlockers).toEqual([
+      "dose_batch_confounding",
+    ]);
+    expect(report.downstreamEligibility.doseResponseBlockers).toEqual([
+      "dose_batch_confounding",
+    ]);
     expect(report.downstreamEligibility.eligibilityNotes.some((n) =>
       n.includes("Dose-batch confounding"),
     )).toBe(true);
