@@ -3,17 +3,17 @@
   "schemaVersion": "0.1.0",
   "package": {
     "name": "epigenomics-mcp",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "config": {
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T14:47:42.255Z",
+  "generatedAt": "2026-07-27T15:00:30.555Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T14:47:38.992Z",
-    "finishedAt": "2026-07-27T14:47:42.255Z"
+    "startedAt": "2026-07-27T15:00:27.307Z",
+    "finishedAt": "2026-07-27T15:00:30.555Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "67f3195d7e10b74ad0df9bae04188b1d83749abc",
+    "commit": "ac14b12abe3336f4701bc837d1548c33868b613c",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.108s; 71.6 MiB RSS increase"
+        "details": "10000 real qualifications in 0.102s; 76.2 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -63,18 +63,18 @@
   },
   "npmPackDryRun": [
     {
-      "id": "epigenomics-mcp@0.2.0",
+      "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
-      "version": "0.2.0",
-      "size": 729271,
-      "unpackedSize": 4033586,
-      "shasum": "beca87c79355a36825c4f10e3397191a7fcaf385",
-      "integrity": "sha512-xOGUPUDN3Lb9+oqOB4J1pFR+E36+OCQo4UAe4cb72JdOfQeqmvarulN5WO0GcDzGkpH1c1VsYmz5SzZywHJ17w==",
-      "filename": "epigenomics-mcp-0.2.0.tgz",
+      "version": "0.2.1",
+      "size": 729274,
+      "unpackedSize": 4033584,
+      "shasum": "8b3765c410a0856a3f5b800caf4464ee665cda12",
+      "integrity": "sha512-YCWzrOCyd7LBPQTizHIkBlzRI5+jpZjEt35qDIQlYUkhjLVt1b47Q4Z+I3W5KCbOgwqjPPkTuIrRNN0cUo6ncQ==",
+      "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 3455,
+          "size": 3453,
           "mode": 420
         },
         {
@@ -3345,7 +3345,7 @@
   "artifactChecksums": [
     {
       "path": "CITATION.cff",
-      "sha256": "740ec22f929702684aaf905fcac95be2c6d3be4cceda72cebfd70703e1a4cbac",
+      "sha256": "7d3b9c87eab84b98f3411893d0073a097f56bb81161a5aac1db64e74c350544b",
       "bytes": 399
     },
     {
@@ -4015,12 +4015,12 @@
     },
     {
       "path": "docs/tool-reference.md",
-      "sha256": "f34a8b181f0a293087993bba7cca2d8fc02b706adf004b963eae0005025b0f33",
+      "sha256": "1fdacf48ffb45d9f90d6e95a59b5c0cf75698f699c71921f3c5cdda506304e07",
       "bytes": 29713
     },
     {
       "path": "docs/validation-statement.md",
-      "sha256": "d4b6d77319e0e6aadeebba45ad8715f46c7b3dd509ea4c92ecfdbf9782553d57",
+      "sha256": "731897ccc064ff564b5dcd8741a5c21f87827646fe2fe3c373c3bcb3aeb9a0b1",
       "bytes": 25390
     },
     {
@@ -4030,22 +4030,22 @@
     },
     {
       "path": "pyproject.toml",
-      "sha256": "4532e0d719c0fe72a6e0b03dc090ec19022fe9397dd90266055ca3f404079bea",
+      "sha256": "50458d14a5550eaf8ca9d7a8b1f1728252837b5f8c7427e13d3c3d971aa42c88",
       "bytes": 2920
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "192080b3c5ea31c799e079fd23b84c128558e8479ed06ba9df4b79eb66e6fdbd",
+      "sha256": "91a63401cdb2b6d2a60dd22ab0d134886c83b0165ae52a28a4d9f5ab1a685fae",
       "bytes": 81128
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "f4609948ce6ae8ac88bc9fa43c27b3d9028e0f07674ef43591e9d7b602e8ad24",
+      "sha256": "8119165d9363a442b663323daf8c054e8aa29b1070c7c07b03d57c6f6836f6db",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "9ad599181acd18b15ce269a18e81a18fe57a871cde95c992d63346b7e7463d7e",
+      "sha256": "37c09fe9e668e33492391f21e5754c52fe38b9e50cc71a54fdc8320aa4be60d8",
       "bytes": 497
     },
     {
@@ -4255,12 +4255,12 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "be31f99e0fa64d5ec7ce51d1db452e3c2c7991ec36ba0b130baac1c10e5ff328",
+      "sha256": "17c347bb774135ee1dbb4097cea338272999dac1c2c8684ec4e08b8046232d10",
       "bytes": 5876
     },
     {
       "path": "uv.lock",
-      "sha256": "e8044d0965ad9b0b1a19c3732ad28b5ae11d3537cb62107b72e8180e528edc5a",
+      "sha256": "c55de2b294957c6f2d7a4cafadeb9e4a0926494936500b5e364e88a43abd7249",
       "bytes": 527810
     },
     {
