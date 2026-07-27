@@ -91,7 +91,7 @@ processed-evidence qualification scope:
 - `npm run eval:validate` checks the committed 10-case MCP evaluation set
 - `npm run benchmark:ci` checks golden outputs and the qualification performance budget
 - `npm run verify:evidence` verifies the post-commit release-evidence bundle
-- `.venv/bin/pytest tests/python -q` checks the metadata-only Python compatibility package
+- `.venv/bin/pytest tests/python -q` checks the dependency-light Python governance and compatibility layer
 - `npm run verify:release` composes the release gates
 
 These are product-level readiness checks for this MCP boundary, not claims of biological truth, regulatory acceptance, or downstream PoD/BMD validity.
@@ -114,8 +114,9 @@ EPIMCP_MCP_PORT=8000 npm run mcp:serve:http
 # Health endpoint: http://127.0.0.1:8000/health
 ```
 
-The Python distribution is a metadata-only compatibility package. It is not a
-second server implementation:
+The Python distribution is a dependency-light governance and compatibility
+package. It contains the fail-closed schema-spine projection gate, but it is not
+a second MCP server implementation:
 
 ```bash
 python -m venv .venv
@@ -167,6 +168,7 @@ Read-only MCP resources expose contracts and evidence directly to clients:
 | `epimcp://release-evidence/checksums` | Latest generated checksum list |
 | `epimcp://release-evidence/release-gate-json` | Latest captured release-gate JSON |
 | `epimcp://release-evidence/release-gate-report` | Latest captured release-gate report |
+| `epimcp://release-evidence/scientific-invariants` | Latest checksummed schema-spine scientific-invariants result |
 
 ## Release evidence
 

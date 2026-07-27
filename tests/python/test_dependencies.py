@@ -1,4 +1,4 @@
-"""Packaging checks for the metadata-only Python compatibility distribution."""
+"""Packaging checks for the dependency-light Python governance distribution."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ def _project() -> dict[str, object]:
 
 
 def test_core_install_has_no_runtime_dependencies() -> None:
-    """Installing the compatibility package must not pull a second runtime."""
+    """The standard-library governance package must not pull a second runtime."""
     assert _project()["dependencies"] == []
 
 

@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-06-12T18:46:53.056Z",
+  "generatedAt": "2026-06-24T16:41:13.688Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-06-12T18:46:52.429Z",
-    "finishedAt": "2026-06-12T18:46:53.056Z"
+    "startedAt": "2026-06-24T16:41:11.107Z",
+    "finishedAt": "2026-06-24T16:41:13.688Z"
   },
   "environment": {
     "nodeVersion": "v20.20.2",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "0937cc092aed22c095927519c44b9ae145464e74",
+    "commit": "49497b13a55000efc18cd3a5a9b8e8b1c39c1bc5",
     "dirty": false
   },
   "releaseGate": {
@@ -61,10 +61,10 @@
       "id": "epigenomics-mcp@0.1.0",
       "name": "epigenomics-mcp",
       "version": "0.1.0",
-      "size": 402067,
-      "unpackedSize": 2613299,
-      "shasum": "681065a28b5ea857c27deb14bf159ea34b1831fc",
-      "integrity": "sha512-SuRo0vOIT3kdcw3uK2Q8RZXeGapumGGKHXgCUC/UsODW1lzu0zt/Af1oeoM3yYgEVWvrjreU/799Ebf0BJLPjg==",
+      "size": 410695,
+      "unpackedSize": 2636789,
+      "shasum": "0d2513471cea69d554b75754f205f9256d4787a9",
+      "integrity": "sha512-6AxDSgmUBRh5pkIavhgcQtj9ia/YHLKHDg3SAuzSXozPRFJddoLrWhofU/Hj4FopSF+RZfJeougJYMIr6fQYOw==",
       "filename": "epigenomics-mcp-0.1.0.tgz",
       "files": [
         {
@@ -903,6 +903,26 @@
           "mode": 420
         },
         {
+          "path": "dist/epimcp/http.d.ts",
+          "size": 749,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/http.d.ts.map",
+          "size": 135,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/http.js",
+          "size": 3493,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/http.js.map",
+          "size": 3198,
+          "mode": 420
+        },
+        {
           "path": "dist/epimcp/index.d.ts",
           "size": 1357,
           "mode": 420
@@ -964,22 +984,22 @@
         },
         {
           "path": "dist/epimcp/server.d.ts",
-          "size": 147,
+          "size": 295,
           "mode": 420
         },
         {
           "path": "dist/epimcp/server.d.ts.map",
-          "size": 230,
+          "size": 327,
           "mode": 420
         },
         {
           "path": "dist/epimcp/server.js",
-          "size": 1251,
+          "size": 1258,
           "mode": 420
         },
         {
           "path": "dist/epimcp/server.js.map",
-          "size": 956,
+          "size": 961,
           "mode": 420
         },
         {
@@ -2123,6 +2143,11 @@
           "mode": 420
         },
         {
+          "path": "docs/adr/0001-scientific-invariants-gate.md",
+          "size": 14770,
+          "mode": 420
+        },
+        {
           "path": "docs/cell-composition-confounding-guide.md",
           "size": 6586,
           "mode": 420
@@ -2294,7 +2319,7 @@
         },
         {
           "path": "package.json",
-          "size": 2757,
+          "size": 3244,
           "mode": 420
         },
         {
@@ -2384,11 +2409,11 @@
         },
         {
           "path": "toxmcp.manifest.yaml",
-          "size": 4579,
+          "size": 4980,
           "mode": 420
         }
       ],
-      "entryCount": 464,
+      "entryCount": 469,
       "bundled": []
     }
   ],
@@ -2750,8 +2775,8 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "5f2c97b4453253b3c2efd6496378491d796b4f6480535cb117ffca93b84768cc",
-      "bytes": 54865
+      "sha256": "a63294ccba1c960cbd5abee5f0c1c6eee99ff5568f9f488bf22954ebfa97e022",
+      "bytes": 55390
     },
     {
       "path": "release-evidence/release-gate.json",
@@ -2795,8 +2820,8 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "be28df9a5fb49cf0bbeb8235d7ff0b8e3820b04a779656caf00cdf9995021b72",
-      "bytes": 4579
+      "sha256": "9a61e6eed09aa5450b635a062af78a785c8af9e9fd38e13f7a0314c2d2d0d0e0",
+      "bytes": 4980
     }
   ]
 }

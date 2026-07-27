@@ -15,10 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Production dependency audit and release-security gate.
 - A checksummed, source-linked GEO GSE67005 ingestion excerpt, a 10-case MCP evaluation set, and a real-engine 10,000-feature performance gate.
 - Reviewed golden-output regeneration command with an explicit confirmation guard.
+- Digest-pinned ToxMCP schema-spine projection, conformance tests, and a fail-closed scientific-invariants release gate.
 
 ### Changed
 
-- Python distribution is now a metadata-only compatibility package; historical analysis dependencies require the `analysis-compat` extra.
+- Python distribution is now a dependency-light governance and compatibility package; historical analysis dependencies require the `analysis-compat` extra.
 - Docker runtime is Node-only, installs production dependencies only, and runs as an unprivileged user.
 - Manifest, CLI declarations, integrations, and documentation now reflect implemented behavior.
 - Qualification and handoff tools can consume cell-composition and cytotoxicity profiles emitted by the companion ingestion tools.

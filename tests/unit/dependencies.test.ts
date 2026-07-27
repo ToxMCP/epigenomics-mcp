@@ -21,7 +21,7 @@ describe("dependency configuration", () => {
     expect(pkg.devDependencies.tsx).toBeDefined();
   });
 
-  it("keeps the Python compatibility package metadata-only by default", () => {
+  it("keeps the Python governance package dependency-free by default", () => {
     const tomlPath = resolve(process.cwd(), "pyproject.toml");
     const toml = readFileSync(tomlPath, "utf-8");
 

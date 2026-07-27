@@ -3,10 +3,10 @@
     "id": "epigenomics-mcp@0.1.0",
     "name": "epigenomics-mcp",
     "version": "0.1.0",
-    "size": 402067,
-    "unpackedSize": 2613299,
-    "shasum": "681065a28b5ea857c27deb14bf159ea34b1831fc",
-    "integrity": "sha512-SuRo0vOIT3kdcw3uK2Q8RZXeGapumGGKHXgCUC/UsODW1lzu0zt/Af1oeoM3yYgEVWvrjreU/799Ebf0BJLPjg==",
+    "size": 410695,
+    "unpackedSize": 2636789,
+    "shasum": "0d2513471cea69d554b75754f205f9256d4787a9",
+    "integrity": "sha512-6AxDSgmUBRh5pkIavhgcQtj9ia/YHLKHDg3SAuzSXozPRFJddoLrWhofU/Hj4FopSF+RZfJeougJYMIr6fQYOw==",
     "filename": "epigenomics-mcp-0.1.0.tgz",
     "files": [
       {
@@ -845,6 +845,26 @@
         "mode": 420
       },
       {
+        "path": "dist/epimcp/http.d.ts",
+        "size": 749,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/http.d.ts.map",
+        "size": 135,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/http.js",
+        "size": 3493,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/http.js.map",
+        "size": 3198,
+        "mode": 420
+      },
+      {
         "path": "dist/epimcp/index.d.ts",
         "size": 1357,
         "mode": 420
@@ -906,22 +926,22 @@
       },
       {
         "path": "dist/epimcp/server.d.ts",
-        "size": 147,
+        "size": 295,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.d.ts.map",
-        "size": 230,
+        "size": 327,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.js",
-        "size": 1251,
+        "size": 1258,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.js.map",
-        "size": 956,
+        "size": 961,
         "mode": 420
       },
       {
@@ -2065,6 +2085,11 @@
         "mode": 420
       },
       {
+        "path": "docs/adr/0001-scientific-invariants-gate.md",
+        "size": 14770,
+        "mode": 420
+      },
+      {
         "path": "docs/cell-composition-confounding-guide.md",
         "size": 6586,
         "mode": 420
@@ -2236,7 +2261,7 @@
       },
       {
         "path": "package.json",
-        "size": 2757,
+        "size": 3244,
         "mode": 420
       },
       {
@@ -2326,11 +2351,11 @@
       },
       {
         "path": "toxmcp.manifest.yaml",
-        "size": 4579,
+        "size": 4980,
         "mode": 420
       }
     ],
-    "entryCount": 464,
+    "entryCount": 469,
     "bundled": []
   }
 ]

@@ -1,0 +1,51 @@
+{
+  "applicabilityBoundaryRefs": [
+    "epigenomics:applicability:b2c3d4e5-f6a7-8901-bcde-f23456789012"
+  ],
+  "assayId": "epigenomics:methylation_array",
+  "assayName": "epigenomic feature response",
+  "batchEffectAssessment": "not_detected",
+  "bioactivityObservationId": "epigenomics:obs:b2c3d4e5-f6a7-8901-bcde-f23456789012",
+  "biologicalContext": {
+    "exposureDuration": "not_reported",
+    "modelSystem": "in_vitro",
+    "species": "human",
+    "tissueOrCellType": "not_reported"
+  },
+  "chemicalRef": "golden-accepted-ds-001",
+  "concentrationAxis": {
+    "concentrationLevels": 4,
+    "concentrationUnit": "1",
+    "maxConcentration": 0,
+    "minConcentration": 0,
+    "spacing": "not_assessed"
+  },
+  "controls": {
+    "negative": "valid",
+    "positive": "valid",
+    "vehicle": "valid"
+  },
+  "cytotoxicityConfounding": "ruled_out",
+  "endpoint": "epigenomic feature qualification",
+  "fitReadiness": "pod_ready",
+  "limitations": [
+    "Epigenomic feature qualification is a screening handoff for downstream Bioactivity-PoD modelling, not a BER, adversity, persistence, heritability, or final risk decision."
+  ],
+  "methodStandardRefs": [
+    "epigenomics:qualification:v0.1.0"
+  ],
+  "notARegulatoryConclusion": true,
+  "notAnAdversityConclusion": true,
+  "qualityFlags": [],
+  "replicateSummary": {
+    "biologicalReplicates": 2,
+    "plateOrBatchCount": 1,
+    "technicalReplicates": 0
+  },
+  "responseMetric": {
+    "effectDirection": "not_reported",
+    "name": "beta_value",
+    "unit": "fraction"
+  },
+  "schemaId": "https://schemas.ngra.ai/toxmcp/BioactivityObservation.v1.schema.json"
+}

@@ -78,16 +78,26 @@ describe("release evidence schema", () => {
     expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(
       "benchmarks/fixtures/frozen_public",
     );
+    expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(
+      "vendor/schema-spine",
+    );
+    expect(RELEASE_EVIDENCE_CHECKSUM_DIRECTORIES).toContain(
+      "src/epigenomics_mcp/governance",
+    );
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("benchmark_manifest.yaml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("docs/validation-statement.md");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("docs/tool-reference.md");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("toxmcp.manifest.yaml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("evaluation.xml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("SECURITY.md");
+    expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain(
+      "scripts/scientific_invariants_gate.py",
+    );
     expect(RELEASE_EVIDENCE_GENERATED_FILES).toEqual([
       "release-gate.json",
       "release-gate.txt",
       "npm-pack-dry-run.json",
+      "scientific-invariants.json",
     ]);
   });
 

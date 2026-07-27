@@ -140,6 +140,10 @@ function main() {
 
   const manifestPath = join(resolvedOutDir, "release-evidence.json");
   const checksumPath = join(resolvedOutDir, "checksums.sha256");
+  const scientificInvariantsPath = join(
+    resolvedOutDir,
+    "scientific-invariants.json",
+  );
 
   if (!existsSync(manifestPath)) {
     failures.push(`Missing release evidence manifest: ${repoRelative(manifestPath)}`);
@@ -147,11 +151,17 @@ function main() {
   if (!existsSync(checksumPath)) {
     failures.push(`Missing checksum file: ${repoRelative(checksumPath)}`);
   }
+  if (!existsSync(scientificInvariantsPath)) {
+    failures.push(
+      `Missing scientific-invariants evidence: ${repoRelative(scientificInvariantsPath)}`,
+    );
+  }
   if (failures.length > 0) {
     throw new Error(failures.join("\n"));
   }
 
   const evidence = ReleaseEvidenceSchema.parse(readJson(manifestPath));
+  const scientificInvariants = readJson(scientificInvariantsPath);
   const checksumEntries = new Map(
     evidence.artifactChecksums.map((entry) => [entry.path, entry]),
   );
@@ -164,6 +174,18 @@ function main() {
     .map((check) => check.name);
   if (failedChecks.length > 0) {
     failures.push(`Release gate evidence has failed checks: ${failedChecks.join(", ")}`);
+  }
+  if (
+    !Number.isInteger(scientificInvariants.checkedObjects) ||
+    scientificInvariants.checkedObjects <= 0
+  ) {
+    failures.push("Scientific-invariants evidence has no checked objects.");
+  }
+  if (
+    !Array.isArray(scientificInvariants.blocking) ||
+    scientificInvariants.blocking.length > 0
+  ) {
+    failures.push("Scientific-invariants evidence contains blocking findings.");
   }
 
   const currentCommit = tryRunCommand("git", ["rev-parse", "HEAD"]);

@@ -93,6 +93,7 @@ mcpResourceUris:
   - epimcp://release-evidence/checksums
   - epimcp://release-evidence/release-gate-json
   - epimcp://release-evidence/release-gate-report
+  - epimcp://release-evidence/scientific-invariants
 
 cliCommands:
   - epimcp
@@ -159,4 +160,8 @@ releaseGates:
 
   - name: release_evidence
     description: npm run release:evidence writes checksummed audit evidence and npm run verify:evidence verifies freshness, checksums, and package coverage
+    required: true
+
+  - name: scientific_invariants
+    description: Track-B scientific-invariants gate projects each released BioactivityPoDHandoffPacket onto the digest-pinned (e0a6a05) vendored ToxMCP schema-spine bioactivity/PoD policy engine via a fail-closed bridge and blocks any public-release-blocking overclaim, adequacy, or readiness regression
     required: true

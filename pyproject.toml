@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "epigenomics-mcp"
 version = "0.2.0"
-description = "Python metadata compatibility package for the TypeScript Epigenomics MCP server"
+description = "Python governance and compatibility package for the TypeScript Epigenomics MCP server"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
@@ -87,6 +87,7 @@ omit = [
 ]
 
 [tool.coverage.report]
+fail_under = 75
 precision = 1
 skip_covered = false
 show_missing = true

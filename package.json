@@ -19,6 +19,9 @@
     "benchmarks/fixtures/synthetic",
     "benchmarks/fixtures/frozen_public",
     "benchmarks/qualification_engine_benchmark.mjs",
+    "src/epigenomics_mcp",
+    "tests/fixtures/governance",
+    "vendor/schema-spine",
     "release-evidence",
     "scripts",
     "docs",
@@ -29,6 +32,8 @@
     "CONTRIBUTING.md",
     "CITATION.cff",
     "evaluation.xml",
+    "pyproject.toml",
+    "uv.lock",
     "LICENSE",
     "toxmcp.manifest.yaml"
   ],
@@ -42,6 +47,7 @@
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "test:contract": "vitest run tests/unit/contracts.test.ts tests/unit/schema_drift.test.ts tests/unit/schema_drift_integration.test.ts tests/unit/schema_export.test.ts tests/unit/handoff.test.ts tests/unit/handoff_validator.test.ts",
+    "test:conformance": "npm run build && vitest run tests/conformance",
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck && node scripts/lint.mjs",
     "security:audit": "npm audit --omit=dev --audit-level=low",
@@ -53,6 +59,8 @@
     "release:evidence": "npm run build && node scripts/release-evidence.mjs",
     "verify:evidence": "npm run build && node scripts/verify-evidence.mjs",
     "validate:handoff": "node scripts/validate-handoffs.mjs",
+    "vendor:verify": "python3 scripts/vendor_verify.py",
+    "gate:scientific-invariants": "python3 scripts/scientific_invariants_gate.py",
     "benchmark": "npm run build && node benchmarks/qualification_engine_benchmark.mjs --features 10000 --replicates 6",
     "benchmark:gate": "node scripts/release-gate.mjs",
     "benchmark:ci": "npm run build && node scripts/release-gate.mjs",
@@ -61,8 +69,8 @@
     "mcp": "node dist/epimcp/cli.js serve",
     "mcp:smoke": "npm run smoke:mcp",
     "mcp:serve:http": "node dist/epimcp/http.js",
-    "test:release-gates": "npm run security:audit && npm run eval:validate && npm run test:contract && npm run benchmark:ci",
-    "verify:release": "npm run lint && npm run security:audit && npm run eval:validate && npm test && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
+    "test:release-gates": "npm run security:audit && npm run eval:validate && npm run vendor:verify && npm run gate:scientific-invariants && npm run test:conformance && npm run test:contract && npm run benchmark:ci",
+    "verify:release": "npm run lint && npm run security:audit && npm run eval:validate && npm run vendor:verify && npm run gate:scientific-invariants && npm test && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
   },
   "keywords": [
     "mcp",
@@ -91,15 +99,21 @@
     "zod": "^3.23.8",
     "zod-to-json-schema": "^3.25.2"
   },
-  "overrides": {
-    "@hono/node-server": "^2.0.5"
-  },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.2",
-    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/coverage-v8": "^4.1.9",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "tsx": "^4.23.1",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^4.1.9"
+  },
+  "overrides": {
+    "@hono/node-server": "^2.0.5",
+    "hono": "^4.12.26",
+    "express-rate-limit": "^8.5.2",
+    "ip-address": "^10.2.0",
+    "qs": "^6.15.2"
   }
 }

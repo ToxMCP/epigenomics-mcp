@@ -107,6 +107,7 @@ the MCP server is launched from another working directory.
 | `epimcp://release-evidence/checksums` | Latest generated SHA-256 checksum file |
 | `epimcp://release-evidence/release-gate-json` | Latest captured release-gate JSON report |
 | `epimcp://release-evidence/release-gate-report` | Latest captured release-gate text report |
+| `epimcp://release-evidence/scientific-invariants` | Latest checksummed schema-spine scientific-invariants result |
 
 Generate or refresh the release evidence bundle with:
 
