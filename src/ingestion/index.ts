@@ -26,6 +26,15 @@ export { readTableFile } from "./csv_reader.js";
 export type { ReadTableOptions, ReadTableResult, TableEncoding } from "./csv_reader.js";
 export { readDesignTable } from "./design_reader.js";
 export type { ReadDesignOptions, ReadDesignResult, DesignColumnMapping } from "./design_reader.js";
+export {
+  streamIngestFeatureTableFile,
+  StreamingIngestOptionsSchema,
+  StreamingIngestResultSchema,
+} from "./streaming_ingest.js";
+export type {
+  StreamingIngestOptions,
+  StreamingIngestResult,
+} from "./streaming_ingest.js";
 export { detectTableFormat } from "./format_detection.js";
 export type { FormatDetectionOptions, DetectedFormat, TableShape, DetectionConfidence } from "./format_detection.js";
 export { TableShapeSchema, DetectionConfidenceSchema, FormatDetectionOptionsSchema, DetectedFormatSchema } from "./format_detection.js";

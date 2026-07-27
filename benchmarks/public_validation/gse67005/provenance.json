@@ -1,0 +1,23 @@
+{
+  "datasetId": "GSE67005-low-dose-full",
+  "upstreamSteps": [
+    {
+      "stepName": "source_processing",
+      "toolName": "NimbleScan",
+      "toolVersion": "2.6",
+      "parameters": {
+        "measurement": "centered log2 MeDIP/Input ratio",
+        "sourceFile": "GSE67005_T5_LD_ratios.txt.gz"
+      },
+      "inputFiles": [],
+      "outputFiles": [
+        "GSE67005_T5_LD_ratios.txt.gz"
+      ]
+    }
+  ],
+  "normalisationMethod": "per-channel quantile normalization followed by centered log2 MeDIP/Input ratios",
+  "probeManifestVersion": "GPL16284",
+  "annotationVersion": "Roche NimbleGen Human DNA Methylation 2.1M Deluxe Promoter Array",
+  "sourceArchive": "NCBI GEO",
+  "sourceAccession": "GSE67005"
+}

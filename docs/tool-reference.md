@@ -163,12 +163,51 @@ from column names.
     "featureClass": "generic_region_feature",
     "signalMetric": "declared_other",
     "declaredOtherDescription": "centered log2 MeDIP/Input ratio",
-    "explicitShape": "wide_matrix",
+    "explicitShape": "wide",
     "featureIdColumn": "PROBE_ID",
     "sampleIdColumns": ["562919", "562954", "563005", "563033", "563268", "563365"]
   }
 }
 ```
+
+Bounded mode is the default and retains the server's configured row and file
+limits. For an explicitly authorized complete delimited file, set
+`executionMode` to `streaming`. Streaming mode does not retain the complete
+matrix: it decompresses, hashes, and canonicalizes batches of at most 5,000
+rows while retaining bounded error detail.
+
+```json
+{
+  "datasetId": "GSE67005-low-dose-full",
+  "modality": "dna_methylation_array",
+  "featuresPath": "/authorized/cache/GSE67005_T5_LD_ratios.txt.gz",
+  "designPath": "benchmarks/fixtures/frozen_public/gse67005/design.json",
+  "provenancePath": "benchmarks/public_validation/gse67005/provenance.json",
+  "executionMode": "streaming",
+  "tableOptions": {
+    "featureClass": "generic_region_feature",
+    "signalMetric": "declared_other",
+    "declaredOtherDescription": "centered log2 MeDIP/Input ratio",
+    "explicitShape": "wide",
+    "featureIdColumn": "PROBE_ID",
+    "sampleIdColumns": ["562919", "562954", "563005", "563033", "563268", "563365"]
+  },
+  "streamingOptions": {
+    "compression": "gzip",
+    "delimiter": "\t",
+    "hasHeader": true,
+    "batchSize": 2000,
+    "maxErrorDetails": 20
+  }
+}
+```
+
+The source path still must be under `EPIMCP_ALLOWED_FILE_ROOTS`, and
+`EPIMCP_MAX_FILE_BYTES` must explicitly authorize its compressed size.
+Explicit `sampleIdColumns` are authoritative; numeric annotation columns are
+not silently promoted to biological samples. Streaming results include row,
+batch, sample, byte, compressed-source SHA-256, decompressed-content SHA-256,
+and bounded error/warning evidence.
 
 ---
 

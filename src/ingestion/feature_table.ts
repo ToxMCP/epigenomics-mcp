@@ -463,11 +463,14 @@ function canonicalizeWideForm(
     };
   }
 
-  // Use detected sample columns; fall back to explicit list
+  // An explicit sample-column declaration is authoritative. This prevents
+  // numeric metadata such as POSITION, score, or q-value from being
+  // misclassified as sample responses in public matrices and peak tables.
   const sampleCols =
-    detectedSampleColumns.length > 0
-      ? detectedSampleColumns
-      : options.sampleIdColumns ?? [];
+    options.sampleIdColumns !== undefined &&
+    options.sampleIdColumns.length > 0
+      ? options.sampleIdColumns
+      : detectedSampleColumns;
 
   if (sampleCols.length === 0) {
     errors.push("No sample columns identified for wide-form table");

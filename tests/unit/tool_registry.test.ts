@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { gzipSync } from "node:zlib";
 import { ConfigSchema } from "../../src/epimcp/config.js";
 import {
   registerTools,
@@ -246,6 +247,9 @@ describe("tool registry", () => {
       expect(parsed.ingested).toBe(false);
       expect(parsed.errors.some((e: string) => e.startsWith("design:"))).toBe(true);
       expect(parsed.errors.some((e: string) => e.startsWith("provenance:"))).toBe(true);
+      expect(parsed.errorCount).toBe(parsed.errors.length);
+      expect(parsed.designValid).toBe(false);
+      expect(parsed.provenanceValid).toBe(false);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
@@ -332,6 +336,116 @@ describe("tool registry", () => {
         datasetId: "ds1",
         ingested: true,
         featureCount: 1,
+        errors: [],
+      });
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  it("ingest_dataset streams an explicitly authorized gzip table", async () => {
+    const tmp = mkdtempSync(join(tmpdir(), "epimcp-ingest-streaming-"));
+    try {
+      const featuresPath = join(tmp, "features.tsv.gz");
+      const designPath = join(tmp, "design.json");
+      const provenancePath = join(tmp, "provenance.json");
+      writeFileSync(
+        featuresPath,
+        gzipSync(
+          [
+            "feature_id\tcontrol-1\tcontrol-2\ttreated-1\ttreated-2",
+            "cg001\t0.1\t0.2\t0.3\t0.4",
+            "cg002\t0.2\t0.3\t0.4\t0.5",
+            "cg003\t0.3\t0.4\t0.5\t0.6",
+          ].join("\n"),
+        ),
+      );
+      writeFileSync(
+        designPath,
+        JSON.stringify({
+          designId: "design-streaming",
+          species: "Homo sapiens",
+          doseGroups: [
+            { doseGroupId: "control", doseValue: 0, doseUnit: "µM" },
+            { doseGroupId: "treated", doseValue: 1, doseUnit: "µM" },
+          ],
+          samples: [
+            { sampleId: "control-1", doseGroupId: "control", species: "Homo sapiens", controlFlag: true },
+            { sampleId: "control-2", doseGroupId: "control", species: "Homo sapiens", controlFlag: true },
+            { sampleId: "treated-1", doseGroupId: "treated", species: "Homo sapiens" },
+            { sampleId: "treated-2", doseGroupId: "treated", species: "Homo sapiens" },
+          ],
+          hasControls: true,
+          minReplicatesPerGroup: 2,
+        }),
+        "utf-8",
+      );
+      writeFileSync(
+        provenancePath,
+        JSON.stringify({
+          datasetId: "ds-streaming",
+          upstreamSteps: [
+            {
+              stepName: "normalization",
+              toolName: "fixture",
+              toolVersion: "1.0.0",
+              parameters: {},
+            },
+          ],
+        }),
+        "utf-8",
+      );
+      const config = ConfigSchema.parse({
+        fileAccess: {
+          allowedRoots: [tmp],
+          maxFileBytes: 4096,
+          defaultRowLimit: 1,
+          maxRowLimit: 1,
+        },
+      });
+      const tool = TOOL_DEFINITIONS.find((t) => t.name === "ingest_dataset")!;
+      const result = await tool.handler(
+        {
+          datasetId: "ds-streaming",
+          modality: "dna_methylation_array",
+          tableOptions: {
+            featureClass: "cpg_methylation",
+            signalMetric: "beta_value",
+            explicitShape: "wide",
+            sampleIdColumns: [
+              "control-1",
+              "control-2",
+              "treated-1",
+              "treated-2",
+            ],
+            featureIdColumn: "feature_id",
+          },
+          featuresPath,
+          designPath,
+          provenancePath,
+          executionMode: "streaming",
+          streamingOptions: {
+            compression: "gzip",
+            delimiter: "\t",
+            hasHeader: true,
+            batchSize: 2,
+          },
+        },
+        { config },
+      );
+      const parsed = JSON.parse(result.content[0].text);
+      expect(parsed).toMatchObject({
+        datasetId: "ds-streaming",
+        ingested: true,
+        dataValid: true,
+        designValid: true,
+        provenanceValid: true,
+        executionMode: "streaming",
+        featureCount: 3,
+        dataRowCount: 3,
+        batchCount: 2,
+        errorCount: 0,
+        warningCount: 0,
         errors: [],
       });
     } finally {

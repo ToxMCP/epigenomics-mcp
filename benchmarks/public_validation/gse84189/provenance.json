@@ -1,0 +1,23 @@
+{
+  "datasetId": "GSE84189-vpa-5d",
+  "upstreamSteps": [
+    {
+      "stepName": "source_processing",
+      "toolName": "NimbleScan",
+      "toolVersion": "2.6",
+      "parameters": {
+        "measurement": "centered log2 MeDIP/Input ratio",
+        "sourceFile": "GSE84189_PHH_exposed_to_VPA_for_5_days_daily.txt.gz"
+      },
+      "inputFiles": [],
+      "outputFiles": [
+        "GSE84189_PHH_exposed_to_VPA_for_5_days_daily.txt.gz"
+      ]
+    }
+  ],
+  "normalisationMethod": "per-channel quantile normalization followed by centered log2 MeDIP/Input ratios",
+  "probeManifestVersion": "GPL16284",
+  "annotationVersion": "Roche NimbleGen Human DNA Methylation 2.1M Deluxe Promoter Array",
+  "sourceArchive": "NCBI GEO",
+  "sourceAccession": "GSE84189"
+}

@@ -1,0 +1,45 @@
+name: Full Public-Data Validation
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: public-data-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Three Complete Public Sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore verified public-source cache
+        uses: actions/cache@v4
+        with:
+          path: benchmark-cache/public-data
+          key: epimcp-public-data-${{ hashFiles('benchmarks/public_validation/manifest.json') }}
+
+      - name: Run complete-file validation through MCP
+        run: npm run validate:public-data
+
+      - name: Upload public-data report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-data-validation-report
+          path: benchmark-results/public-data/
+          if-no-files-found: warn
+          retention-days: 30

@@ -80,6 +80,7 @@ The released surface is intentionally bounded:
 | `📦 Governed handoff packaging` | Builds `EpigenomicsFeatureResponsePacket` and `BioactivityPoDHandoffPacket` outputs for downstream suite workflows. |
 | `🔌 MCP-native discovery` | Exposes strict tool schemas, structured content, annotations, and read-only audit resources over stdio and Streamable HTTP. |
 | `🧾 Checksummed release evidence` | Generates SHA-256 evidence for schemas, golden outputs, benchmark manifests, validation documents, scientific invariants, and package contents. |
+| `🌍 Full public-data validation` | Replays two complete GEO MeDIP matrices and one complete ENCODE replicated-peak file through the MCP with exact source and decompressed-content hashes. |
 | `🚦 Performance and release gates` | Exercises the real packet-validation and qualification engine at 10,000-feature scale alongside protocol, security, conformance, and nondeterminism checks. |
 
 ## Release gates
@@ -97,6 +98,31 @@ processed-evidence qualification scope:
 - `npm run verify:release` composes the release gates
 
 These are product-level readiness checks for this MCP boundary, not claims of biological truth, regulatory acceptance, or downstream PoD/BMD validity.
+
+## Full public-data validation
+
+The optional networked validation panel runs three complete public files through
+the official MCP stdio client:
+
+| Source | Rows checked | Expected result |
+| --- | ---: | --- |
+| NCBI GEO GSE67005 low-dose MeDIP | 2,077,859 | Data, design, and provenance valid |
+| NCBI GEO GSE84189 five-day VPA MeDIP | 384,368 | Data, design, and provenance valid |
+| ENCODE ENCFF205CPH replicated ATAC peaks | 171,471 | Structurally valid data; baseline-only design rejected for dose response |
+
+```bash
+npm run validate:public-data
+# Reuse the verified local cache without network access:
+npm run validate:public-data -- --offline
+```
+
+The source files are checksummed, cached outside the package, decompressed and
+canonicalized in bounded batches, and compared with the source-anchored
+expectations in
+[`benchmarks/public_validation/`](./benchmarks/public_validation/README.md).
+This establishes complete-file ingestion and fail-closed design handling, not
+biological ground truth or statistical validity. External domain-expert
+sign-off of the expectations remains pending.
 
 ## Quickstart TL;DR
 
@@ -195,8 +221,8 @@ intentionally rejected by `npm run verify:evidence`.
 
 The npm package includes the files backing all registered audit resources,
 including current schemas, validation docs, synthetic and frozen-public
-benchmark inputs, golden outputs, the evaluation set, and the latest release
-evidence bundle.
+benchmark inputs, the full-public-validation manifest and metadata, golden
+outputs, the evaluation set, and the latest release evidence bundle.
 
 ## Public verification
 
@@ -252,6 +278,7 @@ See [docs/validation-statement.md](./docs/validation-statement.md), [docs/tool-r
 - `schemas/current/`: Committed JSON Schema exports
 - `benchmarks/fixtures/synthetic/`: Synthetic release benchmark inputs
 - `benchmarks/fixtures/frozen_public/`: Checksummed, source-linked public-data excerpts
+- `benchmarks/public_validation/`: Complete-file public-source manifest, design, provenance, and reviewed expectations
 - `benchmarks/expected/`: Golden benchmark outputs
 - `benchmark-results/`: Latest benchmark and release-gate reports
 - `evaluation.xml`: Ten stable, independently answerable MCP evaluation cases
@@ -267,6 +294,7 @@ npm test
 npm run build
 npm run smoke:mcp
 npm run benchmark:gate
+npm run validate:public-data
 npm run release:evidence
 npm run verify:evidence
 .venv/bin/pytest tests/python -q

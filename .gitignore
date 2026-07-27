@@ -10,6 +10,8 @@ htmlcov/
 .coverage
 .kimi-*
 *.tgz
+benchmark-cache/
+benchmark-results/public-data/
 
 # Python build artifacts
 __pycache__/

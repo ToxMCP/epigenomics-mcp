@@ -4,7 +4,7 @@
 **Product version:** 0.2.1
 **Schema and policy version:** 0.1.0
 **Date:** 2026-07-27
-**Scope:** Golden benchmarks, frozen-public fixture integrity, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations
+**Scope:** Golden benchmarks, frozen-public fixture integrity, complete-file public-data validation, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations
 
 ---
 
@@ -81,6 +81,26 @@ A separate checksummed public-data excerpt under
 reading, and canonicalized ingestion against deposited GEO values. Its YAML
 record and local files are checksum-validated in unit tests. The public excerpt
 does not participate in golden biological outcome assertions.
+
+### 2.1 Complete-file public-data panel
+
+An optional panel declared in `benchmarks/public_validation/manifest.json`
+launches the MCP stdio server through the official client and calls
+`ingest_dataset` in explicit streaming mode.
+
+| Public case | Complete rows | Source checks | Expected result |
+| --- | ---: | --- | --- |
+| GEO GSE67005 low-dose MeDIP matrix | 2,077,859 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data, design, and provenance valid |
+| GEO GSE84189 five-day VPA MeDIP matrix | 384,368 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data, design, and provenance valid |
+| ENCODE ENCFF205CPH replicated A549 ATAC peaks | 171,471 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data and provenance valid; baseline-only design rejected |
+
+The third case is an intentional fail-closed control: ENCODE reports replicated
+peaks, but the aggregate file has no per-replicate dose-response axis. A valid
+peak file therefore must not be described as PoD-ready input.
+
+Source files are downloaded to an ignored cache and are not redistributed.
+Expected outcomes are source-anchored and internally reviewed; independent
+external domain-expert sign-off remains pending.
 
 ---
 
@@ -252,8 +272,8 @@ Key coverage areas:
 | Mapping | `region_to_gene.test.ts`, `coordinate_mapping.test.ts`, `external_mapping.test.ts` | Nearest-gene mapping, promoter overlap, mapping confidence |
 | Qualification | `qualification_rules.test.ts`, `qualification_policy.test.ts`, `qualification.test.ts`, `claim_guards.test.ts` | Rule priority, policy validation, claim stripping, status assignment |
 | Handoff | `handoff.test.ts`, `handoff_validator.test.ts` | Packet construction, schema validation, subset correctness |
-| Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature table construction |
-| Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, synthetic-fixture completeness, frozen-public checksums |
+| Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `streaming_ingest.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature construction, gzip streaming, bounded batching, and explicit sample-column authority |
+| Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `public_validation_manifest.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, fixture completeness, frozen-public checksums, and full-public manifest integrity |
 | Release evidence | `release_evidence.test.ts`, `release_gate.test.ts`, `benchmark_cli.test.ts` | Audit manifest schema, checksums, output isolation |
 | MCP and transport | `tool_registry.test.ts`, `transport_equivalence.test.ts`, protocol smoke scripts | Tool schema quality, service/MCP/CLI equivalence, stdio and Streamable HTTP initialization |
 | HTTP security | `http.test.ts`, `smoke_mcp_http.mjs` | Loopback defaults, Host/Origin checks, bearer auth, body limit, request rate |
@@ -261,8 +281,9 @@ Key coverage areas:
 | Evaluation | `evaluation.xml`, `validate-evaluation.mjs` | Ten stable, read-only, multi-tool user workflows |
 
 Tests run under **Vitest** with deterministic ordering and no external network
-dependency during CI. The checked-in public excerpt is frozen; CI never fetches
-the upstream GEO file.
+dependency during required CI. The checked-in public excerpt is frozen; normal
+CI never fetches an upstream public file. The complete-file panel is isolated
+in a manually dispatched workflow because it depends on external archives.
 
 ---
 
@@ -297,7 +318,7 @@ exported source directories and local validation bundles.
 
 | Limitation | Explanation |
 |------------|-------------|
-| **Biological ground truth** | A checksummed 10-probe excerpt from GEO GSE67005 exercises ingestion realism, but no biological truth label, differential-methylation conclusion, or predictive accuracy is asserted. Golden outcome benchmarks remain synthetic. |
+| **Biological ground truth** | Three complete public files establish ingestion realism and fail-closed design handling, but no biological truth label, differential-methylation conclusion, or predictive accuracy is asserted. Golden qualification outcomes remain synthetic. |
 | **Statistical modelling** | The benchmarks verify deterministic profiling and rule-based qualification, not statistical power, false-discovery rate, or effect-size significance. |
 | **Batch-effect correction** | Batch-effect modelling is behind the `enableBatchEffectModeling` feature flag (default `false`). No benchmark exercises it. |
 | **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Declared/measured profile ingestion and deterministic confounding classification are tested instead. |
@@ -326,10 +347,10 @@ Dominant cytotoxicity is not in this category: at the default
 
 **Benchmark pass does NOT prove:**
 
-1. **Biological correctness** — The golden fixtures contain plausible but invented data, while the public excerpt has no ground-truth outcome label. Validation proves contract and algorithm behavior, not biological truth.
+1. **Biological correctness** — The golden fixtures contain plausible but invented data, while the public files have no ground-truth outcome labels used by this panel. Validation proves source identity, ingestion, and contract behavior, not biological truth.
 2. **Regulatory acceptance** — Passing benchmarks demonstrates conformance to the v0.2 product boundary and v0.1 schema/policy contracts, not endorsement by any regulatory authority.
 3. **Downstream model validity** — The benchmarks verify that handoff packets are schema-valid and contain the correct feature subsets. They do not verify that Bioactivity-PoD MCP will produce accurate PoD / BMD estimates.
-4. **Genome-scale capacity** — A 10,000-feature real-engine gate detects gross regressions, but whole-methylome workloads, sustained concurrency, and infrastructure capacity are not certified.
+4. **Production capacity** — Complete files of up to 2,077,859 rows validate bounded streaming on one process, but sustained concurrency, latency service levels, and infrastructure capacity are not certified.
 5. **Complete security assurance** — Production dependency auditing and HTTP controls are tested, but no independent penetration test, identity-provider integration, or centralized audit-log certification has been performed.
 6. **External service availability** — Annotation/Ontology and Evidence Registry transports are planned and are not part of the active tool workflow.
 
@@ -389,6 +410,12 @@ npm test -- --run tests/unit/synthetic_fixtures.test.ts
 npx vitest run tests/unit/public_fixtures.test.ts
 npm run eval:validate
 npm run smoke:mcp
+
+# Download, checksum, and validate all three complete public files
+npm run validate:public-data
+
+# Repeat from an already verified local cache without network access
+npm run validate:public-data -- --offline
 ```
 
 All benchmark golden outputs are stored in `benchmarks/expected/<benchmark_name>/`. The benchmark runner (`src/benchmarks/runner.ts`) performs deep equality comparison and emits actionable diffs on drift.
@@ -402,6 +429,7 @@ All benchmark golden outputs are stored in `benchmarks/expected/<benchmark_name>
 | Benchmark count | 12 (10 feature + 2 handoff) |
 | Synthetic fixtures | 12 |
 | Frozen-public inputs | 1 checksummed 10-probe GSE67005 excerpt |
+| Complete-file public panel | 3 sources; 2,633,698 total rows |
 | Golden output files | 68 |
 | MCP evaluation questions | 10 independent read-only workflows |
 | Real-engine performance gate | 10,000 features × 6 samples |
@@ -409,17 +437,18 @@ All benchmark golden outputs are stored in `benchmarks/expected/<benchmark_name>
 | Fail-closed on schema invalidity | Yes |
 | Fail-closed on ambiguous coordinates | Yes |
 | Fail-closed on insufficient design | Yes |
-| Coverage of real biological data ingestion | Limited frozen excerpt; no ground truth |
+| Coverage of real biological data ingestion | Three complete public files with source/content hashes; no ground truth |
 | Coverage of statistical power / FDR | No |
 | Coverage of production-scale performance | Regression gate only; no capacity certification |
 
 **Conclusion:** The v0.2 validation suite demonstrates that Epigenomics MCP
-ingests bounded processed tables, validates design and coordinate semantics,
-computes deterministic QC, applies fail-closed qualification, emits
-schema-valid handoffs, operates over stdio and guarded Streamable HTTP, and
-processes a 10,000-feature workload within broad regression budgets. It does
-**not** demonstrate biological ground-truth accuracy, regulatory acceptance,
-or genome-scale capacity.
+ingests bounded processed tables and complete files by explicit bounded-batch
+streaming, validates design and coordinate semantics, computes deterministic
+QC, applies fail-closed qualification, emits schema-valid handoffs, operates
+over stdio and guarded Streamable HTTP, and processes a 10,000-feature
+qualification workload within broad regression budgets. It does **not**
+demonstrate biological ground-truth accuracy, regulatory acceptance,
+statistical validity, or production capacity.
 
 ---
 

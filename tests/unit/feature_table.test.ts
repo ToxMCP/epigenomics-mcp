@@ -243,7 +243,7 @@ describe("canonicalizeFeatureTable", () => {
     const path = join(tempDir, "wide-explicit.csv");
     writeFileSync(
       path,
-      "feature_id,donor_1,donor_2,donor_3\ncg001,0.82,0.85,0.88\n",
+      "feature_id,POSITION,score,donor_1,donor_2,donor_3\ncg001,17334,42,0.82,0.85,0.88\n",
     );
 
     const result = canonicalizeFeatureTable(path, {
@@ -256,6 +256,13 @@ describe("canonicalizeFeatureTable", () => {
 
     expect(result.success).toBe(true);
     expect(result.matrix!.sampleIds).toEqual(["donor_1", "donor_2", "donor_3"]);
+    expect(result.matrix!.wideValues!.cg001).toEqual({
+      donor_1: 0.82,
+      donor_2: 0.85,
+      donor_3: 0.88,
+    });
+    expect(result.features![0].values).not.toHaveProperty("POSITION");
+    expect(result.features![0].values).not.toHaveProperty("score");
   });
 
   // ---------------------------------------------------------------------------
