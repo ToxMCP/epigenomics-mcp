@@ -10,7 +10,7 @@
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
           "severity": "warning",
-          "message": "Design has 3 dose groups; preferred is 4",
+          "message": "Design has 3 distinct dose levels; preferred is 4",
           "category": "missing_metadata",
           "blocksDownstream": false,
           "featureIds": [
@@ -49,7 +49,7 @@
         {
           "warningCode": "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
           "severity": "warning",
-          "message": "Design has 3 dose groups; preferred is 4",
+          "message": "Design has 3 distinct dose levels; preferred is 4",
           "category": "missing_metadata",
           "blocksDownstream": false,
           "featureIds": [

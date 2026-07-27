@@ -90,17 +90,18 @@ launches the MCP stdio server through the official client and calls
 
 | Public case | Complete rows | Source checks | Expected result |
 | --- | ---: | --- | --- |
-| GEO GSE67005 low-dose MeDIP matrix | 2,077,859 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data, design, and provenance valid |
-| GEO GSE84189 five-day VPA MeDIP matrix | 384,368 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data, design, and provenance valid |
-| ENCODE ENCFF205CPH replicated A549 ATAC peaks | 171,471 | Compressed bytes/SHA-256 and decompressed SHA-256 | Data and provenance valid; baseline-only design rejected |
+| GEO GSE67005 low-dose MeDIP matrix | 2,077,859 | Compressed bytes/SHA-256 and decompressed SHA-256 | Ingested; comparison-ready; not dose-response-ready |
+| GEO GSE84189 five-day VPA MeDIP matrix | 384,368 | Compressed bytes/SHA-256 and decompressed SHA-256 | Ingested; comparison-ready; not dose-response-ready |
+| ENCODE ENCFF205CPH replicated A549 ATAC peaks | 171,471 | Compressed bytes/SHA-256 and decompressed SHA-256 | Ingested structurally; neither comparison- nor dose-response-ready |
 
-The third case is an intentional fail-closed control: ENCODE reports replicated
-peaks, but the aggregate file has no per-replicate dose-response axis. A valid
-peak file therefore must not be described as PoD-ready input.
+The third case verifies the boundary between ingestion and analytical
+readiness: ENCODE reports replicated peaks, but the aggregate file has no
+treated dose level. The valid peak file is ingested without being described as
+comparison-ready or PoD-ready input.
 
 Source files are downloaded to an ignored cache and are not redistributed.
 Expected outcomes are source-anchored and internally reviewed; independent
-external domain-expert sign-off remains pending.
+external domain-expert sign-off is deferred to a later stage.
 
 ---
 
@@ -334,7 +335,7 @@ The v0.2 engine emits warnings for the following conditions but, under the defau
   `EPIW001_CELL_COMPOSITION_CONTEXT_MISSING` or `CTX_MISSING_CONTEXT` is
   emitted, but because `blockOnMissingContext = false`, handoff can proceed
   when features otherwise qualify.
-- **Below-preferred design depth** — three dose groups or two biological
+- **Below-preferred design depth** — three distinct dose levels or two biological
   replicates can meet minimum thresholds while producing
   `EPIW005_BELOW_PREFERRED_DOSE_GROUPS` or
   `EPIW006_BELOW_PREFERRED_REPLICATES`.

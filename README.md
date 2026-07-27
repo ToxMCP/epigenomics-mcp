@@ -160,8 +160,8 @@ Over stdio or Streamable HTTP, the public tool surface includes:
 | Tool | Description |
 |------|-------------|
 | `health` | Return server health status |
-| `ingest_dataset` | Validate feature, design, and provenance evidence chain |
-| `validate_design` | Validate experimental design for dose-response readiness |
+| `ingest_dataset` | Validate the evidence chain and separately report ingestion and analysis readiness |
+| `validate_design` | Report structural, comparison, minimum dose-response, and preferred dose-response states |
 | `qualify_features` | Qualify epigenomic features for downstream Bioactivity-PoD use |
 | `generate_handoff` | Generate a Bioactivity-PoD handoff summary |
 | `validate_coordinates` | Validate coordinate system declarations |

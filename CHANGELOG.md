@@ -13,16 +13,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   gzip-compressed feature tables, with compressed-source and
   decompressed-content SHA-256 evidence.
 - A reproducible three-source public-data panel covering full GEO GSE67005 and
-  GSE84189 MeDIP matrices plus an intentional fail-closed ENCODE replicated-peak
+  GSE84189 MeDIP matrices plus an ENCODE replicated-peak structural-ingestion
   case.
 - A manually dispatched public-data validation workflow with cached,
   reviewable reports.
+- Explicit structural, comparison-only, minimum dose-response, and preferred
+  dose-response readiness states in design-validation and ingestion outputs.
+
+### Changed
+
+- Design readiness now uses distinct numeric dose levels and observed
+  effective biological replicates. Technical replicates do not satisfy the
+  biological minimum.
+- The public-data report now distinguishes file ingestion from comparison and
+  dose-response readiness. Baseline-only ENCODE peaks ingest successfully
+  without being promoted to comparison or PoD use.
+- Design-validation golden outputs were intentionally regenerated to record
+  the new readiness fields and corrected blocking behavior.
 
 ### Fixed
 
 - Explicit wide-form sample columns are now authoritative, preventing numeric
   annotations such as probe position, peak score, or q-value from being
   misclassified as biological samples.
+- Dose-group labels sharing the same numeric dose no longer inflate
+  qualification eligibility.
+- Dose–batch confounding and insufficient observed biological replication now
+  block comparison and dose-response readiness.
+- Undeclared sample-to-group references now return structural validation
+  errors instead of allowing replicate assessment to throw.
 
 ## [0.2.1] - 2026-07-27
 

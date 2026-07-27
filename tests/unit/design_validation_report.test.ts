@@ -74,8 +74,74 @@ describe("emitDesignValidationReport", () => {
     expect(report.batchSummary.totalSamples).toBe(6);
     expect(report.batchSummary.batchesDetected).toBe(2);
     expect(report.timepointStatus.isMultiTimepoint).toBe(false);
+    expect(report.downstreamEligibility.structurallyValid).toBe(true);
+    expect(report.downstreamEligibility.eligibleForComparison).toBe(true);
     expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(true);
+    expect(report.downstreamEligibility.preferredForDoseResponse).toBe(false);
+    expect(report.downstreamEligibility.readinessStatus).toBe(
+      "dose_response_minimum",
+    );
     expect(report.downstreamEligibility.eligibilityNotes.length).toBeGreaterThan(0);
+  });
+
+  it("requires distinct numeric dose levels rather than distinct group labels", () => {
+    const design = makeDesign({
+      doseGroups: [
+        { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+        { doseGroupId: "low-a", doseValue: 1, doseUnit: "µM" },
+        { doseGroupId: "low-b", doseValue: 1, doseUnit: "µM" },
+      ],
+      samples: [
+        { sampleId: "c1", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "c2", doseGroupId: "ctrl", species: "Homo sapiens", controlFlag: true },
+        { sampleId: "a1", doseGroupId: "low-a", species: "Homo sapiens" },
+        { sampleId: "a2", doseGroupId: "low-a", species: "Homo sapiens" },
+        { sampleId: "b1", doseGroupId: "low-b", species: "Homo sapiens" },
+        { sampleId: "b2", doseGroupId: "low-b", species: "Homo sapiens" },
+      ],
+    });
+
+    const report = emitDesignValidationReport(design);
+    expect(report.downstreamEligibility.observed.distinctDoseLevels).toBe(2);
+    expect(
+      report.downstreamEligibility.observed.distinctNonZeroDoseLevels,
+    ).toBe(1);
+    expect(report.downstreamEligibility.eligibleForComparison).toBe(true);
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(false);
+    expect(report.downstreamEligibility.readinessStatus).toBe(
+      "comparison_only",
+    );
+  });
+
+  it("recognizes the preferred dose-response design threshold", () => {
+    const doseGroups = [
+      { doseGroupId: "ctrl", doseValue: 0, doseUnit: "µM" },
+      { doseGroupId: "low", doseValue: 1, doseUnit: "µM" },
+      { doseGroupId: "mid", doseValue: 3, doseUnit: "µM" },
+      { doseGroupId: "high", doseValue: 10, doseUnit: "µM" },
+    ];
+    const samples = doseGroups.flatMap((group) =>
+      [1, 2, 3].map((replicateIndex) => ({
+        sampleId: `${group.doseGroupId}-${replicateIndex}`,
+        doseGroupId: group.doseGroupId,
+        species: "Homo sapiens",
+        controlFlag: group.doseValue === 0,
+        replicateType: "biological" as const,
+      })),
+    );
+
+    const report = emitDesignValidationReport(
+      makeDesign({
+        doseGroups,
+        samples,
+        minReplicatesPerGroup: 3,
+      }),
+    );
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(true);
+    expect(report.downstreamEligibility.preferredForDoseResponse).toBe(true);
+    expect(report.downstreamEligibility.readinessStatus).toBe(
+      "dose_response_preferred",
+    );
   });
 
   it("matches snapshot for valid design", () => {
@@ -237,10 +303,114 @@ describe("emitDesignValidationReport", () => {
     });
     const report = emitDesignValidationReport(design);
     expect(report.batchSummary.doseBatchConfoundingDetected).toBe(true);
+    expect(report.downstreamEligibility.eligibleForComparison).toBe(false);
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(false);
     expect(report.downstreamEligibility.eligibilityNotes.some((n) =>
       n.includes("Dose-batch confounding"),
     )).toBe(true);
     expect(report).toMatchSnapshot();
+  });
+
+  it("warns on incomplete batch metadata without asserting confounding", () => {
+    const design = makeDesign({
+      samples: [
+        {
+          sampleId: "s1",
+          doseGroupId: "ctrl",
+          species: "Homo sapiens",
+          controlFlag: true,
+          batchId: "batch-a",
+        },
+        {
+          sampleId: "s2",
+          doseGroupId: "ctrl",
+          species: "Homo sapiens",
+          controlFlag: true,
+        },
+        {
+          sampleId: "s3",
+          doseGroupId: "low",
+          species: "Homo sapiens",
+          batchId: "batch-b",
+        },
+        {
+          sampleId: "s4",
+          doseGroupId: "low",
+          species: "Homo sapiens",
+        },
+        {
+          sampleId: "s5",
+          doseGroupId: "high",
+          species: "Homo sapiens",
+          batchId: "batch-c",
+        },
+        {
+          sampleId: "s6",
+          doseGroupId: "high",
+          species: "Homo sapiens",
+        },
+      ],
+    });
+
+    const report = emitDesignValidationReport(design);
+    expect(report.batchSummary.batchIdCompleteness).toBe(0.5);
+    expect(report.batchSummary.doseBatchConfoundingDetected).toBe(false);
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(true);
+    expect(
+      report.downstreamEligibility.eligibilityNotes.some((note) =>
+        note.includes("Incomplete batch metadata"),
+      ),
+    ).toBe(true);
+  });
+
+  it("does not label a many-dose-to-one-batch pattern as perfect confounding", () => {
+    const design = makeDesign({
+      samples: [
+        {
+          sampleId: "s1",
+          doseGroupId: "ctrl",
+          species: "Homo sapiens",
+          controlFlag: true,
+          batchId: "batch-a",
+        },
+        {
+          sampleId: "s2",
+          doseGroupId: "ctrl",
+          species: "Homo sapiens",
+          controlFlag: true,
+          batchId: "batch-a",
+        },
+        {
+          sampleId: "s3",
+          doseGroupId: "low",
+          species: "Homo sapiens",
+          batchId: "batch-a",
+        },
+        {
+          sampleId: "s4",
+          doseGroupId: "low",
+          species: "Homo sapiens",
+          batchId: "batch-a",
+        },
+        {
+          sampleId: "s5",
+          doseGroupId: "high",
+          species: "Homo sapiens",
+          batchId: "batch-b",
+        },
+        {
+          sampleId: "s6",
+          doseGroupId: "high",
+          species: "Homo sapiens",
+          batchId: "batch-b",
+        },
+      ],
+    });
+
+    const report = emitDesignValidationReport(design);
+    expect(report.batchSummary.batchIdCompleteness).toBe(1);
+    expect(report.batchSummary.doseBatchConfoundingDetected).toBe(false);
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(true);
   });
 
   it("matches snapshot for split multi-timepoint design", () => {
@@ -363,6 +533,8 @@ describe("emitDesignValidationReport", () => {
       ],
     });
     const report = emitDesignValidationReport(design);
+    expect(report.downstreamEligibility.eligibleForComparison).toBe(false);
+    expect(report.downstreamEligibility.eligibleForDoseResponse).toBe(false);
 
     const ctrlGroup = report.replicateCountsByGroup.find(
       (g) => g.doseGroupId === "ctrl",

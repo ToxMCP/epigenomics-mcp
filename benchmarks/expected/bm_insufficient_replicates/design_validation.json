@@ -1,8 +1,31 @@
 {
   "valid": true,
   "schemaValid": true,
+  "structurallyValid": true,
+  "comparisonReady": false,
+  "doseResponseReady": false,
+  "preferredForDoseResponse": false,
+  "readinessStatus": "structural_only",
+  "observedDesign": {
+    "declaredDoseGroups": 3,
+    "distinctDoseLevels": 3,
+    "distinctNonZeroDoseLevels": 2,
+    "minEffectiveBiologicalReplicatesPerGroup": 1
+  },
+  "readinessThresholds": {
+    "minimumTotalDoseLevels": 2,
+    "minimumNonZeroDoseLevels": 2,
+    "preferredTotalDoseLevels": 4,
+    "minimumBiologicalReplicatesPerGroup": 2,
+    "preferredBiologicalReplicatesPerGroup": 3
+  },
   "errors": [],
   "warnings": [
-    "minReplicatesPerGroup is fewer than 2; statistical power may be limited"
+    "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked"
+  ],
+  "readinessReasons": [
+    "Design is structurally valid for ingestion.",
+    "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
+    "Incomplete batch metadata (0/3 samples); unannotated batch effects may confound dose-response estimates."
   ]
 }

@@ -111,8 +111,18 @@ function countBiologicalReplicatesPerGroup(design: ExperimentalDesign): Map<stri
   return counts;
 }
 
-function countNonZeroDoseGroups(design: ExperimentalDesign): number {
-  return design.doseGroups.filter((g) => g.doseValue !== 0).length;
+function countDistinctDoseLevels(design: ExperimentalDesign): number {
+  return new Set(design.doseGroups.map((group) => group.doseValue)).size;
+}
+
+function countDistinctNonZeroDoseLevels(
+  design: ExperimentalDesign,
+): number {
+  return new Set(
+    design.doseGroups
+      .map((group) => group.doseValue)
+      .filter((doseValue) => doseValue !== 0),
+  ).size;
 }
 
 function getFeatureMissingness(
@@ -300,8 +310,8 @@ export function qualifyFeature(
   }
 
   // ── Rule 3: Insufficient design ──
-  const totalDoseGroups = design.doseGroups.length;
-  const nonZeroDoseGroups = countNonZeroDoseGroups(design);
+  const totalDoseGroups = countDistinctDoseLevels(design);
+  const nonZeroDoseGroups = countDistinctNonZeroDoseLevels(design);
   const designInsufficient =
     totalDoseGroups < policy.doseGroup.minTotalDoseGroups ||
     nonZeroDoseGroups < policy.doseGroup.minNonZeroDoseGroups;
@@ -311,7 +321,7 @@ export function qualifyFeature(
     warnings.push(
       buildWarning(
         "EPI005_INSUFFICIENT_DESIGN",
-        `Feature ${feature.featureId} excluded: design has ${totalDoseGroups} dose groups (${nonZeroDoseGroups} non-zero), minimum required ${policy.doseGroup.minTotalDoseGroups} total / ${policy.doseGroup.minNonZeroDoseGroups} non-zero`,
+        `Feature ${feature.featureId} excluded: design has ${totalDoseGroups} distinct dose levels (${nonZeroDoseGroups} non-zero), minimum required ${policy.doseGroup.minTotalDoseGroups} total / ${policy.doseGroup.minNonZeroDoseGroups} non-zero`,
         "error",
         "missing_metadata",
         true,
@@ -340,7 +350,7 @@ export function qualifyFeature(
     warnings.push(
       buildWarning(
         "EPIW005_BELOW_PREFERRED_DOSE_GROUPS",
-        `Design has ${totalDoseGroups} dose groups; preferred is ${policy.doseGroup.preferredTotalDoseGroups}`,
+        `Design has ${totalDoseGroups} distinct dose levels; preferred is ${policy.doseGroup.preferredTotalDoseGroups}`,
         "warning",
         "missing_metadata",
         false,

@@ -25,10 +25,21 @@ The `BioactivityPoDHandoffPacket` is the canonical interface between Epigenomics
 
 A feature is considered dose-response ready when:
 
-1. It has numeric signal values across ≥3 dose groups or time points.
-2. Replicate consistency within groups is above the configured threshold.
-3. No critical QC flags are attached.
-4. The signal metric is on a scale interpretable by downstream modellers (e.g., beta value, log2 fold change, normalised signal).
+1. The design is structurally valid and contains a control plus at least two
+   distinct non-zero dose levels under the default policy.
+2. Each group has at least two effective biological replicates; technical
+   replicates do not satisfy this threshold.
+3. Dose is not confounded with batch and multi-timepoint data have been
+   evaluated as single-timepoint subsets.
+4. It has numeric signal values across the qualifying dose levels.
+5. No critical QC flags are attached.
+6. The signal metric is on a scale interpretable by downstream modellers (e.g., beta value, log2 fold change, normalised signal).
+
+The preferred project design has four distinct total dose levels (control plus
+three treated levels) and at least three effective biological replicates per
+group. Design readiness is necessary but not sufficient for BMD/PoD use:
+observed response trend, model fit, uncertainty, and endpoint interpretation
+remain downstream responsibilities.
 
 ## Caveats
 

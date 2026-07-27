@@ -13,12 +13,28 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (missi
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Design validation failed; dose-response modelling is blocked.",
-      "Control or dose-axis validation errors block downstream use.",
-      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Structural design validation failed; ingestion and downstream analysis are blocked.",
+      "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
       "Incomplete batch metadata (0/2 samples); unannotated batch effects may confound dose-response estimates.",
     ],
+    "eligibleForComparison": false,
     "eligibleForDoseResponse": false,
+    "observed": {
+      "declaredDoseGroups": 2,
+      "distinctDoseLevels": 2,
+      "distinctNonZeroDoseLevels": 2,
+      "minEffectiveBiologicalReplicatesPerGroup": 1,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "invalid",
+    "structurallyValid": false,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [
     "No control group detected; provide controlGroupId or include a zero-dose/control-flagged group",
@@ -71,7 +87,9 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (missi
     "undefinedTimepointCount": 1,
   },
   "valid": false,
-  "warnings": [],
+  "warnings": [
+    "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked",
+  ],
 }
 `;
 
@@ -88,13 +106,30 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (multi
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Design validation failed; dose-response modelling is blocked.",
-      "Control or dose-axis validation errors block downstream use.",
-      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Structural design validation failed; ingestion and downstream analysis are blocked.",
+      "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
       "Incomplete batch metadata (0/4 samples); unannotated batch effects may confound dose-response estimates.",
-      "Multi-timepoint design rejected under v0.1 policy; per-timepoint splitting required for downstream use.",
+      "Multi-timepoint design is not analysis-ready as an aggregate under v0.1 policy; per-timepoint splitting is required.",
+      "The design has 1 distinct non-zero dose level(s); 2 are required by project policy for dose-response readiness.",
     ],
+    "eligibleForComparison": false,
     "eligibleForDoseResponse": false,
+    "observed": {
+      "declaredDoseGroups": 4,
+      "distinctDoseLevels": 2,
+      "distinctNonZeroDoseLevels": 1,
+      "minEffectiveBiologicalReplicatesPerGroup": 1,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "invalid",
+    "structurallyValid": false,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [
     "Multi-timepoint design detected (24h, 48h); v0.1 requires single-timepoint. Set multiTimepointPolicy to 'split' to allow per-timepoint splitting",
@@ -190,7 +225,9 @@ exports[`emitDesignValidationReport > matches snapshot for blocked design (multi
     "undefinedTimepointCount": 0,
   },
   "valid": false,
-  "warnings": [],
+  "warnings": [
+    "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked",
+  ],
 }
 `;
 
@@ -215,9 +252,27 @@ exports[`emitDesignValidationReport > matches snapshot for design with dose-batc
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Dose-batch confounding detected in group(s): ctrl, low, high; review batch structure before downstream modelling.",
+      "Design is structurally valid for ingestion.",
+      "Dose-batch confounding detected in group(s): ctrl, low, high; comparison and dose-response readiness are blocked.",
     ],
-    "eligibleForDoseResponse": true,
+    "eligibleForComparison": false,
+    "eligibleForDoseResponse": false,
+    "observed": {
+      "declaredDoseGroups": 3,
+      "distinctDoseLevels": 3,
+      "distinctNonZeroDoseLevels": 2,
+      "minEffectiveBiologicalReplicatesPerGroup": 2,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "structural_only",
+    "structurallyValid": true,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [],
   "orderedDoseGroups": [
@@ -306,10 +361,28 @@ exports[`emitDesignValidationReport > matches snapshot for design with warnings 
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Design is structurally valid for ingestion.",
+      "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
       "Incomplete batch metadata (0/3 samples); unannotated batch effects may confound dose-response estimates.",
     ],
-    "eligibleForDoseResponse": true,
+    "eligibleForComparison": false,
+    "eligibleForDoseResponse": false,
+    "observed": {
+      "declaredDoseGroups": 3,
+      "distinctDoseLevels": 3,
+      "distinctNonZeroDoseLevels": 2,
+      "minEffectiveBiologicalReplicatesPerGroup": 1,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "structural_only",
+    "structurallyValid": true,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [],
   "orderedDoseGroups": [
@@ -378,7 +451,9 @@ exports[`emitDesignValidationReport > matches snapshot for design with warnings 
     "undefinedTimepointCount": 1,
   },
   "valid": true,
-  "warnings": [],
+  "warnings": [
+    "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked",
+  ],
 }
 `;
 
@@ -395,12 +470,31 @@ exports[`emitDesignValidationReport > matches snapshot for split multi-timepoint
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Minimum replicates per group (1) is fewer than 2; statistical power may be limited.",
+      "Design is structurally valid for ingestion.",
+      "Observed minimum effective biological replication is 1 per group; 2 is required for comparison and dose-response readiness.",
       "Incomplete batch metadata (0/4 samples); unannotated batch effects may confound dose-response estimates.",
-      "Multi-timepoint design was split into single-timepoint subsets; each subset must be evaluated independently for downstream eligibility.",
+      "Multi-timepoint design requires single-timepoint subsets; readiness must be evaluated independently for each split.",
       "Design split into 2 single-timepoint design(s); downstream eligibility applies per split design.",
+      "The design has 1 distinct non-zero dose level(s); 2 are required by project policy for dose-response readiness.",
     ],
-    "eligibleForDoseResponse": true,
+    "eligibleForComparison": false,
+    "eligibleForDoseResponse": false,
+    "observed": {
+      "declaredDoseGroups": 4,
+      "distinctDoseLevels": 2,
+      "distinctNonZeroDoseLevels": 1,
+      "minEffectiveBiologicalReplicatesPerGroup": 1,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "structural_only",
+    "structurallyValid": true,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [],
   "orderedDoseGroups": [
@@ -496,6 +590,7 @@ exports[`emitDesignValidationReport > matches snapshot for split multi-timepoint
   "valid": true,
   "warnings": [
     "Multi-timepoint design split into 2 single-timepoint design(s) per v0.1 policy",
+    "Observed minimum effective biological replicates per group (1) is fewer than 2; comparison and dose-response readiness are blocked",
   ],
 }
 `;
@@ -516,9 +611,29 @@ exports[`emitDesignValidationReport > matches snapshot for valid design 1`] = `
   },
   "downstreamEligibility": {
     "eligibilityNotes": [
-      "Design meets basic requirements for downstream dose-response modelling.",
+      "Design is structurally valid for ingestion.",
+      "The design meets the minimum dose-response threshold but has 3 distinct total dose levels; 4 are preferred.",
+      "The design meets minimum replication but has 2 effective biological replicates per group; 3 are preferred.",
+      "Design meets the project policy's minimum dose-response readiness threshold.",
     ],
+    "eligibleForComparison": true,
     "eligibleForDoseResponse": true,
+    "observed": {
+      "declaredDoseGroups": 3,
+      "distinctDoseLevels": 3,
+      "distinctNonZeroDoseLevels": 2,
+      "minEffectiveBiologicalReplicatesPerGroup": 2,
+    },
+    "preferredForDoseResponse": false,
+    "readinessStatus": "dose_response_minimum",
+    "structurallyValid": true,
+    "thresholds": {
+      "minimumBiologicalReplicatesPerGroup": 2,
+      "minimumNonZeroDoseLevels": 2,
+      "minimumTotalDoseLevels": 2,
+      "preferredBiologicalReplicatesPerGroup": 3,
+      "preferredTotalDoseLevels": 4,
+    },
   },
   "errors": [],
   "orderedDoseGroups": [

@@ -13,8 +13,8 @@ All tools are registered on the MCP server via `registerTools()`. The same opera
 | Tool name | CLI command | Description |
 |-----------|-------------|-------------|
 | `health` | — | Return server health status |
-| `ingest_dataset` | `ingest-features` | Ingest a processed epigenomic feature table |
-| `validate_design` | `validate-design` | Validate experimental design for dose-response readiness |
+| `ingest_dataset` | `ingest-features` | Ingest a processed table and report analysis readiness separately |
+| `validate_design` | `validate-design` | Report structural, comparison, and dose-response readiness |
 | `qualify_features` | `qualify` | Qualify epigenomic features for downstream Bioactivity-PoD use |
 | `generate_handoff` | `build-packet` | Generate a Bioactivity-PoD handoff packet summary |
 | `validate_coordinates` | `validate-coordinates` | Validate coordinate system declarations |
@@ -208,6 +208,32 @@ Explicit `sampleIdColumns` are authoritative; numeric annotation columns are
 not silently promoted to biological samples. Streaming results include row,
 batch, sample, byte, compressed-source SHA-256, decompressed-content SHA-256,
 and bounded error/warning evidence.
+
+### 2.6 Design-readiness states
+
+`validate_design` and `ingest_dataset` do not use ingestion success as a
+proxy for dose-response suitability. They report four progressively stricter
+states:
+
+| State | Meaning |
+| --- | --- |
+| `structural_only` | The design is contract-valid and ingestible, but does not support an automatic treated-versus-control comparison. |
+| `comparison_only` | At least one distinct non-zero level and the minimum effective biological replication support a comparison, but not project dose-response policy. |
+| `dose_response_minimum` | The default policy minimum is met: control, at least two distinct non-zero dose levels, and at least two effective biological replicates per group. |
+| `dose_response_preferred` | At least four distinct total dose levels and at least three effective biological replicates per group meet the preferred project threshold. |
+
+Technical replicates do not count toward biological-replication thresholds.
+Dose-group labels at the same numeric dose do not count as separate dose
+levels. Dose–batch confounding and unsplit multi-timepoint designs block
+automatic comparison and dose-response readiness. These thresholds are
+versioned project policy; endpoint response behavior must still be evaluated
+before fitting a BMD or selecting a PoD.
+
+The separation follows the scientific distinction in U.S. EPA BMD guidance:
+studies with more dose groups and graded responses are generally more useful
+for modelling, while a study with only one responding treated dose may not
+support a BMD analysis. The exact numeric thresholds above remain Epigenomics
+MCP policy, not a claim of universal regulatory sufficiency.
 
 ---
 
@@ -980,3 +1006,5 @@ CLI commands that produce blocking warnings (e.g. `qualify` when `blocksDownstre
 - [Genome Build & Coordinate Guide](genome-build-and-coordinate-guide.md)
 - [Handoff Specification](handoff.md)
 - [Region-to-Gene Mapping Guide](region-to-gene-mapping-guide.md)
+- [U.S. EPA Benchmark Dose Technical Guidance](https://www.epa.gov/risk/benchmark-dose-technical-guidance)
+- [BMDExpress 2 transcriptomic dose-response workflow](https://pmc.ncbi.nlm.nih.gov/articles/PMC6513160/)

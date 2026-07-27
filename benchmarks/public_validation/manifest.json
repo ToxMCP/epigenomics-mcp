@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Reproducible full-file validation panel for public epigenomics data",
   "reviewStatus": "source_anchored_pending_external_expert_signoff",
   "datasets": [
@@ -47,6 +47,11 @@
         "ingested": true,
         "dataValid": true,
         "designValid": true,
+        "designStructurallyValid": true,
+        "comparisonReady": true,
+        "doseResponseReady": false,
+        "preferredForDoseResponse": false,
+        "designReadinessStatus": "comparison_only",
         "provenanceValid": true,
         "featureCount": 2077859,
         "dataRowCount": 2077859,
@@ -56,13 +61,15 @@
         "sourceFileBytes": 123474171,
         "sourceChecksumSha256": "5ce7cfc07dd6440d6ce458cdd6696d8f8f37bf69c6df5d3183aaf14b080d13d4",
         "contentChecksumSha256": "6f28c6cc67e1b7403fea71fdee6acd79c2e346cdd42ffd802ab9f8d40614a1b5",
-        "errorCount": 0
+        "errorCount": 0,
+        "warningCount": 0
       },
       "review": {
         "status": "source_anchored_internal_review",
         "assertions": [
           "Six declared sample columns represent vehicle and 0.3 µM aflatoxin B1 biological triplicates.",
           "All 2,077,859 deposited probe rows contain six finite centered log2 MeDIP/Input ratios.",
+          "The control-plus-one-treated-level design supports a comparison but does not meet project dose-response readiness policy.",
           "Probe positions are retained but no genome build or coordinate-system semantics are asserted."
         ]
       }
@@ -111,6 +118,11 @@
         "ingested": true,
         "dataValid": true,
         "designValid": true,
+        "designStructurallyValid": true,
+        "comparisonReady": true,
+        "doseResponseReady": false,
+        "preferredForDoseResponse": false,
+        "designReadinessStatus": "comparison_only",
         "provenanceValid": true,
         "featureCount": 384368,
         "dataRowCount": 384368,
@@ -120,13 +132,15 @@
         "sourceFileBytes": 14839527,
         "sourceChecksumSha256": "c4412c2563e77eb268f555ebc792934aac84f43b4fe071ecbb6e8dfce92ac9d1",
         "contentChecksumSha256": "434e0309c33d99f21a6990917c5a2b37bcf99e6af9dc93da4514a5d8a6a202db",
-        "errorCount": 0
+        "errorCount": 0,
+        "warningCount": 0
       },
       "review": {
         "status": "source_anchored_internal_review",
         "assertions": [
           "Six declared sample columns represent 1% ethanol vehicle and 15 mM valproic-acid biological triplicates.",
           "All 384,368 deposited probe rows contain six finite centered log2 MeDIP/Input ratios.",
+          "The control-plus-one-treated-level design supports a comparison but does not meet project dose-response readiness policy.",
           "This case validates independent exposure ingestion and design handling, not a differential-methylation truth label."
         ]
       }
@@ -185,9 +199,14 @@
         }
       },
       "expectedOutput": {
-        "ingested": false,
+        "ingested": true,
         "dataValid": true,
-        "designValid": false,
+        "designValid": true,
+        "designStructurallyValid": true,
+        "comparisonReady": false,
+        "doseResponseReady": false,
+        "preferredForDoseResponse": false,
+        "designReadinessStatus": "structural_only",
         "provenanceValid": true,
         "featureCount": 171471,
         "dataRowCount": 171471,
@@ -197,17 +216,19 @@
         "sourceFileBytes": 4281764,
         "sourceChecksumSha256": "61ccb888f13504afef962430c341bd61ec79eb2c79be738b193784e046e18010",
         "contentChecksumSha256": "77db03518cc2b6d94d248dc5792878a32d0614a285d58d3a945888ff3996c00f",
-        "errorCount": 1
+        "errorCount": 0,
+        "warningCount": 1
       },
-      "expectedErrorPrefixes": [
-        "design:"
+      "expectedWarningPrefixes": [
+        "features: Wide-form sample column 'aggregate_signal' not found in design; values retained"
       ],
       "review": {
         "status": "source_anchored_internal_review",
         "assertions": [
           "The released GRCh38 narrowPeak file contains 171,471 structurally valid 0-based half-open peaks.",
           "ENCODE identifies the file as replicated peaks derived from three biological replicates.",
-          "The aggregate peak file lacks per-replicate dose-response values, so Epigenomics MCP must keep the dataset out of PoD-ready ingestion."
+          "The aggregate signal column is retained with an explicit warning because it is not a declared biological sample.",
+          "The aggregate peak file is structurally ingestible but lacks a treated level, so it is neither comparison-ready nor dose-response-ready."
         ]
       }
     }
