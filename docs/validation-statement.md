@@ -1,7 +1,7 @@
 # Epigenomics MCP v0.2 — Validation Statement
 
 **Document status:** Regulator-facing benchmark coverage statement  
-**Product version:** 0.2.0
+**Product version:** 0.2.1
 **Schema and policy version:** 0.1.0
 **Date:** 2026-07-27
 **Scope:** Golden benchmarks, frozen-public fixture integrity, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations

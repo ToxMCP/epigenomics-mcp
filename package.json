@@ -1,6 +1,6 @@
 {
   "name": "epigenomics-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Model Context Protocol server for processed epigenomic feature evidence qualification",
   "type": "module",
   "main": "./dist/epimcp/index.js",

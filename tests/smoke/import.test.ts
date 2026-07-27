@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 describe("import smoke tests", () => {
   it("can import the main index module", async () => {
     const mod = await import("../../src/epimcp/index.js");
-    expect(mod.VERSION).toBe("0.2.0");
+    expect(mod.VERSION).toBe("0.2.1");
     expect(typeof mod.loadConfig).toBe("function");
     expect(typeof mod.startServer).toBe("function");
     expect(typeof mod.loadManifest).toBe("function");

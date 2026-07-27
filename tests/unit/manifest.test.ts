@@ -18,7 +18,7 @@ describe("manifest", () => {
     );
     const manifest = loadManifest(yamlText);
     expect(manifest.name).toBe("epigenomics-mcp");
-    expect(manifest.version).toBe("0.2.0");
+    expect(manifest.version).toBe("0.2.1");
     expect(manifest.toolNamespace).toBe("epimcp");
     expect(manifest.schemaRegistryPath).toBe("schemas/current");
     expect(manifest.supportedTransports).toContain("stdio");

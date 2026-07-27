@@ -4,7 +4,7 @@
 # and explicit non-goals for the Epigenomics MCP suite.
 #
 name: epigenomics-mcp
-version: "0.2.0"
+version: "0.2.1"
 description: >
   Model Context Protocol server for processed epigenomic feature evidence qualification.
   Converts processed epigenomic assay outputs into qualified, annotation-aware,

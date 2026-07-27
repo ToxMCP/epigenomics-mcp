@@ -208,7 +208,7 @@ export type FileAccessPolicy = z.infer<typeof FileAccessPolicySchema>;
 export const ConfigSchema = z.object({
   // Basic server settings
   name: z.string().default("epigenomics-mcp"),
-  version: z.string().default("0.2.0"),
+  version: z.string().default("0.2.1"),
   logLevel: z.enum(["debug", "info", "warn", "error"]).default("info"),
   port: z.number().int().min(1).max(65535).default(3000),
   host: z.string().default("127.0.0.1"),

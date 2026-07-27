@@ -1,7 +1,7 @@
 # Epigenomics MCP — Tool Reference & Usage Examples
 
 **Document status:** Implementation reference  
-**Product version:** 0.2.0
+**Product version:** 0.2.1
 **Date:** 2026-07-27
 
 ---
@@ -69,13 +69,13 @@ content item for compatibility:
 {
   "structuredContent": {
     "status": "ok",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "timestamp": "2026-05-07T00:00:00.000Z"
   },
   "content": [
     {
       "type": "text",
-      "text": "{\"status\":\"ok\",\"version\":\"0.2.0\",\"timestamp\":\"2026-05-07T00:00:00.000Z\"}"
+      "text": "{\"status\":\"ok\",\"version\":\"0.2.1\",\"timestamp\":\"2026-05-07T00:00:00.000Z\"}"
     }
   ]
 }
