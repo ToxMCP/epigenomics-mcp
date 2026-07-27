@@ -1,7 +1,7 @@
 # Epigenomics MCP
 
 [![CI](https://github.com/ToxMCP/epigenomics-mcp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ToxMCP/epigenomics-mcp/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Status](https://img.shields.io/badge/Status-Audit--Ready%20Core-2E8B57)](./docs/validation-statement.md)
 [![Node](https://img.shields.io/badge/Node-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -68,17 +68,19 @@ The released surface is intentionally bounded:
 - warnings preserve scientific caveats instead of converting proximity or context into causal claims
 - release readiness is backed by schema drift checks, golden benchmark comparisons, nondeterminism checks, and checksummed release evidence
 
-## What this MCP does
+## Feature snapshot
 
-- Reads processed epigenomic feature tables and experimental designs
-- Validates genome build, coordinate system, chromosome bounds, and feature coordinate semantics
-- Profiles deterministic QC, missingness, variance, and replicate adequacy
-- Assesses cell-composition and cytotoxicity context without silently overclaiming causality
-- Applies policy-versioned qualification rules with explainable rule traces
-- Builds `EpigenomicsFeatureResponsePacket` and `BioactivityPoDHandoffPacket` outputs
-- Exposes strict MCP tool input/output schemas, structured content, annotations, and read-only audit resources
-- Generates release evidence with SHA-256 checksums for schemas, golden outputs, benchmark manifests, validation docs, and npm pack metadata
-- Gates 10,000-feature performance using the real packet-validation and qualification engine
+| Capability | Description |
+| --- | --- |
+| `🧬 Processed epigenomic evidence` | Reads already-processed methylation, chromatin-accessibility, histone-mark, region-level, and summary feature evidence with explicit experimental designs. |
+| `🗺️ Coordinate and build validation` | Validates genome build, coordinate system, chromosome bounds, and feature-coordinate semantics before qualification. |
+| `📊 QC and replicate profiling` | Profiles deterministic quality control, missingness, variance, and replicate adequacy without inventing unavailable measurements. |
+| `🧫 Biological-context review` | Assesses cell-composition and cytotoxicity context while preserving uncertainty and avoiding silent causal overclaims. |
+| `🧭 Explainable qualification` | Applies policy-versioned qualification rules with reviewable rule traces, warnings, and fit-for-purpose boundaries. |
+| `📦 Governed handoff packaging` | Builds `EpigenomicsFeatureResponsePacket` and `BioactivityPoDHandoffPacket` outputs for downstream suite workflows. |
+| `🔌 MCP-native discovery` | Exposes strict tool schemas, structured content, annotations, and read-only audit resources over stdio and Streamable HTTP. |
+| `🧾 Checksummed release evidence` | Generates SHA-256 evidence for schemas, golden outputs, benchmark manifests, validation documents, scientific invariants, and package contents. |
+| `🚦 Performance and release gates` | Exercises the real packet-validation and qualification engine at 10,000-feature scale alongside protocol, security, conformance, and nondeterminism checks. |
 
 ## Release gates
 
@@ -304,4 +306,4 @@ Remote HTTP binding is deliberately explicit. Set a non-loopback
 
 ## License
 
-MIT
+Apache License 2.0.
