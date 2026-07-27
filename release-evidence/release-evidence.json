@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T14:08:55.997Z",
+  "generatedAt": "2026-07-27T14:21:14.174Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T14:08:46.405Z",
-    "finishedAt": "2026-07-27T14:08:55.997Z"
+    "startedAt": "2026-07-27T14:21:05.248Z",
+    "finishedAt": "2026-07-27T14:21:14.174Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "670e8a84fcc33993a2db25574a7b49760aa277b8",
+    "commit": "ed8793b7289bc30b0facce0285c5e828853d1967",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.474s; 75.3 MiB RSS increase"
+        "details": "10000 real qualifications in 0.464s; 72.6 MiB RSS increase"
       }
     ],
     "benchmarkSummary": {
@@ -66,10 +66,10 @@
       "id": "epigenomics-mcp@0.2.0",
       "name": "epigenomics-mcp",
       "version": "0.2.0",
-      "size": 725525,
+      "size": 725524,
       "unpackedSize": 4022712,
-      "shasum": "5f1ae303be3a3963160bda5fab8e9b5b94c482e1",
-      "integrity": "sha512-2wgLyYDForY0zmkK5wp9HN++o9ahambM7Pi28y2bcMCorIcet/VBfS8ei787ai6CnCQ4jQjicE4A0hhYQA/50w==",
+      "shasum": "4d8e55ae283eb61ebf6a1019651893d93f0db631",
+      "integrity": "sha512-Fny2aeFDJz78znTBOTqX1IvcRBE0GicjPFbZC1Cu63s1c5iFy9mV3GbXZdTY0lwv1lPTaFj2sm2L9J5fmcsHgA==",
       "filename": "epigenomics-mcp-0.2.0.tgz",
       "files": [
         {
@@ -4035,17 +4035,17 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "4bdb54a6722bb68428218ad5a18955f37ac9d3c361bd4281bfbcbfa7c7445bc1",
+      "sha256": "56525580125bd1a6e9e1f9d06e47f546aabe998798a0cfb81a941d13fff9f51c",
       "bytes": 81127
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "13c0430d40bceffceeb29771a938d4260b1fc54785d3a74862b1d4c6846ac456",
+      "sha256": "7826b88069429b674658c975b4233ddd01c962ff9a31e233a4cf042219467d2a",
       "bytes": 823
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "bb0e34f28debe959925f32a46f23da2deddb1bd00c71bf82a2d4b2ad6ac5b8fc",
+      "sha256": "75423cb3f8ee9f041db1e27d27f13d46838ec64d06d7d99b0c4758e173890923",
       "bytes": 497
     },
     {
