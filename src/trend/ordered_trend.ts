@@ -4,6 +4,7 @@ import { DesignValidationResultSchema, validateDesign } from "../validators/desi
 
 const DEFAULT_EXACT_ENUMERATION_LIMIT = 50_000;
 const MAX_RESAMPLING_COMPARISONS = 100_000_000;
+const EXACT_DISTRIBUTION_CACHE_LIMIT = 128;
 
 export const PAdjustmentMethodSchema = z.enum([
   "benjamini_yekutieli",
@@ -255,6 +256,27 @@ interface RawTrendTest {
   effectInterval: z.infer<typeof OrderedPairEffectIntervalSchema>;
 }
 
+export interface OrderedTrendPermutationCoreOptions {
+  permutationResamples: number;
+  seed: number;
+  exactEnumerationLimit?: number;
+}
+
+export interface OrderedTrendPermutationCoreResult {
+  statistic: number;
+  maximumStatistic: number;
+  orderedPairProbability: number;
+  orderedPairEffect: number;
+  pValueTwoSided: number;
+  pValueIncreasing: number;
+  pValueDecreasing: number;
+  mode: "exact" | "monte_carlo";
+  totalLabelAllocations: string;
+  evaluatedPermutations: number;
+  pValueResolution: number;
+  monteCarloStandardErrorTwoSided: number | null;
+}
+
 function comparisonScore(lowerDoseValue: number, higherDoseValue: number): number {
   if (higherDoseValue > lowerDoseValue) return 1;
   if (higherDoseValue < lowerDoseValue) return 0;
@@ -424,25 +446,70 @@ function exactPermutationPValues(
 } {
   const center = maximum / 2;
   const observedDistance = Math.abs(observed - center);
+  const distribution = exactStatisticDistribution(values, groupSizes);
   let twoSidedExtreme = 0;
   let increasingExtreme = 0;
   let decreasingExtreme = 0;
+  for (const [statistic, count] of distribution.counts) {
+    if (Math.abs(statistic - center) >= observedDistance - Number.EPSILON) {
+      twoSidedExtreme += count;
+    }
+    if (statistic >= observed - Number.EPSILON) increasingExtreme += count;
+    if (statistic <= observed + Number.EPSILON) decreasingExtreme += count;
+  }
+  return {
+    twoSided: twoSidedExtreme / distribution.evaluated,
+    increasing: increasingExtreme / distribution.evaluated,
+    decreasing: decreasingExtreme / distribution.evaluated,
+    evaluated: distribution.evaluated,
+  };
+}
+
+interface ExactStatisticDistribution {
+  counts: Map<number, number>;
+  evaluated: number;
+}
+
+const exactDistributionCache = new Map<string, ExactStatisticDistribution>();
+
+function canonicalTiePattern(values: number[]): string {
+  const orderedUnique = [...new Set(values)].sort((left, right) => left - right);
+  const rankByValue = new Map(
+    orderedUnique.map((value, rank) => [value, rank]),
+  );
+  return values
+    .map((value) => rankByValue.get(value))
+    .sort((left, right) => (left ?? 0) - (right ?? 0))
+    .join(",");
+}
+
+function exactStatisticDistribution(
+  values: number[],
+  groupSizes: number[],
+): ExactStatisticDistribution {
+  const canonicalValues = canonicalTiePattern(values)
+    .split(",")
+    .map(Number);
+  const cacheKey = `${groupSizes.join(",")}|${canonicalValues.join(",")}`;
+  const cached = exactDistributionCache.get(cacheKey);
+  if (cached) return cached;
+
+  const counts = new Map<number, number>();
   let evaluated = 0;
   enumerateLabels([...groupSizes], (labels) => {
-    const statistic = statisticForLabels(values, labels);
+    const statistic = statisticForLabels(canonicalValues, labels);
+    counts.set(statistic, (counts.get(statistic) ?? 0) + 1);
     evaluated++;
-    if (Math.abs(statistic - center) >= observedDistance - Number.EPSILON) {
-      twoSidedExtreme++;
-    }
-    if (statistic >= observed - Number.EPSILON) increasingExtreme++;
-    if (statistic <= observed + Number.EPSILON) decreasingExtreme++;
   });
-  return {
-    twoSided: twoSidedExtreme / evaluated,
-    increasing: increasingExtreme / evaluated,
-    decreasing: decreasingExtreme / evaluated,
-    evaluated,
-  };
+  const distribution = { counts, evaluated };
+  if (exactDistributionCache.size >= EXACT_DISTRIBUTION_CACHE_LIMIT) {
+    const oldest = exactDistributionCache.keys().next().value as
+      | string
+      | undefined;
+    if (oldest !== undefined) exactDistributionCache.delete(oldest);
+  }
+  exactDistributionCache.set(cacheKey, distribution);
+  return distribution;
 }
 
 function monteCarloPermutationPValues(
@@ -482,6 +549,116 @@ function monteCarloPermutationPValues(
     increasing: (increasingExtreme + 1) / (resamples + 1),
     decreasing: (decreasingExtreme + 1) / (resamples + 1),
   };
+}
+
+/**
+ * Shared inference core used by the packet assessment and the release
+ * calibration harness. It intentionally excludes bootstrap and multiplicity
+ * work so repeated simulations exercise the production permutation algorithm
+ * without doing scientifically irrelevant resampling.
+ */
+export function computeOrderedTrendPermutationCore(
+  groups: number[][],
+  options: OrderedTrendPermutationCoreOptions,
+): OrderedTrendPermutationCoreResult {
+  if (groups.length < 3 || groups.some((group) => group.length < 2)) {
+    throw new RangeError(
+      "Ordered-trend inference requires at least three groups with two observations each.",
+    );
+  }
+  if (groups.flat().some((value) => !Number.isFinite(value))) {
+    throw new TypeError("Ordered-trend inference requires finite values.");
+  }
+  if (
+    !Number.isInteger(options.permutationResamples) ||
+    options.permutationResamples < 1
+  ) {
+    throw new RangeError("permutationResamples must be a positive integer.");
+  }
+  if (
+    !Number.isInteger(options.seed) ||
+    options.seed < 0 ||
+    options.seed > 0xffff_ffff
+  ) {
+    throw new RangeError("seed must be an unsigned 32-bit integer.");
+  }
+  const exactEnumerationLimit =
+    options.exactEnumerationLimit ?? DEFAULT_EXACT_ENUMERATION_LIMIT;
+  if (!Number.isInteger(exactEnumerationLimit) || exactEnumerationLimit < 1) {
+    throw new RangeError("exactEnumerationLimit must be a positive integer.");
+  }
+
+  const groupSizes = groups.map((group) => group.length);
+  const values = groups.flat();
+  const observed = orderedStatistic(groups);
+  const totalAllocations = multinomialCount(groupSizes);
+  const pairCount = (values.length * (values.length - 1)) / 2;
+  const exactWork = totalAllocations * BigInt(pairCount);
+  const useExact =
+    totalAllocations <= BigInt(exactEnumerationLimit) &&
+    totalAllocations <= BigInt(options.permutationResamples + 1) &&
+    exactWork <= BigInt(MAX_RESAMPLING_COMPARISONS);
+
+  let pValues: {
+    twoSided: number;
+    increasing: number;
+    decreasing: number;
+  };
+  let evaluatedPermutations: number;
+  if (useExact) {
+    const exact = exactPermutationPValues(
+      values,
+      groupSizes,
+      observed.statistic,
+      observed.maximum,
+    );
+    pValues = exact;
+    evaluatedPermutations = exact.evaluated;
+  } else {
+    pValues = monteCarloPermutationPValues(
+      values,
+      groupSizes,
+      observed.statistic,
+      observed.maximum,
+      options.permutationResamples,
+      options.seed,
+    );
+    evaluatedPermutations = options.permutationResamples;
+  }
+  const orderedPairProbability = observed.statistic / observed.maximum;
+  const pValueResolution = useExact
+    ? 1 / evaluatedPermutations
+    : 1 / (options.permutationResamples + 1);
+
+  return {
+    statistic: observed.statistic,
+    maximumStatistic: observed.maximum,
+    orderedPairProbability,
+    orderedPairEffect: 2 * orderedPairProbability - 1,
+    pValueTwoSided: pValues.twoSided,
+    pValueIncreasing: pValues.increasing,
+    pValueDecreasing: pValues.decreasing,
+    mode: useExact ? "exact" : "monte_carlo",
+    totalLabelAllocations: totalAllocations.toString(),
+    evaluatedPermutations,
+    pValueResolution,
+    monteCarloStandardErrorTwoSided: useExact
+      ? null
+      : Math.sqrt(
+          (pValues.twoSided * (1 - pValues.twoSided)) /
+            (options.permutationResamples + 1),
+        ),
+  };
+}
+
+/** Shared pointwise interval core used by production and calibration. */
+export function computeOrderedPairEffectInterval(
+  groups: number[][],
+  confidenceLevel: number,
+  resamples: number,
+  seed: number,
+): z.infer<typeof OrderedPairEffectIntervalSchema> {
+  return bootstrapEffectInterval(groups, confidenceLevel, resamples, seed);
 }
 
 export function adjustPValues(
@@ -620,83 +797,39 @@ function assessFeature(
   options: z.infer<typeof AssessOrderedTrendsCoreOptionsSchema>,
 ): RawTrendTest {
   const numericGroups = groups.map((group) => group.values);
-  const groupSizes = numericGroups.map((group) => group.length);
-  const values = numericGroups.flat();
-  const observed = orderedStatistic(numericGroups);
-  const totalAllocations = multinomialCount(groupSizes);
-  const pairCount = (values.length * (values.length - 1)) / 2;
-  const exactWork = totalAllocations * BigInt(pairCount);
-  const exactWorkAllowed =
-    totalAllocations <= BigInt(options.exactEnumerationLimit) &&
-    totalAllocations <= BigInt(options.permutationResamples + 1) &&
-    exactWork <= BigInt(MAX_RESAMPLING_COMPARISONS);
   const permutationSeed = derivedSeed(options.seed, featureId, "permutation");
-
-  let pValues: {
-    twoSided: number;
-    increasing: number;
-    decreasing: number;
+  const core = computeOrderedTrendPermutationCore(numericGroups, {
+    permutationResamples: options.permutationResamples,
+    seed: permutationSeed,
+    exactEnumerationLimit: options.exactEnumerationLimit,
+  });
+  const permutation: z.infer<typeof PermutationEvidenceSchema> = {
+    mode: core.mode,
+    totalLabelAllocations: core.totalLabelAllocations,
+    evaluatedPermutations: core.evaluatedPermutations,
+    requestedRandomPermutations: options.permutationResamples,
+    permutationSeed: core.mode === "exact" ? null : permutationSeed,
+    pValueResolution: core.pValueResolution,
+    monteCarloStandardErrorTwoSided:
+      core.monteCarloStandardErrorTwoSided,
   };
-  let permutation: z.infer<typeof PermutationEvidenceSchema>;
-  if (exactWorkAllowed) {
-    const exact = exactPermutationPValues(
-      values,
-      groupSizes,
-      observed.statistic,
-      observed.maximum,
-    );
-    pValues = exact;
-    permutation = {
-      mode: "exact",
-      totalLabelAllocations: totalAllocations.toString(),
-      evaluatedPermutations: exact.evaluated,
-      requestedRandomPermutations: options.permutationResamples,
-      permutationSeed: null,
-      pValueResolution: 1 / exact.evaluated,
-      monteCarloStandardErrorTwoSided: null,
-    };
-  } else {
-    pValues = monteCarloPermutationPValues(
-      values,
-      groupSizes,
-      observed.statistic,
-      observed.maximum,
-      options.permutationResamples,
-      permutationSeed,
-    );
-    permutation = {
-      mode: "monte_carlo",
-      totalLabelAllocations: totalAllocations.toString(),
-      evaluatedPermutations: options.permutationResamples,
-      requestedRandomPermutations: options.permutationResamples,
-      permutationSeed,
-      pValueResolution: 1 / (options.permutationResamples + 1),
-      monteCarloStandardErrorTwoSided: Math.sqrt(
-        (pValues.twoSided * (1 - pValues.twoSided)) /
-          (options.permutationResamples + 1),
-      ),
-    };
-  }
-
-  const orderedPairProbability = observed.statistic / observed.maximum;
-  const orderedPairEffect = 2 * orderedPairProbability - 1;
   const bootstrapSeed = derivedSeed(options.seed, featureId, "bootstrap");
   return {
-    statistic: observed.statistic,
-    maximumStatistic: observed.maximum,
-    orderedPairProbability,
-    orderedPairEffect,
+    statistic: core.statistic,
+    maximumStatistic: core.maximumStatistic,
+    orderedPairProbability: core.orderedPairProbability,
+    orderedPairEffect: core.orderedPairEffect,
     direction:
-      orderedPairEffect > 0
+      core.orderedPairEffect > 0
         ? "increasing"
-        : orderedPairEffect < 0
+        : core.orderedPairEffect < 0
           ? "decreasing"
           : "no_ordered_direction",
-    pValueTwoSided: pValues.twoSided,
-    pValueIncreasing: pValues.increasing,
-    pValueDecreasing: pValues.decreasing,
+    pValueTwoSided: core.pValueTwoSided,
+    pValueIncreasing: core.pValueIncreasing,
+    pValueDecreasing: core.pValueDecreasing,
     permutation,
-    effectInterval: bootstrapEffectInterval(
+    effectInterval: computeOrderedPairEffectInterval(
       numericGroups,
       options.confidenceLevel,
       options.bootstrapResamples,

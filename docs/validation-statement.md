@@ -4,7 +4,7 @@
 **Product version:** 0.2.1
 **Schema and policy version:** 0.1.0
 **Date:** 2026-07-27
-**Scope:** Golden benchmarks, frozen-public fixture integrity, complete-file public-data validation, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations
+**Scope:** Golden benchmarks, frozen-public fixture integrity, complete-file public-data validation, ordered-trend simulation calibration, real-engine performance, deterministic behavior, transport/security smoke coverage, release evidence, and explicit limitations
 
 ---
 
@@ -132,6 +132,29 @@ p-value is 0.1044. These are deterministic software assertions for coarse
 chromosome summaries—not locus-level differential-accessibility results,
 genome-wide FDR control, evidence of no effect, biological significance, BMD
 suitability, or expert interpretation.
+
+### 2.3 Ordered-trend simulation calibration
+
+The deterministic ADEMP protocol in
+`docs/ordered-trend-calibration.md` exercises the production permutation and
+bootstrap cores. It gates three exact reference cases; four exchangeable null
+mechanisms spanning normal, imbalanced, skewed, and tied data; strong
+increasing and decreasing shifts; a non-monotonic specificity target;
+Monte Carlo agreement with exact p-values; and two pointwise-bootstrap
+coverage checks.
+
+All 13 gated checks pass in the committed `0.1.0` report. Exchangeable-null
+rejection rates range from 0.013 to 0.045 at alpha 0.05. Strong ±2-SD adjacent
+location shifts have rejection rates of 0.960 and 0.952. A weak 0.5-SD
+adjacent shift is detected in 0.170 of simulations, which is reported as a
+small-sample sensitivity diagnostic rather than a power claim.
+
+Two heteroscedastic cases are deliberately excluded from validity gating
+because their distributions are not exchangeable under the null. The inverse-
+imbalance case has rejection rate 0.084 with a 99% Wilson interval of
+0.057–0.122. This does not invalidate the exchangeable-null checks; it shows
+why the tool must continue to record independence and exchangeability as
+required but unverified assumptions.
 
 ---
 
@@ -328,6 +351,10 @@ The rule engine applies rules in fixed priority order:
 - Statistical evidence never changes feature qualification and is not
   promoted to biological significance, causal inference, BMD suitability, or
   a regulatory conclusion.
+- The release calibration reuses the production inference core, checks fresh
+  output against a committed deterministic baseline, and reports
+  assumption-violating heteroscedastic cases diagnostically rather than
+  calling them calibrated.
 
 ---
 
@@ -348,7 +375,7 @@ Key coverage areas:
 | Handoff | `handoff.test.ts`, `handoff_validator.test.ts` | Packet construction, schema validation, subset correctness |
 | Ingestion | `csv_reader.test.ts`, `format_detection.test.ts`, `feature_table.test.ts`, `streaming_ingest.test.ts`, `long_format.test.ts`, `wide_format.test.ts` | CSV parsing, format auto-detection, feature construction, gzip streaming, bounded batching, and explicit sample-column authority |
 | Response patterns | `response_pattern_assessment.test.ts` | Dose-label collapsing, ordered means, tolerance handling, monotonic and non-monotonic labels, incomplete/multi-timepoint blocking, explicit non-assessment of significance and BMD suitability, and bounded pagination |
-| Ordered trends | `ordered_trend.test.ts`, `public_fixtures.test.ts` | Exact permutation tails, deterministic Monte Carlo behavior, tie handling, ordered-pair effect bounds, pointwise bootstrap intervals, BH/BY adjustments, bounded-family warnings, fail-closed design restrictions, and frozen-public behavior |
+| Ordered trends | `ordered_trend.test.ts`, `ordered_trend_calibration.test.ts`, `public_fixtures.test.ts` | Exact permutation tails, deterministic Monte Carlo behavior and agreement, tie handling, ordered-pair effect bounds, pointwise bootstrap intervals and coverage guards, exchangeable-null error control, ordered-signal power, assumption-stress diagnostics, BH/BY adjustments, bounded-family warnings, fail-closed design restrictions, and frozen-public behavior |
 | Benchmark infra | `benchmark_runner.test.ts`, `golden_outputs.test.ts`, `synthetic_fixtures.test.ts`, `public_fixtures.test.ts`, `public_validation_manifest.test.ts`, `manifest.test.ts` | Golden-output stability, drift detection, fixture completeness, frozen-public checksums, and full-public manifest integrity |
 | Release evidence | `release_evidence.test.ts`, `release_gate.test.ts`, `benchmark_cli.test.ts` | Audit manifest schema, checksums, output isolation |
 | MCP and transport | `tool_registry.test.ts`, `transport_equivalence.test.ts`, protocol smoke scripts | Tool schema quality, service/MCP/CLI equivalence, stdio and Streamable HTTP initialization |
@@ -373,6 +400,7 @@ in a manually dispatched workflow because it depends on external archives.
 | `release-evidence/checksums.sha256` | SHA-256 checksum list for audit inputs and captured release reports |
 | `release-evidence/release-gate.json` | Captured machine-readable release-gate report |
 | `release-evidence/release-gate.txt` | Captured human-readable release-gate report |
+| `release-evidence/ordered-trend-calibration.json` | Captured deterministic ADEMP simulation-calibration report |
 | `release-evidence/npm-pack-dry-run.json` | npm package dry-run metadata used as release packaging evidence |
 
 Release evidence is generated from a clean source tree. The intended release
@@ -395,7 +423,7 @@ exported source directories and local validation bundles.
 | Limitation | Explanation |
 |------------|-------------|
 | **Biological ground truth** | Three complete public files establish ingestion realism and fail-closed design handling, while the GSE152749-derived fixture establishes real multi-dose pattern handling. No biological truth label, differential-methylation/accessibility conclusion, or predictive accuracy is asserted. Golden qualification outcomes remain synthetic. |
-| **Statistical inference breadth** | Exact synthetic cases and deterministic GSE152749 behavior validate the implemented exploratory ordered-trend path. They do not establish power or type-I-error performance across assay distributions, validate every dependence or tie regime against an independent package, create genome-wide FDR control from a bounded slice, assess biological significance, fit a dose-response model, or establish BMD suitability. |
+| **Statistical inference breadth** | Exact references, deterministic GSE152749 behavior, and a finite ADEMP grid characterize type-I error, strong/weak-signal power, Monte Carlo agreement, and pointwise-bootstrap coverage for declared mechanisms. They do not establish performance across arbitrary assay distributions or dependent observations, calibrate heteroscedastic nonexchangeable designs, validate every regime against an independent package, create genome-wide FDR control from a bounded slice, assess biological significance, fit a dose-response model, or establish BMD suitability. |
 | **Batch-effect correction** | Batch-effect modelling is behind the `enableBatchEffectModeling` feature flag (default `false`). No benchmark exercises it. |
 | **Cell deconvolution** | Reference-based cell-composition deconvolution is behind `enableCellDeconvolution` (default `false`). Declared/measured profile ingestion and deterministic confounding classification are tested instead. |
 | **Chromatin-state context** | ChromHMM / Segway integration is behind `enableChromatinStateContext` (default `false`). |
@@ -464,6 +492,7 @@ See [`docs/non-goals.md`](non-goals.md) for the complete non-goals list.
 | Preserve measured coordinates | `bm_dmr_nearest_gene_only` | `region_to_gene.test.ts`, `mapping/region_to_gene.test.ts` |
 | Export normative packets | `bm_handoff_schema_valid`, `bm_handoff_schema_invalid` | `handoff.test.ts`, `handoff_validator.test.ts` |
 | Claim guards | Implicit in all feature benchmarks | `claim_guards.test.ts` |
+| Calibrate exploratory ordered-trend inference | `ordered_trend_calibration/report.json` | `ordered_trend.test.ts`, `ordered_trend_calibration.test.ts` |
 
 ---
 
@@ -478,6 +507,9 @@ npm run test:contract
 
 # Run benchmark golden-output comparison
 npm run benchmark:ci
+
+# Write the deterministic ordered-trend calibration report
+npm run calibrate:trend
 
 # Validate all synthetic fixture files are present
 npm test -- --run tests/unit/synthetic_fixtures.test.ts
@@ -509,12 +541,13 @@ All benchmark golden outputs are stored in `benchmarks/expected/<benchmark_name>
 | Golden output files | 68 |
 | MCP evaluation questions | 10 independent read-only workflows |
 | Real-engine performance gate | 10,000 features × 6 samples |
+| Ordered-trend calibration | 13/13 gated checks pass; 3 diagnostic scenarios retained |
 | Deterministic output guarantee | Yes (normalised timestamps, UUIDs, seeds) |
 | Fail-closed on schema invalidity | Yes |
 | Fail-closed on ambiguous coordinates | Yes |
 | Fail-closed on insufficient design | Yes |
 | Coverage of real biological data ingestion | Three complete public files with source/content hashes; no ground truth |
-| Coverage of statistical power / FDR | No |
+| Coverage of statistical power / FDR | Finite ordered-trend simulation grid only; bounded-family BH/BY mechanics tested; no genome-wide or universal validity claim |
 | Coverage of production-scale performance | Regression gate only; no capacity certification |
 
 **Conclusion:** The v0.2 validation suite demonstrates that Epigenomics MCP
@@ -524,7 +557,7 @@ QC, applies fail-closed qualification, emits schema-valid handoffs, operates
 over stdio and guarded Streamable HTTP, and processes a 10,000-feature
 qualification workload within broad regression budgets. It does **not**
 demonstrate biological ground-truth accuracy, regulatory acceptance,
-statistical validity, or production capacity.
+universal statistical validity, or production capacity.
 
 ---
 

@@ -249,6 +249,15 @@ describe("release gate CLI script", () => {
       expect(jsonReport.ready).toBe(true);
       expect(jsonReport.benchmarkSummary.failedBenchmarks).toBe(0);
       expect(jsonReport.checks.every((c) => c.passed)).toBe(true);
+      expect(jsonReport.checks.map((check) => check.name)).toContain(
+        "ordered_trend_calibration",
+      );
+      expect(jsonReport.checks.map((check) => check.name)).toContain(
+        "ordered_trend_calibration_drift",
+      );
+      expect(
+        existsSync(join(resultsDir, "ordered-trend-calibration.json")),
+      ).toBe(true);
     } finally {
       rmSync(resultsDir, { recursive: true, force: true });
     }

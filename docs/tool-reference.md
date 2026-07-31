@@ -104,12 +104,14 @@ the MCP server is launched from another working directory.
 | `epimcp://schemas/qualification-policy` | Qualification policy JSON Schema |
 | `epimcp://docs/validation-statement` | Regulator-facing validation statement |
 | `epimcp://docs/tool-reference` | This tool reference |
+| `epimcp://docs/ordered-trend-calibration` | ADEMP calibration protocol, acceptance rules, results, and boundaries |
 | `epimcp://benchmarks/manifest` | Release benchmark manifest |
 | `epimcp://release-evidence/manifest` | Latest generated release evidence manifest |
 | `epimcp://release-evidence/checksums` | Latest generated SHA-256 checksum file |
 | `epimcp://release-evidence/release-gate-json` | Latest captured release-gate JSON report |
 | `epimcp://release-evidence/release-gate-report` | Latest captured release-gate text report |
 | `epimcp://release-evidence/scientific-invariants` | Latest checksummed schema-spine scientific-invariants result |
+| `epimcp://release-evidence/ordered-trend-calibration` | Latest deterministic ADEMP ordered-trend calibration report |
 
 Generate or refresh the release evidence bundle with:
 
@@ -320,6 +322,13 @@ timepoints, multiple batches, missing or non-finite values, fewer than two
 observations at any dose, or any replicate not explicitly declared
 `biological`. Sample independence and null exchangeability cannot be proven
 from the packet metadata and remain recorded assumptions.
+
+The release-gated [simulation-calibration protocol](ordered-trend-calibration.md)
+checks exact references, four exchangeable null mechanisms, strong ordered
+signals, Monte Carlo agreement, and bounded pointwise-bootstrap coverage. Its
+heteroscedastic inverse-imbalance stress case has a higher rejection rate than
+the exchangeable-null cases and is diagnostic only; it reinforces rather than
+removes the recorded exchangeability limitation.
 
 ```json
 {

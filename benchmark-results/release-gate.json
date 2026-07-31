@@ -24,7 +24,17 @@
     {
       "name": "qualification_performance",
       "passed": true,
-      "details": "10000 real qualifications in 0.103s; 73.8 MiB RSS increase"
+      "details": "10000 real qualifications in 0.091s; 73.8 MiB RSS increase"
+    },
+    {
+      "name": "ordered_trend_calibration",
+      "passed": true,
+      "details": "13/13 gated checks passed; 3 assumption-stress/weak-signal scenarios retained as diagnostics"
+    },
+    {
+      "name": "ordered_trend_calibration_drift",
+      "passed": true,
+      "details": "Fresh deterministic calibration matches the committed expected report."
     }
   ],
   "benchmarkSummary": {

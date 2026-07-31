@@ -63,6 +63,7 @@ docsPaths:
   - docs/non-goals.md
   - docs/input-format-guide.md
   - docs/handoff.md
+  - docs/ordered-trend-calibration.md
 
 mcpToolNames:
   - health
@@ -92,12 +93,14 @@ mcpResourceUris:
   - epimcp://schemas/qualification-policy
   - epimcp://docs/validation-statement
   - epimcp://docs/tool-reference
+  - epimcp://docs/ordered-trend-calibration
   - epimcp://benchmarks/manifest
   - epimcp://release-evidence/manifest
   - epimcp://release-evidence/checksums
   - epimcp://release-evidence/release-gate-json
   - epimcp://release-evidence/release-gate-report
   - epimcp://release-evidence/scientific-invariants
+  - epimcp://release-evidence/ordered-trend-calibration
 
 cliCommands:
   - epimcp
@@ -168,4 +171,8 @@ releaseGates:
 
   - name: scientific_invariants
     description: Track-B scientific-invariants gate projects each released BioactivityPoDHandoffPacket onto the digest-pinned (e0a6a05) vendored ToxMCP schema-spine bioactivity/PoD policy engine via a fail-closed bridge and blocks any public-release-blocking overclaim, adequacy, or readiness regression
+    required: true
+
+  - name: ordered_trend_calibration
+    description: Deterministic ADEMP simulations gate exact references, exchangeable-null error control, strong ordered-signal power, Monte Carlo agreement, and bounded bootstrap coverage while reporting assumption-violating stress tests diagnostically
     required: true

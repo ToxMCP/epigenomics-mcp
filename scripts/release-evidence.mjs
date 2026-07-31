@@ -33,8 +33,9 @@ import {
 const DEFAULT_OUT_DIR = "release-evidence";
 const RELEASE_GATE_JSON = RELEASE_EVIDENCE_GENERATED_FILES[0];
 const RELEASE_GATE_TEXT = RELEASE_EVIDENCE_GENERATED_FILES[1];
-const NPM_PACK_DRY_RUN_JSON = RELEASE_EVIDENCE_GENERATED_FILES[2];
-const SCIENTIFIC_INVARIANTS_JSON = RELEASE_EVIDENCE_GENERATED_FILES[3];
+const ORDERED_TREND_CALIBRATION_JSON = RELEASE_EVIDENCE_GENERATED_FILES[2];
+const NPM_PACK_DRY_RUN_JSON = RELEASE_EVIDENCE_GENERATED_FILES[3];
+const SCIENTIFIC_INVARIANTS_JSON = RELEASE_EVIDENCE_GENERATED_FILES[4];
 
 function parseArgs(argv) {
   const args = {
@@ -223,6 +224,10 @@ function main() {
     runReleaseGate(gateDir);
     copyFileSync(join(gateDir, RELEASE_GATE_JSON), join(outDir, RELEASE_GATE_JSON));
     copyFileSync(join(gateDir, RELEASE_GATE_TEXT), join(outDir, RELEASE_GATE_TEXT));
+    copyFileSync(
+      join(gateDir, ORDERED_TREND_CALIBRATION_JSON),
+      join(outDir, ORDERED_TREND_CALIBRATION_JSON),
+    );
 
     // Placeholders make the package dry-run prove the audit-resource bundle
     // paths are included even while this command is regenerating them.
@@ -248,6 +253,7 @@ function main() {
       ...RELEASE_EVIDENCE_CHECKSUM_FILES.map((path) => resolve(path)),
       join(outDir, RELEASE_GATE_JSON),
       join(outDir, RELEASE_GATE_TEXT),
+      join(outDir, ORDERED_TREND_CALIBRATION_JSON),
       npmPackPath,
       join(outDir, SCIENTIFIC_INVARIANTS_JSON),
     ].sort();

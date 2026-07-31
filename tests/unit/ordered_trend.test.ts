@@ -3,6 +3,7 @@ import type { EpigenomicsFeatureResponsePacket } from "../../src/contracts/packe
 import {
   adjustPValues,
   assessOrderedTrends,
+  computeOrderedTrendPermutationCore,
   OrderedTrendAssessmentResultSchema,
 } from "../../src/trend/ordered_trend.js";
 
@@ -277,5 +278,50 @@ describe("adjustPValues", () => {
     expect(by[0]).toBeCloseTo(0.055);
     expect(by[1]).toBeCloseTo(0.0733333333);
     expect(by[2]).toBeCloseTo(0.0733333333);
+  });
+});
+
+describe("computeOrderedTrendPermutationCore", () => {
+  it("is the exact inference core used by packet assessment", () => {
+    const groups = [
+      [1, 2],
+      [3, 4],
+      [5, 6],
+    ];
+    const core = computeOrderedTrendPermutationCore(groups, {
+      permutationResamples: 4_999,
+      seed: 123,
+    });
+    const packetTest = assessOrderedTrends(makePacket([[...groups]]), {
+      bootstrapResamples: 199,
+      seed: 123,
+    }).features[0].test!;
+
+    expect(core.mode).toBe("exact");
+    expect(core.totalLabelAllocations).toBe("90");
+    expect(core.pValueTwoSided).toBe(packetTest.pValueTwoSided);
+    expect(core.orderedPairEffect).toBe(packetTest.orderedPairEffect);
+  });
+
+  it("rejects malformed simulation inputs", () => {
+    expect(() =>
+      computeOrderedTrendPermutationCore(
+        [
+          [1, 2],
+          [3, 4],
+        ],
+        { permutationResamples: 99, seed: 1 },
+      ),
+    ).toThrow(/at least three groups/);
+    expect(() =>
+      computeOrderedTrendPermutationCore(
+        [
+          [1, 2],
+          [3, Number.NaN],
+          [5, 6],
+        ],
+        { permutationResamples: 99, seed: 1 },
+      ),
+    ).toThrow(/finite values/);
   });
 });

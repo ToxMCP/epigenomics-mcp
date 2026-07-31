@@ -1,0 +1,631 @@
+{
+  "schemaName": "OrderedTrendCalibrationReport",
+  "schemaVersion": "0.1.0",
+  "method": "jonckheere_terpstra_permutation",
+  "protocol": {
+    "framework": "ADEMP",
+    "alpha": 0.05,
+    "calibrationConfidenceLevel": 0.99,
+    "baseSeed": 1592598566,
+    "dataGenerator": "mulberry32_box_muller_v1",
+    "inferenceEngine": "production_ordered_trend_core",
+    "exactReference": "complete_distinct_label_allocation_enumeration",
+    "sources": [
+      {
+        "title": "Using simulation studies to evaluate statistical methods",
+        "url": "https://doi.org/10.1002/sim.8086"
+      },
+      {
+        "title": "A distribution-free k-sample test against ordered alternatives",
+        "url": "https://doi.org/10.1093/biomet/41.1-2.133"
+      },
+      {
+        "title": "Permutation P-values should never be zero",
+        "url": "https://doi.org/10.2202/1544-6115.1585"
+      },
+      {
+        "title": "Probable inference, the law of succession, and statistical inference",
+        "url": "https://doi.org/10.1080/01621459.1927.10502953"
+      },
+      {
+        "title": "To permute or not to permute",
+        "url": "https://doi.org/10.1093/bioinformatics/btl383"
+      }
+    ]
+  },
+  "referenceCases": [
+    {
+      "id": "complete_separation_increasing",
+      "groups": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "expected": {
+        "statistic": 12,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 0.022222222222222223,
+        "pValueIncreasing": 0.011111111111111112,
+        "pValueDecreasing": 1
+      },
+      "observed": {
+        "statistic": 12,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 0.022222222222222223,
+        "pValueIncreasing": 0.011111111111111112,
+        "pValueDecreasing": 1,
+        "totalLabelAllocations": "90"
+      },
+      "passed": true
+    },
+    {
+      "id": "complete_separation_decreasing",
+      "groups": [
+        [
+          6,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "expected": {
+        "statistic": 0,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 0.022222222222222223,
+        "pValueIncreasing": 1,
+        "pValueDecreasing": 0.011111111111111112
+      },
+      "observed": {
+        "statistic": 0,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 0.022222222222222223,
+        "pValueIncreasing": 1,
+        "pValueDecreasing": 0.011111111111111112,
+        "totalLabelAllocations": "90"
+      },
+      "passed": true
+    },
+    {
+      "id": "all_ties",
+      "groups": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "expected": {
+        "statistic": 6,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 1,
+        "pValueIncreasing": 1,
+        "pValueDecreasing": 1
+      },
+      "observed": {
+        "statistic": 6,
+        "maximumStatistic": 12,
+        "pValueTwoSided": 1,
+        "pValueIncreasing": 1,
+        "pValueDecreasing": 1,
+        "totalLabelAllocations": "90"
+      },
+      "passed": true
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "null_normal_balanced",
+      "category": "type_i_error",
+      "assumptionStatus": "exchangeable_null",
+      "distribution": "normal",
+      "replicates": 1000,
+      "seed": 1592598667,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 45,
+      "rejectionRate": 0.045,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.030903682638,
+        "upper": 0.065094277424
+      },
+      "meanOrderedPairEffect": -0.011703703704,
+      "decision": {
+        "gated": true,
+        "criterion": "rejection_count_at_or_below_binomial_upper_bound",
+        "referenceRate": 0.05,
+        "threshold": 67,
+        "observed": 45,
+        "passed": true
+      }
+    },
+    {
+      "id": "null_normal_imbalanced",
+      "category": "type_i_error",
+      "assumptionStatus": "exchangeable_null",
+      "distribution": "normal",
+      "replicates": 1000,
+      "seed": 1592598668,
+      "groupSizes": [
+        2,
+        3,
+        4
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 19,
+      "rejectionRate": 0.019,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.010641957379,
+        "upper": 0.033698743258
+      },
+      "meanOrderedPairEffect": 0.009,
+      "decision": {
+        "gated": true,
+        "criterion": "rejection_count_at_or_below_binomial_upper_bound",
+        "referenceRate": 0.05,
+        "threshold": 67,
+        "observed": 19,
+        "passed": true
+      }
+    },
+    {
+      "id": "null_centered_lognormal_balanced",
+      "category": "type_i_error",
+      "assumptionStatus": "exchangeable_null",
+      "distribution": "centered_lognormal",
+      "replicates": 1000,
+      "seed": 1592598669,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 40,
+      "rejectionRate": 0.04,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.026836462188,
+        "upper": 0.059227409523
+      },
+      "meanOrderedPairEffect": -0.017555555556,
+      "decision": {
+        "gated": true,
+        "criterion": "rejection_count_at_or_below_binomial_upper_bound",
+        "referenceRate": 0.05,
+        "threshold": 67,
+        "observed": 40,
+        "passed": true
+      }
+    },
+    {
+      "id": "null_symmetric_ties_balanced",
+      "category": "type_i_error",
+      "assumptionStatus": "exchangeable_null",
+      "distribution": "symmetric_discrete",
+      "replicates": 1000,
+      "seed": 1592598670,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 13,
+      "rejectionRate": 0.013,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.006469533988,
+        "upper": 0.025950260628
+      },
+      "meanOrderedPairEffect": 0.013296296296,
+      "decision": {
+        "gated": true,
+        "criterion": "rejection_count_at_or_below_binomial_upper_bound",
+        "referenceRate": 0.05,
+        "threshold": 67,
+        "observed": 13,
+        "passed": true
+      }
+    },
+    {
+      "id": "strong_ordered_increasing",
+      "category": "ordered_power",
+      "assumptionStatus": "ordered_location_alternative",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598767,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        -2,
+        0,
+        2
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 480,
+      "rejectionRate": 0.96,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.930755640249,
+        "upper": 0.977196028864
+      },
+      "meanOrderedPairEffect": 0.89437037037,
+      "decision": {
+        "gated": true,
+        "criterion": "wilson_lower_bound_at_or_above_power_floor",
+        "referenceRate": null,
+        "threshold": 0.8,
+        "observed": 0.930755640249,
+        "passed": true
+      }
+    },
+    {
+      "id": "strong_ordered_decreasing",
+      "category": "ordered_power",
+      "assumptionStatus": "ordered_location_alternative",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598768,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        2,
+        0,
+        -2
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 476,
+      "rejectionRate": 0.952,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.920911680908,
+        "upper": 0.971249524394
+      },
+      "meanOrderedPairEffect": -0.897185185185,
+      "decision": {
+        "gated": true,
+        "criterion": "wilson_lower_bound_at_or_above_power_floor",
+        "referenceRate": null,
+        "threshold": 0.8,
+        "observed": 0.920911680908,
+        "passed": true
+      }
+    },
+    {
+      "id": "weak_ordered_increasing",
+      "category": "weak_signal_characterization",
+      "assumptionStatus": "ordered_location_alternative",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598769,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        -0.5,
+        0,
+        0.5
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 85,
+      "rejectionRate": 0.17,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.13111839443,
+        "upper": 0.21752497338
+      },
+      "meanOrderedPairEffect": 0.366222222222,
+      "decision": {
+        "gated": false,
+        "criterion": "characterization_only",
+        "referenceRate": null,
+        "threshold": null,
+        "observed": null,
+        "passed": null
+      }
+    },
+    {
+      "id": "non_monotonic_inverted_u",
+      "category": "non_monotonic_specificity",
+      "assumptionStatus": "non_monotonic_nonexchangeable",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598867,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        0,
+        3,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 0,
+      "rejectionRate": 0,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0,
+        "upper": 0.013096011833
+      },
+      "meanOrderedPairEffect": -0.004740740741,
+      "decision": {
+        "gated": true,
+        "criterion": "rejection_count_at_or_below_binomial_upper_bound",
+        "referenceRate": 0.1,
+        "threshold": 66,
+        "observed": 0,
+        "passed": true
+      }
+    },
+    {
+      "id": "heteroscedastic_balanced",
+      "category": "exchangeability_stress",
+      "assumptionStatus": "exchangeability_violated",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598967,
+      "groupSizes": [
+        3,
+        3,
+        3
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        2,
+        4
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 24,
+      "rejectionRate": 0.048,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.028750475606,
+        "upper": 0.079088319092
+      },
+      "meanOrderedPairEffect": 0.008740740741,
+      "decision": {
+        "gated": false,
+        "criterion": "characterization_only",
+        "referenceRate": null,
+        "threshold": null,
+        "observed": null,
+        "passed": null
+      }
+    },
+    {
+      "id": "heteroscedastic_inverse_imbalance",
+      "category": "exchangeability_stress",
+      "assumptionStatus": "exchangeability_violated",
+      "distribution": "normal",
+      "replicates": 500,
+      "seed": 1592598968,
+      "groupSizes": [
+        5,
+        3,
+        2
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        2,
+        4
+      ],
+      "alpha": 0.05,
+      "rejectionCount": 42,
+      "rejectionRate": 0.084,
+      "rejectionRateWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.057240184174,
+        "upper": 0.121655697671
+      },
+      "meanOrderedPairEffect": -0.009806451613,
+      "decision": {
+        "gated": false,
+        "criterion": "characterization_only",
+        "referenceRate": null,
+        "threshold": null,
+        "observed": null,
+        "passed": null
+      }
+    }
+  ],
+  "monteCarloAgreement": {
+    "comparisonCount": 32,
+    "randomPermutationsPerComparison": 4999,
+    "meanAbsolutePValueError": 0.003214880952,
+    "rootMeanSquareStandardizedError": 0.785477846422,
+    "maximumStandardizedError": 1.892736642801,
+    "maximumAllowedRootMeanSquareStandardizedError": 1.5,
+    "maximumAllowedStandardizedError": 4.5,
+    "passed": true
+  },
+  "effectIntervalCoverage": [
+    {
+      "id": "null_effect_percentile_interval",
+      "distribution": "normal",
+      "groupSizes": [
+        6,
+        6,
+        6
+      ],
+      "locations": [
+        0,
+        0,
+        0
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "trueOrderedPairEffect": 0,
+      "replicates": 300,
+      "bootstrapResamples": 499,
+      "nominalConfidenceLevel": 0.95,
+      "coverageCount": 281,
+      "coverageRate": 0.936666666667,
+      "coverageWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.890165845625,
+        "upper": 0.964270498392
+      },
+      "meanIntervalWidth": 0.843709876543,
+      "minimumAllowedWilsonLowerBound": 0.8,
+      "passed": true
+    },
+    {
+      "id": "moderate_ordered_effect_percentile_interval",
+      "distribution": "normal",
+      "groupSizes": [
+        6,
+        6,
+        6
+      ],
+      "locations": [
+        -0.5,
+        0,
+        0.5
+      ],
+      "scales": [
+        1,
+        1,
+        1
+      ],
+      "trueOrderedPairEffect": 0.357717513004,
+      "replicates": 300,
+      "bootstrapResamples": 499,
+      "nominalConfidenceLevel": 0.95,
+      "coverageCount": 270,
+      "coverageRate": 0.9,
+      "coverageWilsonInterval": {
+        "confidenceLevel": 0.99,
+        "lower": 0.846374782711,
+        "upper": 0.936314998069
+      },
+      "meanIntervalWidth": 0.753462962963,
+      "minimumAllowedWilsonLowerBound": 0.8,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "gatedCheckCount": 13,
+    "passedGatedCheckCount": 13,
+    "diagnosticScenarioCount": 3,
+    "ready": true
+  },
+  "interpretationBoundaries": [
+    "Passing this finite simulation grid does not establish universal statistical validity.",
+    "Nominal type-I error checks apply only when responses are exchangeable under the null and observations are independent.",
+    "Heteroscedastic stress scenarios are diagnostics, not calibration claims, because their group distributions are not exchangeable.",
+    "Bootstrap intervals remain pointwise exploratory percentile intervals and are not simultaneous confidence bands.",
+    "Strong-signal power targets do not establish sensitivity for weak biological effects or small real-world studies.",
+    "No simulation result establishes biological significance, causality, BMD suitability, or regulatory acceptance."
+  ]
+}

@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
     "version": "0.2.1",
-    "size": 799736,
-    "unpackedSize": 4578449,
-    "shasum": "61accb2017a296afd033c27be7de9263f7c02527",
-    "integrity": "sha512-B0UTSr8evNnof+DpLOaHTS7v0a6sKSX1oV412xi1Sde1E75LfaZ3GH+MUj7A6VO+Q1D5/L1zmi/X/f3j9m+IHw==",
+    "size": 823828,
+    "unpackedSize": 4708923,
+    "shasum": "4a997ed0a440f7d34ff57feffe685d400e309a46",
+    "integrity": "sha512-HML9ByQnBfxeWwGPsaBZV22IVFsICZOLNsrD5SqlZx3UU8sGv9KlFBgLYuCEeC6SXp96eBN0I96IoUYv1dRn3Q==",
     "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 6525,
+        "size": 7087,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 17561,
+        "size": 18813,
         "mode": 420
       },
       {
@@ -382,6 +382,11 @@
       {
         "path": "benchmarks/expected/golden_handoff_examples/exploratory_only/packet.json",
         "size": 5763,
+        "mode": 420
+      },
+      {
+        "path": "benchmarks/expected/ordered_trend_calibration/report.json",
+        "size": 15114,
         "mode": 420
       },
       {
@@ -1316,12 +1321,12 @@
       },
       {
         "path": "dist/epimcp/resources.js",
-        "size": 6246,
+        "size": 7036,
         "mode": 420
       },
       {
         "path": "dist/epimcp/resources.js.map",
-        "size": 3522,
+        "size": 3816,
         "mode": 420
       },
       {
@@ -2086,7 +2091,7 @@
       },
       {
         "path": "dist/release_evidence/artifacts.d.ts",
-        "size": 1018,
+        "size": 1089,
         "mode": 420
       },
       {
@@ -2096,12 +2101,12 @@
       },
       {
         "path": "dist/release_evidence/artifacts.js",
-        "size": 1137,
+        "size": 1216,
         "mode": 420
       },
       {
         "path": "dist/release_evidence/artifacts.js.map",
-        "size": 874,
+        "size": 900,
         "mode": 420
       },
       {
@@ -2305,23 +2310,43 @@
         "mode": 420
       },
       {
+        "path": "dist/trend/calibration.d.ts",
+        "size": 20553,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/calibration.d.ts.map",
+        "size": 878,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/calibration.js",
+        "size": 25935,
+        "mode": 420
+      },
+      {
+        "path": "dist/trend/calibration.js.map",
+        "size": 23822,
+        "mode": 420
+      },
+      {
         "path": "dist/trend/ordered_trend.d.ts",
-        "size": 43606,
+        "size": 45722,
         "mode": 420
       },
       {
         "path": "dist/trend/ordered_trend.d.ts.map",
-        "size": 2048,
+        "size": 2879,
         "mode": 420
       },
       {
         "path": "dist/trend/ordered_trend.js",
-        "size": 26976,
+        "size": 30710,
         "mode": 420
       },
       {
         "path": "dist/trend/ordered_trend.js.map",
-        "size": 26092,
+        "size": 29462,
         "mode": 420
       },
       {
@@ -2610,6 +2635,11 @@
         "mode": 420
       },
       {
+        "path": "docs/ordered-trend-calibration.md",
+        "size": 6471,
+        "mode": 420
+      },
+      {
         "path": "docs/region-to-gene-mapping-guide.md",
         "size": 6854,
         "mode": 420
@@ -2626,12 +2656,12 @@
       },
       {
         "path": "docs/tool-reference.md",
-        "size": 38879,
+        "size": 39559,
         "mode": 420
       },
       {
         "path": "docs/validation-statement.md",
-        "size": 32607,
+        "size": 35002,
         "mode": 420
       },
       {
@@ -2746,7 +2776,7 @@
       },
       {
         "path": "package.json",
-        "size": 5531,
+        "size": 5810,
         "mode": 420
       },
       {
@@ -2765,18 +2795,23 @@
         "mode": 420
       },
       {
+        "path": "release-evidence/ordered-trend-calibration.json",
+        "size": 15114,
+        "mode": 420
+      },
+      {
         "path": "release-evidence/release-evidence.json",
         "size": 3,
         "mode": 420
       },
       {
         "path": "release-evidence/release-gate.json",
-        "size": 823,
+        "size": 1187,
         "mode": 420
       },
       {
         "path": "release-evidence/release-gate.txt",
-        "size": 497,
+        "size": 735,
         "mode": 420
       },
       {
@@ -2845,6 +2880,11 @@
         "mode": 420
       },
       {
+        "path": "scripts/calibrate-ordered-trend.mjs",
+        "size": 1759,
+        "mode": 420
+      },
+      {
         "path": "scripts/export-schemas.mjs",
         "size": 580,
         "mode": 420
@@ -2866,12 +2906,12 @@
       },
       {
         "path": "scripts/release-evidence.mjs",
-        "size": 9044,
+        "size": 9302,
         "mode": 420
       },
       {
         "path": "scripts/release-gate.mjs",
-        "size": 4332,
+        "size": 6501,
         "mode": 420
       },
       {
@@ -2897,6 +2937,11 @@
       {
         "path": "scripts/update-benchmark-goldens.mjs",
         "size": 2726,
+        "mode": 420
+      },
+      {
+        "path": "scripts/update-ordered-trend-calibration.mjs",
+        "size": 873,
         "mode": 420
       },
       {
@@ -3091,7 +3136,7 @@
       },
       {
         "path": "toxmcp.manifest.yaml",
-        "size": 6059,
+        "size": 6506,
         "mode": 420
       },
       {
@@ -3400,7 +3445,7 @@
         "mode": 420
       }
     ],
-    "entryCount": 678,
+    "entryCount": 687,
     "bundled": []
   }
 ]
