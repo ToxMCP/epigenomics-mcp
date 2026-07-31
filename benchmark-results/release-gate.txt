@@ -13,5 +13,7 @@
        Benchmark results are deterministic across two runs.
 
 === Release Status: READY ===
-PASS: qualification_performance — 10000 real qualifications in 0.103s; 73.8 MiB RSS increase
-Overall with performance: READY
+PASS: qualification_performance — 10000 real qualifications in 0.091s; 73.8 MiB RSS increase
+PASS: ordered_trend_calibration — 13/13 gated checks passed; 3 assumption-stress/weak-signal scenarios retained as diagnostics
+PASS: ordered_trend_calibration_drift — Fresh deterministic calibration matches the committed expected report.
+Overall release gate: READY
