@@ -32,6 +32,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Monte Carlo Jonckheere–Terpstra tests, never-zero random-permutation
   p-values, pointwise dose-stratified bootstrap effect intervals, and explicit
   Benjamini–Yekutieli or Benjamini–Hochberg family adjustment.
+- A deterministic ADEMP ordered-trend calibration harness covering exact
+  references, exchangeable continuous/skewed/tied nulls, imbalance, strong and
+  weak trends, non-monotonic responses, heteroscedastic stress cases, Monte
+  Carlo agreement, and pointwise-bootstrap coverage. Fresh results are
+  release-gated against a reviewed baseline and included in checksummed audit
+  evidence.
 
 ### Changed
 
@@ -63,6 +69,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   errors instead of allowing replicate assessment to throw.
 - Benchmark drift tests now mutate isolated temporary golden copies, removing
   a cross-file race with the release-gate test.
+- Exact permutation distributions are cached by group-size and tie pattern,
+  preserving results while making repeated feature and calibration inference
+  bounded and fast.
 
 ## [0.2.1] - 2026-07-27
 

@@ -94,7 +94,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-gate-report-node-${{ matrix.node-version }}
-          path: benchmark-results/release-gate.*
+          path: |
+            benchmark-results/release-gate.*
+            benchmark-results/ordered-trend-calibration.json
           retention-days: 14
 
       - name: Upload coverage artifact

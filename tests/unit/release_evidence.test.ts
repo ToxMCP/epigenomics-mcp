@@ -90,6 +90,9 @@ describe("release evidence schema", () => {
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("benchmark_manifest.yaml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("docs/validation-statement.md");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("docs/tool-reference.md");
+    expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain(
+      "docs/ordered-trend-calibration.md",
+    );
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("toxmcp.manifest.yaml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("evaluation.xml");
     expect(RELEASE_EVIDENCE_CHECKSUM_FILES).toContain("SECURITY.md");
@@ -99,6 +102,7 @@ describe("release evidence schema", () => {
     expect(RELEASE_EVIDENCE_GENERATED_FILES).toEqual([
       "release-gate.json",
       "release-gate.txt",
+      "ordered-trend-calibration.json",
       "npm-pack-dry-run.json",
       "scientific-invariants.json",
     ]);

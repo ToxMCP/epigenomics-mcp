@@ -15,6 +15,7 @@ export const RELEASE_EVIDENCE_CHECKSUM_FILES = [
   "benchmark_manifest.yaml",
   "docs/validation-statement.md",
   "docs/tool-reference.md",
+  "docs/ordered-trend-calibration.md",
   "toxmcp.manifest.yaml",
   "evaluation.xml",
   "SECURITY.md",
@@ -29,6 +30,7 @@ export const RELEASE_EVIDENCE_CHECKSUM_FILES = [
 export const RELEASE_EVIDENCE_GENERATED_FILES = [
   "release-gate.json",
   "release-gate.txt",
+  "ordered-trend-calibration.json",
   "npm-pack-dry-run.json",
   "scientific-invariants.json",
 ] as const;

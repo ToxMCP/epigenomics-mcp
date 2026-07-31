@@ -81,7 +81,8 @@ The released surface is intentionally bounded:
 | `🔌 MCP-native discovery` | Exposes strict tool schemas, structured content, annotations, and read-only audit resources over stdio and Streamable HTTP. |
 | `🧾 Checksummed release evidence` | Generates SHA-256 evidence for schemas, golden outputs, benchmark manifests, validation documents, scientific invariants, and package contents. |
 | `🌍 Full public-data validation` | Replays two complete GEO MeDIP matrices and one complete ENCODE replicated-peak file through the MCP with exact source and decompressed-content hashes. |
-| `🚦 Performance and release gates` | Exercises the real packet-validation and qualification engine at 10,000-feature scale alongside protocol, security, conformance, and nondeterminism checks. |
+| `🧪 Statistical calibration` | Release-gates exact ordered-trend references, exchangeable-null error control, strong-signal power, Monte Carlo agreement, and bounded bootstrap coverage while retaining assumption-violating stress tests as diagnostics. |
+| `🚦 Performance and release gates` | Exercises the real packet-validation and qualification engine at 10,000-feature scale alongside protocol, security, conformance, nondeterminism, and ordered-trend calibration checks. |
 
 ## Release gates
 
@@ -92,7 +93,8 @@ processed-evidence qualification scope:
 - `npm run smoke:mcp` exercises both transports through the official MCP client
 - `npm run security:audit` requires zero production dependency vulnerabilities
 - `npm run eval:validate` checks the committed 10-case MCP evaluation set
-- `npm run benchmark:ci` checks golden outputs and the qualification performance budget
+- `npm run benchmark:ci` checks golden outputs, ordered-trend calibration, and the qualification performance budget
+- `npm run calibrate:trend` writes the deterministic ADEMP calibration report
 - `npm run verify:evidence` verifies the post-commit release-evidence bundle
 - `.venv/bin/pytest tests/python -q` checks the dependency-light Python governance and compatibility layer
 - `npm run verify:release` composes the release gates
@@ -132,6 +134,13 @@ each. The fixture and reproducible checksum-verifying derivation are under
 It verifies real multi-dose response-pattern handling while explicitly making
 no differential-accessibility, biological-significance, or BMD-suitability
 claim.
+
+The separate [ordered-trend calibration protocol](./docs/ordered-trend-calibration.md)
+uses fixed-seed simulations to gate exact references, exchangeable-null error
+control, strong-signal sensitivity, Monte Carlo agreement, and bounded
+pointwise-bootstrap coverage. Heteroscedastic stress scenarios remain
+diagnostic because their group distributions violate the exchangeability
+premise; the inverse-imbalance case demonstrates why that limitation matters.
 
 ## Quickstart TL;DR
 
@@ -202,12 +211,14 @@ Read-only MCP resources expose contracts and evidence directly to clients:
 | `epimcp://schemas/qualification-policy` | Qualification policy JSON Schema |
 | `epimcp://docs/validation-statement` | Regulator-facing validation statement |
 | `epimcp://docs/tool-reference` | Tool and usage reference |
+| `epimcp://docs/ordered-trend-calibration` | ADEMP calibration protocol, acceptance rules, results, and boundaries |
 | `epimcp://benchmarks/manifest` | Release benchmark manifest |
 | `epimcp://release-evidence/manifest` | Latest generated release evidence manifest |
 | `epimcp://release-evidence/checksums` | Latest generated checksum list |
 | `epimcp://release-evidence/release-gate-json` | Latest captured release-gate JSON |
 | `epimcp://release-evidence/release-gate-report` | Latest captured release-gate report |
 | `epimcp://release-evidence/scientific-invariants` | Latest checksummed schema-spine scientific-invariants result |
+| `epimcp://release-evidence/ordered-trend-calibration` | Latest deterministic ADEMP ordered-trend calibration report |
 
 ## Release evidence
 
@@ -223,6 +234,7 @@ This writes:
 - `release-evidence/checksums.sha256`
 - `release-evidence/release-gate.json`
 - `release-evidence/release-gate.txt`
+- `release-evidence/ordered-trend-calibration.json`
 - `release-evidence/npm-pack-dry-run.json`
 
 The evidence manifest records package/config versions, environment details, Git availability, release-gate status, npm pack dry-run metadata, and checksums for the committed audit inputs.
@@ -286,6 +298,7 @@ See [docs/validation-statement.md](./docs/validation-statement.md), [docs/tool-r
 - `src/ingestion/`: Processed table readers and feature-table canonicalization
 - `src/qualification/`: Policy, rule engine, explainability, and claim guards
 - `src/qc/`: QC, missingness, variance, and confounding profilers
+- `src/trend/`: Exploratory ordered-trend inference and deterministic calibration harness
 - `schemas/current/`: Committed JSON Schema exports
 - `benchmarks/fixtures/synthetic/`: Synthetic release benchmark inputs
 - `benchmarks/fixtures/frozen_public/`: Checksummed, source-linked public-data excerpts
@@ -305,6 +318,7 @@ npm test
 npm run build
 npm run smoke:mcp
 npm run benchmark:gate
+npm run calibrate:trend
 npm run validate:public-data
 npm run release:evidence
 npm run verify:evidence

@@ -7,6 +7,8 @@
  *   - expected golden output completeness
  *   - golden output comparison
  *   - nondeterminism detection
+ *   - ordered-trend simulation calibration and baseline drift
+ *   - qualification performance budget
  *
  * Exits 0 when release-ready, 1 otherwise.
  *
@@ -14,14 +16,22 @@
  *   node scripts/release-gate.mjs
  */
 
-import { mkdirSync, writeFileSync, existsSync } from "node:fs";
+import { mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
 import { loadBenchmarkManifest } from "../dist/benchmarks/manifest.js";
 import { runReleaseGate, formatReleaseGateReport } from "../dist/benchmarks/release_gate.js";
+import { runOrderedTrendCalibration } from "../dist/trend/calibration.js";
 
 const MANIFEST_PATH = join(process.cwd(), "benchmark_manifest.yaml");
+const ORDERED_TREND_CALIBRATION_EXPECTED = join(
+  process.cwd(),
+  "benchmarks",
+  "expected",
+  "ordered_trend_calibration",
+  "report.json",
+);
 
 function parseArgs(argv) {
   const args = { outDir: join(process.cwd(), "benchmark-results") };
@@ -98,6 +108,54 @@ function runPerformanceGate() {
   }
 }
 
+function runOrderedTrendCalibrationGate(outDir) {
+  const report = runOrderedTrendCalibration();
+  writeFileSync(
+    join(outDir, "ordered-trend-calibration.json"),
+    JSON.stringify(report, null, 2) + "\n",
+    "utf-8",
+  );
+  const calibrationCheck = {
+    name: "ordered_trend_calibration",
+    passed: report.summary.ready,
+    details:
+      `${report.summary.passedGatedCheckCount}/${report.summary.gatedCheckCount} ` +
+      `gated checks passed; ${report.summary.diagnosticScenarioCount} ` +
+      "assumption-stress/weak-signal scenarios retained as diagnostics",
+  };
+
+  if (!existsSync(ORDERED_TREND_CALIBRATION_EXPECTED)) {
+    return {
+      report,
+      checks: [
+        calibrationCheck,
+        {
+          name: "ordered_trend_calibration_drift",
+          passed: false,
+          details: `Missing expected calibration report: ${ORDERED_TREND_CALIBRATION_EXPECTED}`,
+        },
+      ],
+    };
+  }
+  const expected = JSON.parse(
+    readFileSync(ORDERED_TREND_CALIBRATION_EXPECTED, "utf-8"),
+  );
+  const driftFree = JSON.stringify(report) === JSON.stringify(expected);
+  return {
+    report,
+    checks: [
+      calibrationCheck,
+      {
+        name: "ordered_trend_calibration_drift",
+        passed: driftFree,
+        details: driftFree
+          ? "Fresh deterministic calibration matches the committed expected report."
+          : "Calibration drift detected; inspect the fresh ordered-trend-calibration.json before updating the expected report.",
+      },
+    ],
+  };
+}
+
 function main() {
   const { outDir } = parseArgs(process.argv.slice(2));
   console.log("Loading benchmark manifest...");
@@ -105,10 +163,13 @@ function main() {
 
   console.log("Running release gate checks...\n");
   const result = runReleaseGate(manifest);
-  const performance = runPerformanceGate();
-  const ready = result.ready && performance.check.passed;
-
   ensureDir(outDir);
+  const performance = runPerformanceGate();
+  const calibration = runOrderedTrendCalibrationGate(outDir);
+  const ready =
+    result.ready &&
+    performance.check.passed &&
+    calibration.checks.every((check) => check.passed);
 
   // Write JSON report
   const jsonReport = {
@@ -120,6 +181,7 @@ function main() {
         details: c.details,
       })),
       performance.check,
+      ...calibration.checks,
     ],
     benchmarkSummary: {
       totalBenchmarks: result.benchmarkResult.benchmarks.length,
@@ -138,7 +200,14 @@ function main() {
     `${formatReleaseGateReport(result)}\n` +
     `${performance.check.passed ? "PASS" : "FAIL"}: ` +
     `${performance.check.name} — ${performance.check.details}\n` +
-    `Overall with performance: ${ready ? "READY" : "BLOCKED"}`;
+    calibration.checks
+      .map(
+        (check) =>
+          `${check.passed ? "PASS" : "FAIL"}: ${check.name} — ${check.details}`,
+      )
+      .join("\n") +
+    "\n" +
+    `Overall release gate: ${ready ? "READY" : "BLOCKED"}`;
   writeFileSync(join(outDir, "release-gate.txt"), textReport + "\n", "utf-8");
 
   // Print report to stdout

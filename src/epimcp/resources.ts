@@ -81,6 +81,15 @@ export const AUDIT_RESOURCES: AuditResourceDefinition[] = [
     mimeType: "text/markdown",
   },
   {
+    name: "doc-ordered-trend-calibration",
+    title: "Ordered-Trend Simulation Calibration Protocol",
+    uri: "epimcp://docs/ordered-trend-calibration",
+    description:
+      "ADEMP protocol, acceptance rules, results, and interpretation boundaries for ordered-trend calibration.",
+    path: "docs/ordered-trend-calibration.md",
+    mimeType: "text/markdown",
+  },
+  {
     name: "benchmark-manifest",
     title: "Benchmark Manifest",
     uri: "epimcp://benchmarks/manifest",
@@ -127,6 +136,15 @@ export const AUDIT_RESOURCES: AuditResourceDefinition[] = [
     description:
       "Checksummed schema-spine scientific-invariants result captured into release evidence.",
     path: "release-evidence/scientific-invariants.json",
+    mimeType: "application/json",
+  },
+  {
+    name: "ordered-trend-calibration-json",
+    title: "Latest Ordered-Trend Calibration Report",
+    uri: "epimcp://release-evidence/ordered-trend-calibration",
+    description:
+      "Deterministic ADEMP simulation-calibration report captured into release evidence.",
+    path: "release-evidence/ordered-trend-calibration.json",
     mimeType: "application/json",
   },
 ];
