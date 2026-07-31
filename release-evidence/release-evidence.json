@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-07-27T21:53:04.187Z",
+  "generatedAt": "2026-07-31T13:17:21.922Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-07-27T21:53:01.088Z",
-    "finishedAt": "2026-07-27T21:53:04.187Z"
+    "startedAt": "2026-07-31T13:17:16.990Z",
+    "finishedAt": "2026-07-31T13:17:21.922Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "0b49f252bb34b830432ca01793e879d7c726c464",
+    "commit": "6acc84f2cbe55bf2406ce9a358601bad904d43fc",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,17 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.100s; 75.3 MiB RSS increase"
+        "details": "10000 real qualifications in 0.099s; 72.8 MiB RSS increase"
+      },
+      {
+        "name": "ordered_trend_calibration",
+        "passed": true,
+        "details": "13/13 gated checks passed; 3 assumption-stress/weak-signal scenarios retained as diagnostics"
+      },
+      {
+        "name": "ordered_trend_calibration_drift",
+        "passed": true,
+        "details": "Fresh deterministic calibration matches the committed expected report."
       }
     ],
     "benchmarkSummary": {
@@ -66,15 +76,15 @@
       "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
       "version": "0.2.1",
-      "size": 799736,
-      "unpackedSize": 4578449,
-      "shasum": "61accb2017a296afd033c27be7de9263f7c02527",
-      "integrity": "sha512-B0UTSr8evNnof+DpLOaHTS7v0a6sKSX1oV412xi1Sde1E75LfaZ3GH+MUj7A6VO+Q1D5/L1zmi/X/f3j9m+IHw==",
+      "size": 823828,
+      "unpackedSize": 4708923,
+      "shasum": "4a997ed0a440f7d34ff57feffe685d400e309a46",
+      "integrity": "sha512-HML9ByQnBfxeWwGPsaBZV22IVFsICZOLNsrD5SqlZx3UU8sGv9KlFBgLYuCEeC6SXp96eBN0I96IoUYv1dRn3Q==",
       "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 6525,
+          "size": 7087,
           "mode": 420
         },
         {
@@ -94,7 +104,7 @@
         },
         {
           "path": "README.md",
-          "size": 17561,
+          "size": 18813,
           "mode": 420
         },
         {
@@ -445,6 +455,11 @@
         {
           "path": "benchmarks/expected/golden_handoff_examples/exploratory_only/packet.json",
           "size": 5763,
+          "mode": 420
+        },
+        {
+          "path": "benchmarks/expected/ordered_trend_calibration/report.json",
+          "size": 15114,
           "mode": 420
         },
         {
@@ -1379,12 +1394,12 @@
         },
         {
           "path": "dist/epimcp/resources.js",
-          "size": 6246,
+          "size": 7036,
           "mode": 420
         },
         {
           "path": "dist/epimcp/resources.js.map",
-          "size": 3522,
+          "size": 3816,
           "mode": 420
         },
         {
@@ -2149,7 +2164,7 @@
         },
         {
           "path": "dist/release_evidence/artifacts.d.ts",
-          "size": 1018,
+          "size": 1089,
           "mode": 420
         },
         {
@@ -2159,12 +2174,12 @@
         },
         {
           "path": "dist/release_evidence/artifacts.js",
-          "size": 1137,
+          "size": 1216,
           "mode": 420
         },
         {
           "path": "dist/release_evidence/artifacts.js.map",
-          "size": 874,
+          "size": 900,
           "mode": 420
         },
         {
@@ -2368,23 +2383,43 @@
           "mode": 420
         },
         {
+          "path": "dist/trend/calibration.d.ts",
+          "size": 20553,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/calibration.d.ts.map",
+          "size": 878,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/calibration.js",
+          "size": 25935,
+          "mode": 420
+        },
+        {
+          "path": "dist/trend/calibration.js.map",
+          "size": 23822,
+          "mode": 420
+        },
+        {
           "path": "dist/trend/ordered_trend.d.ts",
-          "size": 43606,
+          "size": 45722,
           "mode": 420
         },
         {
           "path": "dist/trend/ordered_trend.d.ts.map",
-          "size": 2048,
+          "size": 2879,
           "mode": 420
         },
         {
           "path": "dist/trend/ordered_trend.js",
-          "size": 26976,
+          "size": 30710,
           "mode": 420
         },
         {
           "path": "dist/trend/ordered_trend.js.map",
-          "size": 26092,
+          "size": 29462,
           "mode": 420
         },
         {
@@ -2673,6 +2708,11 @@
           "mode": 420
         },
         {
+          "path": "docs/ordered-trend-calibration.md",
+          "size": 6471,
+          "mode": 420
+        },
+        {
           "path": "docs/region-to-gene-mapping-guide.md",
           "size": 6854,
           "mode": 420
@@ -2689,12 +2729,12 @@
         },
         {
           "path": "docs/tool-reference.md",
-          "size": 38879,
+          "size": 39559,
           "mode": 420
         },
         {
           "path": "docs/validation-statement.md",
-          "size": 32607,
+          "size": 35002,
           "mode": 420
         },
         {
@@ -2809,7 +2849,7 @@
         },
         {
           "path": "package.json",
-          "size": 5531,
+          "size": 5810,
           "mode": 420
         },
         {
@@ -2828,18 +2868,23 @@
           "mode": 420
         },
         {
+          "path": "release-evidence/ordered-trend-calibration.json",
+          "size": 15114,
+          "mode": 420
+        },
+        {
           "path": "release-evidence/release-evidence.json",
           "size": 3,
           "mode": 420
         },
         {
           "path": "release-evidence/release-gate.json",
-          "size": 823,
+          "size": 1187,
           "mode": 420
         },
         {
           "path": "release-evidence/release-gate.txt",
-          "size": 497,
+          "size": 735,
           "mode": 420
         },
         {
@@ -2908,6 +2953,11 @@
           "mode": 420
         },
         {
+          "path": "scripts/calibrate-ordered-trend.mjs",
+          "size": 1759,
+          "mode": 420
+        },
+        {
           "path": "scripts/export-schemas.mjs",
           "size": 580,
           "mode": 420
@@ -2929,12 +2979,12 @@
         },
         {
           "path": "scripts/release-evidence.mjs",
-          "size": 9044,
+          "size": 9302,
           "mode": 420
         },
         {
           "path": "scripts/release-gate.mjs",
-          "size": 4332,
+          "size": 6501,
           "mode": 420
         },
         {
@@ -2960,6 +3010,11 @@
         {
           "path": "scripts/update-benchmark-goldens.mjs",
           "size": 2726,
+          "mode": 420
+        },
+        {
+          "path": "scripts/update-ordered-trend-calibration.mjs",
+          "size": 873,
           "mode": 420
         },
         {
@@ -3154,7 +3209,7 @@
         },
         {
           "path": "toxmcp.manifest.yaml",
-          "size": 6059,
+          "size": 6506,
           "mode": 420
         },
         {
@@ -3463,7 +3518,7 @@
           "mode": 420
         }
       ],
-      "entryCount": 678,
+      "entryCount": 687,
       "bundled": []
     }
   ],
@@ -3822,6 +3877,11 @@
       "path": "benchmarks/expected/golden_handoff_examples/exploratory_only/packet.json",
       "sha256": "a544f1866679e931af175ee7b58ccddd7cc2c0033fa1874fb8e5ed65c82ffb3b",
       "bytes": 5763
+    },
+    {
+      "path": "benchmarks/expected/ordered_trend_calibration/report.json",
+      "sha256": "3286c95e4bbc9df1dc3e68a29cf9f0f94a0d17b2e9d84ab526d0d009776d6af8",
+      "bytes": 15114
     },
     {
       "path": "benchmarks/fixtures/frozen_public/gse152749.yaml",
@@ -4199,14 +4259,19 @@
       "bytes": 9649
     },
     {
+      "path": "docs/ordered-trend-calibration.md",
+      "sha256": "852e3bc9d98cda9d3da97d41185d7c05bac08da248a5cd035cb4d5343a26ddaa",
+      "bytes": 6471
+    },
+    {
       "path": "docs/tool-reference.md",
-      "sha256": "0430fdcfef5474f5f12f69662ce9c2925f68124657b538fd3565fee3ba55bd4a",
-      "bytes": 38879
+      "sha256": "93b8ab21c48e0e55560e6a33f040fd40170b7efb3919e9f9493ab7670ff943a2",
+      "bytes": 39559
     },
     {
       "path": "docs/validation-statement.md",
-      "sha256": "de55702b70bad0cb1885eddf4dc94a76573a6d27b91b8a5bc94a385bc1175ebf",
-      "bytes": 32607
+      "sha256": "590dd7a6c8eb460a9456bf7d720d153bb58893ba108f599d68e99d846d226282",
+      "bytes": 35002
     },
     {
       "path": "evaluation.xml",
@@ -4220,18 +4285,23 @@
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "16aaa7d152cb4b37d278556c9ff27e17344976f3847688816a284ba103c2538a",
-      "bytes": 84211
+      "sha256": "d875d0c0296de6d7324977d90e762fe28f7c7f480b1dfad5e1b36cacfa72750b",
+      "bytes": 85254
+    },
+    {
+      "path": "release-evidence/ordered-trend-calibration.json",
+      "sha256": "3286c95e4bbc9df1dc3e68a29cf9f0f94a0d17b2e9d84ab526d0d009776d6af8",
+      "bytes": 15114
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "622139e930119d0bf514a648be9f91ab3011cda616a335db8b28aa171a4ef959",
-      "bytes": 823
+      "sha256": "5296260c11409fd53826c16cb38d44041e78c4263d865c704fe9481ac28573b4",
+      "bytes": 1187
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "774f69f5c0e36d32bcc020af8c241b3e62cf4ae52f2e1510a6e8ee472ab72f6f",
-      "bytes": 497
+      "sha256": "a07a2e6eec9ac950210b9ec646105ebb449a28c88446453dedd6614e80ef6363",
+      "bytes": 735
     },
     {
       "path": "release-evidence/scientific-invariants.json",
@@ -4440,8 +4510,8 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "907086b74868cb49bfddadb8336f83f967f93fede61eac1f9edaaa8452872323",
-      "bytes": 6059
+      "sha256": "913047ef583c0266dc8a60ab3845323d52ebb352108784cce21a663e1b36e602",
+      "bytes": 6506
     },
     {
       "path": "uv.lock",
