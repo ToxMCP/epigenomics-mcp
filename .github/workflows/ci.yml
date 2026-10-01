@@ -50,7 +50,7 @@ jobs:
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/pip install -e ".[dev]"
 
-      - name: Audit production dependencies
+      - name: Audit production and development dependencies
         run: npm run security:audit
 
       - name: Lint

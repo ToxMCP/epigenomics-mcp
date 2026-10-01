@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+- Update the MCP TypeScript SDK within v1 to 1.31.0 and require patched
+  optional Python compatibility SDK versions (>=1.30.0,<2).
+- Patch Vitest development tooling and Nanoid, and include development
+  dependencies in local, CI, and weekly npm advisory checks.
 - Refresh patched production npm dependencies while retaining the MCP SDK v1
   transport and tool surface.
 - Refresh optional Python compatibility dependency locks and security floors.

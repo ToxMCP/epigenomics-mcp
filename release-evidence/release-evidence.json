@@ -9,11 +9,11 @@
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-10-01T07:28:24.530Z",
+  "generatedAt": "2026-10-01T09:25:53.870Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-10-01T07:28:22.032Z",
-    "finishedAt": "2026-10-01T07:28:24.530Z"
+    "startedAt": "2026-10-01T09:25:51.282Z",
+    "finishedAt": "2026-10-01T09:25:53.870Z"
   },
   "environment": {
     "nodeVersion": "v24.21.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "61dbedf977389091e23a34d2e4f224e02a53e121",
+    "commit": "1c0c3a6b11c1ead9778ce4b872495f37f543839e",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.086s; 84.0 MiB RSS increase"
+        "details": "10000 real qualifications in 0.079s; 84.1 MiB RSS increase"
       },
       {
         "name": "ordered_trend_calibration",
@@ -76,15 +76,15 @@
       "id": "epigenomics-mcp@0.2.1",
       "name": "epigenomics-mcp",
       "version": "0.2.1",
-      "size": 816355,
-      "unpackedSize": 4716268,
-      "shasum": "678adf09c017fafff3a77d6ee21914557991504f",
-      "integrity": "sha512-pfxKYEexq2t+FpuEWIUZk0ky5NOBuTf6kFb5ImU/DcWhzlUBbg99askwedkR2V25C9Q/4a2Ku2TFbSs8lJHpxA==",
+      "size": 816489,
+      "unpackedSize": 4716586,
+      "shasum": "fde0b321b67fe1336dc4a4e3cd8d46110942f6c8",
+      "integrity": "sha512-C9Zc6hF+jZPKYV2OEdoMXfRgmMXO1ucVY0Xtll8NcW9eZxzhV6B5fGVvbBwUoJfoVuYCCk3K6D4CQeLNm4VnnA==",
       "filename": "epigenomics-mcp-0.2.1.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 7489,
+          "size": 7753,
           "mode": 420
         },
         {
@@ -104,7 +104,7 @@
         },
         {
           "path": "README.md",
-          "size": 18842,
+          "size": 18858,
           "mode": 420
         },
         {
@@ -2849,7 +2849,7 @@
         },
         {
           "path": "package.json",
-          "size": 5835,
+          "size": 5873,
           "mode": 420
         },
         {
@@ -4280,12 +4280,12 @@
     },
     {
       "path": "pyproject.toml",
-      "sha256": "70fff4ebb047b49aec36b23e17cd79e04a0587d3c3a45b4f0e76f24efcd63d2f",
+      "sha256": "7294246d9f1c46fbb423be68c7ed3a9c6fb66113f0848d7ef4f104c366807e78",
       "bytes": 3230
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "49ba1852766184bd9935d3f9f532d683d3bbd18f282fce49f47034f9ea9ef2f5",
+      "sha256": "1c8e16bd79ef8933ceb3056ffa284898c934fbde41b69968bce26c1e77158617",
       "bytes": 85254
     },
     {
@@ -4295,12 +4295,12 @@
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "d11677c7512e8d09fd6447c44085e1f1f850825c08f36130b1cdcd307212839f",
+      "sha256": "f3b008a63a42167aaf96b145209a457e231078f1eccb5c077520e586ac2d742f",
       "bytes": 1187
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "720bbb01f7a39257fee6a1600d4d5f53d8946554dda8ae05addef00e3c30939b",
+      "sha256": "2a327d2f81b71f84ee9233cc3c8e659fdf93ec407e6bb2f13e20ed326fc7e180",
       "bytes": 735
     },
     {
@@ -4515,7 +4515,7 @@
     },
     {
       "path": "uv.lock",
-      "sha256": "00daf3614bac7e2fa3a84aa41171933ad55dc2a74b337a7ab56b0fbe2b32178d",
+      "sha256": "2dbeaa1da45ae976f73b7b3227b50bbb25f98cf97a35c41a7c181524ec84b0d5",
       "bytes": 534324
     },
     {
