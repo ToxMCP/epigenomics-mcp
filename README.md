@@ -254,7 +254,7 @@ Public audit verification should check both local commands and GitHub evidence:
 - run `npm run verify:evidence` to prove the committed bundle is schema-valid, checksum-valid, package-visible, and tied to the current source lineage
 - run `npm run verify:release` for the full local release gate
 - confirm GitHub CI, Docker Build and Smoke, Benchmarks, Schema Drift Guard, and Handoff Validation are green
-- download the `ci-release-evidence` Actions artifact from the successful Node 20 CI run when independent CI-generated evidence is needed
+- download the `ci-release-evidence` Actions artifact from the successful Node 24 CI run when independent CI-generated evidence is needed
 
 ## ToxMCP suite fit
 
@@ -353,7 +353,7 @@ Remote HTTP binding is deliberately explicit. Set a non-loopback
 - Package version: `0.2.1`
 - Schema version: `0.1.0`
 - Policy version: `0.1.0`
-- Node.js: `>=20`
+- Node.js: `>=22` (Node.js 24 LTS recommended)
 - Python: `>=3.11`
 - Downstream contract: Bioactivity-PoD handoff packet `0.1.0`
 

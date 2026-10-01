@@ -37,7 +37,7 @@ def test_analysis_compat_dependencies_are_explicitly_optional() -> None:
     }
     declared = {dependency.split(">", maxsplit=1)[0] for dependency in analysis}
     assert declared == expected_prefixes
-    assert "mcp>=1.0,<2.0.0" in analysis
+    assert "mcp>=1.28.1,<2.0.0" in analysis
 
 
 def test_specialized_extras_remain_separate() -> None:

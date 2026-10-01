@@ -92,7 +92,7 @@ Add a **blocking** Track-B scientific-invariants gate:
    fail-closed code alongside `ENGINE_UNAVAILABLE` /
    `UNRECOGNIZED_SPINE_SCHEMA_ID` / `VENDOR_DIGEST_MISMATCH` / `PROJECTION_INCOMPLETE`.
 
-6. **Blocking CI job** (`.github/workflows/scientific-invariants.yml`, Node 20+22 ×
+6. **Blocking CI job** (`.github/workflows/scientific-invariants.yml`, Node 22+24 ×
    Python 3.12): `vendor:verify` first, then the gate on the pristine corpus, then
    the adversarial self-tests. The public repository ruleset requires both matrix
    checks on `main`; local and release-evidence generation also fail closed.

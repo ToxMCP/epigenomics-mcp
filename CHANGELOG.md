@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Refresh patched production npm dependencies while retaining the MCP SDK v1
+  transport and tool surface.
+- Refresh optional Python compatibility dependency locks and security floors.
+- Use Node.js 24 LTS for containers and default CI jobs, with Node.js 22 and 24
+  regression coverage; Node.js 20 is no longer supported.
+- Add weekly dependency advisory checks and Dependabot updates.
+
 ### Added
 
 - Explicit bounded-batch streaming ingestion for authorized complete and

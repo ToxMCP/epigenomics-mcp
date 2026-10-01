@@ -1,0 +1,55 @@
+name: Dependency security
+
+on:
+  pull_request:
+    paths:
+      - package.json
+      - package-lock.json
+      - pyproject.toml
+      - uv.lock
+      - .github/workflows/dependency-security.yml
+  push:
+    branches: [main, master]
+    paths:
+      - package.json
+      - package-lock.json
+      - pyproject.toml
+      - uv.lock
+      - .github/workflows/dependency-security.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "23 5 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm-production:
+    name: Production npm advisories
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Audit locked production packages
+        run: npm audit --package-lock-only --omit=dev --audit-level=low
+
+  python-compatibility:
+    name: Optional Python compatibility advisories
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+      - name: Export locked optional runtime dependencies
+        run: uv export --locked --all-extras --no-dev --no-emit-project --output-file /tmp/epigenomics-python-requirements.txt
+      - name: Audit locked optional runtime dependencies
+        run: uvx pip-audit --requirement /tmp/epigenomics-python-requirements.txt --no-deps --disable-pip

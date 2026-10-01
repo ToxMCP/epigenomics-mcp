@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22]
+        node-version: [22, 24]
 
     steps:
       - name: Checkout repository
@@ -69,11 +69,11 @@ jobs:
         run: npm run verify:evidence
 
       - name: Generate CI release evidence artifact
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         run: npm run release:evidence -- --out-dir /tmp/epimcp-release-evidence
 
       - name: Upload CI release evidence artifact
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         uses: actions/upload-artifact@v4
         with:
           name: ci-release-evidence

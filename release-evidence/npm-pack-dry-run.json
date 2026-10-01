@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.2.1",
     "name": "epigenomics-mcp",
     "version": "0.2.1",
-    "size": 823828,
-    "unpackedSize": 4708923,
-    "shasum": "4a997ed0a440f7d34ff57feffe685d400e309a46",
-    "integrity": "sha512-HML9ByQnBfxeWwGPsaBZV22IVFsICZOLNsrD5SqlZx3UU8sGv9KlFBgLYuCEeC6SXp96eBN0I96IoUYv1dRn3Q==",
+    "size": 816355,
+    "unpackedSize": 4716268,
+    "shasum": "678adf09c017fafff3a77d6ee21914557991504f",
+    "integrity": "sha512-pfxKYEexq2t+FpuEWIUZk0ky5NOBuTf6kFb5ImU/DcWhzlUBbg99askwedkR2V25C9Q/4a2Ku2TFbSs8lJHpxA==",
     "filename": "epigenomics-mcp-0.2.1.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 7087,
+        "size": 7489,
         "mode": 420
       },
       {
@@ -21,7 +21,7 @@
       },
       {
         "path": "CONTRIBUTING.md",
-        "size": 1162,
+        "size": 1227,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 18813,
+        "size": 18842,
         "mode": 420
       },
       {
@@ -2776,12 +2776,12 @@
       },
       {
         "path": "package.json",
-        "size": 5810,
+        "size": 5835,
         "mode": 420
       },
       {
         "path": "pyproject.toml",
-        "size": 2920,
+        "size": 3230,
         "mode": 420
       },
       {
@@ -3141,7 +3141,7 @@
       },
       {
         "path": "uv.lock",
-        "size": 527810,
+        "size": 534324,
         "mode": 420
       },
       {
