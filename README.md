@@ -91,7 +91,7 @@ processed-evidence qualification scope:
 
 - `npm run lint` and `npm test` cover source quality and behavior
 - `npm run smoke:mcp` exercises both transports through the official MCP client
-- `npm run security:audit` requires zero production dependency vulnerabilities
+- `npm run security:audit` requires zero production and development dependency vulnerabilities
 - `npm run eval:validate` checks the committed 10-case MCP evaluation set
 - `npm run benchmark:ci` checks golden outputs, ordered-trend calibration, and the qualification performance budget
 - `npm run calibrate:trend` writes the deterministic ADEMP calibration report

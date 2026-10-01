@@ -669,7 +669,7 @@ requires-dist = [
     { name = "biopython", marker = "extra == 'adapters'", specifier = ">=1.80" },
     { name = "duckdb", marker = "extra == 'analysis-compat'", specifier = ">=1.0" },
     { name = "httpx", marker = "extra == 'analysis-compat'", specifier = ">=0.27" },
-    { name = "mcp", marker = "extra == 'analysis-compat'", specifier = ">=1.28.1,<2.0.0" },
+    { name = "mcp", marker = "extra == 'analysis-compat'", specifier = ">=1.30.0,<2.0.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
     { name = "pandas", marker = "extra == 'analysis-compat'", specifier = ">=2.0" },
     { name = "polars", marker = "extra == 'large-intervals'", specifier = ">=1.0" },

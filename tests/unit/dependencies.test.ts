@@ -42,7 +42,7 @@ describe("dependency configuration", () => {
     expect(toml).toContain('"statsmodels>=0.14"');
     expect(toml).toContain('"httpx>=0.27"');
     expect(toml).toContain('"typer>=0.12"');
-    expect(toml).toContain('"mcp>=1.28.1,<2.0.0"');
+    expect(toml).toContain('"mcp>=1.30.0,<2.0.0"');
   });
 
   it("pyproject.toml defines optional extras for large intervals and adapters", () => {

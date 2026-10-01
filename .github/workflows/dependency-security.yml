@@ -28,8 +28,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  npm-production:
-    name: Production npm advisories
+  npm-dependencies:
+    name: npm runtime and development advisories
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,8 +37,8 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - name: Audit locked production packages
-        run: npm audit --package-lock-only --omit=dev --audit-level=low
+      - name: Audit all locked npm packages
+        run: npm audit --package-lock-only --include=dev --audit-level=low
 
   python-compatibility:
     name: Optional Python compatibility advisories
