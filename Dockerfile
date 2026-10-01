@@ -1,5 +1,5 @@
 # Multi-stage Node.js build for Epigenomics MCP.
-FROM node:20-slim AS ts-build
+FROM node:24-slim AS ts-build
 
 WORKDIR /build
 COPY package*.json tsconfig.json ./
@@ -8,7 +8,7 @@ RUN npm ci
 COPY src/ ./src/
 RUN npm run build
 
-FROM node:20-slim AS runtime
+FROM node:24-slim AS runtime
 
 WORKDIR /app
 COPY package*.json ./

@@ -6,7 +6,7 @@ the documented product boundary implicitly.
 
 ## Local checks
 
-Use Node.js 20 or newer:
+Use a supported Node.js LTS release (22 or 24); Node.js 24 is the default for containers:
 
 ```bash
 npm ci
