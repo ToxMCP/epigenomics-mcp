@@ -78,6 +78,8 @@ constraint-dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["epigenomics_mcp", "epigenomics_mcp.*"]
+namespaces = false
 
 [tool.setuptools.package-dir]
 "" = "src"

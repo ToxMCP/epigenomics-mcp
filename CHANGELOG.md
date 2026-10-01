@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add actual SDK1/SDK2 client parity checks against installed npm packages and
   protocol/security tests, including parallel real calculations.
 - Keep the separate Python governance runtime and legacy analysis extra bounds.
+- Restrict Python package discovery to the actual governance package so direct
+  and source-distribution wheel builds have identical package metadata.
 
 ## [0.2.2] - 2026-10-01
 
