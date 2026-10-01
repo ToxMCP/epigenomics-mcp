@@ -3,15 +3,15 @@
     "id": "epigenomics-mcp@0.3.0",
     "name": "epigenomics-mcp",
     "version": "0.3.0",
-    "size": 828855,
-    "unpackedSize": 4727025,
-    "shasum": "c3d2ea6d87bd7a369fdc5c21c2277fa5427d688b",
-    "integrity": "sha512-TLql7fEmtgKKfQs8m+QheFzPBdFmXFbx8lxeDKc65elTo4cmyDPGjdJq4XaM3MSYcB5HW1GmbIS0eGpns66eNQ==",
+    "size": 828921,
+    "unpackedSize": 4727246,
+    "shasum": "0cfd8d50cf7f2e237d3a7b594525957ae3db94a7",
+    "integrity": "sha512-o31g+s2rOln0sB0nu4odnW8rMcMM1eR05233tChOBflz1JXVCL1UEsiZe8KvpBYGFsIPr6F9j2yxVQ8nis85Cg==",
     "filename": "epigenomics-mcp-0.3.0.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 8479,
+        "size": 8630,
         "mode": 420
       },
       {
@@ -2806,7 +2806,7 @@
       },
       {
         "path": "pyproject.toml",
-        "size": 3230,
+        "size": 3300,
         "mode": 420
       },
       {
