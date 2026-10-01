@@ -10,7 +10,10 @@ describe("dependency configuration", () => {
       devDependencies: Record<string, string>;
     };
 
-    expect(pkg.dependencies["@modelcontextprotocol/sdk"]).toBeDefined();
+    expect(pkg.dependencies["@modelcontextprotocol/server"]).toBe("2.2.0");
+    expect(pkg.dependencies["@modelcontextprotocol/node"]).toBe("2.1.0");
+    expect(pkg.dependencies["@modelcontextprotocol/client"]).toBe("2.2.0");
+    expect(pkg.dependencies["@modelcontextprotocol/sdk"]).toBeUndefined();
     expect(pkg.dependencies.zod).toBeDefined();
     expect(pkg.dependencies["zod-to-json-schema"]).toBeDefined();
     expect(pkg.dependencies["js-yaml"]).toBeDefined();

@@ -84,9 +84,17 @@ The released surface is intentionally bounded:
 | `🧪 Statistical calibration` | Release-gates exact ordered-trend references, exchangeable-null error control, strong-signal power, Monte Carlo agreement, and bounded bootstrap coverage while retaining assumption-violating stress tests as diagnostics. |
 | `🚦 Performance and release gates` | Exercises the real packet-validation and qualification engine at 10,000-feature scale alongside protocol, security, conformance, nondeterminism, and ordered-trend calibration checks. |
 
+## SDK2 migration candidate
+
+Version `0.3.0` supports MCP 2026-07-28 and older clients over stdio and HTTP.
+The published release remains `0.2.2`. The 17 tools, 16 audit resources,
+scientific schemas and qualification rules remain unchanged. See the
+[migration guide](docs/mcp-sdk2-migration.md) for compatibility checks and
+operator settings.
+
 ## Release gates
 
-The `0.2.2` release surface uses these deterministic gates for the bounded
+The `0.3.0` candidate surface uses these deterministic gates for the bounded
 processed-evidence qualification scope:
 
 - `npm run lint` and `npm test` cover source quality and behavior
@@ -262,7 +270,7 @@ Public audit verification should check both local commands and GitHub evidence:
 |--------|-------------------|---------------------------|
 | `Epigenomics MCP` | Processed epigenomic evidence qualification and handoff | This repo |
 | `Bioactivity-PoD MCP` | Point-of-departure and dose-response modelling | Downstream handoff consumer |
-| `Evidence Ingestion Study Registry MCP` | Evidence intake, provenance, and study packaging | Planned upstream integration; no active connector is claimed in `0.2.2` |
+| `Evidence Ingestion Study Registry MCP` | Evidence intake, provenance, and study packaging | Planned upstream integration; no active connector is claimed in `0.3.0` |
 | `Annotation/Ontology MCP` | Identifier, ontology, and mapping context | Planned enrichment integration; local mapping contracts are active |
 | `ToxMCP Hub` | Suite control plane and contract index | Suite-level orchestration context |
 
@@ -350,7 +358,7 @@ Remote HTTP binding is deliberately explicit. Set a non-loopback
 
 ## Version and compatibility
 
-- Package version: `0.2.2`
+- Candidate package version: `0.3.0` (published release: `0.2.2`)
 - Schema version: `0.1.0`
 - Policy version: `0.1.0`
 - Node.js: `>=22` (Node.js 24 LTS recommended)

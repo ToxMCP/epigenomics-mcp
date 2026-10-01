@@ -1,0 +1,1109 @@
+{
+  "calls": [
+    {
+      "label": "health",
+      "name": "health",
+      "arguments": {}
+    },
+    {
+      "label": "ingest_dataset",
+      "name": "ingest_dataset",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "modality": "dna_methylation_array",
+        "tableOptions": {
+          "featureClass": "cpg_methylation",
+          "signalMetric": "beta_value",
+          "explicitShape": "long"
+        },
+        "featuresPath": "tests/compatibility/data/features.csv",
+        "designPath": "tests/compatibility/data/design.json",
+        "provenancePath": "tests/compatibility/data/provenance.json"
+      }
+    },
+    {
+      "label": "validate_design",
+      "name": "validate_design",
+      "arguments": {
+        "design": {
+          "designId": "design-001",
+          "studyId": "study-001",
+          "species": "Homo sapiens",
+          "doseGroups": [
+            {
+              "doseGroupId": "ctrl",
+              "doseValue": 0,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "low",
+              "doseValue": 1,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "high",
+              "doseValue": 10,
+              "doseUnit": "\u00b5M"
+            }
+          ],
+          "samples": [
+            {
+              "sampleId": "sample-ctrl-1",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 0,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-ctrl-2",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 1,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-low-1",
+              "doseGroupId": "low",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-low-2",
+              "doseGroupId": "low",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-1",
+              "doseGroupId": "high",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-2",
+              "doseGroupId": "high",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            }
+          ],
+          "hasControls": true,
+          "minReplicatesPerGroup": 2
+        }
+      }
+    },
+    {
+      "label": "qualify_features",
+      "name": "qualify_features",
+      "arguments": {
+        "packet": {
+          "schemaVersion": "0.1.0",
+          "schemaName": "EpigenomicsFeatureResponsePacket",
+          "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "datasetMetadataRef": "dataset-001",
+          "designRef": "design-001",
+          "features": [
+            {
+              "featureId": "cg00000001",
+              "featureClass": "cpg_methylation",
+              "modality": "dna_methylation_array",
+              "measuredRegion": {
+                "chrom": "chr1",
+                "start": 10000,
+                "end": 10001,
+                "build": "hg38",
+                "coordinateSystem": "0-based-half-open"
+              },
+              "measuredIdentifier": "cg00000001",
+              "signalMetric": "beta_value",
+              "values": {
+                "sample-ctrl-1": 0.82,
+                "sample-ctrl-2": 0.85,
+                "sample-low-1": 0.78,
+                "sample-low-2": 0.8,
+                "sample-high-1": 0.65,
+                "sample-high-2": 0.68
+              }
+            }
+          ],
+          "design": {
+            "designId": "design-001",
+            "studyId": "study-001",
+            "species": "Homo sapiens",
+            "doseGroups": [
+              {
+                "doseGroupId": "ctrl",
+                "doseValue": 0,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "low",
+                "doseValue": 1,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "high",
+                "doseValue": 10,
+                "doseUnit": "\u00b5M"
+              }
+            ],
+            "samples": [
+              {
+                "sampleId": "sample-ctrl-1",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 0,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-ctrl-2",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 1,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-low-1",
+                "doseGroupId": "low",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-low-2",
+                "doseGroupId": "low",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-1",
+                "doseGroupId": "high",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-2",
+                "doseGroupId": "high",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              }
+            ],
+            "hasControls": true,
+            "minReplicatesPerGroup": 2
+          },
+          "provenance": {
+            "datasetId": "dataset-001",
+            "upstreamSteps": [
+              {
+                "stepName": "normalisation",
+                "toolName": "minfi",
+                "toolVersion": "1.44.0",
+                "parameters": {},
+                "timestamp": "2026-01-01T00:00:00Z",
+                "inputFiles": [],
+                "outputFiles": []
+              }
+            ]
+          },
+          "qualificationSummary": {
+            "acceptedCount": 1,
+            "excludedCount": 0,
+            "exploratoryCount": 0,
+            "caveatCount": 0
+          },
+          "qcReportRef": "qc-001",
+          "warnings": [],
+          "generatedAt": "2026-05-05T00:00:00Z"
+        }
+      }
+    },
+    {
+      "label": "generate_handoff",
+      "name": "generate_handoff",
+      "arguments": {
+        "packet": {
+          "schemaVersion": "0.1.0",
+          "schemaName": "EpigenomicsFeatureResponsePacket",
+          "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "datasetMetadataRef": "dataset-001",
+          "designRef": "design-001",
+          "features": [
+            {
+              "featureId": "cg00000001",
+              "featureClass": "cpg_methylation",
+              "modality": "dna_methylation_array",
+              "measuredRegion": {
+                "chrom": "chr1",
+                "start": 10000,
+                "end": 10001,
+                "build": "hg38",
+                "coordinateSystem": "0-based-half-open"
+              },
+              "measuredIdentifier": "cg00000001",
+              "signalMetric": "beta_value",
+              "values": {
+                "sample-ctrl-1": 0.82,
+                "sample-ctrl-2": 0.85,
+                "sample-low-1": 0.78,
+                "sample-low-2": 0.8,
+                "sample-high-1": 0.65,
+                "sample-high-2": 0.68
+              }
+            }
+          ],
+          "design": {
+            "designId": "design-001",
+            "studyId": "study-001",
+            "species": "Homo sapiens",
+            "doseGroups": [
+              {
+                "doseGroupId": "ctrl",
+                "doseValue": 0,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "low",
+                "doseValue": 1,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "high",
+                "doseValue": 10,
+                "doseUnit": "\u00b5M"
+              }
+            ],
+            "samples": [
+              {
+                "sampleId": "sample-ctrl-1",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 0,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-ctrl-2",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 1,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-low-1",
+                "doseGroupId": "low",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-low-2",
+                "doseGroupId": "low",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-1",
+                "doseGroupId": "high",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-2",
+                "doseGroupId": "high",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              }
+            ],
+            "hasControls": true,
+            "minReplicatesPerGroup": 2
+          },
+          "provenance": {
+            "datasetId": "dataset-001",
+            "upstreamSteps": [
+              {
+                "stepName": "normalisation",
+                "toolName": "minfi",
+                "toolVersion": "1.44.0",
+                "parameters": {},
+                "timestamp": "2026-01-01T00:00:00Z",
+                "inputFiles": [],
+                "outputFiles": []
+              }
+            ]
+          },
+          "qualificationSummary": {
+            "acceptedCount": 1,
+            "excludedCount": 0,
+            "exploratoryCount": 0,
+            "caveatCount": 0
+          },
+          "qcReportRef": "qc-001",
+          "warnings": [],
+          "generatedAt": "2026-05-05T00:00:00Z"
+        }
+      }
+    },
+    {
+      "label": "validate_coordinates",
+      "name": "validate_coordinates",
+      "arguments": {
+        "declarations": []
+      }
+    },
+    {
+      "label": "profile_qc",
+      "name": "profile_qc",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "features": [
+          {
+            "featureId": "cg00000001",
+            "featureClass": "cpg_methylation",
+            "modality": "dna_methylation_array",
+            "measuredRegion": {
+              "chrom": "chr1",
+              "start": 10000,
+              "end": 10001,
+              "build": "hg38",
+              "coordinateSystem": "0-based-half-open"
+            },
+            "measuredIdentifier": "cg00000001",
+            "signalMetric": "beta_value",
+            "values": {
+              "sample-ctrl-1": 0.82,
+              "sample-ctrl-2": 0.85,
+              "sample-low-1": 0.78,
+              "sample-low-2": 0.8,
+              "sample-high-1": 0.65,
+              "sample-high-2": 0.68
+            }
+          }
+        ],
+        "design": {
+          "designId": "design-001",
+          "studyId": "study-001",
+          "species": "Homo sapiens",
+          "doseGroups": [
+            {
+              "doseGroupId": "ctrl",
+              "doseValue": 0,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "low",
+              "doseValue": 1,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "high",
+              "doseValue": 10,
+              "doseUnit": "\u00b5M"
+            }
+          ],
+          "samples": [
+            {
+              "sampleId": "sample-ctrl-1",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 0,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-ctrl-2",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 1,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-low-1",
+              "doseGroupId": "low",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-low-2",
+              "doseGroupId": "low",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-1",
+              "doseGroupId": "high",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-2",
+              "doseGroupId": "high",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            }
+          ],
+          "hasControls": true,
+          "minReplicatesPerGroup": 2
+        }
+      }
+    },
+    {
+      "label": "profile_missingness",
+      "name": "profile_missingness",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "features": [
+          {
+            "featureId": "cg00000001",
+            "featureClass": "cpg_methylation",
+            "modality": "dna_methylation_array",
+            "measuredRegion": {
+              "chrom": "chr1",
+              "start": 10000,
+              "end": 10001,
+              "build": "hg38",
+              "coordinateSystem": "0-based-half-open"
+            },
+            "measuredIdentifier": "cg00000001",
+            "signalMetric": "beta_value",
+            "values": {
+              "sample-ctrl-1": 0.82,
+              "sample-ctrl-2": 0.85,
+              "sample-low-1": 0.78,
+              "sample-low-2": 0.8,
+              "sample-high-1": 0.65,
+              "sample-high-2": 0.68
+            }
+          }
+        ],
+        "design": {
+          "designId": "design-001",
+          "studyId": "study-001",
+          "species": "Homo sapiens",
+          "doseGroups": [
+            {
+              "doseGroupId": "ctrl",
+              "doseValue": 0,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "low",
+              "doseValue": 1,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "high",
+              "doseValue": 10,
+              "doseUnit": "\u00b5M"
+            }
+          ],
+          "samples": [
+            {
+              "sampleId": "sample-ctrl-1",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 0,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-ctrl-2",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 1,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-low-1",
+              "doseGroupId": "low",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-low-2",
+              "doseGroupId": "low",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-1",
+              "doseGroupId": "high",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-2",
+              "doseGroupId": "high",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            }
+          ],
+          "hasControls": true,
+          "minReplicatesPerGroup": 2
+        }
+      }
+    },
+    {
+      "label": "ingest_cell_composition",
+      "name": "ingest_cell_composition",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "samples": [],
+        "design": {
+          "designId": "design-001",
+          "studyId": "study-001",
+          "species": "Homo sapiens",
+          "doseGroups": [
+            {
+              "doseGroupId": "ctrl",
+              "doseValue": 0,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "low",
+              "doseValue": 1,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "high",
+              "doseValue": 10,
+              "doseUnit": "\u00b5M"
+            }
+          ],
+          "samples": [
+            {
+              "sampleId": "sample-ctrl-1",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 0,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-ctrl-2",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 1,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-low-1",
+              "doseGroupId": "low",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-low-2",
+              "doseGroupId": "low",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-1",
+              "doseGroupId": "high",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-2",
+              "doseGroupId": "high",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            }
+          ],
+          "hasControls": true,
+          "minReplicatesPerGroup": 2
+        }
+      }
+    },
+    {
+      "label": "ingest_cytotoxicity",
+      "name": "ingest_cytotoxicity",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "entries": [],
+        "design": {
+          "designId": "design-001",
+          "studyId": "study-001",
+          "species": "Homo sapiens",
+          "doseGroups": [
+            {
+              "doseGroupId": "ctrl",
+              "doseValue": 0,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "low",
+              "doseValue": 1,
+              "doseUnit": "\u00b5M"
+            },
+            {
+              "doseGroupId": "high",
+              "doseValue": 10,
+              "doseUnit": "\u00b5M"
+            }
+          ],
+          "samples": [
+            {
+              "sampleId": "sample-ctrl-1",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 0,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-ctrl-2",
+              "doseGroupId": "ctrl",
+              "replicateIndex": 1,
+              "species": "Homo sapiens",
+              "controlFlag": true
+            },
+            {
+              "sampleId": "sample-low-1",
+              "doseGroupId": "low",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-low-2",
+              "doseGroupId": "low",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-1",
+              "doseGroupId": "high",
+              "replicateIndex": 0,
+              "species": "Homo sapiens"
+            },
+            {
+              "sampleId": "sample-high-2",
+              "doseGroupId": "high",
+              "replicateIndex": 1,
+              "species": "Homo sapiens"
+            }
+          ],
+          "hasControls": true,
+          "minReplicatesPerGroup": 2
+        }
+      }
+    },
+    {
+      "label": "summarize_by_group",
+      "name": "summarize_by_group",
+      "arguments": {
+        "packet": {
+          "schemaVersion": "0.1.0",
+          "schemaName": "EpigenomicsFeatureResponsePacket",
+          "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "datasetMetadataRef": "dataset-001",
+          "designRef": "design-001",
+          "features": [
+            {
+              "featureId": "cg00000001",
+              "featureClass": "cpg_methylation",
+              "modality": "dna_methylation_array",
+              "measuredRegion": {
+                "chrom": "chr1",
+                "start": 10000,
+                "end": 10001,
+                "build": "hg38",
+                "coordinateSystem": "0-based-half-open"
+              },
+              "measuredIdentifier": "cg00000001",
+              "signalMetric": "beta_value",
+              "values": {
+                "sample-ctrl-1": 0.82,
+                "sample-ctrl-2": 0.85,
+                "sample-low-1": 0.78,
+                "sample-low-2": 0.8,
+                "sample-high-1": 0.65,
+                "sample-high-2": 0.68
+              }
+            }
+          ],
+          "design": {
+            "designId": "design-001",
+            "studyId": "study-001",
+            "species": "Homo sapiens",
+            "doseGroups": [
+              {
+                "doseGroupId": "ctrl",
+                "doseValue": 0,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "low",
+                "doseValue": 1,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "high",
+                "doseValue": 10,
+                "doseUnit": "\u00b5M"
+              }
+            ],
+            "samples": [
+              {
+                "sampleId": "sample-ctrl-1",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 0,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-ctrl-2",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 1,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-low-1",
+                "doseGroupId": "low",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-low-2",
+                "doseGroupId": "low",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-1",
+                "doseGroupId": "high",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-2",
+                "doseGroupId": "high",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              }
+            ],
+            "hasControls": true,
+            "minReplicatesPerGroup": 2
+          },
+          "provenance": {
+            "datasetId": "dataset-001",
+            "upstreamSteps": [
+              {
+                "stepName": "normalisation",
+                "toolName": "minfi",
+                "toolVersion": "1.44.0",
+                "parameters": {},
+                "timestamp": "2026-01-01T00:00:00Z",
+                "inputFiles": [],
+                "outputFiles": []
+              }
+            ]
+          },
+          "qualificationSummary": {
+            "acceptedCount": 1,
+            "excludedCount": 0,
+            "exploratoryCount": 0,
+            "caveatCount": 0
+          },
+          "qcReportRef": "qc-001",
+          "warnings": [],
+          "generatedAt": "2026-05-05T00:00:00Z"
+        }
+      }
+    },
+    {
+      "label": "assess_response_patterns",
+      "name": "assess_response_patterns",
+      "arguments": {
+        "packet": {
+          "schemaVersion": "0.1.0",
+          "schemaName": "EpigenomicsFeatureResponsePacket",
+          "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "datasetMetadataRef": "dataset-001",
+          "designRef": "design-001",
+          "features": [
+            {
+              "featureId": "cg00000001",
+              "featureClass": "cpg_methylation",
+              "modality": "dna_methylation_array",
+              "measuredRegion": {
+                "chrom": "chr1",
+                "start": 10000,
+                "end": 10001,
+                "build": "hg38",
+                "coordinateSystem": "0-based-half-open"
+              },
+              "measuredIdentifier": "cg00000001",
+              "signalMetric": "beta_value",
+              "values": {
+                "sample-ctrl-1": 0.82,
+                "sample-ctrl-2": 0.85,
+                "sample-low-1": 0.78,
+                "sample-low-2": 0.8,
+                "sample-high-1": 0.65,
+                "sample-high-2": 0.68
+              }
+            }
+          ],
+          "design": {
+            "designId": "design-001",
+            "studyId": "study-001",
+            "species": "Homo sapiens",
+            "doseGroups": [
+              {
+                "doseGroupId": "ctrl",
+                "doseValue": 0,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "low",
+                "doseValue": 1,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "high",
+                "doseValue": 10,
+                "doseUnit": "\u00b5M"
+              }
+            ],
+            "samples": [
+              {
+                "sampleId": "sample-ctrl-1",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 0,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-ctrl-2",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 1,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-low-1",
+                "doseGroupId": "low",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-low-2",
+                "doseGroupId": "low",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-1",
+                "doseGroupId": "high",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-2",
+                "doseGroupId": "high",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              }
+            ],
+            "hasControls": true,
+            "minReplicatesPerGroup": 2
+          },
+          "provenance": {
+            "datasetId": "dataset-001",
+            "upstreamSteps": [
+              {
+                "stepName": "normalisation",
+                "toolName": "minfi",
+                "toolVersion": "1.44.0",
+                "parameters": {},
+                "timestamp": "2026-01-01T00:00:00Z",
+                "inputFiles": [],
+                "outputFiles": []
+              }
+            ]
+          },
+          "qualificationSummary": {
+            "acceptedCount": 1,
+            "excludedCount": 0,
+            "exploratoryCount": 0,
+            "caveatCount": 0
+          },
+          "qcReportRef": "qc-001",
+          "warnings": [],
+          "generatedAt": "2026-05-05T00:00:00Z"
+        }
+      }
+    },
+    {
+      "label": "assess_ordered_trends",
+      "name": "assess_ordered_trends",
+      "arguments": {
+        "packet": {
+          "schemaVersion": "0.1.0",
+          "schemaName": "EpigenomicsFeatureResponsePacket",
+          "packetId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "datasetMetadataRef": "dataset-001",
+          "designRef": "design-001",
+          "features": [
+            {
+              "featureId": "cg00000001",
+              "featureClass": "cpg_methylation",
+              "modality": "dna_methylation_array",
+              "measuredRegion": {
+                "chrom": "chr1",
+                "start": 10000,
+                "end": 10001,
+                "build": "hg38",
+                "coordinateSystem": "0-based-half-open"
+              },
+              "measuredIdentifier": "cg00000001",
+              "signalMetric": "beta_value",
+              "values": {
+                "sample-ctrl-1": 0.82,
+                "sample-ctrl-2": 0.85,
+                "sample-low-1": 0.78,
+                "sample-low-2": 0.8,
+                "sample-high-1": 0.65,
+                "sample-high-2": 0.68
+              }
+            }
+          ],
+          "design": {
+            "designId": "design-001",
+            "studyId": "study-001",
+            "species": "Homo sapiens",
+            "doseGroups": [
+              {
+                "doseGroupId": "ctrl",
+                "doseValue": 0,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "low",
+                "doseValue": 1,
+                "doseUnit": "\u00b5M"
+              },
+              {
+                "doseGroupId": "high",
+                "doseValue": 10,
+                "doseUnit": "\u00b5M"
+              }
+            ],
+            "samples": [
+              {
+                "sampleId": "sample-ctrl-1",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 0,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-ctrl-2",
+                "doseGroupId": "ctrl",
+                "replicateIndex": 1,
+                "species": "Homo sapiens",
+                "controlFlag": true
+              },
+              {
+                "sampleId": "sample-low-1",
+                "doseGroupId": "low",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-low-2",
+                "doseGroupId": "low",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-1",
+                "doseGroupId": "high",
+                "replicateIndex": 0,
+                "species": "Homo sapiens"
+              },
+              {
+                "sampleId": "sample-high-2",
+                "doseGroupId": "high",
+                "replicateIndex": 1,
+                "species": "Homo sapiens"
+              }
+            ],
+            "hasControls": true,
+            "minReplicatesPerGroup": 2
+          },
+          "provenance": {
+            "datasetId": "dataset-001",
+            "upstreamSteps": [
+              {
+                "stepName": "normalisation",
+                "toolName": "minfi",
+                "toolVersion": "1.44.0",
+                "parameters": {},
+                "timestamp": "2026-01-01T00:00:00Z",
+                "inputFiles": [],
+                "outputFiles": []
+              }
+            ]
+          },
+          "qualificationSummary": {
+            "acceptedCount": 1,
+            "excludedCount": 0,
+            "exploratoryCount": 0,
+            "caveatCount": 0
+          },
+          "qcReportRef": "qc-001",
+          "warnings": [],
+          "generatedAt": "2026-05-05T00:00:00Z"
+        },
+        "permutationResamples": 99,
+        "bootstrapResamples": 199,
+        "seed": 17
+      }
+    },
+    {
+      "label": "read_table",
+      "name": "read_table",
+      "arguments": {
+        "filePath": "tests/compatibility/data/features.csv"
+      }
+    },
+    {
+      "label": "read_design",
+      "name": "read_design",
+      "arguments": {
+        "filePath": "benchmarks/fixtures/frozen_public/gse67005/design.tsv",
+        "options": {
+          "designId": "gse67005-compatibility",
+          "species": "Homo sapiens"
+        }
+      }
+    },
+    {
+      "label": "generate_qc_report",
+      "name": "generate_qc_report",
+      "arguments": {
+        "datasetId": "compatibility-dataset",
+        "profile": {
+          "datasetId": "compatibility-dataset",
+          "totalFeatures": 1,
+          "featuresWithMissingValues": 0,
+          "missingnessRate": 0,
+          "designAdequacyFlags": {
+            "sufficientReplicates": true,
+            "doseRangeDeclared": true,
+            "controlsPresent": true,
+            "batchStructureKnown": false,
+            "speciesBuildDeclared": true
+          }
+        },
+        "warnings": []
+      }
+    },
+    {
+      "label": "convert_coordinates",
+      "name": "convert_coordinates",
+      "arguments": {
+        "records": []
+      }
+    }
+  ],
+  "resources": [
+    "epimcp://schemas/epigenomics-feature-response-packet",
+    "epimcp://docs/tool-reference"
+  ]
+}

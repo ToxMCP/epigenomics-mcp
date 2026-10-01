@@ -3,8 +3,7 @@
 import { spawn } from "node:child_process";
 import { strict as assert } from "node:assert";
 import { resolve } from "node:path";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
 
 const serverPath = resolve(process.cwd(), "dist/epimcp/http.js");
 const authToken = "epimcp-http-smoke-token";
@@ -109,13 +108,14 @@ try {
   });
   assert.equal(oversizedResponse.status, 413);
 
-  client = new Client({ name: "epimcp-http-smoke", version: "0.1.0" });
+  client = new Client({ name: "epimcp-http-smoke", version: "0.1.0" }, { versionNegotiation: { mode: "modern" } });
   const transport = new StreamableHTTPClientTransport(endpoint, {
     requestInit: {
       headers: { Authorization: `Bearer ${authToken}` },
     },
   });
   await client.connect(transport);
+  assert.equal(client.getNegotiatedProtocolVersion(), "2026-07-28");
 
   const listed = await client.listTools();
   assert.ok(listed.tools.some((tool) => tool.name === "health"));
@@ -125,7 +125,7 @@ try {
   assert.equal(health.structuredContent?.status, "ok");
 
   console.log(
-    `HTTP smoke passed: auth, Origin validation, limits, initialize, listTools, health (${listed.tools.length} tools)`,
+    `HTTP smoke passed: auth, Origin validation, limits, discover, listTools, health (${listed.tools.length} tools)`,
   );
 } finally {
   if (client) {

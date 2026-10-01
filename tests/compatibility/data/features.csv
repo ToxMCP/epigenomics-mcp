@@ -1,0 +1,7 @@
+feature_id,sample_id,value
+cg00000001,sample-ctrl-1,0.82
+cg00000001,sample-ctrl-2,0.85
+cg00000001,sample-low-1,0.78
+cg00000001,sample-low-2,0.8
+cg00000001,sample-high-1,0.65
+cg00000001,sample-high-2,0.68

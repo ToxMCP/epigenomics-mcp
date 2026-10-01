@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { readFileSync, realpathSync, statSync } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult, ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
+import type { McpServer, CallToolResult, ToolAnnotations } from "@modelcontextprotocol/server";
 import { VERSION } from "./version.js";
+import { toMcpSchema } from "./standard_schema.js";
 import { ConfigSchema, type Config } from "./config.js";
 import {
   DesignValidationResultSchema,
@@ -1406,8 +1406,8 @@ export function registerTools(
       {
         title: tool.title,
         description: tool.description,
-        inputSchema: tool.inputSchema,
-        outputSchema: tool.outputSchema,
+        inputSchema: toMcpSchema(tool.inputSchema),
+        outputSchema: toMcpSchema(tool.outputSchema),
         annotations: tool.annotations ?? READ_ONLY_ANNOTATIONS,
       },
       async (args) => {

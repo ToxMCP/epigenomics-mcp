@@ -1,6 +1,6 @@
 {
   "name": "epigenomics-mcp",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Model Context Protocol server for processed epigenomic feature evidence qualification",
   "type": "module",
   "main": "./dist/epimcp/index.js",
@@ -97,7 +97,8 @@
     "mcp:smoke": "npm run smoke:mcp",
     "mcp:serve:http": "node dist/epimcp/http.js",
     "test:release-gates": "npm run security:audit && npm run eval:validate && npm run vendor:verify && npm run gate:scientific-invariants && npm run test:conformance && npm run test:contract && npm run benchmark:ci",
-    "verify:release": "npm run lint && npm run security:audit && npm run eval:validate && npm run vendor:verify && npm run gate:scientific-invariants && npm test && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json"
+    "verify:release": "npm run lint && npm run security:audit && npm run eval:validate && npm run vendor:verify && npm run gate:scientific-invariants && npm test && npm run smoke:mcp && npm start -- --help && node dist/epimcp/cli.js --help && node -e \"import('./dist/epimcp/index.js')\" && npm run verify:evidence && npm pack --dry-run --json",
+    "test:protocol": "node scripts/verify_protocol_clients.mjs"
   },
   "keywords": [
     "mcp",
@@ -121,10 +122,12 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.31.0",
     "js-yaml": "4.3.2",
     "zod": "^3.23.8",
-    "zod-to-json-schema": "^3.25.2"
+    "zod-to-json-schema": "^3.25.2",
+    "@modelcontextprotocol/node": "2.1.0",
+    "@modelcontextprotocol/server": "2.2.0",
+    "@modelcontextprotocol/client": "2.2.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
