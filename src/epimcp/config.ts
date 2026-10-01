@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import yaml from "js-yaml";
 import { FeatureFlagsSchema } from "../qualification/policy.js";
+import { VERSION } from "./version.js";
 
 /**
  * Coordinate default settings.
@@ -208,7 +209,7 @@ export type FileAccessPolicy = z.infer<typeof FileAccessPolicySchema>;
 export const ConfigSchema = z.object({
   // Basic server settings
   name: z.string().default("epigenomics-mcp"),
-  version: z.string().default("0.2.1"),
+  version: z.string().default(VERSION),
   logLevel: z.enum(["debug", "info", "warn", "error"]).default("info"),
   port: z.number().int().min(1).max(65535).default(3000),
   host: z.string().default("127.0.0.1"),

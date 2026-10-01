@@ -24,7 +24,7 @@
     {
       "name": "qualification_performance",
       "passed": true,
-      "details": "10000 real qualifications in 0.091s; 73.8 MiB RSS increase"
+      "details": "10000 real qualifications in 0.103s; 65.0 MiB RSS increase"
     },
     {
       "name": "ordered_trend_calibration",
