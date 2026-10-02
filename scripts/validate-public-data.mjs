@@ -14,8 +14,8 @@ import {
 import { basename, resolve, join } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { Client } from "@modelcontextprotocol/client";
 
 const DEFAULT_MANIFEST = "benchmarks/public_validation/manifest.json";
 const DEFAULT_CACHE = "benchmark-cache/public-data";

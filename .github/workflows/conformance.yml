@@ -50,3 +50,39 @@ jobs:
 
       - name: Run MCP conformance + schema-validation gates
         run: npx vitest run tests/conformance
+
+  protocol-compatibility:
+    name: Installed MCP Client Compatibility (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install pinned modern and legacy clients
+        run: |
+          npm ci
+          npm --prefix tests/compatibility/legacy-client ci
+          npm --prefix tests/compatibility/legacy-client audit --audit-level=low
+      - name: Build and install a fresh npm package outside the checkout
+        shell: bash
+        run: |
+          npm run build
+          mkdir -p "$RUNNER_TEMP/epimcp-package" "$RUNNER_TEMP/epimcp-installed"
+          npm pack --pack-destination "$RUNNER_TEMP/epimcp-package" --json > "$RUNNER_TEMP/epimcp-pack.json"
+          package_name=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))[0].filename)' "$RUNNER_TEMP/epimcp-pack.json")
+          npm install --prefix "$RUNNER_TEMP/epimcp-installed" "$RUNNER_TEMP/epimcp-package/$package_name" --omit=dev --ignore-scripts
+          npm --prefix "$RUNNER_TEMP/epimcp-installed" audit --omit=dev --audit-level=low
+      - name: Exercise actual SDK1 and SDK2 clients over stdio and HTTP
+        run: |
+          npm run test:protocol -- --server-root "$RUNNER_TEMP/epimcp-installed/node_modules/epigenomics-mcp" --output-dir "$RUNNER_TEMP/epimcp-clients"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mcp-client-parity-node-${{ matrix.node-version }}
+          path: ${{ runner.temp }}/epimcp-clients/*.json

@@ -1,0 +1,14 @@
+{
+  "datasetId": "dataset-001",
+  "upstreamSteps": [
+    {
+      "stepName": "normalisation",
+      "toolName": "minfi",
+      "toolVersion": "1.44.0",
+      "parameters": {},
+      "timestamp": "2026-01-01T00:00:00Z",
+      "inputFiles": [],
+      "outputFiles": []
+    }
+  ]
+}

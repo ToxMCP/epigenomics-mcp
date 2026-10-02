@@ -2,8 +2,8 @@
 
 import { strict as assert } from "node:assert";
 import { resolve } from "node:path";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
+import { Client } from "@modelcontextprotocol/client";
 
 const serverPath = resolve(process.cwd(), "dist/epimcp/cli.js");
 const transport = new StdioClientTransport({
@@ -12,7 +12,7 @@ const transport = new StdioClientTransport({
   cwd: process.cwd(),
   stderr: "pipe",
 });
-const client = new Client({ name: "epimcp-stdio-smoke", version: "0.1.0" });
+const client = new Client({ name: "epimcp-stdio-smoke", version: "0.1.0" }, { versionNegotiation: { mode: "modern" } });
 
 let stderr = "";
 transport.stderr?.setEncoding("utf8");
@@ -22,6 +22,7 @@ transport.stderr?.on("data", (chunk) => {
 
 try {
   await client.connect(transport);
+  assert.equal(client.getNegotiatedProtocolVersion(), "2026-07-28");
 
   const listed = await client.listTools();
   assert.equal(listed.tools.length, 17);
@@ -57,7 +58,7 @@ try {
   assert.match(toolReference.contents[0]?.text ?? "", /MCP payload envelope/);
 
   console.log(
-    `stdio smoke passed: initialize, listTools, health, qualification, resources (${listed.tools.length} tools)`,
+    `stdio smoke passed: discover, listTools, health, qualification, resources (${listed.tools.length} tools)`,
   );
 } catch (error) {
   if (stderr) {

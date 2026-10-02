@@ -1,5 +1,5 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { McpServer } from "@modelcontextprotocol/server";
 import { VERSION } from "./version.js";
 import type { Config } from "./config.js";
 import { registerTools } from "./tool_registry.js";
@@ -18,6 +18,10 @@ export function createEpigenomicsMcpServer(config: Config): McpServer {
     {
       capabilities: {
         tools: { listChanged: false },
+      },
+      cacheHints: {
+        "tools/list": { ttlMs: 60_000, cacheScope: "private" },
+        "resources/list": { ttlMs: 60_000, cacheScope: "private" },
       },
       instructions:
         "Epigenomics MCP qualifies processed epigenomic feature evidence for downstream " +
@@ -38,11 +42,8 @@ export function createEpigenomicsMcpServer(config: Config): McpServer {
 // ---------------------------------------------------------------------------
 
 export async function startServer(config: Config): Promise<void> {
-  const transport = new StdioServerTransport();
-  const server = createEpigenomicsMcpServer(config);
-  await server.connect(transport);
-  // Keep process alive until transport closes
-  await new Promise<void>((resolve) => {
-    transport.onclose = () => resolve();
+  serveStdio(() => createEpigenomicsMcpServer(config), {
+    legacy: "serve",
+    onerror: (error) => process.stderr.write(`stdio request error: ${error.message}\n`),
   });
 }

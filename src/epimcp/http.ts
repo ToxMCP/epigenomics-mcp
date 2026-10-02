@@ -24,7 +24,8 @@ import {
 } from "node:http";
 import { isIP, type AddressInfo } from "node:net";
 import { pathToFileURL } from "node:url";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { NodeStreamableHTTPServerTransport, toNodeHandler, toWebRequest } from "@modelcontextprotocol/node";
+import { createMcpHandler, isLegacyRequest } from "@modelcontextprotocol/server";
 import { loadConfig, type Config } from "./config.js";
 import { createEpigenomicsMcpServer } from "./server.js";
 
@@ -366,10 +367,35 @@ export function createHttpRequestHandler(
       }
 
       const parsedBody = await readJsonBody(req, runtime.maxBodyBytes);
-      const server = createEpigenomicsMcpServer(config);
-      const transport = new StreamableHTTPServerTransport({
-        sessionIdGenerator: undefined,
-        enableJsonResponse: true,
+      const request = await toWebRequest(req, parsedBody);
+      if (await isLegacyRequest(request, parsedBody, { maxRequestBodySize: runtime.maxBodyBytes })) {
+        // Preserve the released stateless JSON response format for older clients.
+        const server = createEpigenomicsMcpServer(config);
+        const transport = new NodeStreamableHTTPServerTransport({
+          sessionIdGenerator: undefined,
+          enableJsonResponse: true,
+        });
+        let closed = false;
+        const closeLegacy = async (): Promise<void> => {
+          if (closed) return;
+          closed = true;
+          await transport.close();
+          await server.close();
+        };
+        res.once("close", () => { void closeLegacy(); });
+        try {
+          await server.connect(transport);
+          await transport.handleRequest(req, res, parsedBody);
+        } finally {
+          await closeLegacy();
+        }
+        return;
+      }
+      const handler = createMcpHandler(() => createEpigenomicsMcpServer(config), {
+        legacy: "reject",
+        responseMode: "json",
+        maxRequestBodySize: runtime.maxBodyBytes,
+        onerror: (error) => process.stderr.write(`streamable-http request error: ${error.message}\n`),
       });
 
       let closed = false;
@@ -378,16 +404,17 @@ export function createHttpRequestHandler(
           return;
         }
         closed = true;
-        await transport.close();
-        await server.close();
+        await handler.close();
       };
       res.once("close", () => {
         void close();
       });
 
       try {
-        await server.connect(transport);
-        await transport.handleRequest(req, res, parsedBody);
+        await toNodeHandler(handler, {
+          maxRequestBodySize: runtime.maxBodyBytes,
+          onerror: (error) => process.stderr.write(`streamable-http adapter error: ${error.message}\n`),
+        })(req, res, parsedBody);
       } finally {
         await close();
       }

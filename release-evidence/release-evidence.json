@@ -3,17 +3,17 @@
   "schemaVersion": "0.1.0",
   "package": {
     "name": "epigenomics-mcp",
-    "version": "0.2.2"
+    "version": "0.3.0"
   },
   "config": {
     "schemaVersion": "0.1.0",
     "policyVersion": "0.1.0"
   },
-  "generatedAt": "2026-10-01T19:37:50.994Z",
+  "generatedAt": "2026-10-02T19:04:56.767Z",
   "command": {
     "name": "npm run release:evidence",
-    "startedAt": "2026-10-01T19:37:47.199Z",
-    "finishedAt": "2026-10-01T19:37:50.994Z"
+    "startedAt": "2026-10-02T19:04:53.451Z",
+    "finishedAt": "2026-10-02T19:04:56.767Z"
   },
   "environment": {
     "nodeVersion": "v22.23.0",
@@ -23,7 +23,7 @@
   },
   "git": {
     "available": true,
-    "commit": "1834cda61d73eb7c9b55665e835973da411029f9",
+    "commit": "6b1e28962bfa67fae70b1383bd2c415fe99e0925",
     "dirty": false
   },
   "releaseGate": {
@@ -52,7 +52,7 @@
       {
         "name": "qualification_performance",
         "passed": true,
-        "details": "10000 real qualifications in 0.118s; 64.2 MiB RSS increase"
+        "details": "10000 real qualifications in 0.092s; 64.6 MiB RSS increase"
       },
       {
         "name": "ordered_trend_calibration",
@@ -73,23 +73,23 @@
   },
   "npmPackDryRun": [
     {
-      "id": "epigenomics-mcp@0.2.2",
+      "id": "epigenomics-mcp@0.3.0",
       "name": "epigenomics-mcp",
-      "version": "0.2.2",
-      "size": 825665,
-      "unpackedSize": 4716692,
-      "shasum": "32b7b41ed2f2f2babab863bfdf9a1e9ff51bdf9b",
-      "integrity": "sha512-ITmnfqXVsSdUwa8EQMo6VCcnwKWrQPFdMeGjpYMQb1SsPNElGlhaYN0+JsMQSfq7VgQ9gNAKlB6NBgmUGu01NA==",
-      "filename": "epigenomics-mcp-0.2.2.tgz",
+      "version": "0.3.0",
+      "size": 828924,
+      "unpackedSize": 4727246,
+      "shasum": "d7a9391617dd864518a0544b33cbcca906c1f74a",
+      "integrity": "sha512-T7/CNL0XcP9W4HWuiMiGkk48vY+DGTVdrOa8Ibp3rbpW3xvpgGzvpm59mCUjXhAyhHEajtn+wYwlKSI+oVkBFQ==",
+      "filename": "epigenomics-mcp-0.3.0.tgz",
       "files": [
         {
           "path": "CHANGELOG.md",
-          "size": 7778,
+          "size": 8630,
           "mode": 420
         },
         {
           "path": "CITATION.cff",
-          "size": 399,
+          "size": 373,
           "mode": 420
         },
         {
@@ -104,7 +104,7 @@
         },
         {
           "path": "README.md",
-          "size": 18858,
+          "size": 19244,
           "mode": 420
         },
         {
@@ -1334,12 +1334,12 @@
         },
         {
           "path": "dist/epimcp/http.js",
-          "size": 12606,
+          "size": 14085,
           "mode": 420
         },
         {
           "path": "dist/epimcp/http.js.map",
-          "size": 12183,
+          "size": 13294,
           "mode": 420
         },
         {
@@ -1384,12 +1384,12 @@
         },
         {
           "path": "dist/epimcp/resources.d.ts",
-          "size": 637,
+          "size": 626,
           "mode": 420
         },
         {
           "path": "dist/epimcp/resources.d.ts.map",
-          "size": 586,
+          "size": 587,
           "mode": 420
         },
         {
@@ -1404,7 +1404,7 @@
         },
         {
           "path": "dist/epimcp/server.d.ts",
-          "size": 295,
+          "size": 284,
           "mode": 420
         },
         {
@@ -1414,32 +1414,52 @@
         },
         {
           "path": "dist/epimcp/server.js",
-          "size": 1731,
+          "size": 1780,
           "mode": 420
         },
         {
           "path": "dist/epimcp/server.js.map",
-          "size": 1102,
+          "size": 1168,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/standard_schema.d.ts",
+          "size": 351,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/standard_schema.d.ts.map",
+          "size": 399,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/standard_schema.js",
+          "size": 955,
+          "mode": 420
+        },
+        {
+          "path": "dist/epimcp/standard_schema.js.map",
+          "size": 912,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts",
-          "size": 415396,
+          "size": 415327,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.d.ts.map",
-          "size": 9949,
+          "size": 9911,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js",
-          "size": 52663,
+          "size": 52741,
           "mode": 420
         },
         {
           "path": "dist/epimcp/tool_registry.js.map",
-          "size": 39571,
+          "size": 39644,
           "mode": 420
         },
         {
@@ -2698,6 +2718,11 @@
           "mode": 420
         },
         {
+          "path": "docs/mcp-sdk2-migration.md",
+          "size": 3673,
+          "mode": 420
+        },
+        {
           "path": "docs/non_goals.md",
           "size": 152,
           "mode": 420
@@ -2849,12 +2874,12 @@
         },
         {
           "path": "package.json",
-          "size": 5873,
+          "size": 6027,
           "mode": 420
         },
         {
           "path": "pyproject.toml",
-          "size": 3230,
+          "size": 3300,
           "mode": 420
         },
         {
@@ -2999,12 +3024,12 @@
         },
         {
           "path": "scripts/smoke_mcp_http.mjs",
-          "size": 4117,
+          "size": 4146,
           "mode": 420
         },
         {
           "path": "scripts/smoke_mcp_stdio.mjs",
-          "size": 2133,
+          "size": 2224,
           "mode": 420
         },
         {
@@ -3029,7 +3054,7 @@
         },
         {
           "path": "scripts/validate-public-data.mjs",
-          "size": 11467,
+          "size": 11447,
           "mode": 420
         },
         {
@@ -3518,15 +3543,15 @@
           "mode": 420
         }
       ],
-      "entryCount": 687,
+      "entryCount": 692,
       "bundled": []
     }
   ],
   "artifactChecksums": [
     {
       "path": "CITATION.cff",
-      "sha256": "04839d7c2c1e8123e79c816c80964c08e50537c280707392541eb7c6c143ee0c",
-      "bytes": 399
+      "sha256": "1c3326b1bad13739b18ee0ed9a399580d04b1a9679acd337a4552ecdb9fcdc9c",
+      "bytes": 373
     },
     {
       "path": "SECURITY.md",
@@ -4280,13 +4305,13 @@
     },
     {
       "path": "pyproject.toml",
-      "sha256": "df3a8fd4295ed5313f52bb2512acc9af483452f2b699b661858f7a6267944024",
-      "bytes": 3230
+      "sha256": "e89cb6fe5878831986e79fad37595e3f38099e90ccc802789301a49a6df9053d",
+      "bytes": 3300
     },
     {
       "path": "release-evidence/npm-pack-dry-run.json",
-      "sha256": "4d3ca4e19cc46ed7e668f3273ba36b0fc961fd4025719eaf2ab5bc605167f956",
-      "bytes": 85254
+      "sha256": "684b34b34d8601c0ca4d9158dbf60118d27a2ac53deedadc9f35f7fd6e60eaaa",
+      "bytes": 85803
     },
     {
       "path": "release-evidence/ordered-trend-calibration.json",
@@ -4295,12 +4320,12 @@
     },
     {
       "path": "release-evidence/release-gate.json",
-      "sha256": "80b8faea2ff3ff56406707f97a61e04b1c671aeddecfe6578d4c6b71f986b6cb",
+      "sha256": "dcd6f428a83a7e10e60c981bfdf1484a1938c87d45c30b54eb0c68fa748a19a7",
       "bytes": 1187
     },
     {
       "path": "release-evidence/release-gate.txt",
-      "sha256": "827c711e0d93b43c43c7810ba844bbdcb3a878e0a2bb8a4fb35fd983c7f0a5ae",
+      "sha256": "4040fef6ec9953eb0883a57ab38f39434159cc6b309fc2bf76ac574562071d87",
       "bytes": 735
     },
     {
@@ -4510,12 +4535,12 @@
     },
     {
       "path": "toxmcp.manifest.yaml",
-      "sha256": "edec654c276e16d0393696b009e76b0be0c4c8b6ee7a10bd2ee54e5398b78850",
+      "sha256": "5cf9787fd64c36fcc4614263c2dc390653c3fa6afc39dccd83783fafda7987c8",
       "bytes": 6506
     },
     {
       "path": "uv.lock",
-      "sha256": "de593130e262f5173519da7c9f5af1446778ee73af44f03b6fc78b5372a4e66a",
+      "sha256": "ba52d0d5da9b70f598ee9d7f792a3e4811720f3dfa2ca7f30196a98f1154bd2b",
       "bytes": 534324
     },
     {

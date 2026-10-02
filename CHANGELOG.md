@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - Unreleased
+
+- Migrate the active TypeScript server to stable MCP SDK 2.2.0 with modern
+  2026-07-28 stdio/HTTP serving and private catalog cache hints.
+- Preserve released Zod 3 validation and Draft 7 tool schemas through a public
+  Standard Schema adapter; retain scientific algorithms and benchmark goldens.
+- Retain SDK1 stdio, older HTTP revisions, stateless JSON responses and existing
+  authentication, Host/Origin, body, rate and filesystem access guards.
+- Add actual SDK1/SDK2 client parity checks against installed npm packages and
+  protocol/security tests, including parallel real calculations.
+- Keep the separate Python governance runtime and legacy analysis extra bounds.
+- Restrict Python package discovery to the actual governance package so direct
+  and source-distribution wheel builds have identical package metadata.
+
 ## [0.2.2] - 2026-10-01
 
 ### Security

@@ -1,22 +1,22 @@
 [
   {
-    "id": "epigenomics-mcp@0.2.2",
+    "id": "epigenomics-mcp@0.3.0",
     "name": "epigenomics-mcp",
-    "version": "0.2.2",
-    "size": 825665,
-    "unpackedSize": 4716692,
-    "shasum": "32b7b41ed2f2f2babab863bfdf9a1e9ff51bdf9b",
-    "integrity": "sha512-ITmnfqXVsSdUwa8EQMo6VCcnwKWrQPFdMeGjpYMQb1SsPNElGlhaYN0+JsMQSfq7VgQ9gNAKlB6NBgmUGu01NA==",
-    "filename": "epigenomics-mcp-0.2.2.tgz",
+    "version": "0.3.0",
+    "size": 828924,
+    "unpackedSize": 4727246,
+    "shasum": "d7a9391617dd864518a0544b33cbcca906c1f74a",
+    "integrity": "sha512-T7/CNL0XcP9W4HWuiMiGkk48vY+DGTVdrOa8Ibp3rbpW3xvpgGzvpm59mCUjXhAyhHEajtn+wYwlKSI+oVkBFQ==",
+    "filename": "epigenomics-mcp-0.3.0.tgz",
     "files": [
       {
         "path": "CHANGELOG.md",
-        "size": 7778,
+        "size": 8630,
         "mode": 420
       },
       {
         "path": "CITATION.cff",
-        "size": 399,
+        "size": 373,
         "mode": 420
       },
       {
@@ -31,7 +31,7 @@
       },
       {
         "path": "README.md",
-        "size": 18858,
+        "size": 19244,
         "mode": 420
       },
       {
@@ -1261,12 +1261,12 @@
       },
       {
         "path": "dist/epimcp/http.js",
-        "size": 12606,
+        "size": 14085,
         "mode": 420
       },
       {
         "path": "dist/epimcp/http.js.map",
-        "size": 12183,
+        "size": 13294,
         "mode": 420
       },
       {
@@ -1311,12 +1311,12 @@
       },
       {
         "path": "dist/epimcp/resources.d.ts",
-        "size": 637,
+        "size": 626,
         "mode": 420
       },
       {
         "path": "dist/epimcp/resources.d.ts.map",
-        "size": 586,
+        "size": 587,
         "mode": 420
       },
       {
@@ -1331,7 +1331,7 @@
       },
       {
         "path": "dist/epimcp/server.d.ts",
-        "size": 295,
+        "size": 284,
         "mode": 420
       },
       {
@@ -1341,32 +1341,52 @@
       },
       {
         "path": "dist/epimcp/server.js",
-        "size": 1731,
+        "size": 1780,
         "mode": 420
       },
       {
         "path": "dist/epimcp/server.js.map",
-        "size": 1102,
+        "size": 1168,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/standard_schema.d.ts",
+        "size": 351,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/standard_schema.d.ts.map",
+        "size": 399,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/standard_schema.js",
+        "size": 955,
+        "mode": 420
+      },
+      {
+        "path": "dist/epimcp/standard_schema.js.map",
+        "size": 912,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts",
-        "size": 415396,
+        "size": 415327,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.d.ts.map",
-        "size": 9949,
+        "size": 9911,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js",
-        "size": 52663,
+        "size": 52741,
         "mode": 420
       },
       {
         "path": "dist/epimcp/tool_registry.js.map",
-        "size": 39571,
+        "size": 39644,
         "mode": 420
       },
       {
@@ -2625,6 +2645,11 @@
         "mode": 420
       },
       {
+        "path": "docs/mcp-sdk2-migration.md",
+        "size": 3673,
+        "mode": 420
+      },
+      {
         "path": "docs/non_goals.md",
         "size": 152,
         "mode": 420
@@ -2776,12 +2801,12 @@
       },
       {
         "path": "package.json",
-        "size": 5873,
+        "size": 6027,
         "mode": 420
       },
       {
         "path": "pyproject.toml",
-        "size": 3230,
+        "size": 3300,
         "mode": 420
       },
       {
@@ -2926,12 +2951,12 @@
       },
       {
         "path": "scripts/smoke_mcp_http.mjs",
-        "size": 4117,
+        "size": 4146,
         "mode": 420
       },
       {
         "path": "scripts/smoke_mcp_stdio.mjs",
-        "size": 2133,
+        "size": 2224,
         "mode": 420
       },
       {
@@ -2956,7 +2981,7 @@
       },
       {
         "path": "scripts/validate-public-data.mjs",
-        "size": 11467,
+        "size": 11447,
         "mode": 420
       },
       {
@@ -3445,7 +3470,7 @@
         "mode": 420
       }
     ],
-    "entryCount": 687,
+    "entryCount": 692,
     "bundled": []
   }
 ]
