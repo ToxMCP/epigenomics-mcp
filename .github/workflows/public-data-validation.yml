@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Restore verified public-source cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: benchmark-cache/public-data
           key: epimcp-public-data-${{ hashFiles('benchmarks/public_validation/manifest.json') }}
