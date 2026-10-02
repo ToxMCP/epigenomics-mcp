@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Full history so verify-evidence.mjs can run `git merge-base
           # --is-ancestor <evidence source commit> HEAD` (fails on a shallow
@@ -116,7 +116,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
